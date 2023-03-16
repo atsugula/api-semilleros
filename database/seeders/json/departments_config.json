@@ -1,0 +1,130 @@
+[
+    {
+      "name": "Amazonas",
+      "user_id": 1
+    },
+    {
+      "name": "Antioquia",
+      "user_id": 1
+    },
+    {
+      "name": "Arauca",
+      "user_id": 1
+    },
+    {
+      "name": "Atlántico",
+      "user_id": 1
+    },
+    {
+      "name": "Bolívar",
+      "user_id": 1
+    },
+    {
+      "name": "Boyacá",
+      "user_id": 1
+    },
+    {
+      "name": "Caldas",
+      "user_id": 1
+    },
+    {
+      "name": "Caquetá",
+      "user_id": 1
+    },
+    {
+      "name": "Casanare",
+      "user_id": 1
+    },
+    {
+      "name": "Cauca",
+      "user_id": 1
+    },
+    {
+      "name": "Cesar",
+      "user_id": 1
+    },
+    {
+      "name": "Chocó",
+      "user_id": 1
+    },
+    {
+      "name": "Cundinamarca",
+      "user_id": 1
+    },
+    {
+      "name": "Córdoba",
+      "user_id": 1
+    },
+    {
+      "name": "Guainía",
+      "user_id": 1
+    },
+    {
+      "name": "Guaviare",
+      "user_id": 1
+    },
+    {
+      "name": "Huila",
+      "user_id": 1
+    },
+    {
+      "name": "La Guajira",
+      "user_id": 1
+    },
+    {
+      "name": "Magdalena",
+      "user_id": 1
+    },
+    {
+      "name": "Meta",
+      "user_id": 1
+    },
+    {
+      "name": "Nariño",
+      "user_id": 1
+    },
+    {
+      "name": "Norte de Santander",
+      "user_id": 1
+    },
+    {
+      "name": "Putumayo",
+      "user_id": 1
+    },
+    {
+      "name": "Quindío",
+      "user_id": 1
+    },
+    {
+      "name": "Risaralda",
+      "user_id": 1
+    },
+    {
+      "name": "San Andrés y Providencia",
+      "user_id": 1
+    },
+    {
+      "name": "Santander",
+      "user_id": 1
+    },
+    {
+      "name": "Sucre",
+      "user_id": 1
+    },
+    {
+      "name": "Tolima",
+      "user_id": 1
+    },
+    {
+      "name": "Valle del Cauca",
+      "user_id": 1
+    },
+    {
+      "name": "Vaupés",
+      "user_id": 1
+    },
+    {
+      "name": "Vichada",
+      "user_id": 1
+    }
+  ]

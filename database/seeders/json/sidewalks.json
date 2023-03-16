@@ -1,0 +1,51 @@
+[
+    {
+        "city": "Cali",
+        "villages": [
+            "El Hormiguero",
+            "El Saladito",
+            "Felidia",
+            "Golondrinas",
+            "La Buitrera",
+            "La Castilla",
+            "La Elvira",
+            "La Leonera",
+            "La Paz",
+            "Los Andes",
+            "Montebello",
+            "Navarro",
+            "Pance",
+            "Pichindé",
+            "Villacarmelo"
+        ]
+    },
+    {
+        "city": "Buenaventura",
+        "villages": [
+            "Bajo Calima",
+            "Ladrilleros",
+            "Puerto Merizalde"
+        ]
+    },
+    {
+        "city": "El Cerrito",
+        "villages": [
+            "El Placer",
+            "Santa Elena"
+        ]
+    },
+    {
+        "city": "Palmira",
+        "villages": [
+            "Guayabal",
+            "Rozo"
+        ]
+    },
+    {
+        "city": "Yumbo",
+        "villages": [
+            "Dapa",
+            "Mulaló"
+        ]
+    }
+]
