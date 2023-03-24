@@ -94,6 +94,7 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
     /* VISITAS METODOLOGICAS */
     Route::apiResource('methodologist_visits', MethodologistVisitController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::post('methodologist_visits/{id}', [MethodologistVisitController::class, 'update']);
+    Route::put('methodologist_visits/{id}', [MethodologistVisitController::class, 'update']);
 
     /* SUBIR ARCHIVOS VISITAS METODOLOGICAS */
     Route::post('upload/methodologist_visits', [MethodologistVisitController::class, 'uploadFiles']);
