@@ -10,11 +10,12 @@ class ChronogramController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     *\Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        $chronograms = Chronogram::all();
+        return response()->json($chronograms);
     }
 
     /**
@@ -22,6 +23,7 @@ class ChronogramController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
     public function create()
     {
         //
@@ -35,7 +37,27 @@ class ChronogramController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'month' => 'required',
+            'municipio' => 'required',
+            'note' => 'nullable',
+            'groups' => 'nullable',
+            'sport_modality' => 'nullable',
+            'sports_venue_main_name' => 'nullable',
+            'sports_venue_main_address' => 'nullable',
+            'sports_venue_alter_name' => 'nullable',
+            'sports_venue_alter_address' => 'nullable',
+            'day' => 'required',
+            'hour_start' => 'required',
+            'hour_end' => 'required',
+        ]);
+    
+        $chronogram = Chronogram::create($validatedData);
+    
+        return response()->json([
+            'message' => 'Chronogram created successfully',
+            'chronogram' => $chronogram,
+        ], 201);
     }
 
     /**

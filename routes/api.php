@@ -41,6 +41,7 @@ use App\Http\Controllers\V1\CoordinatorVistsController;
 use App\Http\Controllers\V1\InfoContractorController;
 use App\Http\Controllers\V1\MonthsController;
 use App\Http\Controllers\V1\SidewalkController;
+use App\Http\Controllers\V1\ChronogramController;
 use Illuminate\Http\Request;
 
 /*
@@ -197,7 +198,16 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
 
     //Muestra los meses restantes del año
     Route::get('months', [MonthsController::class, 'index']);
+
+    // Subida de chronogram
+    Route::apiResource('chronogram', ChronogramController::class)->only(['index', 'store', 'show']);
+    Route::post('chronogram/{id}', [ChronogramController::class, 'update']);
+    Route::delete('chronogram', [ChronogramController::class, 'destroy']);
+    //Route::post('document-upload', [UploadChronogramController::class, 'upload']);
 });
+
+    
+
 
 /* RUTAS DE PRUEBA JORGE */
 // Documentos visita
