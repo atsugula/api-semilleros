@@ -38,12 +38,12 @@ class MethodologistVisitResource extends JsonResource
             'swich_plans_mp_5' => $this->swich_plans_mp_5,
             'observations' => $this->observations,
             'files' => $this->files,
-            // 'municipalities' => $this->municipalities,
-            // 'event_supports' => $this->event_supports,
-            // 'evaluations' => $this->evaluations,
-            // 'disciplines' => $this->disciplines,
-            // 'monitor' => $this->monitor,
-            // 'sidewalk' => $this->sidewalk,
+            'municipalities' => $this->municipalities,
+            'event_supports' => $this->event_supports,
+            'evaluations' => $this->evaluations,
+            'disciplines' => $this->disciplines,
+            'monitor' => $this->monitor,
+            'sidewalk' => $this->sidewalk,
         ];
     }
 }
