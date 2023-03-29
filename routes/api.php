@@ -204,6 +204,9 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
     Route::post('chronogram/{id}', [ChronogramController::class, 'update']);
     Route::delete('chronogram', [ChronogramController::class, 'destroy']);
     //Route::post('document-upload', [UploadChronogramController::class, 'upload']);
+
+    //Rutas de las excel apis
+    
 });
 
     
