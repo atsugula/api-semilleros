@@ -69,7 +69,7 @@ class VisitSubDirectorRepository
         $visitSubDirector->monitor_id = $request['monitor_id'];
         $visitSubDirector->created_by = $user_id;
         // $visitSubDirector->reviewed_by = $request['reviewed_by'];
-        $visitSubDirector->status_id = $request['status_id'];
+        $visitSubDirector->status_id = config('status.ENR');
         $visitSubDirector->reject_message = $request['rejection_message'];
         $save = $visitSubDirector->save();
 
