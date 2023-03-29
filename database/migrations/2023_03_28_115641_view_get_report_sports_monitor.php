@@ -20,8 +20,8 @@ return new class extends Migration
         FROM users
         INNER JOIN role_user ON users.id = role_user.user_id
         INNER JOIN chronograms ON users.id = chronograms.created_by
-        WHERE role_user.role_id = 18
-        GROUP BY users.id = 4;
+        WHERE role_user.role_id = 4
+        GROUP BY users.name, users.lastname, users.document_number, users.gender, users.created_at;
         ";
         DB::unprepared($views); */
     }
