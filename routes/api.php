@@ -88,7 +88,7 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
         'baseClauses' => ClauseBaseController::class,
         'evaluations' => EvaluationController::class,
         'userZones' => ZoneUserController::class,
-        'coordinator_visits' => CoordinatorVistsController::class,
+        //'coordinator_visits' => CoordinatorVistsController::class,
         'info-contractor' => InfoContractorController::class,
     ]);
 
@@ -96,6 +96,11 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
     Route::apiResource('methodologist_visits', MethodologistVisitController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::post('methodologist_visits/{id}', [MethodologistVisitController::class, 'update']);
     Route::put('methodologist_visits/{id}', [MethodologistVisitController::class, 'update']);
+
+    /* VISITAS COORDINADORES */
+    Route::apiResource('coordinator_visits', CoordinatorVistsController::class)->only(['index', 'store', 'show', 'destroy']);
+    Route::post('coordinator_visits', [CoordinatorVistsController::class, 'store']);
+    Route::put('coordinator_visits/{id}', [CoordinatorVistsController::class, 'update']);
 
     /* SUBIR ARCHIVOS VISITAS METODOLOGICAS */
     Route::post('upload/methodologist_visits', [MethodologistVisitController::class, 'uploadFiles']);

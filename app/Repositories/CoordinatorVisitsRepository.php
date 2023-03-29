@@ -23,7 +23,19 @@ class CoordinatorVisitsRepository implements CrudRepositoryInterface
     }
     public function create($request)
     {
-        $coordinator_visits = $this->model->create($request);
+        /* RELACIONES CAMPOS */
+        $coordinator_visits = $this->model;
+        $coordinator_visits->hour_visit = $request['hour_visit'];
+        $coordinator_visits->date_visit = $request['date_visit'];
+        $coordinator_visits->sports_scene = $request['sports_scene'];
+        $coordinator_visits->beneficiary_coverage = $request['beneficiary_coverage'];
+        $coordinator_visits->user_id = $request['created_by'];
+        $coordinator_visits->discipline_id = $request['discipline_id'];
+        $coordinator_visits->municipalitie_id = $request['municipality_id'];
+        //$coordinator_visits->event_support_id = $request['event_support_id'];
+        $coordinator_visits->observations = $request['observations'];
+        $coordinator_visits->description = $request['description'];
+        $coordinator_visits->save();
         // Guardamos en dataModel
         $this->control_data($coordinator_visits, 'store');
         return $coordinator_visits;
