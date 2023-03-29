@@ -27,11 +27,11 @@ class VisitSubDirectorRepository
 
         $query = $this->model->query()->orderBy('id', 'DESC');
 
-        if ($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_zona_maritima')) {
+        if ($rol_id == config('roles.subdirector_tecnico')) {
             $query->where('created_by', $user_id);
         }
 
-        if ($rol_id == config('roles.subdirector_tecnico')) {
+        if ($rol_id == config('roles.director_tecnico')) {
             $query->whereNotInt('created_by', [1,2]);
         }
 
@@ -117,7 +117,7 @@ class VisitSubDirectorRepository
         $visitSubDirector->discipline_id = $request['discipline_id'];
         $visitSubDirector->monitor_id = $request['monitor_id'];
 
-        if ($rol_id == config('roles.subdirector_tecnico')) {
+        if ($rol_id == config('roles.director_tecnico')) {
             $visitSubDirector->reviewed_by = $user_id;
             $visitSubDirector->status_id = $request['status_id'];
             $visitSubDirector->reject_message = $request['reject_message'];
