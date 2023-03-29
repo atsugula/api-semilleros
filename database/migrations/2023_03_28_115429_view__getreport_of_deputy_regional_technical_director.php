@@ -14,7 +14,7 @@ return new class extends Migration
      */
     public function up()
     {
-        /* $views = "
+        $views = "
         CREATE VIEW getreport_of_deputy_regional_technical_director AS
         SELECT users.name, users.lastname, users.document_number, users.gender, users.created_at
         FROM users
@@ -22,7 +22,7 @@ return new class extends Migration
         JOIN roles ON role_user.role_id = roles.id
         WHERE roles.id = 4;
         ";
-        DB::unprepared($views); */
+        DB::unprepared($views);
     }
 
     /**

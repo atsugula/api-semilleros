@@ -14,7 +14,7 @@ return new class extends Migration
      */
     public function up()
     {
-        /* $views = "
+        $views = "
         CREATE VIEW get_report_sports_monitor AS
         SELECT users.name, users.lastname, users.document_number, users.gender, COUNT(chronograms.id) AS created_chronograms, users.created_at
         FROM users
@@ -23,7 +23,7 @@ return new class extends Migration
         WHERE role_user.role_id = 4
         GROUP BY users.name, users.lastname, users.document_number, users.gender, users.created_at;
         ";
-        DB::unprepared($views); */
+        DB::unprepared($views);
     }
 
     /**

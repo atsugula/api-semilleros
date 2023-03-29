@@ -24,7 +24,7 @@ return new class extends Migration
             $table->text('description');
             $table->text('observations');
             $table->text('file');
-            $table->test('transversal_activity');
+            $table->text('transversal_activity');
 
             // Relation municipalities
             $table->unsignedBigInteger('municipality_id')->nullable();
