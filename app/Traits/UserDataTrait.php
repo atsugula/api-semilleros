@@ -15,7 +15,7 @@ trait UserDataTrait
      */
     public function getIdRolUserAuth()
     {
-        $user_id = Auth::user()->profile->role->id;
+        $user_id = Auth::user()->roles[0]->id;
         return $user_id;
     }
 
@@ -32,7 +32,8 @@ trait UserDataTrait
     public function getIdUserReview()
     {
         $user_id =Auth::user()->id;
-        $profile = Profile::where('user_id',$user_id)->select('id','gestor_id','psychosocial_id','methodological_support_id','support_tracing_monitoring_id','ambassador_leader_id','instructor_leader_id')->first();
+        // $profile = Profile::where('user_id',$user_id)->select('id','gestor_id','psychosocial_id','methodological_support_id','support_tracing_monitoring_id','ambassador_leader_id','instructor_leader_id')->first();
+        $profile = Profile::where('user_id',$user_id)->first();
         return  $profile;
     }
 

@@ -41,7 +41,8 @@ use App\Http\Controllers\V1\CoordinatorVistsController;
 use App\Http\Controllers\V1\InfoContractorController;
 use App\Http\Controllers\V1\MonthsController;
 use App\Http\Controllers\V1\SidewalkController;
-use App\Http\Controllers\V1\ChronogramController;
+use App\Http\Controllers\ChronogramController;
+use App\Http\Controllers\V1\VisitSubDirectorController;
 use Illuminate\Http\Request;
 
 /*
@@ -143,6 +144,10 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
     Route::apiResource('validity_periods', ValidityPeriodController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::post('validity_periods/{id}', [ValidityPeriodController::class, 'update'])->name('validity_periods.update');
 
+    /* VISITA SUBDIRECTOR */
+    Route::apiResource('subdirector_visits', VisitSubDirectorController::class)->only(['index', 'store', 'show', 'destroy']);
+    Route::post('subdirector_visits/{id}', [VisitSubDirectorController::class, 'update'])->name('subdirector_visits.update');
+
     //Informe mensual
     // Route::apiResource('monthly_monitoring_reports', 'App\Http\Controllers\V1\MonthlyMonitoringReportsController')->only(['index', 'store', 'show', 'destroy']);
     // Route::post('monthly_monitoring_reports/{id}', [MonthlyMonitoringReportsController::class, 'update'])->name('monthly_monitoring_reports.update');
@@ -209,13 +214,15 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
     Route::post('chronogram/{id}', [ChronogramController::class, 'update']);
     Route::delete('chronogram', [ChronogramController::class, 'destroy']);
     //Route::post('document-upload', [UploadChronogramController::class, 'upload']);
+
+    //Rutas de las excel apis
+    
 });
 
-    
+
 
 
 /* RUTAS DE PRUEBA JORGE */
-// Documentos visita
 
 // Rutas de prueba V2 JOSE
 //Route::get('get-data-selectss', [GeneralController::class, 'getDataSelects']);
