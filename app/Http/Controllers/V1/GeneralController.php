@@ -179,6 +179,14 @@ class GeneralController extends Controller
         );
     }
 
+    /* TRAE TODOS LOS ESTADOS */
+    public function getSelectStatus() {
+        $status = Status::select('name as label', 'id as value')->orderBy('id', 'ASC')->get();
+        return response()->json(
+            $status
+        );
+    }
+
     public function getCitiesByDepartment(Request $request)
     {
         $department_id = $request->department;

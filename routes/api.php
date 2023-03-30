@@ -152,6 +152,9 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
     // Route::apiResource('monthly_monitoring_reports', 'App\Http\Controllers\V1\MonthlyMonitoringReportsController')->only(['index', 'store', 'show', 'destroy']);
     // Route::post('monthly_monitoring_reports/{id}', [MonthlyMonitoringReportsController::class, 'update'])->name('monthly_monitoring_reports.update');
 
+    /* COMENZAMOS A SEPARAR LOS SELECTS PARA OPTIMIZACION DE PAGINAS */
+    Route::get('get-status-select', [GeneralController::class, 'getSelectStatus']);
+
     //Listas desplegables
     Route::get('get-data-selects', [GeneralController::class, 'getDataSelects']);
     Route::get('getChangeDataModels', [GeneralController::class, 'getChangeDataModels'])->name('changeDataModels.index');
@@ -216,7 +219,7 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
     //Route::post('document-upload', [UploadChronogramController::class, 'upload']);
 
     //Rutas de las excel apis
-    
+
 });
 
 
