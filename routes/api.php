@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ObjectsController;
 use App\Http\Controllers\V1\PDFController as PDFController_V1;
+use App\Http\Controllers\V1\ChronogramController;
 use App\Http\Controllers\V1\ValidityPeriodController;
 use App\Http\Controllers\V1\PermissionController;
 use App\Http\Controllers\V1\ModuleItemController;
@@ -89,6 +90,7 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
         'userZones' => ZoneUserController::class,
         'coordinator_visits' => CoordinatorVistsController::class,
         'info-contractor' => InfoContractorController::class,
+        'chronogram' => ChronogramController::class,
     ]);
 
     /* VISITAS METODOLOGICAS */

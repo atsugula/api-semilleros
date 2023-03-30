@@ -8,17 +8,20 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
 
-class Chronogram extends Model
+class ChronogramsGroups extends Model
 {
     use SoftDeletes, HasFactory, LogsActivity;
 
-    protected $table = "chronograms";
+    protected $table = "chronograms_groups";
 
     protected $fillable = [
-        'created_by',
-        'month',
-        'municipality',
-        'note',
+        'chronograms_id',
+        'group_id',
+        'sports_modality',
+        'main_sports_stage_name',
+        'main_sports_stage_address',
+        'alt_sports_stage_name',
+        'alt_sports_stage_address',
     ];
 
     protected $hidden = ['created_at', 'deleted_at', 'updated_at'];
@@ -37,19 +40,20 @@ class Chronogram extends Model
         return $this->created_at->format('Y-m-d');
     }
 
-    public function mes(){
-        return $this->hasOne(Months::class, 'id', 'month');
+    public function chonogram(){
+        return $this->hasOne(Chonogram::class, 'id', 'chronograms_id');
     }
 
-    public function municipio(){
-        return $this->hasOne(City::class, 'id', 'municipality');
+    public function group(){
+        return $this->hasOne(Groups::class, 'id', 'groups_id');
     }
 
-    public function estado(){
-        return $this->hasOne(Status::class, 'slug', 'status');
+    public function discipline(){
+        return $this->hasOne(Disciplines::class, 'id', 'disciplines_id');
     }
 
-    public function groups(){
-        return $this->hasMany(ChronogramsGroups::class, 'chronograms_id');
+    public function schedules(){
+        return $this->hasMany(Schedule::class, 'chronograms_groups_id');
     }
+    
 }
