@@ -41,7 +41,13 @@ use App\Http\Controllers\V1\CoordinatorVistsController;
 use App\Http\Controllers\V1\InfoContractorController;
 use App\Http\Controllers\V1\MonthsController;
 use App\Http\Controllers\V1\SidewalkController;
+<<<<<<< Updated upstream
 use App\Http\Controllers\V1\ChronogramController;
+=======
+use App\Http\Controllers\ChronogramController;
+use App\Http\Controllers\V1\VisitSubDirectorController;
+use App\Http\Controllers\V1\UserExcelController;
+>>>>>>> Stashed changes
 use Illuminate\Http\Request;
 
 /*
@@ -206,6 +212,7 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
     //Route::post('document-upload', [UploadChronogramController::class, 'upload']);
 
     //Rutas de las excel apis
+    Route::get('descargas/export/', [UserExcelController::class, 'export']);
     
 });
 
