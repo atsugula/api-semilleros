@@ -19,9 +19,10 @@ class CoordinatorVisit extends Model
         'sports_scene',
         'beneficiary_coverage',
         'municipalitie_id',
-        //  'sidewalk_id',
+        'sidewalk',
         'user_id',
-        'discipline_id'
+        'discipline_id',
+        'status_id'
     ];
 
     protected $hidden = ['created_at', 'deleted_at', 'updated_at'];
@@ -45,6 +46,10 @@ class CoordinatorVisit extends Model
     {
         return $this->hasMany(Sidewalk::class, 'sidewalk_id');
     }*/
+
+    public function status(){
+        return $this->belongsTo(Status::class, 'status_id');
+    }
 
     public function getPublishedAtAttribute()
     {

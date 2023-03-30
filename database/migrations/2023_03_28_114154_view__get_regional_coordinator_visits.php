@@ -23,7 +23,7 @@ return new class extends Migration
                 users_monitor.name AS Monitor, 
                 disciplines.name AS Discipline, 
                 municipalities.name AS Municipality, 
-                coordinator_visits.status AS Status, 
+                coordinator_visits.status_id AS Status, 
                 coordinator_visits.updated_at AS Upload_Date 
             FROM 
                 coordinator_visits 
