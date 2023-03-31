@@ -26,7 +26,8 @@ class CoordinatorVisitSeeder extends Seeder
             'sidewalk' => 'Poponte',
             'file' => 'Doc prueba',
             'user_id' => 9,
-            'discipline_id' =>9
+            'discipline_id' =>9,
+            'status_id'=>2
         ]);
 
         CoordinatorVisit::create([
@@ -40,7 +41,8 @@ class CoordinatorVisitSeeder extends Seeder
             'sidewalk' => 'Arenas Blancas',
             'file' => 'Doc prueba',
             'user_id' => 5,
-            'discipline_id' =>10
+            'discipline_id' =>10,
+            'status_id'=>2
         ]);
 
         CoordinatorVisit::create([
@@ -54,7 +56,8 @@ class CoordinatorVisitSeeder extends Seeder
             'sidewalk' => 'La Sierra',
             'file' => 'Doc prueba',
             'user_id' => 14,
-            'discipline_id' =>3
+            'discipline_id' =>3,
+            'status_id'=>2
         ]);
     }
 }
