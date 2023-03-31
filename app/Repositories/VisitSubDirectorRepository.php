@@ -32,7 +32,7 @@ class VisitSubDirectorRepository
         }
 
         if ($rol_id == config('roles.director_tecnico')) {
-            $query->whereNotInt('created_by', [1,2]);
+            $query->whereNotIn('created_by', [1,2]);
         }
 
         $paginate = config('global.paginate');
