@@ -98,10 +98,9 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
     Route::post('methodologist_visits/{id}', [MethodologistVisitController::class, 'update']);
     Route::put('methodologist_visits/{id}', [MethodologistVisitController::class, 'update']);
 
-    /* VISITAS COORDINADORES */
+    /* VISITA COORDINADORES */
     Route::apiResource('coordinator_visits', CoordinatorVistsController::class)->only(['index', 'store', 'show', 'destroy']);
-    Route::post('coordinator_visits', [CoordinatorVistsController::class, 'store']);
-    Route::put('coordinator_visits/{id}', [CoordinatorVistsController::class, 'update']);
+    Route::post('coordinator_visits/{id}', [CoordinatorVistsController::class, 'update'])->name('coordinator_visits.update');
 
     /* SUBIR ARCHIVOS VISITAS METODOLOGICAS */
     Route::post('upload/methodologist_visits', [MethodologistVisitController::class, 'uploadFiles']);
@@ -226,9 +225,7 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
 
 
 /* RUTAS DE PRUEBA JORGE */
-/* VISITA SUBDIRECTOR */
-Route::apiResource('coordinator_visits', CoordinatorVistsController::class)->only(['index', 'store', 'show', 'destroy']);
-Route::post('coordinator_visits/{id}', [CoordinatorVistsController::class, 'update'])->name('coordinator_visits.update');
+
 // Rutas de prueba V2 JOSE
 //Route::get('get-data-selectss', [GeneralController::class, 'getDataSelects']);
 Route::apiResources([
