@@ -25,8 +25,8 @@ class VisitSubDirector extends Model
         'observations',
         'file',
         'municipality_id',
-        'transversal_activity',
-        // 'sidewalk_id',
+        // 'transversal_activity',
+        'sidewalk_id',
         'discipline_id',
         'monitor_id',
         'created_by',
@@ -52,9 +52,9 @@ class VisitSubDirector extends Model
         return $this->belongsTo(Municipality::class, 'municipality_id', 'id');
     }
 
-    /* public function sidewalks(){
+    public function sidewalks(){
         return $this->belongsTo(Sidewalk::class, 'sidewalk_id', 'id');
-    } */
+    }
 
     public function disciplines(){
         return $this->belongsTo(Disciplines::class, 'discipline_id', 'id');
@@ -73,7 +73,7 @@ class VisitSubDirector extends Model
 	}
 
     public function statuses(){
-		return $this->belongsTo(User::class, 'status_id', 'id');
+		return $this->belongsTo(Status::class, 'status_id', 'id');
 	}
 
     public function scopeFilterByUrl($query)

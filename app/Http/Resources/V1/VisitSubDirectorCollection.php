@@ -15,7 +15,7 @@ class VisitSubDirectorCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
-            // "count_page" =>$request->session()->get('count_page_visitSubDirectors'),
+            'count_page' =>$request->session()->get('count_page_visitSubDirectors'),
             'success' => true,
             'action' => 'Consulta visita subdirector',
             'items' => $this->collection,
