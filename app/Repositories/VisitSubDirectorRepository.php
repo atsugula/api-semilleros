@@ -32,7 +32,19 @@ class VisitSubDirectorRepository
         }
 
         if ($rol_id == config('roles.director_tecnico')) {
-            $query->whereNotIn('created_by', [1,2]);
+            $query->whereNotIn('created_by', [1,2])
+                ->whereHas('creator.roles', function ($query) {
+                    $query->where('roles.slug', 'subdirector_tecnico');
+                })
+                ->orWhere('created_by', $user_id);
+        }
+
+        if ($rol_id == config('roles.director_administrator')) {
+            $query->whereNotIn('created_by', [1,2])
+                ->whereHas('creator.roles', function ($query) {
+                    $query->where('roles.slug', 'director_tecnico');
+                })
+                ->orWhere('created_by', $user_id);
         }
 
         $paginate = config('global.paginate');
@@ -61,10 +73,10 @@ class VisitSubDirectorRepository
         /* OTROS CAMPOS */
         $visitSubDirector->description = $request['description'];
         $visitSubDirector->observations = $request['observations'];
-        $visitSubDirector->transversal_activity = $request['transversal_activity'];
+        // $visitSubDirector->transversal_activity = $request['transversal_activity'];
         /* RELACIONES CAMPOS */
         $visitSubDirector->municipality_id = $request['municipality_id'];
-        // $visitSubDirector->sidewalk_id = $request['sidewalk'];
+        $visitSubDirector->sidewalk_id = $request['sidewalk'];
         $visitSubDirector->discipline_id = $request['discipline_id'];
         $visitSubDirector->monitor_id = $request['monitor_id'];
         $visitSubDirector->created_by = $user_id;
@@ -89,7 +101,6 @@ class VisitSubDirectorRepository
     public function findById($id)
     {
         $visitSubDirector = $this->model->findOrFail($id);
-        return $visitSubDirector;
         return new VisitSubDirectorResource($visitSubDirector);
     }
 
@@ -109,14 +120,14 @@ class VisitSubDirectorRepository
         /* OTROS CAMPOS */
         $visitSubDirector->description = $request['description'];
         $visitSubDirector->observations = $request['observations'];
-        $visitSubDirector->transversal_activity = $request['transversal_activity'];
+        // $visitSubDirector->transversal_activity = $request['transversal_activity'];
         /* RELACIONES CAMPOS */
         $visitSubDirector->municipality_id = $request['municipality_id'];
-        // $visitSubDirector->sidewalk_id = $request['sidewalk'];
+        $visitSubDirector->sidewalk_id = $request['sidewalk'];
         $visitSubDirector->discipline_id = $request['discipline_id'];
         $visitSubDirector->monitor_id = $request['monitor_id'];
 
-        if ($rol_id == config('roles.director_tecnico')) {
+        if ($rol_id == config('roles.director_tecnico') || $rol_id == config('roles.director_administrator')) {
             $visitSubDirector->reviewed_by = $user_id;
             $visitSubDirector->status_id = $request['status_id'];
             $visitSubDirector->reject_message = $request['reject_message'];
@@ -159,8 +170,8 @@ class VisitSubDirectorRepository
             'observations' => 'bail|required',
             'file' => $method != 'update' ? 'bail|required|mimes:application/pdf,pdf,png,webp,jpg,jpeg|max:' . (500 * 1049000) : 'bail',
             'municipality_id' => 'bail|required',
-            // 'sidewalk_id' => 'bail|required',
-            'transversal_activity' => 'bail|required',
+            'sidewalk_id' => 'bail|required',
+            // 'transversal_activity' => 'bail|required',
             'discipline_id' => 'bail|required',
             'monitor_id' => 'bail|required',
         ];
@@ -181,29 +192,14 @@ class VisitSubDirectorRepository
             'observations' => 'Observaciones',
             'file' => 'Archivo',
             'municipality_id' => 'Municipio',
-            // 'sidewalk_id' => 'Corregimiento/Vereda',
-            'transversal_activity' => 'Actividad transversal',
+            'sidewalk_id' => 'Corregimiento/Vereda',
+            // 'transversal_activity' => 'Actividad transversal',
             'discipline_id' => 'Disciplinas',
             'monitor_id' => 'Monitor',
         ];
 
         return $this->validator($data, $validate, $messages, $attrs);
 
-    }
-
-    /* SUBIR DOCUMENTOS A TRAVES DEL DROPZONE */
-    public function uploadAll($request) {
-        $files = $request->file('files');
-        foreach ($files as $file) {
-            // Validar cada archivo
-            $request->validate([
-                'file' => 'bail|required|mimes:jpeg,png,gif,pdf|max:2048',
-            ]);
-            // Procesar y almacenar cada archivo
-            $this->send_file($request, 'file', 'methodologist_visits', 1); // El 1 está quemado de momento
-            // $file->store('public');
-        }
-        return response()->json(['items' => 'Los archivos se han subido correctamente.']);
     }
 
 }
