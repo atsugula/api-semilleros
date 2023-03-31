@@ -8,17 +8,17 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
 
-class Chronogram extends Model
+class Schedule extends Model
 {
     use SoftDeletes, HasFactory, LogsActivity;
 
-    protected $table = "chronograms";
+    protected $table = "schedules";
 
     protected $fillable = [
-        'created_by',
-        'month',
-        'municipality',
-        'note',
+        'chronograms_groups_id',
+        'day',
+        'start_time',
+        'end_time',
     ];
 
     protected $hidden = ['created_at', 'deleted_at', 'updated_at'];
@@ -37,19 +37,7 @@ class Chronogram extends Model
         return $this->created_at->format('Y-m-d');
     }
 
-    public function mes(){
-        return $this->hasOne(Months::class, 'id', 'month');
-    }
-
-    public function municipio(){
-        return $this->hasOne(City::class, 'id', 'municipality');
-    }
-
-    public function estado(){
-        return $this->hasOne(Status::class, 'slug', 'status');
-    }
-
-    public function groups(){
-        return $this->hasMany(ChronogramsGroups::class, 'chronograms_id');
+    public function chonogram_group(){
+        return $this->hasOne(ChonogramsGroups::class, 'id', 'chronograms_groups_id');
     }
 }
