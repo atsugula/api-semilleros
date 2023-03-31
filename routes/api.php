@@ -89,7 +89,7 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
         'baseClauses' => ClauseBaseController::class,
         'evaluations' => EvaluationController::class,
         'userZones' => ZoneUserController::class,
-        //'coordinator_visits' => CoordinatorVistsController::class,
+        // 'coordinator_visits' => CoordinatorVistsController::class,
         'info-contractor' => InfoContractorController::class,
     ]);
 
@@ -226,9 +226,12 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
 
 
 /* RUTAS DE PRUEBA JORGE */
-
+/* VISITA SUBDIRECTOR */
+Route::apiResource('coordinator_visits', CoordinatorVistsController::class)->only(['index', 'store', 'show', 'destroy']);
+Route::post('coordinator_visits/{id}', [CoordinatorVistsController::class, 'update'])->name('coordinator_visits.update');
 // Rutas de prueba V2 JOSE
 //Route::get('get-data-selectss', [GeneralController::class, 'getDataSelects']);
 Route::apiResources([
     'userss' => UserController::class,
+    // 'coordinator_visits' => CoordinatorVistsController::class,
 ]);

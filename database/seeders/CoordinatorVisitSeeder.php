@@ -24,6 +24,7 @@ class CoordinatorVisitSeeder extends Seeder
             'beneficiary_coverage' => 'Julian Lora',
             'municipalitie_id' => 5,
             'sidewalk' => 'Poponte',
+            'file' => 'Doc prueba',
             'user_id' => 9,
             'discipline_id' =>9
         ]);
@@ -37,6 +38,7 @@ class CoordinatorVisitSeeder extends Seeder
             'beneficiary_coverage' => 'Pedro Diaz',
             'municipalitie_id' => 6,
             'sidewalk' => 'Arenas Blancas',
+            'file' => 'Doc prueba',
             'user_id' => 5,
             'discipline_id' =>10
         ]);
@@ -50,6 +52,7 @@ class CoordinatorVisitSeeder extends Seeder
             'beneficiary_coverage' => 'Juan Florez',
             'municipalitie_id' => 9,
             'sidewalk' => 'La Sierra',
+            'file' => 'Doc prueba',
             'user_id' => 14,
             'discipline_id' =>3
         ]);

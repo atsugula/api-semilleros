@@ -20,30 +20,38 @@ return new class extends Migration
             $table->date('date_visit');
             $table->text('observations');
             $table->text('description');
+            $table->text('file')->nullable();
             $table->string('sports_scene');
             $table->string('beneficiary_coverage');
             $table->string('sidewalk');
 
+            // Relation municipalities
             $table->foreignId('municipalitie_id')->constrained()->onDelete('cascade');
-            // $table->foreignId('sidewalk_id')->constrained()->onDelete('cascade');
+
+            // Relation monitor user
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
 
+            // Relation disciplines
             $table->foreignId('discipline_id')->constrained()->onDelete('cascade');
 
+            // Relation creator user
             $table->unsignedBigInteger('created_by')->nullable()->constrained()->onDelete('cascade');
             $table->foreign('created_by')
                 ->references('id')
                 ->on('users');
 
+            // Relation reviewed user
             $table->unsignedBigInteger('revised_by')->nullable()->constrained()->onDelete('cascade');
             $table->foreign('revised_by')
                 ->references('id')
                 ->on('users');
 
-            $table->unsignedBigInteger('status_id')->nullable();
+            // Relation with status
+            $table->unsignedBigInteger('status_id')->default(config('status.ENR'));
             $table->foreign('status_id')
                 ->references('id')
                 ->on('statuses');
+
             $table->text('rejection_message')->nullable();
 
             $table->timestamps();
