@@ -90,8 +90,7 @@ class VisitSubDirectorRepository
     {
         $visitSubDirector = $this->model->findOrFail($id);
         return $visitSubDirector;
-        $result = new VisitSubDirectorResource($visitSubDirector);
-        return $result;
+        return new VisitSubDirectorResource($visitSubDirector);
     }
 
     public function update($request, $id)
