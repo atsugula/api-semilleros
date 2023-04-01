@@ -24,19 +24,13 @@ return new class extends Migration
             $table->text('description');
             $table->text('observations');
             $table->text('file');
-            // $table->text('transversal_activity');
+            $table->text('sidewalk');
 
             // Relation municipalities
             $table->unsignedBigInteger('municipality_id')->nullable();
             $table->foreign('municipality_id')
                 ->references('id')
                 ->on('municipalities');
-
-            // Relation sidewalks
-            $table->unsignedBigInteger('sidewalk_id')->nullable();
-            $table->foreign('sidewalk_id')
-                ->references('id')
-                ->on('sidewalks');
 
             // Relation disciplines
             $table->unsignedBigInteger('discipline_id')->nullable();

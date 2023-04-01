@@ -42,7 +42,6 @@ use App\Http\Controllers\V1\CoordinatorVistsController;
 use App\Http\Controllers\V1\InfoContractorController;
 use App\Http\Controllers\V1\MonthsController;
 use App\Http\Controllers\V1\SidewalkController;
-use App\Http\Controllers\ChronogramController;
 use App\Http\Controllers\V1\VisitSubDirectorController;
 use Illuminate\Http\Request;
 
