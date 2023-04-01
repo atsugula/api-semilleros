@@ -139,8 +139,8 @@ class VisitSubDirectorRepository
             $visitSubDirector->update(['file' => $handle_1['response']['payload']]);
         }
         /* CAMBIAMOS EL ESTADO */
-        if ($request['status'] == config('status.REC')) {
-            $visitSubDirector->status_id = config('status.ENREV');
+        if ($request['status_id'] == config('status.REC') && $user_id == $visitSubDirector->created_by) {
+            $visitSubDirector->status_id = config('status.ENR');
             $visitSubDirector->reject_message = $request['reject_message'];
         }
         $visitSubDirector->save();
