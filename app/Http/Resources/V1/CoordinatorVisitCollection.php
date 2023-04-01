@@ -15,7 +15,7 @@ class CoordinatorVisitCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
-            // "count_page" =>$request->session()->get('count_page_visitCoordinators'),
+            "count_page" =>$request->session()->get('count_page_visitCoordinators'),
             'success' => true,
             'action' => 'Consulta visita coordinadores',
             'items' => $this->collection,
