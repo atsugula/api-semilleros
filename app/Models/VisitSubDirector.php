@@ -25,8 +25,7 @@ class VisitSubDirector extends Model
         'observations',
         'file',
         'municipality_id',
-        // 'transversal_activity',
-        'sidewalk_id',
+        'sidewalk',
         'discipline_id',
         'monitor_id',
         'created_by',
@@ -50,10 +49,6 @@ class VisitSubDirector extends Model
 
     public function municipalities(){
         return $this->belongsTo(Municipality::class, 'municipality_id', 'id');
-    }
-
-    public function sidewalks(){
-        return $this->belongsTo(Sidewalk::class, 'sidewalk_id', 'id');
     }
 
     public function disciplines(){

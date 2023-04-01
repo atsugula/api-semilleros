@@ -76,7 +76,7 @@ class VisitSubDirectorRepository
         // $visitSubDirector->transversal_activity = $request['transversal_activity'];
         /* RELACIONES CAMPOS */
         $visitSubDirector->municipality_id = $request['municipality_id'];
-        $visitSubDirector->sidewalk_id = $request['sidewalk'];
+        $visitSubDirector->sidewalk = $request['sidewalk'];
         $visitSubDirector->discipline_id = $request['discipline_id'];
         $visitSubDirector->monitor_id = $request['monitor_id'];
         $visitSubDirector->created_by = $user_id;
@@ -123,7 +123,7 @@ class VisitSubDirectorRepository
         // $visitSubDirector->transversal_activity = $request['transversal_activity'];
         /* RELACIONES CAMPOS */
         $visitSubDirector->municipality_id = $request['municipality_id'];
-        $visitSubDirector->sidewalk_id = $request['sidewalk'];
+        $visitSubDirector->sidewalk = $request['sidewalk'];
         $visitSubDirector->discipline_id = $request['discipline_id'];
         $visitSubDirector->monitor_id = $request['monitor_id'];
 
@@ -170,8 +170,7 @@ class VisitSubDirectorRepository
             'observations' => 'bail|required',
             'file' => $method != 'update' ? 'bail|required|mimes:application/pdf,pdf,png,webp,jpg,jpeg|max:' . (500 * 1049000) : 'bail',
             'municipality_id' => 'bail|required',
-            'sidewalk_id' => 'bail|required',
-            // 'transversal_activity' => 'bail|required',
+            'sidewalk' => 'bail|required',
             'discipline_id' => 'bail|required',
             'monitor_id' => 'bail|required',
         ];
@@ -192,8 +191,7 @@ class VisitSubDirectorRepository
             'observations' => 'Observaciones',
             'file' => 'Archivo',
             'municipality_id' => 'Municipio',
-            'sidewalk_id' => 'Corregimiento/Vereda',
-            // 'transversal_activity' => 'Actividad transversal',
+            'sidewalk' => 'Corregimiento/Vereda',
             'discipline_id' => 'Disciplinas',
             'monitor_id' => 'Monitor',
         ];
