@@ -26,6 +26,7 @@ use App\Traits\UserDataTrait;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class GeneralController extends Controller
 {
@@ -91,6 +92,15 @@ class GeneralController extends Controller
         //MUNICIPALITYS
         $municipalities = Municipality::select('name as label', 'id as value')->orderBy('name', 'ASC')->get();
 
+        //MUNICIPALITYS BY USER
+        $my_municipalities = Municipality::select('name as label', 'id as value')
+                            ->with('users')
+                            ->whereHas('users', function($q) {
+                                $q->where('user_id', Auth::id() );
+                            })
+                            ->orderBy('name', 'ASC')
+                            ->get();
+
         //ZONES
         $zones = Zone::select('name as label', 'id as value')->orderBy('name', 'ASC')->get();
 
@@ -131,6 +141,7 @@ class GeneralController extends Controller
             "period" => $period,
             "status" => $status,
             "municipalities" => $municipalities,
+            "my_municipalities" => $my_municipalities,
             "zones" => $zones,
             "roles" => $roles,
             "users_table" => $users_table,

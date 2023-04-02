@@ -7,6 +7,7 @@ use App\Http\Resources\V1\BeneficiaryResource;
 use App\Traits\FunctionGeneralTrait;
 use App\Traits\UserDataTrait;
 use App\Models\Beneficiary;
+use Illuminate\Support\Facades\Auth;
 
 class BeneficiarieRepository
 {
@@ -28,6 +29,7 @@ class BeneficiarieRepository
 
     public function create($request)
     {
+        $request['created_by'] = Auth::id();
         $beneficiarie = Beneficiary::create($request);
         $beneficiarie->save();
         /* GUARDAMOS EN CONTROL DATA */
