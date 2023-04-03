@@ -30,9 +30,9 @@ class TransversalActivityRepository
     public function getAll()
     {
         // $rol_id = $this->getIdRolUserAuth();
-        // $user_id = $this->getIdUserAuth();
+        $user_id = $this->getIdUserAuth();
 
-        $query = $this->model->query()->orderBy('id', 'DESC');
+        $query = $this->model->query()->where('created_by', $user_id)->orderBy('id', 'DESC');
 
         $paginate = config('global.paginate');
 
