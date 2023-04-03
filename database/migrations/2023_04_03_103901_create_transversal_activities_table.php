@@ -13,36 +13,23 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('visit_sub_directors', function (Blueprint $table) {
+        Schema::create('transversal_activities', function (Blueprint $table) {
             $table->id();
             $table->date('date_visit');
-            $table->time('hour_visit');
-            $table->string('sports_scene');
-            $table->string('beneficiary_coverage');
-            $table->char('technical');
-            $table->char('event_support');
-            $table->text('description');
-            $table->text('observations');
-            $table->text('file')->nullable();
-            $table->text('sidewalk');
+            $table->string('nro_assistants');
+            $table->string('activity_name');
+            $table->text('objective_activity');
+            $table->text('scene');
+            $table->text('meeting_planing');
+            $table->text('team_socialization');
+            $table->text('development_activity');
+            $table->text('content_network');
 
             // Relation municipalities
             $table->unsignedBigInteger('municipality_id')->nullable();
             $table->foreign('municipality_id')
                 ->references('id')
                 ->on('municipalities');
-
-            // Relation disciplines
-            $table->unsignedBigInteger('discipline_id')->nullable();
-            $table->foreign('discipline_id')
-                ->references('id')
-                ->on('disciplines');
-
-            // Relation monitor user
-            $table->unsignedBigInteger('monitor_id')->nullable();
-            $table->foreign('monitor_id')
-                ->references('id')
-                ->on('users');
 
             // Relation creator user
             $table->unsignedBigInteger('created_by')->nullable();
@@ -76,6 +63,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('visit_sub_directors');
+        Schema::dropIfExists('transversal_activities');
     }
 };
