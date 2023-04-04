@@ -43,9 +43,6 @@ return new class extends Migration
             $table->string('softDeletes');
             $table->string('schoclar_Grade')->nullable();
             $table->string('health_entity')->nullable();
-            $table->string('mother_name')->nullable(); 
-            $table->string('father_name')->nullable(); 
-            $table->boolean('guardian_know_needs')->nullable(); 
             $table->timestamps();
                
         });
