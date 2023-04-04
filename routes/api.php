@@ -126,10 +126,10 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
     Route::put('documents-management', [DocumentController::class, 'management']);
 
     // CONTRATOS
-    Route::apiResource('contracts', ContractController::class)->only(['index', 'store', 'show', 'destroy']);
-    Route::post('contracts/{id}', [ContractController::class, 'update']);
-    Route::post('contracts-management', [ContractController::class, 'management']);
-    Route::post('contracts-cancellation', [ContractController::class, 'cancellation']);
+    //Route::apiResource('contracts', ContractController::class)->only(['index', 'store', 'show', 'destroy']);
+   // Route::post('contracts/{id}', [ContractController::class, 'update']);
+    //Route::post('contracts-management', [ContractController::class, 'management']);
+    //Route::post('contracts-cancellation', [ContractController::class, 'cancellation']);
 
     // CONTROL DE CLAUSULAS
     Route::post('clauses-control', [ClauseController::class, 'control']);
@@ -210,7 +210,10 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
     
 });
 
-    
+Route::apiResource('contracts', ContractController::class)->only(['index', 'store', 'show', 'destroy']);
+Route::post('contracts/{id}', [ContractController::class, 'update']);
+Route::post('contracts-management', [ContractController::class, 'management']);
+Route::post('contracts-cancellation', [ContractController::class, 'cancellation']);   
 
 
 /* RUTAS DE PRUEBA JORGE */
