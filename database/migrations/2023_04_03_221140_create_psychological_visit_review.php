@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('custom_psychological_visit_review', function (Blueprint $table) {
+        Schema::create('psychological_visit_review', function (Blueprint $table) {
             $table->id();
 
             $table->unsignedBigInteger("Psicological_visit")->nullable()->constrained()->onDelete('cascade');
             $table->foreign('Psicological_visit')
                 ->references('id')
-                ->on('custom_psychological_visits');
+                ->on('psychological_visits');
             $table->string("status")->nullable();
             $table->text("reason")->nullable();
             $table->timestamps();

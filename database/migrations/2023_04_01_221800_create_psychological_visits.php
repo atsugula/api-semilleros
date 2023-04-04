@@ -13,31 +13,28 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('custom_psychological_visits', function (Blueprint $table) {
+        Schema::create('psychological_visits', function (Blueprint $table) {
             $table->id();
 
-            //referencias
-            $table->unsignedBigInteger("created_by")->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger("created_by")->nullable()->constrained()->onDelete('cascade');
             $table->foreign('created_by')
                 ->references('id')
                 ->on('users');
-            $table->unsignedBigInteger("revised_by")->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger("revised_by")->nullable()->constrained()->onDelete('cascade');
             $table->foreign('revised_by')
                 ->references('id')
                 ->on('users');
-            $table->unsignedBigInteger("municipality")->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger("municipality")->nullable()->constrained()->onDelete('cascade');
             $table->foreign('municipality')
                 ->references('id')
                 ->on('municipalities');
-            $table->unsignedBigInteger("beneficiary")->constrained()->onDelete('cascade');
-            $table->foreign('beneficiary')
+            $table->unsignedBigInteger("beneficiaries")->nullable()->constrained()->onDelete('cascade');
+            $table->foreign('beneficiaries')
                 ->references('id')
                 ->on('beneficiaries');
-
-            //datos de la tabla    
-            $table->date("date")->nullable();
-            $table->string("topic")->nullable();
-            $table->text("agreemnets")->nullable(); 
+            $table->date("date");
+            $table->string("theme");
+            $table->string("recommendations"); 
             $table->timestamps();
         });
     }
