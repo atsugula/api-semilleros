@@ -15,7 +15,7 @@ return new class extends Migration
     public function up()
     {
         $views = "
-        CREATE VIEW get_report_sports_monitor AS 
+        CREATE VIEW get_report_sports_monitor AS
         SELECT users.name, users.lastname, users.document_number, users.gender, COUNT(chronograms.id) AS created_chronograms, users.created_at
         FROM users
         INNER JOIN role_user ON users.id = role_user.user_id
@@ -35,6 +35,6 @@ return new class extends Migration
     {
         $views= "DROP VIEW get_report_sports_monitor;";
         DB::unprepared($views);
-        
+
     }
 };

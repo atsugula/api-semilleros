@@ -3,71 +3,73 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
 
-class CoordinatorVisit extends Model
+class VisitSubDirector extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, LogsActivity;
 
-    protected $table = "coordinator_visits";
+    protected $table = "visit_sub_directors";
 
     protected $fillable = [
-        'hour_visit',
         'date_visit',
-        'observations',
-        'description',
+        'hour_visit',
         'sports_scene',
         'beneficiary_coverage',
-        'municipalitie_id',
-        'user_id',
-        'discipline_id',
+        'technical',
+        'event_support',
+        'description',
+        'observations',
         'file',
+        'municipality_id',
+        'sidewalk',
+        'discipline_id',
+        'monitor_id',
+        'created_by',
+        'reviewed_by',
         'status_id',
-        'user_id',
+        'reject_message',
     ];
 
-    protected $hidden = ['created_at', 'deleted_at', 'updated_at'];
+    protected $guarded = [
+        'created_at', 'updated_at'
+    ];
 
-    public function municipalities()
+    public function getActivitylogOptions(): LogOptions
     {
-        return $this->belongsTo(Municipality::class, 'municipalitie_id');
+        return LogOptions::defaults();
     }
 
-    public function disciplines()
-    {
-        return $this->belongsTo(Disciplines::class, 'discipline_id');
+    public function control_data(){
+		return $this->morphMany(ControlChangeData::class,'data_model');
+	}
+
+    public function municipalities(){
+        return $this->belongsTo(Municipality::class, 'municipality_id', 'id');
     }
 
-    public function monitor()
-    {
-        return $this->belongsTo(User::class, 'user_id');
+    public function disciplines(){
+        return $this->belongsTo(Disciplines::class, 'discipline_id', 'id');
     }
 
-    public function createdBy()
-    {
-        return $this->belongsTo(User::class, 'created_by');
+    public function monitor(){
+        return $this->belongsTo(User::class, 'monitor_id', 'id');
     }
 
-    public function revisedBy()
-    {
-        return $this->belongsTo(User::class, 'revised_by');
+    public function creator(){
+        return $this->belongsTo(User::class, 'created_by', 'id');
     }
 
-    public function getPublishedAtAttribute()
-    {
-        return $this->created_at->format('Y-m-d');
-    }
+    public function reviewed(){
+		return $this->belongsTo(User::class, 'reviewed_by', 'id');
+	}
 
-    public function statuses()
-    {
-        return $this->belongsTo(Status::class, 'status_id');
-    }
-
-    public function control_data()
-    {
-        return $this->morphMany(ControlChangeData::class, 'data_model');
-    }
+    public function statuses(){
+		return $this->belongsTo(Status::class, 'status_id', 'id');
+	}
 
     public function scopeFilterByUrl($query)
     {

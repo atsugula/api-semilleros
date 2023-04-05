@@ -15,11 +15,11 @@ return new class extends Migration
     public function up()
     {
         $views = "
-        CREATE VIEW get_report_psicosocial AS 
-        SELECT users.name, users.lastname, users.document_number, users.gender, users.created_at 
-        FROM users 
-        JOIN role_user ON users.id = role_user.user_id 
-        JOIN roles ON role_user.role_id = roles.id 
+        CREATE VIEW get_report_psicosocial AS
+        SELECT users.name, users.lastname, users.document_number, users.gender, users.created_at
+        FROM users
+        JOIN role_user ON users.id = role_user.user_id
+        JOIN roles ON role_user.role_id = roles.id
         WHERE roles.id = 17;
         ";
         DB::unprepared($views);
@@ -34,6 +34,6 @@ return new class extends Migration
     {
         $views= "DROP VIEW get_report_psicosocial;";
         DB::unprepared($views);
-        
+
     }
 };

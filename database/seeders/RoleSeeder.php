@@ -32,6 +32,14 @@ class RoleSeeder extends Seeder
                 'full-access' => 'no',
                 'public' => 0,
             ],
+            /* DIRECTOR ADMINISTRATIVO */
+            [
+                'name' => 'Director Administrativo',
+                'slug' => 'director_administrator',
+                'description' => 'Director con funciones basicas',
+                'full-access' => 'no',
+                'public' => 0,
+            ],
             /* SUPERVISOR SUBDIRECTOR */
             [
                 'name' => 'Director Técnico',

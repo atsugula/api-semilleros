@@ -18,7 +18,7 @@ class CoordinatorVistsController extends Controller
 
     public function index(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $results = $this->coordinatorVisitRepository->getAll();
             return $results->toArray($request);
@@ -29,14 +29,14 @@ class CoordinatorVistsController extends Controller
 
     public function store(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $data = $request->all();
             $validator = $this->coordinatorVisitRepository->getValidate($data, 'create');
             if ($validator->fails()) {
                 return  $this->createErrorResponse([], $validator->errors()->first(), 422);
             }
-            $result = $this->coordinatorVisitRepository->create($data);
+            $result = $this->coordinatorVisitRepository->create($request);
             return $this->createResponse($result, 'La visita del Coordinador fue creada correctamente.');
         } catch (\Exception $ex) {
             return  $this->createErrorResponse([], 'Algo salio mal al guardar la visita del Coordinador ' . $ex->getMessage() . ' linea ' . $ex->getCode());
@@ -45,7 +45,7 @@ class CoordinatorVistsController extends Controller
 
     public function show($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $result = $this->coordinatorVisitRepository->findById($id);
             if (empty($result)) {
@@ -59,14 +59,14 @@ class CoordinatorVistsController extends Controller
 
     public function update(Request $request, $id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $data = $request->all();
             $validator = $this->coordinatorVisitRepository->getValidate($data, 'update');
             if ($validator->fails()) {
                 return  $this->createErrorResponse([], $validator->errors()->first(), 422);
             }
-            $result = $this->coordinatorVisitRepository->update($data, $id);
+            $result = $this->coordinatorVisitRepository->update($request, $id);
             return $this->createResponse($result, 'La visita del Coordinadorfue actualizado correctamente.');
         } catch (\Exception $ex) {
             return  $this->createErrorResponse([], 'Algo salio mal al actualizar la visita del Coordinador' . $ex->getMessage() . ' linea ' . $ex->getCode());
@@ -75,7 +75,7 @@ class CoordinatorVistsController extends Controller
 
     public function destroy($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $result = $this->coordinatorVisitRepository->delete($id);
             return $result;

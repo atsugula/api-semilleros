@@ -13,6 +13,7 @@ use App\Models\Evaluation;
 use App\Models\Event_support;
 use App\Models\Group;
 use App\Models\Municipality;
+use App\Models\MunicipalityUser;
 use App\Models\Pedagogical;
 use App\Models\Role;
 use App\Models\Sidewalk;
@@ -179,6 +180,14 @@ class GeneralController extends Controller
         );
     }
 
+    /* TRAE TODOS LOS ESTADOS */
+    public function getSelectStatus() {
+        $status = Status::select('name as label', 'id as value')->orderBy('id', 'ASC')->get();
+        return response()->json(
+            $status
+        );
+    }
+
     public function getCitiesByDepartment(Request $request)
     {
         $department_id = $request->department;
@@ -215,6 +224,23 @@ class GeneralController extends Controller
             $entidad
 
         );
+    }
+
+    // Trae solo usuarios monitores
+    public function getMonitoringMunicipality($id) {
+        $response = MunicipalityUser::where('municipalities_id', $id)->with('users')->get();
+        $users = [];
+        foreach ($response as $muni) {
+            foreach ($muni->users as $user) {
+                if ($user->roles[0]->id == config('roles.monitor')) {
+                    array_push($users, [
+                        'label' => $user->name,
+                        'value' => $user->id
+                    ]);
+                }
+            }
+        }
+        return response()->json($users);
     }
 
     public function getConsecutive(Request $request)
