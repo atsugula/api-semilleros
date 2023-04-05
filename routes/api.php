@@ -39,6 +39,7 @@ use App\Http\Controllers\V1\ZonesController;
 use App\Http\Controllers\V1\ZoneUserController;
 use App\Http\Controllers\V1\BeneficiarieController;
 use App\Http\Controllers\V1\CoordinatorVistsController;
+use App\Http\Controllers\V1\CustomVisitController;
 use App\Http\Controllers\V1\InfoContractorController;
 use App\Http\Controllers\V1\MonthsController;
 use App\Http\Controllers\V1\SidewalkController;
@@ -209,6 +210,9 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
     //MUNICIPALITY
     Route::get('municipalities', [MunicipalityController::class, 'index']);
 
+    // USUARIOS MONITORES POR MUNICIPIO
+    Route::get('getMonitoringMunicipality/{id}', [GeneralController::class, 'getMonitoringMunicipality']);
+
     //LISTA EL NUMERO DE DOCUMENTOS APROBADOS POR CADA USUARIO
     Route::get('revised', [ContractorController::class, 'revised']);
     Route::get('clever-documents', [ContractorController::class, 'clever']);
@@ -232,8 +236,6 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
 /* RUTAS DE PRUEBA JORGE */
 
 // Rutas de prueba V2 JOSE
-//Route::get('get-data-selectss', [GeneralController::class, 'getDataSelects']);
 Route::apiResources([
     'userss' => UserController::class,
-    // 'coordinator_visits' => CoordinatorVistsController::class,
 ]);
