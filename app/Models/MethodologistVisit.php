@@ -40,6 +40,7 @@ class MethodologistVisit extends Model
         'evaluation_id',
         'event_support_id',
         'observations',
+        'status_id'
     ];
 
     protected $hidden = ['created_at', 'deleted_at', 'updated_at'];
@@ -66,6 +67,10 @@ class MethodologistVisit extends Model
 
     public function sidewalk(){
         return $this->belongsTo(Sidewalk::class, 'sidewalk_id');
+    }
+
+    public function status(){
+        return $this->belongsTo(Status::class, 'status_id');
     }
 
 

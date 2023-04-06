@@ -20,6 +20,7 @@ class CoordinatorVisit extends Model
         'sports_scene',
         'beneficiary_coverage',
         'municipalitie_id',
+        'sidewalk',
         'user_id',
         'discipline_id',
         'file',
@@ -47,11 +48,6 @@ class CoordinatorVisit extends Model
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
-    }
-
-    public function revisedBy()
-    {
-        return $this->belongsTo(User::class, 'revised_by');
     }
 
     public function getPublishedAtAttribute()
