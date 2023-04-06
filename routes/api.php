@@ -104,6 +104,10 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
     Route::apiResource('coordinator_visits', CoordinatorVistsController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::post('coordinator_visits/{id}', [CoordinatorVistsController::class, 'update'])->name('coordinator_visits.update');
 
+    /* VISITAS DE ASESORIAS PERSONALIZADAS */
+    Route::apiResource('custom_visits', CustomVisitController::class)->only(['index', 'store', 'show', 'destroy']);
+    Route::post('custom_visits/{id}', [CustomVisitController::class, 'update'])->name('custom_visits.update');
+
     /* ACTIVIDAD TRANSVERSAL VISITA */
     Route::apiResource('transversal_activity', TransversalActivityController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::post('transversal_activity/{id}', [TransversalActivityController::class, 'update'])->name('transversal_activity.update');
