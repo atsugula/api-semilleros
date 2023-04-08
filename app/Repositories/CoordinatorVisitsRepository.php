@@ -70,8 +70,8 @@ class CoordinatorVisitsRepository implements CrudRepositoryInterface
         $coordinator_visits->discipline_id = $request['discipline_id'];
         $coordinator_visits->created_by = $user_id;
         // $coordinator_visits->revised_by = $request['revised_by'];
-        $coordinator_visits->status_id = $request['status_id'];
-        $coordinator_visits->rejection_message = $request['rejection_message'];
+        $coordinator_visits->status_id = config('status.ENR');
+        $coordinator_visits->reject_message = $request['rejection_message'];
         $save = $coordinator_visits->save();
         /* SUBIMOS EL ARCHIVO */
         if ($save) {
