@@ -117,7 +117,7 @@ class CoordinatorVisitsRepository implements CrudRepositoryInterface
         /* CAMBIAMOS EL ESTADO */
         if ($request['status_id'] == config('status.REC') && $user_id == $coordinator_visits->created_by) {
             $coordinator_visits->status_id = config('status.ENR');
-            $coordinator_visits->reject_message = $request['rejection_message'];
+            $coordinator_visits->rejection_message = $request['rejection_message'];
         }
 
         $save = $coordinator_visits->save();
