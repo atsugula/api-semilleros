@@ -109,6 +109,9 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
     Route::apiResource('custom_visits', CustomVisitController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::post('custom_visits/{id}', [CustomVisitController::class, 'update'])->name('custom_visits.update');
 
+    /* BUSCAR BENEFICIARIO */
+    Route::get('findByBeneficiaryId/{id}', [CustomVisitController::class, 'getBeneficiary']);
+
     /* ACTIVIDAD TRANSVERSAL VISITA */
     Route::apiResource('transversal_activity', TransversalActivityController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::post('transversal_activity/{id}', [TransversalActivityController::class, 'update'])->name('transversal_activity.update');

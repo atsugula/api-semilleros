@@ -101,6 +101,18 @@ class CustomVisitController extends Controller
         }
     }
 
+    public function getBeneficiary($id) {
+
+        Gate::authorize('haveaccess');
+        try {
+            $result = $this->repository->getBeneficiary($id);
+
+            return $this->createResponse($result, 'Beneficiario encontrado.');
+        } catch (\Exception $ex) {
+            return  $this->createErrorResponse([], 'Algo salio mal al buscar el beneficiario ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      *

@@ -2,10 +2,12 @@
 
 namespace App\Repositories;
 
+use App\Http\Resources\V1\BeneficiaryResource;
 use App\Http\Resources\V1\CustomVisitCollection;
 use App\Http\Resources\V1\CustomVisitResource;
 use App\Http\Resources\V1\VisitSubDirectorCollection;
 use App\Http\Resources\V1\VisitSubDirectorResource;
+use App\Models\Beneficiary;
 use App\Traits\FunctionGeneralTrait;
 use App\Traits\UserDataTrait;
 use App\Models\CustomVisit;
@@ -124,6 +126,11 @@ class CustomVisitRepository
         $visitSubDirector = $this->model->findOrFail($id);
         $visitSubDirector->delete();
         return response()->json(['items' => 'La visita de subdirector fue eliminada correctamente.']);
+    }
+
+    public function getBeneficiary($id) {
+        $beneficiary = Beneficiary::findOrFail($id);
+        return new BeneficiaryResource($beneficiary);
     }
 
     public function getValidate($data, $method){
