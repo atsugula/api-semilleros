@@ -43,6 +43,7 @@ use App\Http\Controllers\V1\CustomVisitController;
 use App\Http\Controllers\V1\InfoContractorController;
 use App\Http\Controllers\V1\MonthsController;
 use App\Http\Controllers\V1\SidewalkController;
+use App\Http\Controllers\V1\TransversalActivityController;
 use App\Http\Controllers\V1\VisitSubDirectorController;
 use Illuminate\Http\Request;
 
