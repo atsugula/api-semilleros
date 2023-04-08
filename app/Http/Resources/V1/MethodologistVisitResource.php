@@ -44,6 +44,7 @@ class MethodologistVisitResource extends JsonResource
             'disciplines' => $this->disciplines,
             'monitor' => $this->monitor,
             'sidewalk' => $this->sidewalk,
+            'status' => $this-> status,
         ];
     }
 }

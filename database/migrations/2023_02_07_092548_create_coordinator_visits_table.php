@@ -23,6 +23,7 @@ return new class extends Migration
             $table->text('file')->nullable();
             $table->string('sports_scene');
             $table->string('beneficiary_coverage');
+            $table->string('sidewalk');
 
             // Relation municipalities
             $table->foreignId('municipalitie_id')->constrained()->onDelete('cascade');

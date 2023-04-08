@@ -25,6 +25,7 @@ class CoordinatorVisitResource extends JsonResource
             'beneficiary_coverage' => $this->beneficiary_coverage,
             'reject_message' => $this->rejection_message,
             'created_at' => $this->created_at?->format('Y-m-d'),
+            'sidewalk' => $this->sidewalk,
             // Relaciones
             'municipalitie' => $this->municipalities,
             'monitor' => $this->monitor,

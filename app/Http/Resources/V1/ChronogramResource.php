@@ -20,7 +20,7 @@ class ChronogramResource extends JsonResource
             'municipio' => $this->municipio->name,
             'note' => $this->note,
             'groups' => $this->groups,
-            'status' => $this->estado,
+            'status' => $this->statuses,
             'created_at'=> $this->created_at ? $this->getPublishedAtAttribute():null,
         ];
     }
