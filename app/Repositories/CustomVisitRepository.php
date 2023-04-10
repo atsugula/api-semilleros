@@ -26,13 +26,29 @@ class CustomVisitRepository
 
     public function getAll()
     {
-        // $rol_id = $this->getIdRolUserAuth();
+        $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
+        // $rol_id = 6; // datos de prueba
+         // $user_id = 20; // datos de prueba
 
         $query = $this->model->query()->orderBy('id', 'DESC');
 
-        // Se muestra solo lo creado por el, mientras me dicen los roles para revisar
-        $query->where('created_by', $user_id);
+        switch ($rol_id) {
+            case config('roles.coordinador_psicosocial'):
+                $query = $query->whereNotIn('created_by', [1,2])->whereHas('createdBy.roles', function ($query) {
+                    $query->where('roles.slug', 'psicologo');
+                })->whereNotIn('status_id', [config('status.APR')]);
+                break;
+
+            case config('roles.psicologo'):
+                $query->where('created_by', $user_id)
+                ->whereNotIn('status_id', [config('status.APR')]);
+                break;
+
+            default:
+                return null;
+                break;
+        }
 
         $paginate = config('global.paginate');
 
@@ -41,13 +57,16 @@ class CustomVisitRepository
 
         // Calcular número de páginas para paginación
         session()->forget('count_page_custom_visits');
-        session()->put('count_page_custom_visits', ceil($query->get()->count()/$paginate));
+        session()->put('count_page_custom_visits', ceil($query->count()/$paginate));
 
         return new CustomVisitCollection($query->simplePaginate($paginate));
+
     }
     public function create($request)
     {
         $user_id = $this->getIdUserAuth();
+        //$rol_id = 6; datos de prueba
+       // $user_id = 20; datos de prueba
 
         $customVisit = $this->model;
         $customVisit->theme = $request['theme'];
@@ -98,11 +117,11 @@ class CustomVisitRepository
         $customVisit->created_by = $user_id;
         $save = $customVisit->save();
 
-        /* if ($rol_id == config('roles.director_tecnico') || $rol_id == config('roles.director_administrator')) {
+        if ($rol_id == config('roles.coordinador_psicosocial')) {
             $customVisit->reviewed_by = $user_id;
             $customVisit->status_id = $request['status_id'];
             $customVisit->reject_message = $request['reject_message'];
-        } Validacion para habilitar las revisiones y guardar */
+        }
 
         /* ACTUALIZAMOS EL ARCHIVO */
         if ($request->hasFile('file')) {
@@ -120,6 +139,8 @@ class CustomVisitRepository
         $results = new CustomVisitResource($customVisit);
         return $results;
     }
+
+
 
     public function delete($id)
     {

@@ -240,14 +240,12 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
     //Rutas de las excel apis
     //Route::get('descargas/export/', [UserExcelController::class, 'export']);
     
-});
-
-Route::get('psychological_visit',[psychological_visits::class, 'index']);
+}); 
 
 
-
-
-
+/*Rutas de prueba zarrok */
+    //Route::apiResource('custom_visits', CustomVisitController::class)->only(['index', 'store', 'show', 'destroy']);
+    //Route::post('custom_visits/{id}', [CustomVisitController::class, 'update'])->name('custom_visits.update');
 
 /* RUTAS DE PRUEBA JORGE */
 
