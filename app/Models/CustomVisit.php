@@ -3,51 +3,55 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Model;
 
-class CoordinatorVisit extends Model
+class CustomVisit extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = "coordinator_visits";
+    protected $table = "custom_visits";
 
     protected $fillable = [
-        'hour_visit',
-        'date_visit',
-        'observations',
-        'description',
-        'sports_scene',
-        'beneficiary_coverage',
-        'municipalitie_id',
-        'sidewalk',
-        'user_id',
-        'discipline_id',
+        'theme',
+        'agreements',
+        'concept',
+        'guardian_knows_semilleros',
         'file',
+        'month_id',
+        'municipality_id',
+        'beneficiary_id',
+        'created_by',
+        'reviewed_by',
         'status_id',
-        'user_id',
+        'reject_message',
     ];
 
     protected $hidden = ['created_at', 'deleted_at', 'updated_at'];
 
+    public function months()
+    {
+        return $this->belongsTo(Months::class, 'month_id');
+    }
+
     public function municipalities()
     {
-        return $this->belongsTo(Municipality::class, 'municipalitie_id');
+        return $this->belongsTo(Municipality::class, 'municipality_id');
     }
 
-    public function disciplines()
+    public function beneficiaries()
     {
-        return $this->belongsTo(Disciplines::class, 'discipline_id');
-    }
-
-    public function monitor()
-    {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(Beneficiary::class, 'beneficiary_id');
     }
 
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function revisedBy()
+    {
+        return $this->belongsTo(User::class, 'reviewed_by');
     }
 
     public function getPublishedAtAttribute()

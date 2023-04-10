@@ -58,6 +58,7 @@ class MethodologistVisitRepository
         $methodologist_visit->evaluation_id = $request['evaluation_id'];
         $methodologist_visit->event_support_id = $request['event_support_id'];
         $methodologist_visit->observations = $request['observations'];
+        $methodologist_visit->status_id = config('status.ENR');
         $methodologist_visit->save();
         // Guardamos en dataModel
         $this->control_data($methodologist_visit, 'store');

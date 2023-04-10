@@ -62,6 +62,8 @@ class TransversalActivityRepository
         $transversalActivity->development_activity = $request['development_activity'];
         $transversalActivity->content_network = $request['content_network'];
         $transversalActivity->municipality_id = $request['municipality_id'];
+        $transversalActivity->status_id = config('status.ENR');
+        $transversalActivity->reject_message = $request['rejection_message'];
         $transversalActivity->created_by = $user_id;
         $save = $transversalActivity->save();
 
