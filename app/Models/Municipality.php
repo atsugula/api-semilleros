@@ -19,6 +19,10 @@ class Municipality extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function users(){
+        return $this->hasMany(MunicipalityUser::class, 'municipalities_id');
+    }
+
     public function MethodologistVisit(){
         return $this->belongsTo(MethodologistVisit::class);
     }

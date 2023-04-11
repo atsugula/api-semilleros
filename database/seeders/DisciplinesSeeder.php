@@ -16,7 +16,7 @@ class DisciplinesSeeder extends Seeder
     public function run()
     {
         Disciplines::create([
-            'name' => 'Futbol'
+            'name' => 'FUTBOL'
         ]);
 
         Disciplines::create([
