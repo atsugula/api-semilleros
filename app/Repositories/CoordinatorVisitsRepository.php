@@ -33,12 +33,12 @@ class CoordinatorVisitsRepository implements CrudRepositoryInterface
 
         if($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_zona_maritima')) {
             $query->where('created_by', $user_id)
-                ->whereNotIn('status_id', config('roles.APR'));
+                ->whereNotIn('status_id', [config('status.APR')]);
         }
 
         if ($rol_id == config('roles.subdirector_tecnico')) {
             $query->whereNotIn('created_by', [1,2])
-                ->whereNotIn('status_id', config('roles.APR'));
+                ->whereNotIn('status_id', [config('status.APR')]);
         }
 
         $paginate = config('global.paginate');

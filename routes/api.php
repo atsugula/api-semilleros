@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ObjectsController;
+use App\Http\Controllers\psychological_visits;
 use App\Http\Controllers\V1\PDFController as PDFController_V1;
 use App\Http\Controllers\V1\ChronogramController;
 use App\Http\Controllers\V1\ValidityPeriodController;
@@ -43,6 +44,8 @@ use App\Http\Controllers\V1\CustomVisitController;
 use App\Http\Controllers\V1\InfoContractorController;
 use App\Http\Controllers\V1\MonthsController;
 use App\Http\Controllers\V1\SidewalkController;
+//use App\Http\Controllers\V1\VisitSubDirectorController;
+
 use App\Http\Controllers\V1\TransversalActivityController;
 use App\Http\Controllers\V1\VisitSubDirectorController;
 use Illuminate\Http\Request;
@@ -229,17 +232,20 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
     Route::get('months', [MonthsController::class, 'index']);
 
     // Subida de chronogram
-    Route::apiResource('chronogram', ChronogramController::class)->only(['index', 'store', 'show']);
-    Route::post('chronogram/{id}', [ChronogramController::class, 'update']);
-    Route::delete('chronogram', [ChronogramController::class, 'destroy']);
+    //Route::apiResource('chronogram', ChronogramController::class)->only(['index', 'store', 'show']);
+    //Route::post('chronogram/{id}', [ChronogramController::class, 'update']);
+    //Route::delete('chronogram', [ChronogramController::class, 'destroy']);
     //Route::post('document-upload', [UploadChronogramController::class, 'upload']);
 
     //Rutas de las excel apis
+    //Route::get('descargas/export/', [UserExcelController::class, 'export']);
+    
+}); 
 
-});
 
-
-
+/*Rutas de prueba zarrok */
+    //Route::apiResource('custom_visits', CustomVisitController::class)->only(['index', 'store', 'show', 'destroy']);
+    //Route::post('custom_visits/{id}', [CustomVisitController::class, 'update'])->name('custom_visits.update');
 
 /* RUTAS DE PRUEBA JORGE */
 
