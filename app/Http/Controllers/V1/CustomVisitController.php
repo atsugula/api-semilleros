@@ -27,7 +27,12 @@ class CustomVisitController extends Controller
         Gate::authorize('haveaccess');
         try {
             $results = $this->repository->getAll();
-            return $results->toArray($request);
+            if ($results != null){
+                return $results->toArray($request);
+            } else {
+                throw new \Exception('No está autorizado.');
+            }
+
         } catch (\Exception $ex) {
             return  $this->createErrorResponse([], 'Algo salio mal al listar las visitas personalizadas ' . $ex->getMessage() . ' linea ' . $ex->getCode());
         }
