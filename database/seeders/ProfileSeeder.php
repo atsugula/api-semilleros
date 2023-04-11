@@ -195,7 +195,7 @@ class ProfileSeeder extends Seeder
                 'address' => 'CALLE 50 # 28 E 37 DOCE DE OCTUBRE -CALI',
                 'gender' => 'Femenino',
                 'document_type' => 'CC',
-            ],
+            ],/*
             [
                 'contractor_full_name' => 'juridico2',
                 'document_number' => '96314',
@@ -258,7 +258,7 @@ class ProfileSeeder extends Seeder
                 'address' => 'CALLE 50 # 28 E 37 DOCE DE OCTUBRE -CALI',
                 'gender' => 'Femenino',
                 'document_type' => 'CC',
-            ]
+            ] */
            /* [
                 'contractor_full_name' => 'KATHERINE MARTINEZ SANDOVAL',
                 'address' => 'CRA.94A #42-61',

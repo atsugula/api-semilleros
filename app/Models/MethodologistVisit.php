@@ -73,6 +73,9 @@ class MethodologistVisit extends Model
         return $this->belongsTo(Status::class, 'status_id');
     }
 
+    public function creator(){
+        return $this->belongsTo(User::class, 'created_by');
+    }
 
     public function getActivitylogOptions(): LogOptions
     {

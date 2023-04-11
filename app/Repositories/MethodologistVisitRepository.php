@@ -7,10 +7,11 @@ use App\Http\Resources\V1\MethodologistVisitResource;
 use App\Traits\FunctionGeneralTrait;
 use App\Models\MethodologistVisit;
 use App\Traits\ImageTrait;
+use App\Traits\UserDataTrait;
 
 class MethodologistVisitRepository
 {
-    use ImageTrait;
+    use FunctionGeneralTrait, UserDataTrait, ImageTrait;
 
     private $model;
 
@@ -19,12 +20,32 @@ class MethodologistVisitRepository
         $this->model = new MethodologistVisit();
     }
 
-    use FunctionGeneralTrait;
-
     public function getAll()
     {
-        $methodologist_visits = new MethodologistVisitCollection($this->model->orderBy('id', 'DESC')->get());
-        return $methodologist_visits;
+
+        $rol_id = $this->getIdRolUserAuth();
+        $user_id = $this->getIdUserAuth();
+
+        $query = $this->model->query();
+
+        $results = [];
+
+        if ($rol_id == config('roles.subdirector_tecnico')) {
+            $results = $query->whereNotIn('created_by', [1,2])
+            ->whereHas('creator.roles', function ($query) {
+                $query->where('roles.slug', 'metodologo');
+            })
+            ->whereNotIn('status_id', [config('status.APR')]);
+        }
+
+        if ($rol_id == config('roles.metodologo')) {
+            $query->where('created_by', $user_id)
+                ->whereNotIn('status_id', [config('status.APR')]);
+        }
+
+        // $methodologist_visits = new MethodologistVisitCollection($this->model->orderBy('id', 'DESC')->get());
+
+        return new MethodologistVisitCollection($results);
     }
     public function create($request)
     {
@@ -75,6 +96,10 @@ class MethodologistVisitRepository
 
     public function update($request)
     {
+
+        $rol_id = $this->getIdRolUserAuth();
+        $user_id = $this->getIdUserAuth();
+
         $methodologist_visit = $this->model->findOrFail($request['id']);
         $methodologist_visit->hour_visit = $request['hour_visit'];
         $methodologist_visit->date_visit = $request['date_visit'];
@@ -105,6 +130,12 @@ class MethodologistVisitRepository
         $methodologist_visit->evaluation_id = $request['evaluation_id'];
         $methodologist_visit->event_support_id = $request['event_support_id'];
         $methodologist_visit->observations = $request['observations'];
+        /* ACTUALIZAMOS EL ESTADO SOLO EL ROL AUTORIZADO */
+        if ($rol_id == config('roles.subdirector_tecnico')) {
+            $methodologist_visit->revised_by = $user_id;
+            $methodologist_visit->status_id = $request['status_id'];
+            $methodologist_visit->rejection_message = $request['reject_message'];
+        }
         $methodologist_visit->save();
         // Guardamos en dataModel
         $this->control_data($methodologist_visit, 'update');
