@@ -109,8 +109,8 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
     Route::post('coordinator_visits/{id}', [CoordinatorVistsController::class, 'update'])->name('coordinator_visits.update');
 
     /* VISITAS DE ASESORIAS PERSONALIZADAS */
-    Route::apiResource('custom_visits', CustomVisitController::class)->only(['index', 'store', 'show', 'destroy']);
-    Route::post('custom_visits/{id}', [CustomVisitController::class, 'update'])->name('custom_visits.update');
+    //Route::apiResource('custom_visits', CustomVisitController::class)->only(['index', 'store', 'show', 'destroy']);
+    //Route::post('custom_visits/{id}', [CustomVisitController::class, 'update'])->name('custom_visits.update');
 
     /* BUSCAR BENEFICIARIO */
     Route::get('findByBeneficiaryId/{id}', [CustomVisitController::class, 'getBeneficiary']);
@@ -243,9 +243,9 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
 }); 
 
 
-/*Rutas de prueba zarrok */
-    //Route::apiResource('custom_visits', CustomVisitController::class)->only(['index', 'store', 'show', 'destroy']);
-    //Route::post('custom_visits/{id}', [CustomVisitController::class, 'update'])->name('custom_visits.update');
+
+    Route::apiResource('custom_visits', CustomVisitController::class)->only(['index', 'store', 'show', 'destroy']);
+    Route::post('custom_visits/{id}', [CustomVisitController::class, 'update'])->name('custom_visits.update');
 
 /* RUTAS DE PRUEBA JORGE */
 
