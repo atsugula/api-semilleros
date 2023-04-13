@@ -90,7 +90,7 @@ class CustomVisitController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Gate::authorize('haveaccess');
+       Gate::authorize('haveaccess');
         try {
             $validator = $this->repository->getValidate($request->all(), 'update');
 

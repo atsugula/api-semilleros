@@ -28,8 +28,7 @@ class CustomVisitRepository
     {
         $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
-        // $rol_id = 6; // datos de prueba
-         // $user_id = 20; // datos de prueba
+
 
         $query = $this->model->query()->orderBy('id', 'DESC');
 
@@ -65,8 +64,6 @@ class CustomVisitRepository
     public function create($request)
     {
         $user_id = $this->getIdUserAuth();
-        //$rol_id = 6; datos de prueba
-       // $user_id = 20; datos de prueba
 
         $customVisit = $this->model;
         $customVisit->theme = $request['theme'];
@@ -105,6 +102,7 @@ class CustomVisitRepository
         $user_id = $this->getIdUserAuth();
         $rol_id = $this->getIdRolUserAuth();
 
+
         $customVisit = $this->model->findOrFail($id);
 
         $customVisit->theme = $request['theme'];
@@ -135,7 +133,7 @@ class CustomVisitRepository
         }
         $customVisit->save();
         /* GUARDAMOS EN DATAMODEL */
-        $this->control_data($customVisit, 'update');
+      //  $this->control_data($customVisit, 'update');
         $results = new CustomVisitResource($customVisit);
         return $results;
     }

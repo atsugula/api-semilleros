@@ -189,7 +189,7 @@ class TransversalActivityRepository
                     $url = "transversal_activities/{$id}/{$name}.webp";
                     // Save in database with relation
                     $this->modelEvidence->create([
-                        'name' => "Evidencia Actividad Transversal $id",
+                        'model' => "Evidencia Actividad Transversal $id",
                         'path' => $url,
                         'transversal_id' => $id,
                     ]);
