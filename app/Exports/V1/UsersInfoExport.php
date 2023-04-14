@@ -16,7 +16,7 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class UsersExport implements  FromCollection, WithMapping, WithHeadings, WithColumnWidths, WithEvents, ShouldAutoSize
+class UsersInfoExport implements  FromCollection, WithMapping, WithHeadings, WithColumnWidths, WithEvents, ShouldAutoSize
 {
     use Exportable, FunctionGeneralTrait;
     protected  $data;
@@ -32,14 +32,14 @@ class UsersExport implements  FromCollection, WithMapping, WithHeadings, WithCol
     {
         return [
             $user->id,
-            $user->name . $user->lastname,
-            $user->email,
-            $user->address,
-            $user->gender,
+            $user->name,
+            $user->lastname,
             $user->document_number,
-            $user->document_type,
+            $user->gender,
+            // Contamos las visitas de todos los usuarios
+            count($user->visitSubDirector) + count($user->visitTransversalActivity) + count($user->visitCustomVisit)
+                + count($user->visitMethodologistVisit) + count($user->visitCoordinatorVisit),
             $user->phone,
-            // $user->roles[0]->name,
             $user->created_at?->format('Y-m-d G:i:s'),
         ];
     }
@@ -64,12 +64,10 @@ class UsersExport implements  FromCollection, WithMapping, WithHeadings, WithCol
         return [
             '#',
             "NOMBRE",
-            "EMAIL",
-            "DIRECCION",
-            "GENERO",
+            "APELLIDOS",
             "NUMERO DOCUMENTO",
-            "TIPO DE DOCUMENTO",
-            "TELEFONO",
+            "GENERO",
+            "VISITAS",
             'FECHA SUBIDA',
         ];
     }

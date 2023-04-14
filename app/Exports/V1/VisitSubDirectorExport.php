@@ -3,7 +3,9 @@
 namespace App\Exports\V1;
 
 use App\Http\Resources\V1\UserCollection;
+use App\Http\Resources\V1\VisitSubDirectorCollection;
 use App\Models\User;
+use App\Models\VisitSubDirector;
 use App\Traits\FunctionGeneralTrait;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -16,31 +18,27 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class UsersExport implements  FromCollection, WithMapping, WithHeadings, WithColumnWidths, WithEvents, ShouldAutoSize
+class VisitSubDirectorExport implements  FromCollection, WithMapping, WithHeadings, WithColumnWidths, WithEvents, ShouldAutoSize
 {
     use Exportable, FunctionGeneralTrait;
-    protected  $data;
-    protected  $user;
+    protected $data;
+    protected $model;
 
     public function __construct($data)
     {
         $this->data = $data;
-        $this->user = new User();
+        $this->model = new VisitSubDirector();
     }
 
-    public function map($user): array
+    public function map($visitSubDirector): array
     {
         return [
-            $user->id,
-            $user->name . $user->lastname,
-            $user->email,
-            $user->address,
-            $user->gender,
-            $user->document_number,
-            $user->document_type,
-            $user->phone,
-            // $user->roles[0]->name,
-            $user->created_at?->format('Y-m-d G:i:s'),
+            $visitSubDirector->id,
+            $visitSubDirector->name,
+            $visitSubDirector->lastname,
+            $visitSubDirector->document_number,
+            $visitSubDirector->gender,
+            $visitSubDirector->created_at?->format('Y-m-d G:i:s'),
         ];
     }
     //
@@ -63,13 +61,18 @@ class UsersExport implements  FromCollection, WithMapping, WithHeadings, WithCol
     {
         return [
             '#',
-            "NOMBRE",
-            "EMAIL",
-            "DIRECCION",
-            "GENERO",
-            "NUMERO DOCUMENTO",
-            "TIPO DE DOCUMENTO",
-            "TELEFONO",
+            "SUBDIRECTOR",
+            "FECHA",
+            "HORA",
+            "MUNICIPIO",
+            "ESCENARIO DEPORTIVO",
+            "MONITOR",
+            "DISCIPLINA",
+            "APOYA EL EVENTO",
+            "EVENTO",
+            "COBERTURA DEL BENEFICIARIO",
+            "CUMPLE CON EL DESARROLLO DEL COMPONENTE TECNICO DEL MES",
+            "ESTADO",
             'FECHA SUBIDA',
         ];
     }
@@ -82,7 +85,7 @@ class UsersExport implements  FromCollection, WithMapping, WithHeadings, WithCol
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setName('Arial Narrow')->setSize(11); // Letra primera fila
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setBold(True); // Negrita primera fila
                 $event->sheet->getStyle('A:J')->getAlignment()->setHorizontal('center');
-                $event->sheet->getStyle('C')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER);
+                // $event->sheet->getStyle('C')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER);
                 $event->sheet->setAutoFilter('A:J');
             },
         ];
@@ -90,7 +93,10 @@ class UsersExport implements  FromCollection, WithMapping, WithHeadings, WithCol
 
     public function collection()
     {
-        $users = $this->user->whereNotIn('id', [1,2])->get();
-        return new UserCollection($users);
+        $results = $this->model->whereNotIn('created_by', [1,2])
+            ->whereHas('creator.roles', function($query){
+                $query->where('roles.id', config('roles.subdirector_tecnico'));
+            })->get();
+        return new VisitSubDirectorCollection($results);
     }
 }
