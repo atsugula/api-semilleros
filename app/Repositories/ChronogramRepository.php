@@ -35,17 +35,17 @@ class ChronogramRepository
 
         $schedulesModel = new Schedule();
         
-        $lista = json_decode( $data['groups'] );
+        $lista = json_decode( $request->groups );
         
         foreach($lista as $group) {
             $groupsModel = new ChronogramsGroups();
-            $groupModel->chronograms_id             = $data['id'];
-            $groupModel->group_id                   = $group->group_id;
-            $groupModel->sports_modality            = $group->sports_modality;
-            $groupModel->main_sports_stage_name     = $group->main_sports_stage_name;
-            $groupModel->main_sports_stage_address  = $group->main_sports_stage_address;
-            $groupModel->alt_sports_stage_name      = $group->alt_sports_stage_name;
-            $groupModel->alt_sports_stage_address   = $group->alt_sports_stage_address;
+            $groupsModel->chronograms_id             = $cronograms->id;
+            $groupsModel->group_id                   = $group->group_id;
+            $groupsModel->sports_modality            = $group->sports_modality;
+            $groupsModel->main_sports_stage_name     = $group->main_sports_stage_name;
+            $groupsModel->main_sports_stage_address  = $group->main_sports_stage_address;
+            $groupsModel->alt_sports_stage_name      = $group->alt_sports_stage_name;
+            $groupsModel->alt_sports_stage_address   = $group->alt_sports_stage_address;
             $groupsModel->save();
 
             $schedules = [];

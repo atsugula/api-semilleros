@@ -42,6 +42,7 @@ use App\Http\Controllers\V1\CoordinatorVistsController;
 use App\Http\Controllers\V1\InfoContractorController;
 use App\Http\Controllers\V1\MonthsController;
 use App\Http\Controllers\V1\SidewalkController;
+use App\Http\Controllers\V1\VisitSubDirectorController;
 use Illuminate\Http\Request;
 
 /*
@@ -88,7 +89,7 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
         'baseClauses' => ClauseBaseController::class,
         'evaluations' => EvaluationController::class,
         'userZones' => ZoneUserController::class,
-        'coordinator_visits' => CoordinatorVistsController::class,
+        // 'coordinator_visits' => CoordinatorVistsController::class,
         'info-contractor' => InfoContractorController::class,
         'chronogram' => ChronogramController::class,
     ]);
@@ -96,6 +97,15 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
     /* VISITAS METODOLOGICAS */
     Route::apiResource('methodologist_visits', MethodologistVisitController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::post('methodologist_visits/{id}', [MethodologistVisitController::class, 'update']);
+    Route::put('methodologist_visits/{id}', [MethodologistVisitController::class, 'update']);
+
+    /* VISITA COORDINADORES */
+    Route::apiResource('coordinator_visits', CoordinatorVistsController::class)->only(['index', 'store', 'show', 'destroy']);
+    Route::post('coordinator_visits/{id}', [CoordinatorVistsController::class, 'update'])->name('coordinator_visits.update');
+
+    /* ACTIVIDAD TRANSVERSAL VISITA */
+    Route::apiResource('transversal_activity', TransversalActivityController::class)->only(['index', 'store', 'show', 'destroy']);
+    Route::post('transversal_activity/{id}', [TransversalActivityController::class, 'update'])->name('transversal_activity.update');
 
     /* SUBIR ARCHIVOS VISITAS METODOLOGICAS */
     Route::post('upload/methodologist_visits', [MethodologistVisitController::class, 'uploadFiles']);
@@ -138,9 +148,16 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
     Route::apiResource('validity_periods', ValidityPeriodController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::post('validity_periods/{id}', [ValidityPeriodController::class, 'update'])->name('validity_periods.update');
 
+    /* VISITA SUBDIRECTOR */
+    Route::apiResource('subdirector_visits', VisitSubDirectorController::class)->only(['index', 'store', 'show', 'destroy']);
+    Route::post('subdirector_visits/{id}', [VisitSubDirectorController::class, 'update'])->name('subdirector_visits.update');
+
     //Informe mensual
     // Route::apiResource('monthly_monitoring_reports', 'App\Http\Controllers\V1\MonthlyMonitoringReportsController')->only(['index', 'store', 'show', 'destroy']);
     // Route::post('monthly_monitoring_reports/{id}', [MonthlyMonitoringReportsController::class, 'update'])->name('monthly_monitoring_reports.update');
+
+    /* COMENZAMOS A SEPARAR LOS SELECTS PARA OPTIMIZACION DE PAGINAS */
+    Route::get('get-status-select', [GeneralController::class, 'getSelectStatus']);
 
     //Listas desplegables
     Route::get('get-data-selects', [GeneralController::class, 'getDataSelects']);
@@ -198,13 +215,25 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
 
     //Muestra los meses restantes del año
     Route::get('months', [MonthsController::class, 'index']);
+
+    // Subida de chronogram
+    Route::apiResource('chronogram', ChronogramController::class)->only(['index', 'store', 'show']);
+    Route::post('chronogram/{id}', [ChronogramController::class, 'update']);
+    Route::delete('chronogram', [ChronogramController::class, 'destroy']);
+    //Route::post('document-upload', [UploadChronogramController::class, 'upload']);
+
+    //Rutas de las excel apis
+
 });
 
+
+
+
 /* RUTAS DE PRUEBA JORGE */
-// Documentos visita
 
 // Rutas de prueba V2 JOSE
 //Route::get('get-data-selectss', [GeneralController::class, 'getDataSelects']);
 Route::apiResources([
     'userss' => UserController::class,
+    // 'coordinator_visits' => CoordinatorVistsController::class,
 ]);

@@ -23,7 +23,7 @@ class CoordinatorVisitSeeder extends Seeder
             'sports_scene' => 'Futbol',
             'beneficiary_coverage' => 'Julian Lora',
             'municipalitie_id' => 5,
-          //  'sidewalk_id' => 4,
+            'file' => 'Doc prueba',
             'user_id' => 9,
             'discipline_id' =>9
         ]);
@@ -36,7 +36,7 @@ class CoordinatorVisitSeeder extends Seeder
             'sports_scene' => 'Futbol playa',
             'beneficiary_coverage' => 'Pedro Diaz',
             'municipalitie_id' => 6,
-         //   'sidewalk_id' => 23,
+            'file' => 'Doc prueba',
             'user_id' => 5,
             'discipline_id' =>10
         ]);
@@ -49,7 +49,7 @@ class CoordinatorVisitSeeder extends Seeder
             'sports_scene' => 'Futbol playa',
             'beneficiary_coverage' => 'Juan Florez',
             'municipalitie_id' => 9,
-          //  'sidewalk_id' => 7,
+            'file' => 'Doc prueba',
             'user_id' => 14,
             'discipline_id' =>3
         ]);
