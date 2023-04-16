@@ -20,7 +20,7 @@ return new class extends Migration
         FROM users
         JOIN role_user ON users.id = role_user.user_id
         JOIN roles ON role_user.role_id = roles.id
-        WHERE roles.id = 17;
+        WHERE roles.id = 18;
         ";
         DB::unprepared($views);
     }

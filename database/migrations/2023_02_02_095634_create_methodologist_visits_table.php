@@ -59,7 +59,10 @@ return new class extends Migration
                 ->references('id')
                 ->on('users');
 
-            $table->enum('status', ['REC', 'REV', 'ENREV', 'APRO'])->nullable()->default('ENREV');
+            $table->unsignedBigInteger('status_id')->nullable();
+            $table->foreign('status_id')
+                ->references('id')
+                ->on('statuses');
             $table->text('rejection_message')->nullable();
 
             $table->timestamps();

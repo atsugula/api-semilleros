@@ -4,7 +4,7 @@ namespace App\Http\Resources\V1;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class ChronogramCollection extends ResourceCollection
+class PsychologistVisitsCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -15,16 +15,15 @@ class ChronogramCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
-            "count_page" =>$request->session()->get('count_page_chronograms'),
+            // "count_page" =>$request->session()->get('count_page_custom_visits'),
             'success' => true,
-            'action' => 'Consulta cronogramas',
+            'action' => 'Consulta visita personalizada',
             'items' => $this->collection,
             'meta' => [
-                'organization' => 'OpenCode',
-                'authors' => 'Jonathan Londoño'
+                'organization' => 'OpenCode SAS',
+                'authors' => 'zarrok'
             ],
-            'type' => 'cronogramas'
-
+            'type' => 'custom_visits'
         ];
     }
 }

@@ -5,13 +5,17 @@ namespace App\Repositories;
 use App\Http\Resources\V1\ChronogramCollection;
 use App\Http\Resources\V1\ChronogramResource;
 use App\Traits\FunctionGeneralTrait;
-use App\Models\Chronogram;
-use App\Models\ChronogramsGroups;
-use App\Models\Schedule;
 use Illuminate\Support\Facades\Auth;
+use App\Models\ChronogramsGroups;
+use App\Traits\UserDataTrait;
+use App\Traits\ImageTrait;
+use App\Models\Chronogram;
+use App\Models\Schedule;
 
 class ChronogramRepository
 {
+
+    use ImageTrait, FunctionGeneralTrait, UserDataTrait;
 
     private $model;
     function __construct()
@@ -23,23 +27,60 @@ class ChronogramRepository
 
     public function getAll()
     {
-        $cronograms = new ChronogramCollection($this->model->orderBy('id', 'DESC')->with(['mes', 'municipio'])->get());
-        return $cronograms;
+
+        $rol_id = $this->getIdRolUserAuth();
+        $user_id = $this->getIdUserAuth();
+
+        $query = $this->model->query()->orderBy('id', 'DESC');
+
+        if ($rol_id == config('roles.monitor')) {
+            $query->where('created_by', $user_id)
+                ->whereNotIn('status_id', config('roles.APR'));
+        }
+
+        if ($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_zona_maritima')) {
+            $query->whereNotIn('created_by', [1,2])->with(['mes', 'municipio'])
+                ->whereHas('creator.roles', function ($query) {
+                    $query->where('roles.slug', 'subdirector_tecnico');
+                })
+                ->whereNotIn('status_id', config('roles.APR'));
+        }
+
+        $paginate = config('global.paginate');
+
+        // Aplicar filtros adicionales desde la URL
+        $query = $this->model->scopeFilterByUrl($query);
+
+        // Calcular número de páginas para paginación
+        session()->forget('count_page_chronograms');
+        session()->put('count_page_chronograms', ceil($query->get()->count()/$paginate));
+
+        return new ChronogramCollection($query->simplePaginate($paginate));
     }
     public function create($request)
     {
         $request->created_by = Auth::id();
+        $request->status_id = config('status.ENR');
         $cronograms = $this->model->create($request);
         // Guardamos en dataModel
         $this->control_data($cronograms, 'store');
 
         $schedulesModel = new Schedule();
+<<<<<<< HEAD
         
         $lista = json_decode( $request->groups );
         
         foreach($lista as $group) {
             $groupsModel = new ChronogramsGroups();
             $groupsModel->chronograms_id             = $cronograms->id;
+=======
+
+        $lista = json_decode( $request['groups'] );
+
+        foreach($lista as $group) {
+            $groupsModel = new ChronogramsGroups();
+            $groupsModel->chronograms_id             = $request['id'];
+>>>>>>> dba38b4172607f1ee8f2b43f8a349785b86124de
             $groupsModel->group_id                   = $group->group_id;
             $groupsModel->sports_modality            = $group->sports_modality;
             $groupsModel->main_sports_stage_name     = $group->main_sports_stage_name;
@@ -58,7 +99,7 @@ class ChronogramRepository
                     'end_time'              => $schedule->end_time,
                 ];
             }
-    
+
             $schedulesModel->insert( $schedules );
         }
 
@@ -74,20 +115,34 @@ class ChronogramRepository
 
     public function update($data)
     {
-        $data['created_by'] = Auth::id();
+
+        $rol_id = $this->getIdRolUserAuth();
+        $user_id = $this->getIdUserAuth();
+
         $cronograms = $this->model->findOrFail($data['id']);
-        $cronograms->update($data);
+        $cronograms->month = $data['month'];
+        $cronograms->municipality = $data['municipality'];
+        $cronograms->note = $data['note'];
+
+        // Actualizar estados
+        if ($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_zona_maritima')) {
+            $cronograms->revised_by = $user_id;
+            $cronograms->status_id = $data['status_id'];
+            $cronograms->rejection_message = $data['rejection_message'];
+        }
+
+        $cronograms->save();
 
         // Guardamos en dataModel
         $this->control_data($cronograms, 'update');
 
         $groupsModel = new ChronogramsGroups();
         $groupsModel->where('chronograms_id', $data['id'])->delete();
-        
+
         $schedulesModel = new Schedule();
-        
+
         $lista = json_decode( $data['groups'] );
-        
+
         foreach($lista as $group) {
             $groupsModel = new ChronogramsGroups();
             $groupsModel->chronograms_id             = $data['id'];
@@ -109,7 +164,7 @@ class ChronogramRepository
                     'end_time'              => $schedule->end_time,
                 ];
             }
-    
+
             $schedulesModel->insert( $schedules );
         }
 

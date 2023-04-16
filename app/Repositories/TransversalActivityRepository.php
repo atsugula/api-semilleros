@@ -62,6 +62,8 @@ class TransversalActivityRepository
         $transversalActivity->development_activity = $request['development_activity'];
         $transversalActivity->content_network = $request['content_network'];
         $transversalActivity->municipality_id = $request['municipality_id'];
+        $transversalActivity->status_id = config('status.ENR');
+        $transversalActivity->reject_message = $request['rejection_message'];
         $transversalActivity->created_by = $user_id;
         $save = $transversalActivity->save();
 
@@ -187,7 +189,7 @@ class TransversalActivityRepository
                     $url = "transversal_activities/{$id}/{$name}.webp";
                     // Save in database with relation
                     $this->modelEvidence->create([
-                        'name' => "Evidencia Actividad Transversal $id",
+                        'model' => "Evidencia Actividad Transversal $id",
                         'path' => $url,
                         'transversal_id' => $id,
                     ]);
