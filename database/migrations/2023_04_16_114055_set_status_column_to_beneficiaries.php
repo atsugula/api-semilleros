@@ -14,8 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::table('beneficiaries', function (Blueprint $table) {
-            $table->dropColumn('softDeletes');
-            $table->softDeletes();
+            \DB::statement("ALTER TABLE beneficiaries CHANGE status_id status_id bigint unsigned not null");
+            $table->foreign('status_id')
+                ->references('id')
+                ->on('statuses');
         });
     }
 
@@ -27,8 +29,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('beneficiaries', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-            $table->string('softDeletes');
+            //
         });
     }
 };

@@ -46,14 +46,17 @@ class BeneficiarieController extends Controller
         Gate::authorize('haveaccess');
         try {
             $data = $request->all();
+            
             $validator = $this->beneficiarieRepositorory->getValidate($data, 'update');
             if ($validator->fails()) {
                 return  $this->createErrorResponse([], $validator->errors()->first(), 422);
             }
+            
             $result = $this->beneficiarieRepositorory->create($data);
             return $this->createResponse($result, 'El beneficiario fue creado correctamente.');
+
         } catch (\Exception $ex) {
-            return  $this->createErrorResponse([], 'Algo salio mal al listar los contratistas ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+            return  $this->createErrorResponse([], 'Algo salio mal al listar los beneficiarios ' . $ex->getMessage() . ' linea ' . $ex->getCode());
         }
     }
 
@@ -69,11 +72,11 @@ class BeneficiarieController extends Controller
         try {
             $result = $this->beneficiarieRepositorory->findById($id);
             if (empty($result)) {
-                return $this->createResponse($result, 'No se encontró el contratista', 404);
+                return $this->createResponse($result, 'No se encontró el beneficiario', 404);
             }
-            return $this->createResponse($result, 'El contratista fue encontrado');
+            return $this->createResponse($result, 'El beneficiario fue encontrado');
         } catch (\Exception $ex) {
-            return  $this->createErrorResponse([], 'Algo salio mal al ver el contratista' . $ex->getMessage() . ' linea ' . $ex->getCode());
+            return  $this->createErrorResponse([], 'Algo salio mal al ver el beneficiario' . $ex->getMessage() . ' linea ' . $ex->getCode());
         }
     }
 
@@ -92,15 +95,18 @@ class BeneficiarieController extends Controller
         Gate::authorize('haveaccess');
         try {
             $data = $request->all();
+
             $validator = $this->beneficiarieRepositorory->getValidate($data, 'update');
             if ($validator->fails()) {
                 return  $this->createErrorResponse([], $validator->errors()->first(), 422);
             }
-            $results = $this->beneficiarieRepositorory->update($data, $id);
+            
+            $result = $this->beneficiarieRepositorory->update($data, $id);
+
+            return $this->createResponse($result, 'El beneficiario fue modificado correctamente.');
         } catch (\Exception $ex) {
-            return  $this->createErrorResponse([], 'Algo salio mal al actualizar el contratista ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+            return  $this->createErrorResponse([], 'Algo salio mal al actualizar el beneficiario ' . $ex->getMessage() . ' linea ' . $ex->getCode());
         }
-        return $results;
     }
 
     /**
@@ -115,7 +121,7 @@ class BeneficiarieController extends Controller
         try {
             $results = $this->beneficiarieRepositorory->delete($id);
         } catch (\Exception $ex) {
-            return  $this->createErrorResponse([], 'Algo salio mal al eliminar el contratista ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+            return  $this->createErrorResponse([], 'Algo salio mal al eliminar el beneficiario ' . $ex->getMessage() . ' linea ' . $ex->getCode());
         }
         return $results;
     }

@@ -41,9 +41,13 @@ class Beneficiary extends Model
         return $this->belongsTo(User::class, 'created_by', 'id');
     }
 
-    // public function health_data(){
-	// 	return $this->morphOne(HealthData::class,'health_data');
-	// }
+    public function status(){
+	    return $this->hasOne(Status::class, 'id', 'status_id');
+	}
+
+    public function municipality(){
+	    return $this->hasOne(Municipality::class, 'id', 'municipalities_id');
+	}
 
     public function userbeneficiario(){
         return $this->hasOne(User::class, 'id','user_id');
@@ -51,8 +55,17 @@ class Beneficiary extends Model
     public function control_data(){
 		return $this->morphMany(ControlChangeData::class,'data_model');
 	}
+
     public function group()
     {
         return $this->belongsTo(Group::class,'group_id','id')->select('id','name');
+    }
+
+    public function acudientes() {
+        return $this->hasMany(KnowGuardians::class, 'id_beneficiary', 'id');
+    }
+
+    public function tamizaje() {
+        return $this->hasOne(BeneficiaryScreening::class, 'beneficiary_id', 'id');
     }
 }
