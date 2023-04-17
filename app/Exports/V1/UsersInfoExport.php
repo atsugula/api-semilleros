@@ -14,7 +14,7 @@ use Maatwebsite\Excel\Events\AfterSheet;
 use App\Traits\FunctionGeneralTrait;
 use App\Models\User;
 
-class UsersExport implements  FromCollection, WithMapping, WithHeadings, WithColumnWidths, WithEvents, ShouldAutoSize
+class UsersInfoExport implements  FromCollection, WithMapping, WithHeadings, WithColumnWidths, WithEvents, ShouldAutoSize
 {
     use Exportable, FunctionGeneralTrait;
     protected  $data;
@@ -28,16 +28,16 @@ class UsersExport implements  FromCollection, WithMapping, WithHeadings, WithCol
 
     public function map($user): array
     {
+        $count = (count($user->visitSubDirector) + count($user->visitTransversalActivity) + count($user->visitCustomVisit)
+        + count($user->visitMethodologistVisit) + count($user->visitCoordinatorVisit));
         return [
             $user->id,
-            $user->name . $user->lastname,
-            $user->email,
-            $user->address,
-            $user->gender,
+            $user->name,
+            $user->lastname,
             $user->document_number,
-            $user->document_type,
-            $user->phone,
-            $user->roles[0]->name,
+            $user->gender,
+            // Contamos las visitas de todos los usuarios
+            $count == 0 ? '0' : $count,
             $user->created_at?->format('Y-m-d G:i:s'),
         ];
     }
@@ -52,9 +52,6 @@ class UsersExport implements  FromCollection, WithMapping, WithHeadings, WithCol
             'E' => 20,
             'F' => 20,
             'G' => 20,
-            'H' => 20,
-            'I' => 20,
-            'J' => 20,
         ];
     }
     public function headings(): array
@@ -62,13 +59,10 @@ class UsersExport implements  FromCollection, WithMapping, WithHeadings, WithCol
         return [
             '#',
             "NOMBRE",
-            "EMAIL",
-            "DIRECCION",
-            "GENERO",
+            "APELLIDOS",
             "NUMERO DOCUMENTO",
-            "TIPO DE DOCUMENTO",
-            "TELEFONO",
-            "ROL",
+            "GENERO",
+            "VISITAS",
             'FECHA SUBIDA',
         ];
     }
@@ -77,12 +71,12 @@ class UsersExport implements  FromCollection, WithMapping, WithHeadings, WithCol
     {
         return [
             AfterSheet::class    => function (AfterSheet $event) {
-                $cellRange = 'A1:J1'; // All headers
+                $cellRange = 'A1:G1'; // All headers
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setName('Arial Narrow')->setSize(11); // Letra primera fila
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setBold(True); // Negrita primera fila
-                $event->sheet->getStyle('A:J')->getAlignment()->setHorizontal('center');
+                $event->sheet->getStyle('A:G')->getAlignment()->setHorizontal('center');
                 // $event->sheet->getStyle('C')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER);
-                $event->sheet->setAutoFilter('A:J');
+                $event->sheet->setAutoFilter('A:G');
             },
         ];
     }

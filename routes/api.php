@@ -32,6 +32,7 @@ use App\Http\Controllers\V1\EventSupportController;
 use App\Http\Controllers\V1\HiringController;
 use App\Http\Controllers\V1\MethodologistVisitController;
 use App\Http\Controllers\V1\MunicipalityController;
+use App\Http\Controllers\V1\HealthEntitiesController;
 use App\Http\Controllers\V1\ObjectsController as V1ObjectsController;
 use App\Http\Controllers\V1\UploadDocumentController;
 use App\Http\Controllers\V1\StatusDocumentController;
@@ -139,7 +140,7 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
 
     /* BENEFICIARIOS */
     Route::apiResource('beneficiaries', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);
-    Route::post('beneficiaries/{id}', [BeneficiarieController::class, 'update']);
+    Route::put('beneficiaries/{id}', [BeneficiarieController::class, 'update']);
 
 
     // Subida de Documentos
@@ -223,6 +224,10 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
 
     //MUNICIPALITY
     Route::get('municipalities', [MunicipalityController::class, 'index']);
+
+
+    //Health Entities
+    Route::get('health-entities', [HealthEntitiesController::class, 'index']);
 
     // USUARIOS MONITORES POR MUNICIPIO
     Route::get('getMonitoringMunicipality/{id}', [GeneralController::class, 'getMonitoringMunicipality']);
