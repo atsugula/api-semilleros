@@ -2,7 +2,7 @@
 
 namespace App\Exports\V1;
 
-use App\Http\Resources\V1\VisitSubDirectorCollection;
+use App\Http\Resources\V1\CoordinatorVisitCollection;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -12,9 +12,9 @@ use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use App\Traits\FunctionGeneralTrait;
-use App\Models\VisitSubDirector;
+use App\Models\CoordinatorVisit;
 
-class VisitSubDirectorExport implements  FromCollection, WithMapping, WithHeadings, WithColumnWidths, WithEvents, ShouldAutoSize
+class CoordinatorVisitExport implements  FromCollection, WithMapping, WithHeadings, WithColumnWidths, WithEvents, ShouldAutoSize
 {
     use Exportable, FunctionGeneralTrait;
     protected $data;
@@ -23,26 +23,22 @@ class VisitSubDirectorExport implements  FromCollection, WithMapping, WithHeadin
     public function __construct($data)
     {
         $this->data = $data;
-        $this->model = new VisitSubDirector();
+        $this->model = new CoordinatorVisit();
     }
 
-    public function map($visitSubDirector): array
+    public function map($coordinatorVisit): array
     {
         return [
-            $visitSubDirector->id,
-            $visitSubDirector->creator->name ?? '',
-            $visitSubDirector->date_visit,
-            $visitSubDirector->hour_visit,
-            $visitSubDirector->municipalities->name ?? '',
-            $visitSubDirector->sports_scene,
-            $visitSubDirector->monitor->name ?? '',
-            $visitSubDirector->disciplines->name ?? '',
-            $visitSubDirector->event_support == 1 ? 'SI' : 'NO',
-            $visitSubDirector->description,
-            $visitSubDirector->beneficiary_coverage,
-            $visitSubDirector->technical == 1 ? 'SI' : 'NO',
-            $visitSubDirector->statuses->name ?? '',
-            $visitSubDirector->created_at?->format('Y-m-d G:i:s'),
+            $coordinatorVisit->id,
+            $coordinatorVisit->createdBy->name ?? '',
+            $coordinatorVisit->date_visit,
+            $coordinatorVisit->hour_visit,
+            $coordinatorVisit->monitor->name ?? '',
+            $coordinatorVisit->disciplines->name ?? '',
+            $coordinatorVisit->municipalities->name ?? '',
+            $coordinatorVisit->beneficiary_coverage,
+            $coordinatorVisit->statuses->name ?? '',
+            $coordinatorVisit->created_at?->format('Y-m-d G:i:s'),
         ];
     }
     //
@@ -59,27 +55,19 @@ class VisitSubDirectorExport implements  FromCollection, WithMapping, WithHeadin
             'H' => 20,
             'I' => 20,
             'J' => 20,
-            'K' => 20,
-            'L' => 20,
-            'M' => 20,
-            'N' => 20,
         ];
     }
     public function headings(): array
     {
         return [
             '#',
-            "SUBDIRECTOR",
+            "COORDINADOR",
             "FECHA",
             "HORA",
-            "MUNICIPIO",
-            "ESCENARIO DEPORTIVO",
             "MONITOR",
             "DISCIPLINA",
-            "APOYA EL EVENTO",
-            "EVENTO",
+            "MUNICIPIO",
             "COBERTURA DEL BENEFICIARIO",
-            "CUMPLE CON EL DESARROLLO DEL COMPONENTE TECNICO DEL MES",
             "ESTADO",
             'FECHA SUBIDA',
         ];
@@ -89,12 +77,12 @@ class VisitSubDirectorExport implements  FromCollection, WithMapping, WithHeadin
     {
         return [
             AfterSheet::class    => function (AfterSheet $event) {
-                $cellRange = 'A1:N1'; // All headers
+                $cellRange = 'A1:J1'; // All headers
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setName('Arial Narrow')->setSize(11); // Letra primera fila
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setBold(True); // Negrita primera fila
-                $event->sheet->getStyle('A:N')->getAlignment()->setHorizontal('center');
+                $event->sheet->getStyle('A:J')->getAlignment()->setHorizontal('center');
                 // $event->sheet->getStyle('C')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER);
-                $event->sheet->setAutoFilter('A:N');
+                $event->sheet->setAutoFilter('A:J');
             },
         ];
     }
@@ -106,9 +94,9 @@ class VisitSubDirectorExport implements  FromCollection, WithMapping, WithHeadin
         ini_set('memory_limit', '6000M');
 
         $results = $this->model->whereNotIn('created_by', [1,2])
-            ->whereHas('creator.roles', function($query){
-                $query->where('roles.id', config('roles.subdirector_tecnico'));
+            ->whereHas('createdBy.roles', function($query){
+                $query->where('roles.id', config('roles.coordinador_regional'));
             })->get();
-        return new VisitSubDirectorCollection($results);
+        return new CoordinatorVisitCollection($results);
     }
 }

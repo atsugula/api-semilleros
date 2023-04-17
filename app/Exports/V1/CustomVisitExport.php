@@ -2,19 +2,19 @@
 
 namespace App\Exports\V1;
 
-use App\Http\Resources\V1\TransversalActivityCollection;
+use App\Http\Resources\V1\CoordinatorVisitCollection;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
-use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use App\Traits\FunctionGeneralTrait;
-use App\Models\TransversalActivity;
+use App\Models\CustomVisit;
 
-class TransversalActivityExport implements  FromCollection, WithMapping, WithHeadings, WithColumnWidths, WithEvents, ShouldAutoSize
+class CustomVisitExport implements  FromCollection, WithMapping, WithHeadings, WithColumnWidths, WithEvents, ShouldAutoSize
 {
     use Exportable, FunctionGeneralTrait;
     protected $data;
@@ -23,21 +23,21 @@ class TransversalActivityExport implements  FromCollection, WithMapping, WithHea
     public function __construct($data)
     {
         $this->data = $data;
-        $this->model = new TransversalActivity();
+        $this->model = new CustomVisit();
     }
 
-    public function map($transversalActivity): array
+    public function map($customVisit): array
     {
         return [
-            $transversalActivity->id,
-            $transversalActivity->creator->name ?? '',
-            $transversalActivity->municipalities->name ?? '',
-            $transversalActivity->activity_name,
-            $transversalActivity->date_visit,
-            $transversalActivity->objective_activity,
-            $transversalActivity->scene,
-            $transversalActivity->nro_assistants,
-            $transversalActivity->created_at?->format('Y-m-d G:i:s'),
+            $customVisit->id,
+            $customVisit->createdBy->name ?? '',
+            $customVisit->beneficiaries->full_name ?? '',
+            $customVisit->municipalities->name ?? '',
+            $customVisit->months->name ?? '',
+            $customVisit->theme,
+            $customVisit->guardian_knows_semilleros == 1 ? 'SI' : 'NO',
+            $customVisit->statuses->name ?? '',
+            $customVisit->created_at?->format('Y-m-d G:i:s'),
         ];
     }
     //
@@ -45,27 +45,27 @@ class TransversalActivityExport implements  FromCollection, WithMapping, WithHea
     {
         return [
             'A' => 20,
-            'B' => 37,
+            'B' => 20,
             'C' => 20,
             'D' => 20,
             'E' => 20,
             'F' => 20,
             'G' => 20,
-            'H' => 30,
-            'I' => 50,
+            'H' => 20,
+            'I' => 20,
         ];
     }
     public function headings(): array
     {
         return [
             '#',
-            "PSICÓLOGO",
+            "PSICOSOCIAL",
+            "BENEFICIARIO",
             "MUNICIPIO",
-            "ACTIVIDAD",
-            "FECHA",
-            "OBJETIVO",
-            "ESCENARIO",
-            "NUMERO DE ASISTENTES",
+            "MES",
+            "TEMA DE LA VISITA",
+            "CONOCIMIENTO DE LOS PADRES SOBRE EL PROYECTO",
+            "ESTADO",
             'FECHA SUBIDA',
         ];
     }
@@ -90,7 +90,10 @@ class TransversalActivityExport implements  FromCollection, WithMapping, WithHea
         set_time_limit(0);
         ini_set('memory_limit', '6000M');
 
-        $transversalActivities = $this->model->whereNotIn('created_by', [1,2])->get();
-        return new TransversalActivityCollection($transversalActivities);
+        $results = $this->model->whereNotIn('created_by', [1,2])
+            ->whereHas('createdBy.roles', function($query){
+                $query->where('roles.id', config('roles.psicologo'));
+            })->get();
+        return new CoordinatorVisitCollection($results);
     }
 }

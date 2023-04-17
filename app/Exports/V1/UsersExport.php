@@ -2,19 +2,17 @@
 
 namespace App\Exports\V1;
 
-use App\Http\Resources\V1\UserCollection;
-use App\Models\User;
-use App\Traits\FunctionGeneralTrait;
-use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Events\AfterSheet;
-use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\Exportable;
+use App\Http\Resources\V1\UserCollection;
+use Maatwebsite\Excel\Events\AfterSheet;
+use App\Traits\FunctionGeneralTrait;
+use App\Models\User;
 
 class UsersExport implements  FromCollection, WithMapping, WithHeadings, WithColumnWidths, WithEvents, ShouldAutoSize
 {
@@ -39,7 +37,7 @@ class UsersExport implements  FromCollection, WithMapping, WithHeadings, WithCol
             $user->document_number,
             $user->document_type,
             $user->phone,
-            // $user->roles[0]->name,
+            $user->roles[0]->name,
             $user->created_at?->format('Y-m-d G:i:s'),
         ];
     }
@@ -48,14 +46,14 @@ class UsersExport implements  FromCollection, WithMapping, WithHeadings, WithCol
     {
         return [
             'A' => 20,
-            'B' => 37,
+            'B' => 20,
             'C' => 20,
             'D' => 20,
             'E' => 20,
             'F' => 20,
             'G' => 20,
-            'H' => 30,
-            'I' => 50,
+            'H' => 20,
+            'I' => 20,
             'J' => 20,
         ];
     }
@@ -70,6 +68,7 @@ class UsersExport implements  FromCollection, WithMapping, WithHeadings, WithCol
             "NUMERO DOCUMENTO",
             "TIPO DE DOCUMENTO",
             "TELEFONO",
+            "ROL",
             'FECHA SUBIDA',
         ];
     }
@@ -82,7 +81,7 @@ class UsersExport implements  FromCollection, WithMapping, WithHeadings, WithCol
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setName('Arial Narrow')->setSize(11); // Letra primera fila
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setBold(True); // Negrita primera fila
                 $event->sheet->getStyle('A:J')->getAlignment()->setHorizontal('center');
-                $event->sheet->getStyle('C')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER);
+                // $event->sheet->getStyle('C')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER);
                 $event->sheet->setAutoFilter('A:J');
             },
         ];
@@ -90,6 +89,10 @@ class UsersExport implements  FromCollection, WithMapping, WithHeadings, WithCol
 
     public function collection()
     {
+
+        set_time_limit(0);
+        ini_set('memory_limit', '6000M');
+
         $users = $this->user->whereNotIn('id', [1,2])->get();
         return new UserCollection($users);
     }
