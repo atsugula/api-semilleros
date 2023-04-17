@@ -3,10 +3,9 @@
 namespace App\Repositories;
 
 use App\Http\Resources\V1\BeneficiaryResource;
-use App\Http\Resources\V1\CustomVisitCollection;
-use App\Http\Resources\V1\CustomVisitResource;
 use App\Http\Resources\V1\VisitSubDirectorCollection;
 use App\Http\Resources\V1\VisitSubDirectorResource;
+use App\Models\psychologistVisits;
 use App\Models\Beneficiary;
 use App\Traits\FunctionGeneralTrait;
 use App\Traits\UserDataTrait;
@@ -21,7 +20,7 @@ class CustomVisitRepository
 
     function __construct()
     {
-        //$this->model = new ();
+        $this->model = new psychologistVisits();
     }
 
     public function getAll()
