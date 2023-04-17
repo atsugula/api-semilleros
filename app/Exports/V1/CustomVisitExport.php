@@ -2,43 +2,42 @@
 
 namespace App\Exports\V1;
 
+use App\Http\Resources\V1\CoordinatorVisitCollection;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
-use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\Exportable;
-use App\Http\Resources\V1\UserCollection;
+use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use App\Traits\FunctionGeneralTrait;
-use App\Models\User;
+use App\Models\CustomVisit;
 
-class UsersExport implements  FromCollection, WithMapping, WithHeadings, WithColumnWidths, WithEvents, ShouldAutoSize
+class CustomVisitExport implements  FromCollection, WithMapping, WithHeadings, WithColumnWidths, WithEvents, ShouldAutoSize
 {
     use Exportable, FunctionGeneralTrait;
-    protected  $data;
-    protected  $user;
+    protected $data;
+    protected $model;
 
     public function __construct($data)
     {
         $this->data = $data;
-        $this->user = new User();
+        $this->model = new CustomVisit();
     }
 
-    public function map($user): array
+    public function map($customVisit): array
     {
         return [
-            $user->id,
-            $user->name . $user->lastname,
-            $user->email,
-            $user->address,
-            $user->gender,
-            $user->document_number,
-            $user->document_type,
-            $user->phone,
-            $user->roles[0]->name,
-            $user->created_at?->format('Y-m-d G:i:s'),
+            $customVisit->id,
+            $customVisit->createdBy->name ?? '',
+            $customVisit->beneficiaries->full_name ?? '',
+            $customVisit->municipalities->name ?? '',
+            $customVisit->months->name ?? '',
+            $customVisit->theme,
+            $customVisit->guardian_knows_semilleros == 1 ? 'SI' : 'NO',
+            $customVisit->statuses->name ?? '',
+            $customVisit->created_at?->format('Y-m-d G:i:s'),
         ];
     }
     //
@@ -54,21 +53,19 @@ class UsersExport implements  FromCollection, WithMapping, WithHeadings, WithCol
             'G' => 20,
             'H' => 20,
             'I' => 20,
-            'J' => 20,
         ];
     }
     public function headings(): array
     {
         return [
             '#',
-            "NOMBRE",
-            "EMAIL",
-            "DIRECCION",
-            "GENERO",
-            "NUMERO DOCUMENTO",
-            "TIPO DE DOCUMENTO",
-            "TELEFONO",
-            "ROL",
+            "PSICOSOCIAL",
+            "BENEFICIARIO",
+            "MUNICIPIO",
+            "MES",
+            "TEMA DE LA VISITA",
+            "CONOCIMIENTO DE LOS PADRES SOBRE EL PROYECTO",
+            "ESTADO",
             'FECHA SUBIDA',
         ];
     }
@@ -77,12 +74,12 @@ class UsersExport implements  FromCollection, WithMapping, WithHeadings, WithCol
     {
         return [
             AfterSheet::class    => function (AfterSheet $event) {
-                $cellRange = 'A1:J1'; // All headers
+                $cellRange = 'A1:I1'; // All headers
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setName('Arial Narrow')->setSize(11); // Letra primera fila
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setBold(True); // Negrita primera fila
-                $event->sheet->getStyle('A:J')->getAlignment()->setHorizontal('center');
+                $event->sheet->getStyle('A:I')->getAlignment()->setHorizontal('center');
                 // $event->sheet->getStyle('C')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER);
-                $event->sheet->setAutoFilter('A:J');
+                $event->sheet->setAutoFilter('A:I');
             },
         ];
     }
@@ -93,7 +90,10 @@ class UsersExport implements  FromCollection, WithMapping, WithHeadings, WithCol
         set_time_limit(0);
         ini_set('memory_limit', '6000M');
 
-        $users = $this->user->whereNotIn('id', [1,2])->get();
-        return new UserCollection($users);
+        $results = $this->model->whereNotIn('created_by', [1,2])
+            ->whereHas('createdBy.roles', function($query){
+                $query->where('roles.id', config('roles.psicologo'));
+            })->get();
+        return new CoordinatorVisitCollection($results);
     }
 }

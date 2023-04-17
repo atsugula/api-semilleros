@@ -195,7 +195,7 @@ class TransversalActivityRepository
                     ]);
                 }
                 return [
-                    'response' => ['status' => true, 'name' => $name, 'message' => 'Se ha guardado con éxito']
+                    'response' => ['status' => true, 'name' => 'transversal_activities', 'message' => 'Se ha guardado con éxito']
                 ];
             } catch (\Exception $ex) {
                 return [

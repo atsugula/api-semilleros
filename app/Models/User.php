@@ -150,4 +150,31 @@ class User extends Authenticatable
     {
         return $this->hasMany(AccessLogin::class, 'user_id', 'id');
     }
+
+    /* RELACIONES CON LAS VISITAS PARA TODOS LOS USUARIOS */
+    public function visitSubDirector()
+    {
+        return $this->hasMany(VisitSubDirector::class, 'created_by', 'id');
+    }
+
+    public function visitTransversalActivity()
+    {
+        return $this->hasMany(TransversalActivity::class, 'created_by', 'id');
+    }
+
+    public function visitMethodologistVisit()
+    {
+        return $this->hasMany(MethodologistVisit::class, 'created_by', 'id');
+    }
+
+    public function visitCoordinatorVisit()
+    {
+        return $this->hasMany(CoordinatorVisit::class, 'created_by', 'id');
+    }
+
+    public function visitCustomVisit()
+    {
+        return $this->hasMany(CustomVisit::class, 'created_by', 'id');
+    }
+
 }
