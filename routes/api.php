@@ -45,9 +45,9 @@ use App\Http\Controllers\V1\InfoContractorController;
 use App\Http\Controllers\V1\MonthsController;
 use App\Http\Controllers\V1\SidewalkController;
 //use App\Http\Controllers\V1\VisitSubDirectorController;
-
 use App\Http\Controllers\V1\TransversalActivityController;
 use App\Http\Controllers\V1\VisitSubDirectorController;
+use App\Http\Controllers\V1\psychologistVisitsController;
 use Illuminate\Http\Request;
 
 /*
@@ -111,6 +111,9 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
     /* VISITAS DE ASESORIAS PERSONALIZADAS */
     Route::apiResource('custom_visits', CustomVisitController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::post('custom_visits/{id}', [CustomVisitController::class, 'update'])->name('custom_visits.update');
+
+    // psicologic
+
 
     /* BUSCAR BENEFICIARIO */
     Route::get('findByBeneficiaryId/{id}', [CustomVisitController::class, 'getBeneficiary']);
@@ -242,11 +245,10 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
     
 }); 
 
-
-/*Rutas de prueba zarrok */
-    //Route::apiResource('custom_visits', CustomVisitController::class)->only(['index', 'store', 'show', 'destroy']);
-    //Route::post('custom_visits/{id}', [CustomVisitController::class, 'update'])->name('custom_visits.update');
-
+ /*Rutas de prueba Zarrok*/
+    //Route::apiResource('psychologistVisits', psychologistVisitsController::class)->only(['index', 'store', 'show', 'destroy']);
+    //Route::post('psychologistVisits/{id}', [psychologistVisitsController::class, 'update'])->name('psychologistVisits.update');
+    
 /* RUTAS DE PRUEBA JORGE */
 
 // Rutas de prueba V2 JOSE
