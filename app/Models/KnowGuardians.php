@@ -23,7 +23,7 @@ class KnowGuardians extends Model
 
     public function guardian()
     {
-        return $this->belongsTo(Guardian::class, 'id_guardian');
+        return $this->belongsTo(BeneficiaryGuardians::class, 'id_guardian');
     }
 
     public function beneficiary()

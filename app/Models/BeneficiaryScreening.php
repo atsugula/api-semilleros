@@ -9,7 +9,7 @@ use App\Models\Beneficiary;
 
 class BeneficiaryScreening extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory; //, SoftDeletes;
 
     protected $table = "beneficiary_screening";
     protected $guarded = [
@@ -19,5 +19,4 @@ class BeneficiaryScreening extends Model
     public function beneficiary(){
         return $this->hasOne(Beneficiary::class, 'id', 'beneficiary_id');
     }
-
 }

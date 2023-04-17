@@ -140,7 +140,7 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
 
     /* BENEFICIARIOS */
     Route::apiResource('beneficiaries', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);
-    Route::post('beneficiaries/{id}', [BeneficiarieController::class, 'update']);
+    Route::put('beneficiaries/{id}', [BeneficiarieController::class, 'update']);
 
 
     // Subida de Documentos

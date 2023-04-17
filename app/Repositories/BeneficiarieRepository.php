@@ -91,13 +91,56 @@ class BeneficiarieRepository
         return $result;
     }
 
-    public function update($data, $id)
+    public function update($request, $id)
     {
+        \DB::beginTransaction();
+
+        $request['created_by'] = Auth::id();
         $beneficiarie = $this->model->findOrFail($id);
-        $beneficiarie->update($data);
+        $beneficiarie->update($request);
+
+        // Ficha de Tamizaje
+        $fichaTamizaje = BeneficiaryScreening::where('beneficiary_id', $beneficiarie->id)->firstOrFail();
+        $fichaTamizaje->estatura        = $request['morfologica']['estatura'];
+        $fichaTamizaje->envergadura     = $request['morfologica']['envergadura'];
+        $fichaTamizaje->masa            = $request['morfologica']['masa'];
+        $fichaTamizaje->flexibilidad    = $request['nutricional']['flexibilidad'];
+        $fichaTamizaje->velocidad       = $request['nutricional']['velocidad'];
+        $fichaTamizaje->fuerza          = $request['nutricional']['fuerza'];
+        $fichaTamizaje->oculomanual     = $request['nutricional']['oculomanual'];
+        $fichaTamizaje->save();
+
+        // Acudientes
+        $acudiente = BeneficiaryGuardians::updateOrCreate(
+            [
+                'cedula' => $request['attendant_number_document']
+            ],
+            [
+                'firts_name'    => $request['attendant_name'],
+                'last_name'     => $request['attendant_last_name'],
+                'email'         => $request['email'],
+                'phone_number'  => $request['phone_number'],
+            ]
+        );
+
+        $knowGuardian = KnowGuardians::updateOrCreate(
+            [
+                'id_beneficiary'=> $beneficiarie->id,
+                'id_guardian'   => $acudiente->id
+            ],
+            [
+                'relationship' => $request['parentesco'],
+                'find_out'     => json_encode($request['find_out']),
+                'social_media' => json_encode($request['social_media']),
+            ]
+        );
+
         /* GUARDAMOS EN CONTROL DATA */
         $this->control_data($beneficiarie, 'update');
         $result = new BeneficiaryResource($beneficiarie);
+
+        \DB::commit();
+
         return $result;
     }
 
