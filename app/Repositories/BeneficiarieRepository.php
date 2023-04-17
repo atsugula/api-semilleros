@@ -7,6 +7,9 @@ use App\Http\Resources\V1\BeneficiaryResource;
 use App\Traits\FunctionGeneralTrait;
 use App\Traits\UserDataTrait;
 use App\Models\Beneficiary;
+use App\Models\BeneficiaryScreening;
+use App\Models\BeneficiaryGuardians;
+use App\Models\KnowGuardians;
 use Illuminate\Support\Facades\Auth;
 
 class BeneficiarieRepository
@@ -29,12 +32,55 @@ class BeneficiarieRepository
 
     public function create($request)
     {
+        \DB::beginTransaction();
+
         $request['created_by'] = Auth::id();
         $beneficiarie = Beneficiary::create($request);
         $beneficiarie->save();
+
+        // Ficha de Tamizaje
+        $fichaTamizaje = new BeneficiaryScreening();
+        $fichaTamizaje->estatura        = $request['morfologica']['estatura'];
+        $fichaTamizaje->envergadura     = $request['morfologica']['envergadura'];
+        $fichaTamizaje->masa            = $request['morfologica']['masa'];
+        $fichaTamizaje->flexibilidad    = $request['nutricional']['flexibilidad'];
+        $fichaTamizaje->velocidad       = $request['nutricional']['velocidad'];
+        $fichaTamizaje->fuerza          = $request['nutricional']['fuerza'];
+        $fichaTamizaje->oculomanual     = $request['nutricional']['oculomanual'];
+        $fichaTamizaje->beneficiary_id  = $beneficiarie->id;
+        $fichaTamizaje->save();
+
+        // Acudientes
+        $acudiente = BeneficiaryGuardians::updateOrCreate(
+            [
+                'cedula' => $request['attendant_number_document']
+            ],
+            [
+                'firts_name'    => $request['attendant_name'],
+                'last_name'     => $request['attendant_last_name'],
+                'email'         => $request['email'],
+                'phone_number'  => $request['phone_number'],
+            ]
+        );
+
+        $knowGuardian = KnowGuardians::updateOrCreate(
+            [
+                'id_beneficiary'=> $beneficiarie->id,
+                'id_guardian'   => $acudiente->id
+            ],
+            [
+                'relationship' => $request['parentesco'],
+                'find_out'     => json_encode($request['find_out']),
+                'social_media' => json_encode($request['social_media']),
+            ]
+        );
+
         /* GUARDAMOS EN CONTROL DATA */
         $this->control_data($beneficiarie, 'store');
         $result = new BeneficiaryResource($beneficiarie);
+
+        \DB::commit();
+
         return $result;
     }
 

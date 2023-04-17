@@ -46,12 +46,15 @@ class BeneficiarieController extends Controller
         Gate::authorize('haveaccess');
         try {
             $data = $request->all();
+            
             $validator = $this->beneficiarieRepositorory->getValidate($data, 'update');
             if ($validator->fails()) {
                 return  $this->createErrorResponse([], $validator->errors()->first(), 422);
             }
+            
             $result = $this->beneficiarieRepositorory->create($data);
             return $this->createResponse($result, 'El beneficiario fue creado correctamente.');
+
         } catch (\Exception $ex) {
             return  $this->createErrorResponse([], 'Algo salio mal al listar los contratistas ' . $ex->getMessage() . ' linea ' . $ex->getCode());
         }

@@ -12,8 +12,9 @@ class KnowGuardians extends Model
     protected $fillable = [
         'id_guardian',
         'id_beneficiary',
-        'know_needs',
-        'concept',
+        'relationship',
+        'find_out',
+        'social_media',
     ];
 
     protected $casts = [

@@ -66,21 +66,12 @@ class ChronogramRepository
         $this->control_data($cronograms, 'store');
 
         $schedulesModel = new Schedule();
-<<<<<<< HEAD
-        
+
         $lista = json_decode( $request->groups );
         
         foreach($lista as $group) {
             $groupsModel = new ChronogramsGroups();
             $groupsModel->chronograms_id             = $cronograms->id;
-=======
-
-        $lista = json_decode( $request['groups'] );
-
-        foreach($lista as $group) {
-            $groupsModel = new ChronogramsGroups();
-            $groupsModel->chronograms_id             = $request['id'];
->>>>>>> dba38b4172607f1ee8f2b43f8a349785b86124de
             $groupsModel->group_id                   = $group->group_id;
             $groupsModel->sports_modality            = $group->sports_modality;
             $groupsModel->main_sports_stage_name     = $group->main_sports_stage_name;
