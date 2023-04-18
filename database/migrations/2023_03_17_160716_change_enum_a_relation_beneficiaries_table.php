@@ -14,8 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('beneficiaries', function (Blueprint $table) {
-            $table->dropColumn('status');
-            $table->unsignedBigInteger('status_id')->nullable();
+            $table->renameColumn('status', 'status_id');
         });
     }
 
