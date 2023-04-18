@@ -2,43 +2,43 @@
 
 namespace App\Exports\V1;
 
+use App\Http\Resources\V1\CoordinatorVisitCollection;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
-use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\Exportable;
-use App\Http\Resources\V1\UserCollection;
+use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use App\Traits\FunctionGeneralTrait;
-use App\Models\User;
+use App\Models\CoordinatorVisit;
 
-class UsersExport implements  FromCollection, WithMapping, WithHeadings, WithColumnWidths, WithEvents, ShouldAutoSize
+class CoordinatorVisitExport implements  FromCollection, WithMapping, WithHeadings, WithColumnWidths, WithEvents, ShouldAutoSize
 {
     use Exportable, FunctionGeneralTrait;
-    protected  $data;
-    protected  $user;
+    protected $data;
+    protected $model;
 
     public function __construct($data)
     {
         $this->data = $data;
-        $this->user = new User();
+        $this->model = new CoordinatorVisit();
     }
 
-    public function map($user): array
+    public function map($coordinatorVisit): array
     {
         return [
-            $user->id,
-            $user->name . $user->lastname,
-            $user->email,
-            $user->address,
-            $user->gender,
-            $user->document_number,
-            $user->document_type,
-            $user->phone,
-            $user->roles[0]->name ?? '',
-            $user->created_at?->format('Y-m-d G:i:s'),
+            $coordinatorVisit->id,
+            $coordinatorVisit->createdBy->name ?? '',
+            $coordinatorVisit->date_visit,
+            $coordinatorVisit->hour_visit,
+            $coordinatorVisit->monitor->name ?? '',
+            $coordinatorVisit->disciplines->name ?? '',
+            $coordinatorVisit->municipalities->name ?? '',
+            $coordinatorVisit->beneficiary_coverage,
+            $coordinatorVisit->statuses->name ?? '',
+            $coordinatorVisit->created_at?->format('Y-m-d G:i:s'),
         ];
     }
     //
@@ -61,14 +61,14 @@ class UsersExport implements  FromCollection, WithMapping, WithHeadings, WithCol
     {
         return [
             '#',
-            "NOMBRE",
-            "EMAIL",
-            "DIRECCION",
-            "GENERO",
-            "NUMERO DOCUMENTO",
-            "TIPO DE DOCUMENTO",
-            "TELEFONO",
-            "ROL",
+            "COORDINADOR",
+            "FECHA",
+            "HORA",
+            "MONITOR",
+            "DISCIPLINA",
+            "MUNICIPIO",
+            "COBERTURA DEL BENEFICIARIO",
+            "ESTADO",
             'FECHA SUBIDA',
         ];
     }
@@ -93,7 +93,10 @@ class UsersExport implements  FromCollection, WithMapping, WithHeadings, WithCol
         set_time_limit(0);
         ini_set('memory_limit', '6000M');
 
-        $users = $this->user->whereNotIn('id', [1,2])->get();
-        return new UserCollection($users);
+        $results = $this->model->whereNotIn('created_by', [1,2])
+            ->whereHas('createdBy.roles', function($query){
+                $query->where('roles.id', config('roles.coordinador_regional'));
+            })->get();
+        return new CoordinatorVisitCollection($results);
     }
 }

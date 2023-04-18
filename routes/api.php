@@ -232,6 +232,9 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
     // USUARIOS MONITORES POR MUNICIPIO
     Route::get('getMonitoringMunicipality/{id}', [GeneralController::class, 'getMonitoringMunicipality']);
 
+    // BENEFICIARIOS POR MUNICIPIO
+    Route::get('getBeneficiariesMunicipality/{id}', [GeneralController::class, 'getBeneficiariesMunicipality']);
+
     //LISTA EL NUMERO DE DOCUMENTOS APROBADOS POR CADA USUARIO
     Route::get('revised', [ContractorController::class, 'revised']);
     Route::get('clever-documents', [ContractorController::class, 'clever']);
@@ -247,13 +250,13 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
 
     //Rutas de las excel apis
     //Route::get('descargas/export/', [UserExcelController::class, 'export']);
-    
-}); 
 
- /*Rutas de prueba Zarrok*/
+});
+
+/*Rutas de prueba Zarrok*/
     //Route::apiResource('psychologistVisits', psychologistVisitsController::class)->only(['index', 'store', 'show', 'destroy']);
     //Route::post('psychologistVisits/{id}', [psychologistVisitsController::class, 'update'])->name('psychologistVisits.update');
-    
+
 /* RUTAS DE PRUEBA JORGE */
 
 // Rutas de prueba V2 JOSE
