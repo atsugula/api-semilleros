@@ -65,6 +65,7 @@ class DatabaseSeeder extends Seeder
             CoordinatorVisitSeeder::class,
             InfoContractorSeeder::class,
             SidewalkSeeder::class,
+            EpsSeeder::class,
             // DATA FAKE
             // DataFakeSeeder::class,
         ]);
