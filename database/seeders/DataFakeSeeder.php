@@ -17,8 +17,8 @@ class DataFakeSeeder extends Seeder
     public function run()
     {
         // Usuarios falsos para pruebas
-        User::factory()->count(100)->create();
-        RoleUser::factory()->count(100)->create();
+        User::factory()->count(1000)->create();
+        RoleUser::factory()->count(1000)->create();
         Beneficiary::factory()->count(100)->create();
     }
 }

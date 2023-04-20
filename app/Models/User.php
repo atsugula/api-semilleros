@@ -177,4 +177,50 @@ class User extends Authenticatable
         return $this->hasMany(CustomVisit::class, 'created_by', 'id');
     }
 
+    /* FILTROS PARA REFRESCAR PAGINA POR URL */
+    public function scopeFilterByUrl($query)
+    {
+        $this->searchFilter($query);
+
+        $this->dateFilter($query);
+
+        $this->statusFilter($query);
+
+        return $query;
+    }
+
+    private function searchFilter($query)
+    {
+        if (request()->filled('search_field') && request()->filled('search_value')) {
+            $searchField = request('search_field');
+            $searchValue = request('search_value');
+            if ($searchField !== 'change_password') {
+                if ($searchField === 'roles') {
+                    $query->whereHas('roles', function ($query) use ($searchValue) {
+                        $query->where('name', 'like', '%' . $searchValue . '%');
+                    });
+                } else {
+                    $query->where($searchField, 'like', '%' . $searchValue . '%');
+                }
+            }
+        }
+    }
+
+    private function dateFilter($query)
+    {
+        if (request()->filled('date_criteria_start') && request()->filled('date_criteria_end')) {
+            $startDate = request('date_criteria_start');
+            $endDate = request('date_criteria_end');
+            $query->whereBetween('created_at', [$startDate, $endDate]);
+        }
+    }
+
+    private function statusFilter($query)
+    {
+        if (request()->filled('user_status_criteria')) {
+            $status = request('user_status_criteria');
+            $query->where('status', $status);
+        }
+    }
+
 }

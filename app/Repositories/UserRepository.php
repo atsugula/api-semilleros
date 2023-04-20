@@ -3,17 +3,20 @@
 namespace App\Repositories;
 
 use App\Http\Resources\V1\UserCollection;
+use App\Traits\FunctionGeneralTrait;
+use Illuminate\Support\Facades\Hash;
 use App\Models\MunicipalityUser;
+use App\Models\DisciplineUser;
+use App\Models\ZoneUser;
 use App\Models\RoleUser;
 use App\Models\User;
-use App\Models\ZoneUser;
-use App\Traits\FunctionGeneralTrait;
+use App\Traits\UserDataTrait;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 class UserRepository
 {
-    use FunctionGeneralTrait;
+
+    use FunctionGeneralTrait, UserDataTrait;
 
     private $model;
     function __construct()
@@ -28,18 +31,19 @@ class UserRepository
      */
     function getAll()
     {
-        return  new UserCollection($this->model->orderBy('id', 'ASC')->get());
 
-        // orderBy('id', 'DESC')->get()->through(function ($user) {
-        //     $repoProfile = new ProfileRepository();
-        //     $profile = $repoProfile->findByUserId($user->id);
-        //     if ($profile) {
-        //         $profile->role;
-        //         $user->profile = $profile;
-        //     }
-        //     $user->roles;
-        //     return $user;
-        // });
+        $query = $this->model->orderBy('id', 'ASC');
+
+        $rol_id = $this->getIdRolUserAuth();
+
+        if ($rol_id == config('roles.root')){
+            $query->whereHas('roles', function ($profile) {
+                $profile->whereNotIn('roles.id', [config('roles.super_root')]);
+            });
+        }
+
+        return  new UserCollection($query->paginate(25));
+
     }
 
     /**
@@ -69,7 +73,17 @@ class UserRepository
                 'user_id' => $new_user->id,
                 'municipalities_id' =>  $user['municipalities'],
             ]);
+
+            /* DisciplineUser::create([
+                'user_id' => $new_user->id,
+                'disciplines_id' =>  $user['disciplines'],
+            ]); */
+
+
         }
+
+        $role = DB::table('roles')->where('id', '=', $user['roles'])->get();
+        $new_user->roles()->attach($role[0]->id);
 
         // Guardamos en ModelData
         $this->control_data($new_user, 'store');
@@ -128,6 +142,8 @@ class UserRepository
                 $muni->save();
             }
         }
+        $role = DB::table('roles')->where('id', '=', $data['roles'])->get();
+        $user_up->roles()->attach($role[0]->id);
         // Guardamos en ModelData
         $this->control_data($user_up, 'update');
         return $user_up;
