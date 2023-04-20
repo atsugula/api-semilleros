@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Queue\Monitor;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class psychologistVisits extends Model
+class PsychologistVisits extends Model
 {
     
     use HasFactory, SoftDeletes;
@@ -16,11 +17,12 @@ class psychologistVisits extends Model
     protected $fillable = [
         'scenery',
         'number_beneficiaries',
-        'beneficiaries_recognize_name',
-        'beneficiary_recognize_value',
-        'all_ok',
+        'beneficiaries_knows_project',
+        'beneficiaries_knows_monthly_value',
+        'monitor_organization_discipline_management',
         'description',
         'observations',
+        'objetive',
         'evidence',
         'municipalities_id',
         'diciplines_id',
@@ -28,7 +30,7 @@ class psychologistVisits extends Model
         'created_by',
         'reviewed_by',
         'status_id',
-        'reject_message',
+        'rejection_message',
     ];
 
     protected $hidden = ['created_at', 'deleted_at', 'updated_at'];
@@ -36,9 +38,17 @@ class psychologistVisits extends Model
 
     public function municipalities()
     {
-        return $this->belongsTo(Municipality::class, 'municipality_id');
+        return $this->belongsTo(Municipality::class, 'municipalities_id');
+    }
+    public function disciplines()
+    {
+        return $this->belongsTo(Disciplines::class, 'diciplines_id');
     }
 
+    public function monitor()
+    {
+        return $this->belongsTo(User::class, 'monitor_id');
+    }
 
     public function createdBy()
     {

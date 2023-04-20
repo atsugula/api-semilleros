@@ -41,9 +41,10 @@ return new class extends Migration
 
             $table->string('scenery');
             $table->integer('number_beneficiaries');
-            $table->boolean('beneficiaries_recognize_name');
-            $table->boolean('beneficiary_recognize_value');
-            $table->boolean('all_ok');
+            $table->boolean('beneficiaries_knows_project');
+            $table->boolean('beneficiaries_knows_monthly_value');
+            $table->boolean('monitor_organization_discipline_management');
+            $table->text('objetive');
             $table->text('description');
             $table->text('observations');
             $table->text('evidence');

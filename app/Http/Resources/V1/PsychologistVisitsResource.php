@@ -16,13 +16,13 @@ class PsychologistVisitsResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'create_by' => $this->create_by,
+            'created_by' => $this->created_by,
             'reviewed_by' => $this->reviewed_by,
             'scenery' => $this->scenery,
             'number_beneficiaries' => $this->number_beneficiaries,
-            'beneficiaries_recognize_name' => $this->beneficiaries_recognize_name,
-            'beneficiary_recognize_value' => $this->beneficiary_recognize_value,
-            'all_ok' => $this->all_ok,
+            'beneficiaries_knows_project' => $this->beneficiaries_knows_project,
+            'beneficiary_recognize_value' => $this->beneficiaries_knows_monthly_value,
+            'beneficiaries_knows_monthly_value' => $this->beneficiaries_knows_monthly_value,
             'evidence' => $this->evidence,
             'deleted_at' => $this->deleted_at,
             'created_at' => $this->created_at,

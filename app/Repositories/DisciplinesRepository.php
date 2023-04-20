@@ -17,6 +17,11 @@ class DisciplinesRepository implements CrudRepositoryInterface{
         return $results;
     }
 
+    public function getByMonitor(){
+        $results = new DisciplineCollection(Disciplines::orderBy('id', 'DESC')->get());
+        return $results;
+    }
+
     public function create($request)
     {
         $disciplines = Disciplines::create($request);
@@ -37,7 +42,7 @@ class DisciplinesRepository implements CrudRepositoryInterface{
         $disiciplines->update($data);
         return $disiciplines;
     }
-
+    
     public function delete($id)
     {
         $disiciplines = Disciplines::findOrFail($id);
