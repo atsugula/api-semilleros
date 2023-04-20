@@ -16,7 +16,12 @@ class UserCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
-            "last_page" => User::latest()->paginate()->lastPage(),
+            'pagination' => [
+                'current_page' => $this->currentPage(),
+                'last_page' => $this->lastPage(),
+                'next_page_url' => $this->nextPageUrl(),
+                'prev_page_url' => $this->previousPageUrl(),
+            ],
             "success" => true,
             "action" => "Consulta users",
             'items'=>$this->collection,
