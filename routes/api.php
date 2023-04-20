@@ -33,6 +33,7 @@ use App\Http\Controllers\V1\HiringController;
 use App\Http\Controllers\V1\MethodologistVisitController;
 use App\Http\Controllers\V1\MunicipalityController;
 use App\Http\Controllers\V1\HealthEntitiesController;
+use App\Http\Controllers\V1\MonitorsController;
 use App\Http\Controllers\V1\ObjectsController as V1ObjectsController;
 use App\Http\Controllers\V1\UploadDocumentController;
 use App\Http\Controllers\V1\StatusDocumentController;
@@ -142,6 +143,9 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
     Route::apiResource('beneficiaries', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::put('beneficiaries/{id}', [BeneficiarieController::class, 'update']);
 
+    // BENEFICIARIOS POR MUNICIPIO
+    Route::get('getBeneficiariesMunicipality/{id}', [BeneficiarieController::class, 'getBeneficiariesMunicipality']);
+
 
     // Subida de Documentos
     Route::apiResource('documents', DocumentController::class)->only(['index', 'store', 'show']);
@@ -230,7 +234,7 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
     Route::get('health-entities', [HealthEntitiesController::class, 'index']);
 
     // USUARIOS MONITORES POR MUNICIPIO
-    Route::get('getMonitoringMunicipality/{id}', [GeneralController::class, 'getMonitoringMunicipality']);
+    Route::get('getMonitoringMunicipality/{id}', [MonitorsController::class, 'getMonitoringMunicipality']);
 
     //LISTA EL NUMERO DE DOCUMENTOS APROBADOS POR CADA USUARIO
     Route::get('revised', [ContractorController::class, 'revised']);
@@ -247,13 +251,13 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
 
     //Rutas de las excel apis
     //Route::get('descargas/export/', [UserExcelController::class, 'export']);
-    
-}); 
 
- /*Rutas de prueba Zarrok*/
+});
+
+/*Rutas de prueba Zarrok*/
     //Route::apiResource('psychologistVisits', psychologistVisitsController::class)->only(['index', 'store', 'show', 'destroy']);
     //Route::post('psychologistVisits/{id}', [psychologistVisitsController::class, 'update'])->name('psychologistVisits.update');
-    
+
 /* RUTAS DE PRUEBA JORGE */
 
 // Rutas de prueba V2 JOSE

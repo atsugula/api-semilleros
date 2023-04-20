@@ -37,7 +37,7 @@ class UsersExport implements  FromCollection, WithMapping, WithHeadings, WithCol
             $user->document_number,
             $user->document_type,
             $user->phone,
-            $user->roles[0]->name,
+            $user->roles[0]->name ?? '',
             $user->created_at?->format('Y-m-d G:i:s'),
         ];
     }
