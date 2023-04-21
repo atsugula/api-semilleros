@@ -11,7 +11,7 @@ use App\Http\Resources\V1\VisitSubDirectorResource;
 use App\Models\PsychologistVisits;
 use App\Traits\FunctionGeneralTrait;
 use App\Traits\UserDataTrait;
-use App\Models\CustomVisit;
+use App\Models\DocumentVisit;
 use App\Traits\ImageTrait;
 
 class PsychologistVisitsRepository
@@ -19,10 +19,12 @@ class PsychologistVisitsRepository
     use ImageTrait, FunctionGeneralTrait, UserDataTrait;
 
     private $model;
+    private $documentModel;
 
     function __construct()
     {
         $this->model = new PsychologistVisits();
+        $this->documentModel = new DocumentVisit();
     }
 
     public function getAll()
@@ -33,8 +35,8 @@ class PsychologistVisitsRepository
     public function create($request)
     {
         
-        //$user_id = $this->getIdUserAuth();
-        $user_id = 1;
+        $user_id = $this->getIdUserAuth();
+        
         $PsychologistVisits = $this->model;
         $PsychologistVisits->scenery = $request['sports_scene'];
         $PsychologistVisits->number_beneficiaries = $request['numberBeneficiaries'];
@@ -55,8 +57,13 @@ class PsychologistVisitsRepository
         $save = $PsychologistVisits->save();
         /* SUBIMOS EL ARCHIVO */
         if ($save) {
-            $handle_1 = $this->send_file($request, 'file', 'subdirector_visit', $PsychologistVisits->id);
-            //$PsychologistVisits->update(['file' => $handle_1['response']['payload']]);
+            $handle_1 = $this->send_file($request, 'file', 'psychologist_visit', $PsychologistVisits->id);
+            $document = new DocumentVisit();
+            $document->visit_id = $PsychologistVisits->id;
+            $document->type = 'psychologist_visit';
+            $document->route = $handle_1['response']['payload'];
+            $document->created_by = $user_id;
+            $document->status = 1;
             $save &= $handle_1['response']['success'];
         }
         $results = new PsychologistVisitsResource($PsychologistVisits);
@@ -70,8 +77,6 @@ class PsychologistVisitsRepository
 
     public function update($request, $id)
     {
-        $user_id = $this->getIdUserAuth();
-        $rol_id = $this->getIdRolUserAuth();
 
         $PsychologistVisits = $this->model->findOrFail($id);
         $PsychologistVisits->date_visit = $request['date_visit'];
