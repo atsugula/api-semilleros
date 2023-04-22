@@ -67,7 +67,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function () {
+Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix('v1')->group(function () {
     Route::get('get-access', [AccessController::class, 'getAccess']);
     Route::post('have-access', [AccessController::class, 'userHaveAccess']);
     Route::get('get-permissions', [AccessController::class, 'getPermissions']);

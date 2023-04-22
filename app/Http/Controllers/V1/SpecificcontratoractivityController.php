@@ -28,7 +28,7 @@ class SpecificcontratoractivityController extends Controller
      */
     public function index(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $results = $this->SpecificcontratoractivityRepository->getAll();
             return $results->toArray($request);
@@ -66,7 +66,7 @@ class SpecificcontratoractivityController extends Controller
      */
     public function show($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $result = $this->SpecificcontratoractivityRepository->findById($id);
             if (empty($result)) {

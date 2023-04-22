@@ -24,7 +24,7 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $results = $this->roleRepository->getAll();
             return $results->toArray($request);
@@ -41,7 +41,7 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
@@ -67,7 +67,7 @@ class RoleController extends Controller
      */
     public function show(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $result = $this->roleRepository->show($request->role);
             if (empty($result)) {
@@ -88,7 +88,7 @@ class RoleController extends Controller
      */
     public function update(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $validator = Validator::make($request->all(), [
                 'name' => 'required', 'string', 'max:255',
@@ -116,7 +116,7 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $result = $this->roleRepository->delete($id);
 

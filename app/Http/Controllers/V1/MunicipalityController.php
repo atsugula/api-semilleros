@@ -21,7 +21,7 @@ class MunicipalityController extends Controller
     }
 
     public function index(Request $reques){
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try{
            return  $result = $this->municipalityRepository->getAll();
         }catch(\Exception $ex){
