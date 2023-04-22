@@ -36,7 +36,7 @@ class VisitSubDirectorRepository
                 ->whereHas('creator.roles', function ($query) {
                     $query->where('roles.slug', 'subdirector_tecnico');
                 })
-                ->whereNotIn('status_id', [config('status.APR')])
+                ->where('status_id', [config('status.ENR')])
                 ->orWhere('created_by', $user_id);
         }
 
@@ -45,7 +45,7 @@ class VisitSubDirectorRepository
                 ->whereHas('creator.roles', function ($query) {
                     $query->where('roles.slug', 'director_tecnico');
                 })
-                ->whereNotIn('status_id', [config('status.APR')])
+                ->where('status_id', [config('status.ENR')])
                 ->orWhere('created_by', $user_id);
         }
 
