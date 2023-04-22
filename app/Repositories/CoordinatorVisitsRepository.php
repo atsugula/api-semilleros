@@ -37,7 +37,7 @@ class CoordinatorVisitsRepository implements CrudRepositoryInterface
 
         if ($rol_id == config('roles.subdirector_tecnico')) {
             $query->whereNotIn('created_by', [1,2])
-                ->whereNotIn('status_id', [config('status.APR')]);
+                ->where('status_id', [config('status.ENR')]);
         }
 
         $paginate = config('global.paginate');
