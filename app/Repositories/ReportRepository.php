@@ -143,7 +143,6 @@ class ReportRepository
 
     public function exportNavigationHistory($request)
     {
-        // return response()->json(DB::table('get_navigation_history')->get(), 500);
         try {
             if (!$request->data) {
                 return Excel::download(new NavigationHistoryExport($request), "$request->type_excel.xlsx");
