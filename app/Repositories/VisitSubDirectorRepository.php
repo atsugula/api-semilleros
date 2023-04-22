@@ -28,8 +28,7 @@ class VisitSubDirectorRepository
         $query = $this->model->query()->orderBy('id', 'DESC');
 
         if ($rol_id == config('roles.subdirector_tecnico')) {
-            $query->where('created_by', $user_id)
-                ->whereNotIn('status_id', [config('status.APR')]);
+            $query->where('created_by', $user_id);
         }
 
         if ($rol_id == config('roles.director_tecnico')) {
@@ -37,8 +36,8 @@ class VisitSubDirectorRepository
                 ->whereHas('creator.roles', function ($query) {
                     $query->where('roles.slug', 'subdirector_tecnico');
                 })
-                ->orWhere('created_by', $user_id)
-                ->whereNotIn('status_id', [config('status.APR')]);
+                ->whereNotIn('status_id', [config('status.APR')])
+                ->orWhere('created_by', $user_id);
         }
 
         if ($rol_id == config('roles.director_administrator')) {
@@ -46,8 +45,8 @@ class VisitSubDirectorRepository
                 ->whereHas('creator.roles', function ($query) {
                     $query->where('roles.slug', 'director_tecnico');
                 })
-                ->orWhere('created_by', $user_id)
-                ->whereNotIn('status_id', [config('status.APR')]);
+                ->whereNotIn('status_id', [config('status.APR')])
+                ->orWhere('created_by', $user_id);
         }
 
         $paginate = config('global.paginate');
