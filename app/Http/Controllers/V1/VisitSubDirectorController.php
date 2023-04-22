@@ -22,7 +22,7 @@ class VisitSubDirectorController extends Controller
      */
     public function index(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $results = $this->repository->getAll();
             return $results->toArray($request);
@@ -39,7 +39,7 @@ class VisitSubDirectorController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $validator = $this->repository->getValidate($request->all(), 'create');
             if ($validator->fails()) {
@@ -62,7 +62,7 @@ class VisitSubDirectorController extends Controller
      */
     public function show($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $result = $this->repository->findById($id);
             if (empty($result)) {
@@ -83,7 +83,7 @@ class VisitSubDirectorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $validator = $this->repository->getValidate($request->all(), 'update');
 
@@ -107,7 +107,7 @@ class VisitSubDirectorController extends Controller
      */
     public function destroy($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $result = $this->repository->delete($id);
 

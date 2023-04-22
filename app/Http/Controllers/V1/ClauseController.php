@@ -27,7 +27,7 @@ class ClauseController extends Controller
      */
     public function index(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $results = $this->clauseRepository->getAll();
             return $results->toArray($request);
@@ -44,7 +44,7 @@ class ClauseController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             // $data = $request->all();
             // $data['user_id'] = Auth::id();
@@ -64,7 +64,7 @@ class ClauseController extends Controller
      */
     public function show($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $result = $this->clauseRepository->findById($id);
             if (empty($result)) {
@@ -86,7 +86,7 @@ class ClauseController extends Controller
      */
     public function update(Request $request, $id)
     {
-          Gate::authorize('haveaccess');
+          // Gate::authorize('haveaccess');
         try {
             $data = $request->all();
             $data['user_id'] = Auth::id();
@@ -106,7 +106,7 @@ class ClauseController extends Controller
      */
     public function destroy($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $results = $this->clauseRepository->delete($id);
         } catch (\Exception $ex) {
@@ -117,7 +117,7 @@ class ClauseController extends Controller
 
     public function findByContractor($id)
     {
-        // Gate::authorize('haveaccess');
+        // // Gate::authorize('haveaccess');
         try {
             $result = $this->clauseRepository->findByContractor($id);
             if (empty($result)) {
@@ -131,7 +131,7 @@ class ClauseController extends Controller
 
     public function control(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $results = $this->clauseRepository->control($request);
         } catch (\Exception $ex) {
