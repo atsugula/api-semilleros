@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('navigation_history', function (Blueprint $table) {
             $table->id();
-            $table->string('url');
+            $table->text('url');
             // Relation creator user
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')
