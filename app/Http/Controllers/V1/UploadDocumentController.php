@@ -19,7 +19,7 @@ class UploadDocumentController extends Controller
 
     public function upload(Request $request)
     {
-        // Gate::authorize('haveaccess');
+        // // Gate::authorize('haveaccess');
         try {
             DB::beginTransaction();
 

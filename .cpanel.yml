@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/ssisetco/public_html/api-semilleros/
+    - /bin/rsync -av * $DEPLOYPATH

@@ -23,7 +23,7 @@ class ContractController extends Controller
      */
     public function index(Request $request)
     {
-        //Gate::authorize('haveaccess');
+        //// Gate::authorize('haveaccess');
         try {
             $results = $this->contractRepository->getAll();
             return $this->createResponse($results);
@@ -40,7 +40,7 @@ class ContractController extends Controller
      */
     public function store(Request $request)
     {
-        //Gate::authorize('haveaccess');
+        //// Gate::authorize('haveaccess');
         try {
             $data = $request->all();
 
@@ -59,7 +59,7 @@ class ContractController extends Controller
      */
     public function show($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $result = $this->contractRepository->findById($id);
             if (empty($result)) {
@@ -81,7 +81,7 @@ class ContractController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $data = $request->all();
             $results = $this->contractRepository->update($data, $id);
@@ -99,7 +99,7 @@ class ContractController extends Controller
      */
     public function destroy($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $results = $this->contractRepository->delete($id);
         } catch (\Exception $ex) {
@@ -110,7 +110,7 @@ class ContractController extends Controller
 
     public function management(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             // $data = $request->all();
             $results = $this->contractRepository->management($request);
@@ -122,7 +122,7 @@ class ContractController extends Controller
 
     public function cancellation(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $results = $this->contractRepository->cancellation($request);
             return $results;

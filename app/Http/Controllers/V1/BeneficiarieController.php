@@ -26,7 +26,7 @@ class BeneficiarieController extends Controller
      */
     public function index(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $results = $this->beneficiarieRepositorory->getAll();
             return $results->toArray($request);
@@ -43,15 +43,15 @@ class BeneficiarieController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $data = $request->all();
-            
+
             $validator = $this->beneficiarieRepositorory->getValidate($data, 'update');
             if ($validator->fails()) {
                 return  $this->createErrorResponse([], $validator->errors()->first(), 422);
             }
-            
+
             $result = $this->beneficiarieRepositorory->create($data);
             return $this->createResponse($result, 'El beneficiario fue creado correctamente.');
 
@@ -68,7 +68,7 @@ class BeneficiarieController extends Controller
      */
     public function show($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $result = $this->beneficiarieRepositorory->findById($id);
             if (empty($result)) {
@@ -92,7 +92,7 @@ class BeneficiarieController extends Controller
 
     public function update(Request $request, $id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $data = $request->all();
 
@@ -100,7 +100,7 @@ class BeneficiarieController extends Controller
             if ($validator->fails()) {
                 return  $this->createErrorResponse([], $validator->errors()->first(), 422);
             }
-            
+
             $result = $this->beneficiarieRepositorory->update($data, $id);
 
             return $this->createResponse($result, 'El beneficiario fue modificado correctamente.');
@@ -117,7 +117,7 @@ class BeneficiarieController extends Controller
      */
     public function destroy($id)
     {
-        // Gate::authorize('haveaccess');
+        // // Gate::authorize('haveaccess');
         try {
             $results = $this->beneficiarieRepositorory->delete($id);
         } catch (\Exception $ex) {

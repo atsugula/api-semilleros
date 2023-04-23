@@ -27,7 +27,7 @@ class DocumentController extends Controller
      */
     public function index(Request $request)
     {
-        // Gate::authorize('haveaccess');
+        // // Gate::authorize('haveaccess');
         try {
             $results = $this->documentRepository->getAll();
             return $results->toArray($request);
@@ -43,7 +43,7 @@ class DocumentController extends Controller
      */
     public function store(Request $request)
     {
-        // Gate::authorize('haveaccess');
+        // // Gate::authorize('haveaccess');
         try {
             // $data = $request->all();
             //  $validator = $this->contractorValidates->validates($data);
@@ -64,7 +64,7 @@ class DocumentController extends Controller
      */
     public function show($id)
     {
-        // Gate::authorize('haveaccess');
+        // // Gate::authorize('haveaccess');
         try {
             $result = $this->documentRepository->findById($id);
             if (empty($result)) {
@@ -84,7 +84,7 @@ class DocumentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Gate::authorize('haveaccess');
+        // // Gate::authorize('haveaccess');
         try {
             // $validator = $this->contractorValidates->validates($data);
             // if ($validator->fails()) {
@@ -105,7 +105,7 @@ class DocumentController extends Controller
      */
     public function management(Request $request)
     {
-        // Gate::authorize('haveaccess');
+        // // Gate::authorize('haveaccess');
         try {
             $results = $this->documentRepository->management($request);
         } catch (\Exception $ex) {
@@ -121,7 +121,7 @@ class DocumentController extends Controller
      */
     public function destroy(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             DB::beginTransaction();
 
