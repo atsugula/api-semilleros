@@ -25,7 +25,7 @@ class AsistantController extends Controller
      */
     public function index(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $results = $this->assistantRepository->getAll();
             return $results->toArray($request);
@@ -42,7 +42,7 @@ class AsistantController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $validator = $this->assistantRepository->getValidate($request->all(), 'create');
             if ($validator->fails()) {
@@ -65,7 +65,7 @@ class AsistantController extends Controller
      */
     public function show(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $result = $this->assistantRepository->show($request->assistant);
             if (empty($result)) {
@@ -85,7 +85,7 @@ class AsistantController extends Controller
      */
     public function update(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $validator = $this->assistantRepository->getValidate($request->all(), 'update');
             if ($validator->fails()) {
@@ -108,7 +108,7 @@ class AsistantController extends Controller
      */
     public function destroy($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $result = $this->assistantRepository->delete($id);
 

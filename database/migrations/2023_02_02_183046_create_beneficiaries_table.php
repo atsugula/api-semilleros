@@ -40,11 +40,8 @@ return new class extends Migration
             $table->enum('audited', [0,1])->default(0);
             $table->text('rejection_message')->nullable();
             $table->string('referrer_name')->nullable();
-            $table->string('softDeletes');
-            $table->string('schoclar_Grade')->nullable();
-            $table->string('health_entity')->nullable();
             $table->timestamps();
-               
+            $table->softDeletes();
         });
     }
 

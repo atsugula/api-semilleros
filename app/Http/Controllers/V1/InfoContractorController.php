@@ -25,7 +25,7 @@ class InfoContractorController extends Controller
      */
     public function index(Request $request)
     {
-       // Gate::authorize('haveaccess');
+       // // Gate::authorize('haveaccess');
         try {
             $results = $this->InfoContractorRepositorory->getAll();
             return $this->createResponse($results);
@@ -41,7 +41,7 @@ class InfoContractorController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $data = $request->all();
             $validator = $this->InfoContractorRepositorory->getValidate($data, 'create');
@@ -64,7 +64,7 @@ class InfoContractorController extends Controller
      */
     public function show($id)
     {
-       Gate::authorize('haveaccess');
+       // Gate::authorize('haveaccess');
         try {
             $result = $this->InfoContractorRepositorory->findById($id);
             if (empty($result)) {
@@ -86,7 +86,7 @@ class InfoContractorController extends Controller
      */
     public function update(Request $request, $id)
     {
-       Gate::authorize('haveaccess');
+       // Gate::authorize('haveaccess');
         try {
             $data = $request->all();
             $validator = $this->InfoContractorRepositorory->getValidate($data, 'update');
@@ -107,7 +107,7 @@ class InfoContractorController extends Controller
      */
     public function destroy($id)
     {
-       Gate::authorize('haveaccess');
+       // Gate::authorize('haveaccess');
         try {
             $results = $this->InfoContractorRepositorory->delete($id);
         } catch (\Exception $ex) {

@@ -2,19 +2,19 @@
 
 namespace App\Exports\V1;
 
-use App\Http\Resources\V1\UserCollection;
-use App\Models\User;
-use App\Traits\FunctionGeneralTrait;
-use Maatwebsite\Excel\Concerns\FromCollection;
-// added
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
-use Maatwebsite\Excel\Concerns\WithStyles;
-use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\Exportable;
+use App\Http\Resources\V1\UserCollection;
+use Maatwebsite\Excel\Events\AfterSheet;
+use App\Traits\FunctionGeneralTrait;
+use App\Models\User;
 
-class UsersExport implements FromCollection, WithMapping, WithHeadings, WithColumnWidths, WithStyles
+class UsersExport implements  FromCollection, WithMapping, WithHeadings, WithColumnWidths, WithEvents, ShouldAutoSize
 {
     use Exportable, FunctionGeneralTrait;
     protected  $data;
@@ -30,87 +30,70 @@ class UsersExport implements FromCollection, WithMapping, WithHeadings, WithColu
     {
         return [
             $user->id,
-            $user->name,
+            $user->name . $user->lastname,
             $user->email,
-            // $user->rol->name,
-            $this->printValueRelations($user->roles),
-            $user->status == '1' ? 'Activo' : 'Inactivo',
-            $user->profile->contractor_full_name,
-            $user->profile->document_number,
-            $user->profile->nac->name,
-            $user->profile->gestor->name ?? '',
-            $user->profile->methodological_support->name ?? '',
-            $user->profile->support_tracing_monitoring->name ?? '',
-            $user->profile->instructor_leader->name ?? '',
-            $user->profile->ambassador_leader->name ?? ''
+            $user->address,
+            $user->gender,
+            $user->document_number,
+            $user->document_type,
+            $user->phone,
+            $user->roles[0]->name ?? '',
+            $user->created_at?->format('Y-m-d G:i:s'),
         ];
     }
     //
-
-    public function headings(): array
-    {
-        return [
-            '#',
-            'Alias',
-            'Usuario',
-            'Rol',
-            'Estado',
-            'Nombre completo',
-            'Nuip',
-            'Nac',
-            'Gestor',
-            'Apoyo metodólogico',
-            'Apoyo al seguimiento y monitoreo',
-            'Instructor',
-            'Embajador'
-
-        ];
-    }
     public function columnWidths(): array
     {
         return [
             'A' => 20,
-            'B' => 50,
+            'B' => 20,
             'C' => 20,
-            'D' => 30,
-            'E' => 10,
-            'F' => 30,
-            'G' => 30,
-            'H' => 30,
-            'I' => 30,
-            'J' => 30,
-            'K' => 40,
-            'L' =>  30,
-            'M' =>  30
+            'D' => 20,
+            'E' => 20,
+            'F' => 20,
+            'G' => 20,
+            'H' => 20,
+            'I' => 20,
+            'J' => 20,
         ];
     }
-
-    public function styles(Worksheet $sheet)
+    public function headings(): array
     {
         return [
-            // Style the first row as bold text.
-            'A' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center']],
-            'B' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center']],
-            'C' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center']],
-            'D' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center']],
-            'E' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center']],
-            'F' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center']],
-            'G' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center']],
-            'H' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center']],
-            'I' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center']],
-            'J' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center']],
-            'K' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center']],
-            'L' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center']],
-            'M' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center']],
-            'N' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center']],
-            'O' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center']],
-            'P' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center']],
-
+            '#',
+            "NOMBRE",
+            "EMAIL",
+            "DIRECCION",
+            "GENERO",
+            "NUMERO DOCUMENTO",
+            "TIPO DE DOCUMENTO",
+            "TELEFONO",
+            "ROL",
+            'FECHA SUBIDA',
         ];
     }
+
+    public function registerEvents(): array
+    {
+        return [
+            AfterSheet::class    => function (AfterSheet $event) {
+                $cellRange = 'A1:J1'; // All headers
+                $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setName('Arial Narrow')->setSize(11); // Letra primera fila
+                $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setBold(True); // Negrita primera fila
+                $event->sheet->getStyle('A:J')->getAlignment()->setHorizontal('center');
+                // $event->sheet->getStyle('C')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER);
+                $event->sheet->setAutoFilter('A:J');
+            },
+        ];
+    }
+
     public function collection()
     {
-        $users = $this->user->get();
-        return  new UserCollection($users);
+
+        set_time_limit(0);
+        ini_set('memory_limit', '6000M');
+
+        $users = $this->user->whereNotIn('id', [1,2])->get();
+        return new UserCollection($users);
     }
 }

@@ -19,7 +19,7 @@ class ValidityPeriodController extends Controller {
 
     public function index(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $results = $this->validityPeriodRepository->getAll();
             return $results->toArray($request);
@@ -30,7 +30,7 @@ class ValidityPeriodController extends Controller {
 
     public function store(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $data = $request->all();
             $validator = $this->validityPeriodRepository->getValidate($data, 'create');
@@ -46,7 +46,7 @@ class ValidityPeriodController extends Controller {
 
     public function show($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $result = $this->validityPeriodRepository->findById($id);
             if (empty($result)) {
@@ -60,7 +60,7 @@ class ValidityPeriodController extends Controller {
 
     public function update(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $data = $request->all();
             $validator = $this->validityPeriodRepository->getValidate($data, 'update');
@@ -76,7 +76,7 @@ class ValidityPeriodController extends Controller {
 
     public function destroy($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $result = $this->validityPeriodRepository->delete($id);
             return $result;

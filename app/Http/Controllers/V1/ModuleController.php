@@ -24,7 +24,7 @@ class ModuleController extends Controller
      */
     public function index(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $results = $this->moduleRepository->getAll();
             return $results->toArray($request);
@@ -41,7 +41,7 @@ class ModuleController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $validator = $this->moduleRepository->getValidate($request->all(), 'create');
 
@@ -65,7 +65,7 @@ class ModuleController extends Controller
      */
     public function show($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
 
             $result = $this->moduleRepository->show($id);
@@ -87,7 +87,7 @@ class ModuleController extends Controller
      */
     public function update(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             // 'slug' => 'required|string|unique:permissions,id,'.$request->permission,
             $validator = $this->moduleRepository->getValidate($request->all(), 'update');
@@ -111,7 +111,7 @@ class ModuleController extends Controller
      */
     public function destroy($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $result = $this->moduleRepository->delete($id);
 

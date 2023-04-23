@@ -20,7 +20,7 @@ class ZoneUserController extends Controller
 
     public function index(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $results = $this->usersZonesRepository->getAll();
             return $results->toArray($request);
@@ -31,7 +31,7 @@ class ZoneUserController extends Controller
 
     public function store(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $data = $request->all();
 
@@ -44,7 +44,7 @@ class ZoneUserController extends Controller
 
     public function show($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $result = $this->usersZonesRepository->findById($id);
             if (empty($result)) {
@@ -58,7 +58,7 @@ class ZoneUserController extends Controller
 
     public function update(Request $request, $id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $data = $request->all();
 
@@ -71,7 +71,7 @@ class ZoneUserController extends Controller
 
     public function destroy($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $results = $this->usersZonesRepository->delete($id);
         } catch (\Exception $ex) {

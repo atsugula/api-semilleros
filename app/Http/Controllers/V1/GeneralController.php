@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\GroupResource;
 use App\Models\Bank;
+use App\Models\Beneficiary;
 use App\Models\ControlChangeData;
 use App\Models\Disciplines;
 use App\Models\EntityName;
@@ -235,6 +236,19 @@ class GeneralController extends Controller
             $entidad
 
         );
+    }
+
+    // Trae solo beneficiarios por municipio
+    public function getBeneficiariesMunicipality($id) {
+        $response = Beneficiary::where('municipalities_id', $id)->get();
+        $beneficiaries = [];
+        foreach ($response as $bene) {
+            array_push($beneficiaries, [
+                'label' => $bene->full_name,
+                'value' => $bene->id
+            ]);
+        }
+        return response()->json($beneficiaries);
     }
 
     // Trae solo usuarios monitores
