@@ -17,6 +17,7 @@ class DisciplineResource extends JsonResource
         return[
             'id' => $this->id,
             'name'=>$this->name,
+            'Users'=>$this->Discipline_users
         ];
     }
 }

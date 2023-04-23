@@ -242,6 +242,11 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
     //Muestra los meses restantes del año
     Route::get('months', [MonthsController::class, 'index']);
 
+    //Visitas psicologicas
+    Route::apiResource('psychologistVisits', psychologistVisitsController::class)->only(['store']);
+    //Disciplinas del monitor
+    Route::get('diciplines/byMonitor/{id}',[DisciplineController::class ,'indexByMonitor']);
+
     // Subida de chronogram
     //Route::apiResource('chronogram', ChronogramController::class)->only(['index', 'store', 'show']);
     //Route::post('chronogram/{id}', [ChronogramController::class, 'update']);
