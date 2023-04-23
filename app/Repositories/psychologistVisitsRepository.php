@@ -93,7 +93,18 @@ class PsychologistVisitsRepository
         $PsychologistVisits->description = $request['description'];
         $PsychologistVisits->status_id = $PsychologistVisits->status_id == 4 ? 2: $PsychologistVisits->status_id;
 
-        $PsychologistVisits->save();
+        $save = $PsychologistVisits->save();
+        /* SUBIMOS EL ARCHIVO */
+        if ($save) {
+            $handle_1 = $this->send_file($request, 'file', 'psychologist_visit', $PsychologistVisits->id);
+            $document = new DocumentVisit();
+            $document->visit_id = $PsychologistVisits->id;
+            $document->type = 'psychologist_visit';
+            $document->route = $handle_1['response']['payload'];
+            $document->created_by = $PsychologistVisits->created_by;
+            $document->status = 1;
+            $save &= $handle_1['response']['success'];
+        }
         /* GUARDAMOS EN DATAMODEL */
         $this->control_data($PsychologistVisits, 'update');
         $results = new PsychologistVisitsResource($PsychologistVisits);
