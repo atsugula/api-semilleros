@@ -28,8 +28,8 @@ class UsersInfoExport implements  FromCollection, WithMapping, WithHeadings, Wit
 
     public function map($user): array
     {
-        $count = (count($user->visitSubDirector) + count($user->visitTransversalActivity) + count($user->visitCustomVisit)
-        + count($user->visitMethodologistVisit) + count($user->visitCoordinatorVisit));
+        $count = (count($user->visitSubDirector ?? '') + count($user->visitTransversalActivity ?? '') + count($user->visitCustomVisit ?? '')
+        + count($user->visitMethodologistVisit ?? '') + count($user->visitCoordinatorVisit ?? ''));
         return [
             $user->id,
             $user->name,
