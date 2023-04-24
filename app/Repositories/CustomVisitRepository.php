@@ -26,8 +26,11 @@ class CustomVisitRepository
 
     public function getAll()
     {
-        $rol_id = $this->getIdRolUserAuth();
-        $user_id = $this->getIdUserAuth();
+        //$rol_id = $this->getIdRolUserAuth();
+        //$user_id = $this->getIdUserAuth();
+
+        $rol_id = 6;
+        $user_id = 6;
 
         $query = $this->model->query()->orderBy('id', 'DESC');
 
