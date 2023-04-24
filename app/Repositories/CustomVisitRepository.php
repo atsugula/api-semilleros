@@ -45,7 +45,7 @@ class CustomVisitRepository
                 break;
 
             default:
-                $query->orderBy('id', 'DESC');
+                return null;
                 break;
         }
 
