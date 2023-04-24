@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Http\Resources\V1\BeneficiaryResource;
 use App\Http\Resources\V1\CustomVisitCollection;
 use App\Http\Resources\V1\CustomVisitResource;
+use App\Http\Resources\V1\PsychologistVisitsCollection;
 use App\Http\Resources\v1\PsychologistVisitsResource;
 use App\Http\Resources\V1\VisitSubDirectorCollection;
 use App\Http\Resources\V1\VisitSubDirectorResource;
@@ -70,6 +71,10 @@ class PsychologistVisitsRepository
         return $results;
     }
 
+    public function findByCreator($id){
+        return new PsychologistVisitsCollection(PsychologistVisits::orderBy('id', 'DESC')->where('created_by', $id)->get());
+    }
+
     public function findById($id){
 
     }
@@ -77,7 +82,6 @@ class PsychologistVisitsRepository
 
     public function update($request, $id)
     {
-
         $PsychologistVisits = $this->model->findOrFail($id);
         $PsychologistVisits->date_visit = $request['date_visit'];
         $PsychologistVisits->municipalities_id = $request['municipality_id'];
@@ -121,23 +125,7 @@ class PsychologistVisitsRepository
     public function getBeneficiary($id) {
       
     }
-    /*
-        'scenery',
-        'number_beneficiaries',
-        'beneficiaries_recognize_name',
-        'beneficiary_recognize_value',
-        'all_ok',
-        'description',
-        'observations',
-        'evidence',
-        'municipalities_id',
-        'diciplines_id',
-        'monitor_id',
-        'created_by',
-        'reviewed_by',
-        'status_id',
-        'reject_message',
-*/
+    
     public function getValidate($data, $method){
         $validate = [
             'sports_scene' => 'bail|required',
@@ -151,7 +139,8 @@ class PsychologistVisitsRepository
             'municipality_id' => 'bail|required',
             'diciplines_id' => 'bail|required',
             'date_visit' => 'bail|required',
-            'monitor_id' => 'bail|required'
+            'monitor_id' => 'bail|required',
+            'file' => $method != 'update' ? 'bail|required|mimes:application/pdf,pdf,png,webp,jpg,jpeg|max:' . (500 * 1049000) : 'bail'
         ];
 
         $messages = [

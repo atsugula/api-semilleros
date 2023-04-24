@@ -244,6 +244,8 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
 
     //Visitas psicologicas
     Route::apiResource('psychologistVisits', psychologistVisitsController::class)->only(['store']);
+    Route::get('psychologistVisits/byMonitor/{id}', [psychologistVisitsController::class, 'indexByMonitor']);
+    Route::post('psychologistVisits/{id}', [psychologistVisitsController::class, 'update']);
     //Disciplinas del monitor
     Route::get('diciplines/byMonitor/{id}',[DisciplineController::class ,'indexByMonitor']);
 
@@ -259,8 +261,8 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
 });
 
 /*Rutas de prueba Zarrok*/
-    //Route::apiResource('psychologistVisits', psychologistVisitsController::class)->only(['index', 'store', 'show', 'destroy']);
-    //Route::post('psychologistVisits/{id}', [psychologistVisitsController::class, 'update'])->name('psychologistVisits.update');
+    //Route::apiResource('psychologistVisits', psychologistVisitsController::class)->only(['destroy']);
+    //Route::get('psychologistVisits/byMonitor/{id}', [psychologistVisitsController::class, 'indexByMonitor']);
 
 /* RUTAS DE PRUEBA JORGE */
 
