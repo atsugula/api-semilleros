@@ -113,7 +113,6 @@ class CustomVisitRepository
         $customVisit->municipality_id = $request['municipality'];
         $customVisit->beneficiary_id = $request['beneficiary'];
         $customVisit->created_by = $user_id;
-        $save = $customVisit->save();
 
         if ($rol_id == config('roles.coordinador_psicosocial')) {
             $customVisit->reviewed_by = $user_id;
