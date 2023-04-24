@@ -126,7 +126,7 @@ class CustomVisitRepository
             $customVisit->update(['file' => $handle_1['response']['payload']]);
         }
         /* CAMBIAMOS EL ESTADO */
-        if ($request['status'] == config('status.REC') && $user_id == $customVisit->created_by) {
+        if ($request['status_id'] == config('status.REC') && $user_id == $customVisit->created_by) {
             $customVisit->status_id = config('status.ENR');
             $customVisit->reject_message = $request['reject_message'];
         }
