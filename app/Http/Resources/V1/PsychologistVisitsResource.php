@@ -41,6 +41,7 @@ class PsychologistVisitsResource extends JsonResource
             'status' => $this->statuses,
             'municipality' => $this->municipalities,
             'monitor_name' => $this->monitor?->name,
+            'files' => $this->files,
         ];
     }
 }

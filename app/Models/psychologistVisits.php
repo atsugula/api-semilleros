@@ -75,6 +75,10 @@ class PsychologistVisits extends Model
         return $this->morphMany(ControlChangeData::class, 'data_model');
     }
 
+    public function files(){
+        return $this->hasMany(DocumentVisit::class, 'visit_id')->where('type', 'psychologist_visit');
+    }
+
     public function scopeFilterByUrl($query)
     {
         $this->searchFilter($query);
