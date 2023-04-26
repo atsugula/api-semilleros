@@ -29,7 +29,6 @@ class CustomVisitRepository
         $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
 
-
         $query = $this->model->query()->orderBy('id', 'DESC');
 
         switch ($rol_id) {
