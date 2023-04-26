@@ -30,9 +30,9 @@ class TransversalActivityRepository
     public function getAll()
     {
         // $rol_id = $this->getIdRolUserAuth();
-        // $user_id = $this->getIdUserAuth();
+        $user_id = $this->getIdUserAuth();
 
-        $query = $this->model->query()->where('created_by', 1)->orderBy('id', 'DESC');
+        $query = $this->model->query()->where('created_by', $user_id)->orderBy('id', 'DESC');
 
         $paginate = config('global.paginate');
 
@@ -49,7 +49,7 @@ class TransversalActivityRepository
     public function create($request)
     {
 
-        // $user_id = $this->getIdUserAuth();
+        $user_id = $this->getIdUserAuth();
 
         $transversalActivity = $this->model;
         $transversalActivity->date_visit = $request['date_visit'];
@@ -64,7 +64,7 @@ class TransversalActivityRepository
         $transversalActivity->municipality_id = $request['municipality_id'];
         $transversalActivity->status_id = config('status.ENR');
         $transversalActivity->reject_message = $request['rejection_message'];
-        $transversalActivity->created_by = 1;
+        $transversalActivity->created_by = $user_id;
         $save = $transversalActivity->save();
 
         // /* SUBIMOS EL ARCHIVO */
