@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use app\Models\Disciplines;
 
 class psychologistVisits extends Model
 {
@@ -39,6 +40,15 @@ class psychologistVisits extends Model
         return $this->belongsTo(Municipality::class, 'municipality_id');
     }
 
+    public function diciplines()
+    {
+        return $this->belongsTo(Disciplines::class, 'diciplines_id');
+    }
+
+    public function monitorID()
+    {
+        return $this->belongsTo(User::class, 'monitor_id');
+    }
 
     public function createdBy()
     {
