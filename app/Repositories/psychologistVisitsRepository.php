@@ -25,16 +25,15 @@ class psychologistVisitsRepository
 
     public function getAll()
     {
-        //$rol_id = $this->getIdRolUserAuth();
-        //$user_id = $this->getIdUserAuth();
-
-        $rol_id = 6;
+        $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
 
         $query = $this->model->query()->orderBy('id', 'DESC');
 
         switch ($rol_id) {
             case config('roles.coordinador_psicosocial'):
+            case config('roles.super-root'):
+            case config('roles.director_administrator'):
                 $query = $query->whereNotIn('created_by', [1,2])->whereHas('createdBy.roles', function ($query) {
                     $query->where('roles.slug', 'psicologo');
                 })->whereNotIn('status_id', [config('status.APR')]);
@@ -92,18 +91,16 @@ class psychologistVisitsRepository
         $PsychologistVisit->monitor_id = $request['monitor'];
         $PsychologistVisit->created_by = $request['psicologo'];
         $PsychologistVisit->reviewed_by = $request['coordinador_psicosocial'];
-        $PsychologistVisit->reject_message = $request[''];
-        $PsychologistVisit->save();
 
         if ($rol_id == config('roles.coordinador_psicosocial')) {
             $PsychologistVisit->reviewed_by = $user_id;
-            $PsychologistVisit->status_id = $request['status_id'];
-            $PsychologistVisit->reject_message = $request['reject_message'];
+            $PsychologistVisit->status_id = $request['status'];
+            $PsychologistVisit->rejection_message = $request['rejection_message'];
         }
 
         if ($request['status'] == config('status.REC') && $user_id == $PsychologistVisit->created_by) {
             $PsychologistVisit->status_id = config('status.ENR');
-            $PsychologistVisit->reject_message = $request['reject_message'];
+            $PsychologistVisit->rejection_message = $request['rejection_message'];
         }
         $PsychologistVisit->save();
 
@@ -138,7 +135,7 @@ class psychologistVisitsRepository
             'created_by' => 'bail|required',
             'reviewed_by' => 'bail|required',
             'status' => 'bail|required',
-            'reject_message' => 'bail|required',
+            'rejection_message' => 'bail|required',
             'evidence' => $method != 'update' ? 'bail|required|mimes:application/pdf,pdf,png,webp,jpg,jpeg|max:' . (500 * 1049000) : 'bail',
 
         ];
@@ -162,7 +159,7 @@ class psychologistVisitsRepository
             'created_by' => 'Psicologo',
             'reviewed_by' => 'Coordinador Psicosocial',
             'status_id' => 'Estatdo',
-            'reject_message' => 'Acuerdos y recomendaciones',
+            'rejection_message' => 'Acuerdos y recomendaciones',
         ];
 
         return $this->validator($data, $validate, $messages, $attrs);

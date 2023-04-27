@@ -22,7 +22,7 @@ class PsychologistVisitsCollection extends ResourceCollection
                 'organization' => 'OpenCode SAS',
                 'authors' => 'zarrok'
             ],
-            'type' => 'custom_visits'
+            'type' => 'psychologist_visits'
         ];
     }
 }

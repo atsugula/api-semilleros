@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use app\Models\Disciplines;
 
 class psychologistVisits extends Model
 {
@@ -29,7 +28,7 @@ class psychologistVisits extends Model
         'created_by',
         'reviewed_by',
         'status_id',
-        'reject_message',
+        'rejection_message',
     ];
 
     protected $hidden = ['created_at', 'deleted_at', 'updated_at'];
@@ -37,25 +36,25 @@ class psychologistVisits extends Model
 
     public function municipalities()
     {
-        return $this->belongsTo(Municipality::class, 'municipality_id');
+        return $this->belongsTo(Municipality::class, 'municipalities_id');
     }
 
-    public function diciplines()
+    public function discipline()
     {
         return $this->belongsTo(Disciplines::class, 'diciplines_id');
     }
 
-    public function monitorID()
+    public function monitor()
     {
         return $this->belongsTo(User::class, 'monitor_id');
     }
 
-    public function createdBy()
+    public function createdBY()
     {
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function revisedBy()
+    public function reviewed()
     {
         return $this->belongsTo(User::class, 'reviewed_by');
     }
@@ -104,13 +103,15 @@ class psychologistVisits extends Model
                         $query->where('municipalities.name', 'like', '%' . $searchValue . '%');
                     });
                 },
-                'monitor_name' => function ($query) use ($searchValue) {
-                    $query->whereHas('monitor', function ($query) use ($searchValue) {
-                        $query->where('users.name', 'like', '%' . $searchValue . '%');
+                'discipline' => function ($query) use ($searchValue) {
+                    $query->whereHas('diciplines', function ($query) use ($searchValue) {
+                        $query->where('diciplines.name', 'like', '%' . $searchValue . '%');
                     });
                 },
-                'sport_scene' => function ($query) use ($searchValue) {
-                    $query->where('sport_scene', 'like', '%' . $searchValue . '%');
+                'monitor' => function ($query) use ($searchValue) {
+                    $query->whereHas('users', function ($query) use ($searchValue) {
+                        $query->where('users.name', 'like', '%' . $searchValue . '%');
+                    });
                 },
             ];
 
