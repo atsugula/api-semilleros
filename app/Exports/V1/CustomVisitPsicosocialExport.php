@@ -9,7 +9,7 @@ use App\Traits\FunctionGeneralTrait;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\DB;
 
-class TransversalActivityExport implements FromView, WithTitle
+class CustomVisitPsicosocialExport implements FromView, WithTitle
 {
     use Exportable, FunctionGeneralTrait;
 
@@ -22,7 +22,7 @@ class TransversalActivityExport implements FromView, WithTitle
 
     public function title(): string
     {
-        return 'ACTIVIDADES TRANSVERSALES';
+        return 'VISITA PERSONALIZADA';
     }
 
     public function view(): View
@@ -30,10 +30,10 @@ class TransversalActivityExport implements FromView, WithTitle
         set_time_limit(0);
         ini_set('memory_limit', '20000M');
 
-        $transversalActivities = DB::table('get_report_transversal_activities')->get();
+        $psychologicalVisits = DB::table('get_report_custom_psychological_visits')->get();
 
-        return view('exports.transversalActivities', [
-            'transversalActivities' => $transversalActivities,
+        return view('exports.customPsychologicalVisits', [
+            'psychologicalVisits' => $psychologicalVisits,
         ]);
     }
 
