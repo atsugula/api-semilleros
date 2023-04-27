@@ -12,7 +12,7 @@ use App\Traits\UserDataTrait;
 use App\Models\CustomVisit;
 use App\Traits\ImageTrait;
 
-class CustomVisitRepository
+class psychologistVisitsRepository
 {
     use ImageTrait, FunctionGeneralTrait, UserDataTrait;
 
@@ -30,10 +30,10 @@ class CustomVisitRepository
 
         $query = $this->model->query()->orderBy('id', 'DESC');
 
-    
-
         switch ($rol_id) {
             case config('roles.coordinador_psicosocial'):
+            case config('roles.super-root'):
+            case config('roles.director_administrator'):
                 $query = $query->whereNotIn('created_by', [1,2])->whereHas('createdBy.roles', function ($query) {
                     $query->where('roles.slug', 'psicologo');
                 })->whereNotIn('status_id', [config('status.APR')]);
@@ -62,16 +62,48 @@ class CustomVisitRepository
     }
     public function create($request)
     {
-    
+        // por ver con nicolas
     }
 
     public function findById($id){
+
+        $PsychologistVisit = $this->model->findOrFail($id);
+        return new PsychologistVisitsResource($PsychologistVisit);
 
     }
 
 
     public function update($request, $id)
     {
+        $user_id = $this->getIdUserAuth();
+        $rol_id = $this->getIdRolUserAuth();
+
+        $PsychologistVisit = $this->model->findOrFail($id);
+
+        $PsychologistVisit->scenery = $request['scenery'];
+        $PsychologistVisit->number_beneficiaries = $request['number_beneficiaries'];
+        $PsychologistVisit->beneficiaries_recognize_name = $request['beneficiaries_recognize_name'];
+        $PsychologistVisit->all_ok = $request['all_ok'];
+        $PsychologistVisit->description = $request['description'];
+        $PsychologistVisit->observations = $request['observations'];
+        $PsychologistVisit->municipalities_id = $request['municipalities_id'];
+        $PsychologistVisit->diciplines_id = $request['discipline'];
+        $PsychologistVisit->monitor_id = $request['monitor'];
+        $PsychologistVisit->created_by = $request['psicologo'];
+        $PsychologistVisit->reviewed_by = $request['coordinador_psicosocial'];
+
+        if ($rol_id == config('roles.coordinador_psicosocial')) {
+            $PsychologistVisit->reviewed_by = $user_id;
+            $PsychologistVisit->status_id = $request['status'];
+            $PsychologistVisit->rejection_message = $request['rejection_message'];
+        }
+
+        if ($request['status'] == config('status.REC') && $user_id == $PsychologistVisit->created_by) {
+            $PsychologistVisit->status_id = config('status.ENR');
+            $PsychologistVisit->rejection_message = $request['rejection_message'];
+        }
+        $PsychologistVisit->save();
+
 
     }
 
@@ -79,24 +111,33 @@ class CustomVisitRepository
 
     public function delete($id)
     {
-        
+        // Elimine Aca
     }
 
     public function getBeneficiary($id) {
-      
+        $beneficiary = Beneficiary::findOrFail($id);
+        return new BeneficiaryResource($beneficiary);
     }
 
     public function getValidate($data, $method){
         
         $validate = [
-            'theme' => 'bail|required',
-            'agreements' => 'bail|required',
-            'concept' => 'bail|required',
-            'guardian_knows_semilleros' => 'bail|required',
-            'month' => 'bail|required',
-            'beneficiary' => 'bail|required',
+            'scenery' => 'bail|required', 
+            'number_beneficiaries' => 'bail|required',
+            'beneficiaries_recognize_name' => 'bail|required',
+            'beneficiary_recognize_value' => 'bail|required',
+            'all_ok' => 'bail|required',
+            'description' => 'bail|required',
+            'observations' => 'bail|required',
             'municipality' => 'bail|required',
-            'file' => $method != 'update' ? 'bail|required|mimes:application/pdf,pdf,png,webp,jpg,jpeg|max:' . (500 * 1049000) : 'bail',
+            'dicipline' => 'bail|required',
+            'monitor' => 'bail|required',
+            'created_by' => 'bail|required',
+            'reviewed_by' => 'bail|required',
+            'status' => 'bail|required',
+            'rejection_message' => 'bail|required',
+            'evidence' => $method != 'update' ? 'bail|required|mimes:application/pdf,pdf,png,webp,jpg,jpeg|max:' . (500 * 1049000) : 'bail',
+
         ];
 
         $messages = [
@@ -105,14 +146,20 @@ class CustomVisitRepository
         ];
 
         $attrs = [
-            'theme' => 'Tema',
-            'agreements' => 'Acuerdos y recomendaciones',
-            'concept' => 'Concepto',
-            'guardian_knows_semilleros' => '¿El padre o acudiente conoce el proyecto de Semilleros Deportivos?',
-            'month' => 'Cumple con el desarrollo tecnico del mes',
-            'beneficiary' => 'Beneficiario',
-            'file' => 'Archivo',
-            'municipality' => 'Municipio',
+            'scenery' => 'escenario',
+            'number_beneficiaries' => 'numero de beneficiarios',
+            'beneficiaries_recognize_name' => 'saber si los beneficiarios reconocen el nombre del proyecto',
+            'beneficiary_recognize_value' => 'saber si los beneficiarios reconocen el valor del proyecto',
+            'all_ok' => 'saber si se observa organizacion,disciplina,buen manejo de grupo durante las sesiones de clases del monitor',
+            'description' => 'descripción',
+            'observations' => 'observaciones',
+            'municipalities_id' => 'municipio', 
+            'diciplines_id' => 'disciplina',
+            'monitor_id' => 'monitor',
+            'created_by' => 'Psicologo',
+            'reviewed_by' => 'Coordinador Psicosocial',
+            'status_id' => 'Estatdo',
+            'rejection_message' => 'Acuerdos y recomendaciones',
         ];
 
         return $this->validator($data, $validate, $messages, $attrs);
