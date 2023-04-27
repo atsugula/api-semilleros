@@ -49,7 +49,8 @@ use App\Http\Controllers\V1\SidewalkController;
 //use App\Http\Controllers\V1\VisitSubDirectorController;
 use App\Http\Controllers\V1\TransversalActivityController;
 use App\Http\Controllers\V1\VisitSubDirectorController;
-use App\Http\Controllers\V1\psychologistVisitsController;
+use App\Http\Controllers\psychologistVisitController;
+
 use Illuminate\Http\Request;
 
 /*
@@ -255,8 +256,8 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
 });
 
 /*Rutas de prueba Zarrok*/
-    //Route::apiResource('psychologistVisits', psychologistVisitsController::class)->only(['index', 'store', 'show', 'destroy']);
-    //Route::post('psychologistVisits/{id}', [psychologistVisitsController::class, 'update'])->name('psychologistVisits.update');
+    Route::apiResource('psychologistVisits', psychologistVisitController::class)->only(['index', 'store', 'show', 'destroy']);
+    Route::post('psychologistVisits/{id}', [psychologistVisitController::class, 'update'])->name('psychologistVisits.update');
 
 /* RUTAS DE PRUEBA JORGE */
 
