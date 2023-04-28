@@ -26,10 +26,10 @@ class CustomVisitRepository
 
     public function getAll()
     {
-        //$rol_id = $this->getIdRolUserAuth();
-        //$user_id = $this->getIdUserAuth();
-        $user_id = 6;
-        $rol_id = 6;
+        $rol_id = $this->getIdRolUserAuth();
+        $user_id = $this->getIdUserAuth();
+        //$user_id = 1;
+        //$rol_id = 6;
 
         $query = $this->model->query()->orderBy('id', 'DESC');
 
@@ -107,6 +107,7 @@ class CustomVisitRepository
 
         $customVisit = $this->model->findOrFail($id);
 
+        if ($rol_id == config('roles.psicologo')){
         $customVisit->theme = $request['theme'];
         $customVisit->agreements = $request['agreements'];
         $customVisit->concept = $request['concept'];
@@ -114,7 +115,7 @@ class CustomVisitRepository
         $customVisit->month_id = $request['month'];
         $customVisit->municipality_id = $request['municipality'];
         $customVisit->beneficiary_id = $request['beneficiary'];
-        $customVisit->created_by = $user_id;
+        }
 
         if ($rol_id == config('roles.coordinador_psicosocial')) {
             $customVisit->reviewed_by = $user_id;
