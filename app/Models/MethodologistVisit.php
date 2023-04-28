@@ -17,39 +17,36 @@ class MethodologistVisit extends Model
         'date_visit',
         'sports_scene',
         'beneficiary_coverage',
-        'lesson_plan',
-        'congruent_activity',
-        'develop_technical_sports_component_month',
-        'management_development_activities',
-        'functional_component_month',
-        'puntuality',
-        'personal_presentation',
-        'patient',
-        'discipline',
-        'parent_child_communication',
-        'verbalization',
-        'traditional',
-        'behavioral',
-        'romantic',
-        'constructivist',
-        'globalizer',
-        'municipality_id',
+        'swich_plans_r',
+        'swich_plans_sc_1',
+        'swich_plans_sc_2',
+        'swich_plans_sc_3',
+        'swich_plans_sc_4',
+        'swich_plans_gm_1',
+        'swich_plans_gm_2',
+        'swich_plans_gm_3',
+        'swich_plans_gm_4',
+        'swich_plans_gm_5',
+        'swich_plans_gm_6',
+        'swich_plans_mp_1',
+        'swich_plans_mp_2',
+        'swich_plans_mp_3',
+        'swich_plans_mp_4',
+        'swich_plans_mp_5',
+        'municipalitie_id',
         'sidewalk_id',
-        'created_by',
+        'user_id',
         'discipline_id',
         'evaluation_id',
         'event_support_id',
         'observations',
-        'revised_by',
-        'monitor_id',
-        'rejection_message',
         'status_id'
     ];
 
     protected $hidden = ['created_at', 'deleted_at', 'updated_at'];
 
     public function municipalities(){
-        return $this->belongsTo(Municipality::class, 'municipality_id');
+        return $this->belongsTo(Municipality::class, 'municipalitie_id');
     }
 
     public function event_supports(){
@@ -64,17 +61,20 @@ class MethodologistVisit extends Model
         return $this->belongsTo(Disciplines::class, 'discipline_id');
     }
 
+    public function monitor(){
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
     public function sidewalk(){
         return $this->belongsTo(Sidewalk::class, 'sidewalk_id');
     }
 
-    public function monitor(){
-        return $this->belongsTo(User::class, 'created_by');
+    public function status(){
+        return $this->belongsTo(Status::class, 'status_id');
     }
 
-    public function statuses()
-    {
-        return $this->belongsTo(Status::class, 'status_id');
+    public function creator(){
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     public function getActivitylogOptions(): LogOptions
