@@ -23,7 +23,7 @@ class BeneficiaryFactory extends Factory
             'accept' => fake()->randomElement(['0','1']), // generando un tipo de accept
             'linkage_project' => fake()->randomElement(['PMIE','PMEPUB','PMEPRI','PMGCP','PMMCP','PMR']), // generando un tipo de proyecto
             'participant_type' => fake()->randomElement(['C','NC']), // generando un tipo de participante
-            'document_number' => fake()->unique()->randomNumber(8),
+            'document_number' => fake()->randomNumber(8),
             'home_address' => 'Demo address',
             'zone' => fake()->randomElement(['U','R']), // generando un tipo de zona
             'conflict_victim' => fake()->randomElement(['0','1']), // generando un tipo de decision
@@ -37,8 +37,8 @@ class BeneficiaryFactory extends Factory
             'affiliation_type' => fake()->randomElement(['SUB','CON','NA']), // generando un tipo de scholarship
             'stratum' => rand(1, 7),
             'phone' => fake()->randomNumber(8), // generando un número de telefono aleatorio único de 8 dígitos
-            'email' => fake()->unique()->safeEmail,
-            'status_id' => rand(1, 8),
+            'email' => fake()->safeEmail,
+            'status_id' => rand(1, 8), 
             'audited' => fake()->randomElement(['0','1']), // generando si es aditado
             'created_at' => now(),
         ];

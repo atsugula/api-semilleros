@@ -16,7 +16,7 @@ return new class extends Migration
     {
         $views = "
         CREATE VIEW get_regional_coordinator_visits AS
-            SELECT
+            SELECT DISTINCT
                 users.name AS Coordinator,
                 coordinator_visits.date_visit AS Date,
                 coordinator_visits.hour_visit AS Hour,
@@ -34,7 +34,7 @@ return new class extends Migration
                 INNER JOIN role_user ON users.id = role_user.user_id
                 INNER JOIN statuses ON coordinator_visits.status_id = statuses.id
             WHERE
-                role_user.role_id = 14;
+                role_user.role_id = 9;
         ";
         DB::unprepared($views);
     }

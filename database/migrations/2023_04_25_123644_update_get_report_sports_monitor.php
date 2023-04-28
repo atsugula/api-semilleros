@@ -22,7 +22,7 @@ return new class extends Migration
             INNER JOIN role_user ON users.id = role_user.user_id
             INNER JOIN chronograms ON users.id = chronograms.created_by
             INNER JOIN beneficiaries ON users.id = beneficiaries.created_by
-            WHERE role_user.role_id = 19
+            WHERE role_user.role_id = 12
             GROUP BY users.id, users.name, users.lastname, users.document_number, users.gender,users.created_at;
         ";
         DB::unprepared($views);

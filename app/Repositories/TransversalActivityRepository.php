@@ -217,6 +217,7 @@ class TransversalActivityRepository
             $evidences = $this->modelEvidence->where('transversal_id', $id)->get();
             foreach ($evidences as $evidence) {
                 Storage::disk('public')->delete($evidence->path);
+                $evidence->delete();
             }
             $response = $this->uploadAll($request, $id);
             return $response;

@@ -30,13 +30,15 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        /*'document_number',
-        'lastname',
-        'zone_id',
-        'municipalities_id',
-        'address',
+        'document_number',
         'document_type',
+        'lastname',
+        'address',
         'phone',
+        'gender'
+        /*'zone_id',
+        'municipalities_id',
+        'document_type',
         'profile_photo_path',
         'status'*/
     ];

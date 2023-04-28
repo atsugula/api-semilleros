@@ -26,8 +26,10 @@ class CustomVisitRepository
 
     public function getAll()
     {
-        $rol_id = $this->getIdRolUserAuth();
-        $user_id = $this->getIdUserAuth();
+        //$rol_id = $this->getIdRolUserAuth();
+        //$user_id = $this->getIdUserAuth();
+        $user_id = 6;
+        $rol_id = 6;
 
         $query = $this->model->query()->orderBy('id', 'DESC');
 
@@ -37,12 +39,11 @@ class CustomVisitRepository
             case config('roles.director_administrator'):
                 $query = $query->whereNotIn('created_by', [1,2])->whereHas('createdBy.roles', function ($query) {
                     $query->where('roles.slug', 'psicologo');
-                })->whereNotIn('status_id', [config('status.APR')]);
+                })->where('status_id', [config('status.ENR')]);
                 break;
 
             case config('roles.psicologo'):
-                $query->where('created_by', $user_id)
-                ->whereNotIn('status_id', [config('status.APR')]);
+                $query->where('created_by', $user_id);
                 break;
 
             default:
@@ -114,7 +115,6 @@ class CustomVisitRepository
         $customVisit->municipality_id = $request['municipality'];
         $customVisit->beneficiary_id = $request['beneficiary'];
         $customVisit->created_by = $user_id;
-        $save = $customVisit->save();
 
         if ($rol_id == config('roles.coordinador_psicosocial')) {
             $customVisit->reviewed_by = $user_id;
@@ -128,7 +128,7 @@ class CustomVisitRepository
             $customVisit->update(['file' => $handle_1['response']['payload']]);
         }
         /* CAMBIAMOS EL ESTADO */
-        if ($request['status'] == config('status.REC') && $user_id == $customVisit->created_by) {
+        if ($request['status_id'] == config('status.REC') && $user_id == $customVisit->created_by) {
             $customVisit->status_id = config('status.ENR');
             $customVisit->reject_message = $request['reject_message'];
         }
