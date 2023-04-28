@@ -50,12 +50,12 @@ class PsychologistVisits extends Model
         return $this->belongsTo(User::class, 'monitor_id');
     }
 
-    public function createdBy()
+    public function createdBY()
     {
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function revisedBy()
+    public function reviewed()
     {
         return $this->belongsTo(User::class, 'reviewed_by');
     }
@@ -108,13 +108,15 @@ class PsychologistVisits extends Model
                         $query->where('municipalities.name', 'like', '%' . $searchValue . '%');
                     });
                 },
-                'monitor_name' => function ($query) use ($searchValue) {
-                    $query->whereHas('monitor', function ($query) use ($searchValue) {
-                        $query->where('users.name', 'like', '%' . $searchValue . '%');
+                'discipline' => function ($query) use ($searchValue) {
+                    $query->whereHas('diciplines', function ($query) use ($searchValue) {
+                        $query->where('diciplines.name', 'like', '%' . $searchValue . '%');
                     });
                 },
-                'sport_scene' => function ($query) use ($searchValue) {
-                    $query->where('sport_scene', 'like', '%' . $searchValue . '%');
+                'monitor' => function ($query) use ($searchValue) {
+                    $query->whereHas('users', function ($query) use ($searchValue) {
+                        $query->where('users.name', 'like', '%' . $searchValue . '%');
+                    });
                 },
             ];
 

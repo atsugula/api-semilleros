@@ -16,7 +16,7 @@ use App\Traits\UserDataTrait;
 use App\Models\DocumentVisit;
 use App\Traits\ImageTrait;
 
-class PsychologistVisitsRepository
+class psychologistVisitsRepository
 {
     use ImageTrait, FunctionGeneralTrait, UserDataTrait;
 
@@ -36,10 +36,10 @@ class PsychologistVisitsRepository
 
         $query = $this->model->query()->orderBy('id', 'DESC');
 
-    
-
         switch ($rol_id) {
             case config('roles.coordinador_psicosocial'):
+            case config('roles.super-root'):
+            case config('roles.director_administrator'):
                 $query = $query->whereNotIn('created_by', [1,2])->whereHas('createdBy.roles', function ($query) {
                     $query->where('roles.slug', 'psicologo');
                 })->whereNotIn('status_id', [config('status.APR')]);
@@ -111,11 +111,19 @@ class PsychologistVisitsRepository
 
     public function findById($id){
 
+        $PsychologistVisit = $this->model->findOrFail($id);
+        return new PsychologistVisitsResource($PsychologistVisit);
+
     }
 
 
     public function update($request, $id)
     {
+    
+        $user_id = $this->getIdUserAuth();
+        $rol_id = $this->getIdRolUserAuth();
+
+        $PsychologistVisit = $this->model->findOrFail($id);
         $PsychologistVisits = $this->model->findOrFail($id);
         $PsychologistVisits->date_visit = $request['date_visit'];
         $PsychologistVisits->municipalities_id = $request['municipality_id'];
@@ -130,8 +138,23 @@ class PsychologistVisitsRepository
         $PsychologistVisits->observations = $request['observations'];
         $PsychologistVisits->description = $request['description'];
         $PsychologistVisits->status_id = $PsychologistVisits->status_id == 4 ? 2: $PsychologistVisits->status_id;
+        $PsychologistVisit->monitor_id = $request['monitor'];
+        $PsychologistVisit->created_by = $request['psicologo'];
+        $PsychologistVisit->reviewed_by = $request['coordinador_psicosocial'];
+        
+        if ($rol_id == config('roles.coordinador_psicosocial')) {
+            $PsychologistVisit->reviewed_by = $user_id;
+            $PsychologistVisit->status_id = $request['status'];
+            $PsychologistVisit->rejection_message = $request['rejection_message'];
+        }
 
-        $save = $PsychologistVisits->save();
+        if ($request['status'] == config('status.REC') && $user_id == $PsychologistVisit->created_by) {
+            $PsychologistVisit->status_id = config('status.ENR');
+            $PsychologistVisit->rejection_message = $request['rejection_message'];
+        }
+        $PsychologistVisit->save();
+
+
         /* SUBIMOS EL ARCHIVO */
         if ($save) {
             $handle_1 = $this->send_file($request, 'file', 'psychologist_visit', $PsychologistVisits->id);
@@ -153,11 +176,12 @@ class PsychologistVisitsRepository
 
     public function delete($id)
     {
-        
+        // Elimine Aca
     }
 
     public function getBeneficiary($id) {
-      
+        $beneficiary = Beneficiary::findOrFail($id);
+        return new BeneficiaryResource($beneficiary);
     }
     
     public function getValidate($data, $method){
