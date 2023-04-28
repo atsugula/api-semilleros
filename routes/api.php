@@ -32,6 +32,8 @@ use App\Http\Controllers\V1\EventSupportController;
 use App\Http\Controllers\V1\HiringController;
 use App\Http\Controllers\V1\MethodologistVisitController;
 use App\Http\Controllers\V1\MunicipalityController;
+use App\Http\Controllers\V1\HealthEntitiesController;
+use App\Http\Controllers\V1\MonitorsController;
 use App\Http\Controllers\V1\ObjectsController as V1ObjectsController;
 use App\Http\Controllers\V1\UploadDocumentController;
 use App\Http\Controllers\V1\StatusDocumentController;
@@ -47,7 +49,8 @@ use App\Http\Controllers\V1\SidewalkController;
 //use App\Http\Controllers\V1\VisitSubDirectorController;
 use App\Http\Controllers\V1\TransversalActivityController;
 use App\Http\Controllers\V1\VisitSubDirectorController;
-use App\Http\Controllers\V1\psychologistVisitsController;
+use App\Http\Controllers\V1\VisitPsichologistController;
+
 use Illuminate\Http\Request;
 
 /*
@@ -65,7 +68,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function () {
+Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix('v1')->group(function () {
     Route::get('get-access', [AccessController::class, 'getAccess']);
     Route::post('have-access', [AccessController::class, 'userHaveAccess']);
     Route::get('get-permissions', [AccessController::class, 'getPermissions']);
@@ -112,8 +115,9 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
     Route::apiResource('custom_visits', CustomVisitController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::post('custom_visits/{id}', [CustomVisitController::class, 'update'])->name('custom_visits.update');
 
-    // psicologic
-
+    // psychologist visit
+    Route::apiResource('psychologistVisits', VisitPsichologistController::class)->only(['index', 'store', 'show', 'destroy']);
+    Route::post('psychologistVisits/{id}', [VisitPsichologistController::class, 'update'])->name('psychologistVisits.update');
 
     /* BUSCAR BENEFICIARIO */
     Route::get('findByBeneficiaryId/{id}', [CustomVisitController::class, 'getBeneficiary']);
@@ -139,7 +143,10 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
 
     /* BENEFICIARIOS */
     Route::apiResource('beneficiaries', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);
-    Route::post('beneficiaries/{id}', [BeneficiarieController::class, 'update']);
+    Route::put('beneficiaries/{id}', [BeneficiarieController::class, 'update']);
+
+    // BENEFICIARIOS POR MUNICIPIO
+    Route::get('getBeneficiariesMunicipality/{id}', [BeneficiarieController::class, 'getBeneficiariesMunicipality']);
 
 
     // Subida de Documentos
@@ -224,8 +231,12 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
     //MUNICIPALITY
     Route::get('municipalities', [MunicipalityController::class, 'index']);
 
+
+    //Health Entities
+    Route::get('health-entities', [HealthEntitiesController::class, 'index']);
+
     // USUARIOS MONITORES POR MUNICIPIO
-    Route::get('getMonitoringMunicipality/{id}', [GeneralController::class, 'getMonitoringMunicipality']);
+    Route::get('getMonitoringMunicipality/{id}', [MonitorsController::class, 'getMonitoringMunicipality']);
 
     //LISTA EL NUMERO DE DOCUMENTOS APROBADOS POR CADA USUARIO
     Route::get('revised', [ContractorController::class, 'revised']);
@@ -242,12 +253,10 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
 
     //Rutas de las excel apis
     //Route::get('descargas/export/', [UserExcelController::class, 'export']);
-    
-}); 
 
- /*Rutas de prueba Zarrok*/
-    //Route::apiResource('psychologistVisits', psychologistVisitsController::class)->only(['index', 'store', 'show', 'destroy']);
-    //Route::post('psychologistVisits/{id}', [psychologistVisitsController::class, 'update'])->name('psychologistVisits.update');
+});
+
+/*Rutas de prueba Zarrok*/
     
 /* RUTAS DE PRUEBA JORGE */
 

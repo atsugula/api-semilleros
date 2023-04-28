@@ -65,6 +65,9 @@ class DatabaseSeeder extends Seeder
             CoordinatorVisitSeeder::class,
             InfoContractorSeeder::class,
             SidewalkSeeder::class,
+            Health_Entities_Seeder::class,
+            // DATA FAKE
+            // DataFakeSeeder::class,
         ]);
     }
 }

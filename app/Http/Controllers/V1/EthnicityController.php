@@ -25,7 +25,7 @@ class EthnicityController extends Controller
      */
     public function index(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $results = $this->ethicityRepository->getAll();
             return $results->toArray($request);
@@ -42,7 +42,7 @@ class EthnicityController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $data = $request->all();
             //  $data['user_id'] = Auth::id();
@@ -62,7 +62,7 @@ class EthnicityController extends Controller
      */
     public function show($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $result = $this->ethicityRepository->findById($id);
             if (empty($result)) {
@@ -84,7 +84,7 @@ class EthnicityController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $data = $request->all();
             //$data['user_id'] = Auth::id();
@@ -104,7 +104,7 @@ class EthnicityController extends Controller
      */
     public function destroy($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $results = $this->ethicityRepository->delete($id);
         } catch (\Exception $ex) {

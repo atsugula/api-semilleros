@@ -27,7 +27,7 @@ class EventSupportController extends Controller
      */
     public function index(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $results = $this->eventSupportRepository->getAll();
             return $results->toArray($request);
@@ -44,7 +44,7 @@ class EventSupportController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $data = $request->all();
             $validator = $this->listsValidates->validates($data);
@@ -66,7 +66,7 @@ class EventSupportController extends Controller
      */
     public function show($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $result = $this->eventSupportRepository->findById($id);
             if (empty($result)) {
@@ -88,7 +88,7 @@ class EventSupportController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $data = $request->all();
             $validator = $this->listsValidates->validates($data);
@@ -110,7 +110,7 @@ class EventSupportController extends Controller
      */
     public function destroy($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $results = $this->eventSupportRepository->delete($id);
         } catch (\Exception $ex) {

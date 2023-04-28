@@ -13,8 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('beneficiaries', function (Blueprint $table) {
-            $table->dropColumn('softDeletes');
+        Schema::create('navigation_history', function (Blueprint $table) {
+            $table->id();
+            $table->text('url');
+            // Relation creator user
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users');
+            $table->timestamps();
             $table->softDeletes();
         });
     }
@@ -26,9 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('beneficiaries', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-            $table->string('softDeletes');
-        });
+        Schema::dropIfExists('navigation_history');
     }
 };

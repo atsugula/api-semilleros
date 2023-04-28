@@ -32,13 +32,12 @@ class CoordinatorVisitsRepository implements CrudRepositoryInterface
         $query = $this->model->query()->orderBy('id', 'DESC');
 
         if($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_zona_maritima')) {
-            $query->where('created_by', $user_id)
-                ->whereNotIn('status_id', [config('status.APR')]);
+            $query->where('created_by', $user_id);
         }
 
         if ($rol_id == config('roles.subdirector_tecnico')) {
             $query->whereNotIn('created_by', [1,2])
-                ->whereNotIn('status_id', [config('status.APR')]);
+                ->where('status_id', [config('status.ENR')]);
         }
 
         $paginate = config('global.paginate');
@@ -71,7 +70,7 @@ class CoordinatorVisitsRepository implements CrudRepositoryInterface
         $coordinator_visits->created_by = $user_id;
         // $coordinator_visits->revised_by = $request['revised_by'];
         $coordinator_visits->status_id = config('status.ENR');
-        $coordinator_visits->reject_message = $request['rejection_message'];
+        $coordinator_visits->rejection_message = $request['rejection_message'];
         $save = $coordinator_visits->save();
         /* SUBIMOS EL ARCHIVO */
         if ($save) {

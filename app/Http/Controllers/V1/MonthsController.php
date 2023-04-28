@@ -24,7 +24,7 @@ class MonthsController extends Controller
      */
     public function index(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $results = $this->monthsRepository->getAll();
             return $results;

@@ -59,8 +59,8 @@ class ChronogramRepository
     }
     public function create($request)
     {
-        $request->created_by = Auth::id();
-        $request->status_id = config('status.ENR');
+        $request['created_by'] = Auth::id();
+        $request['status_id'] = config('status.ENR');
         $cronograms = $this->model->create($request);
         // Guardamos en dataModel
         $this->control_data($cronograms, 'store');
@@ -68,10 +68,10 @@ class ChronogramRepository
         $schedulesModel = new Schedule();
 
         $lista = json_decode( $request['groups'] );
-
+        
         foreach($lista as $group) {
             $groupsModel = new ChronogramsGroups();
-            $groupsModel->chronograms_id             = $request['id'];
+            $groupsModel->chronograms_id             = $cronograms->id;
             $groupsModel->group_id                   = $group->group_id;
             $groupsModel->sports_modality            = $group->sports_modality;
             $groupsModel->main_sports_stage_name     = $group->main_sports_stage_name;

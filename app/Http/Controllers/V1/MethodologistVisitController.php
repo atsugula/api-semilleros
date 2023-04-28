@@ -18,7 +18,7 @@ class MethodologistVisitController extends Controller
 
     public function index(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $results = $this->methodologistVisitRepository->getAll();
             return $results->toArray($request);
@@ -29,7 +29,7 @@ class MethodologistVisitController extends Controller
 
     public function store(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $data = $request->all();
             $validator = $this->methodologistVisitRepository->getValidate($data, 'create');
@@ -45,7 +45,7 @@ class MethodologistVisitController extends Controller
 
     public function show($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $result = $this->methodologistVisitRepository->findById($id);
             if (empty($result)) {
@@ -59,7 +59,7 @@ class MethodologistVisitController extends Controller
 
     public function update(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $data = $request->all();
             $validator = $this->methodologistVisitRepository->getValidate($data, 'update');
@@ -75,7 +75,7 @@ class MethodologistVisitController extends Controller
 
     public function destroy($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $result = $this->methodologistVisitRepository->delete($id);
             return $result;
