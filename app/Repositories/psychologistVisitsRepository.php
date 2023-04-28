@@ -159,7 +159,6 @@ class psychologistVisitsRepository
             'municipality' => 'bail|required',
             'dicipline' => 'bail|required',
             'monitor' => 'bail|required',
-            'status' => 'bail|required',
             'rejection_message' => 'bail|required',
             'evidence' => $method != 'update' ? 'bail|required|mimes:application/pdf,pdf,png,webp,jpg,jpeg|max:' . (500 * 1049000) : 'bail',
 
@@ -181,7 +180,6 @@ class psychologistVisitsRepository
             'municipalities_id' => 'municipio', 
             'diciplines_id' => 'disciplina',
             'monitor_id' => 'monitor',
-            'status_id' => 'Estatdo',
             'rejection_message' => 'Acuerdos y recomendaciones',
         ];
 
