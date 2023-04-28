@@ -40,7 +40,18 @@ class psychologistVisitController extends Controller
 
     public function store(Request $request)
     {
-        //
+        try {
+            $validator = $this->repository->getValidate($request->all(), 'create');
+            if ($validator->fails()) {
+                return  $this->createErrorResponse([], $validator->errors()->first(), 422);
+            }
+
+            $result = $this->repository->create($request);
+
+            return $this->createResponse($result, 'Visita personalizada creada');
+        } catch (\Exception $ex) {
+            return  $this->createErrorResponse([], 'Algo salio mal al guardar la visita personalizada ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+        }
     } 
 
     public function show($id)

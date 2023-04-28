@@ -62,8 +62,35 @@ class psychologistVisitsRepository
     }
     public function create($request)
     {
-        // por ver con nicolas
+        $user_id = $this->getIdUserAuth();
+
+        $PsychologistVisit = $this->model;
+        $PsychologistVisit->scenery = $request['scenery'];
+        $PsychologistVisit->number_beneficiaries = $request['number_beneficiaries'];
+        $PsychologistVisit->beneficiaries_recognize_name = $request['beneficiaries_recognize_name'];
+        $PsychologistVisit->all_ok = $request['all_ok'];
+        $PsychologistVisit->description = $request['description'];
+        $PsychologistVisit->observations = $request['observations'];
+        $PsychologistVisit->municipalities_id = $request['municipalities_id'];
+        $PsychologistVisit->diciplines_id = $request['discipline'];
+        $PsychologistVisit->monitor_id = $request['monitor'];
+        $PsychologistVisit->created_by = $user_id;
+        $PsychologistVisit->reviewed_by = $request['coordinador_psicosocial'];
+        $PsychologistVisit->status_id = config('status.ENR');
+        $save = $PsychologistVisit->save();
+
+        /* SUBIMOS EL ARCHIVO */
+        if ($save) {
+            $handle_1 = $this->send_file($request, 'evidence', 'psychological_visits', $PsychologistVisit->id);
+            $PsychologistVisit->update(['file' => $handle_1['response']['payload']]);
+            $save &= $handle_1['response']['success'];
+        }        
+
+        $results = new PsychologistVisitsResource($PsychologistVisit);
+        return $results;
     }
+
+
 
     public function findById($id){
 
