@@ -35,12 +35,11 @@ class CustomVisitRepository
             case config('roles.coordinador_psicosocial'):
                 $query = $query->whereNotIn('created_by', [1,2])->whereHas('createdBy.roles', function ($query) {
                     $query->where('roles.slug', 'psicologo');
-                })->whereNotIn('status_id', [config('status.APR')]);
+                })->where('status_id', [config('status.ENR')]);
                 break;
 
             case config('roles.psicologo'):
-                $query->where('created_by', $user_id)
-                ->whereNotIn('status_id', [config('status.APR')]);
+                $query->where('created_by', $user_id);
                 break;
 
             default:
