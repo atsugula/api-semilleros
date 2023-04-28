@@ -26,7 +26,6 @@ class psychologistVisitsController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('haveaccess');
         try {
             $validator = $this->repository->getValidate($request->all(), 'create');
             if ($validator->fails()) {
@@ -49,7 +48,6 @@ class psychologistVisitsController extends Controller
      */
     public function indexByMonitor($id)
     {
-        Gate::authorize('haveaccess');
         try {
             $results = $this->repository->findByCreator($id);
             return $this->createResponse($results,'Visitas creadas por el monitor');
@@ -68,7 +66,6 @@ class psychologistVisitsController extends Controller
     */
    public function update(Request $request, $id)
    {
-       Gate::authorize('haveaccess');
        try {
         $validator = $this->repository->getValidate($request->all(), 'update');
 

@@ -135,7 +135,6 @@ class PsychologistVisitsRepository
             'monitor_organization_discipline_management' => 'bail|required',
             'objetive' => 'bail|required',
             'observations' => 'bail|required',
-            'evidence' => 'bail|required',
             'municipality_id' => 'bail|required',
             'diciplines_id' => 'bail|required',
             'date_visit' => 'bail|required',
