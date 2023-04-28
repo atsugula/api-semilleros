@@ -81,7 +81,7 @@ class psychologistVisitsRepository
 
         /* SUBIMOS EL ARCHIVO */
         if ($save) {
-            $handle_1 = $this->send_file($request, 'filr', 'psychological_visits', $PsychologistVisit->id);
+            $handle_1 = $this->send_file($request, 'file', 'psychological_visits', $PsychologistVisit->id);
             $PsychologistVisit->update(['file' => $handle_1['response']['payload']]);
             $save &= $handle_1['response']['success'];
         }        
