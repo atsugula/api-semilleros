@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Exports\V1\CustomVisitPsicosocialExport;
 use App\Exports\V1\TransversalActivityExport;
 use App\Exports\V1\NavigationHistoryExport;
 use App\Exports\V1\VisitSubDirectorExport;
@@ -37,6 +38,9 @@ class ReportRepository
                 break;
             case 'customVisit':
                 return $this->exportCustomVisit($request);
+                break;
+            case 'customPsychologicalVisits':
+                return $this->customPsychologicalVisitsVisit($request);
                 break;
             case 'inscriptions':
                 return $this->exportInscription($request);
@@ -107,6 +111,19 @@ class ReportRepository
         try {
             if (!$request->data) {
                 return Excel::download(new CoordinatorVisitExport($request), "$request->type_excel.xlsx");
+            }
+            return User::count();
+        } catch (\Exception $ex) {
+            report($ex);
+            return response()->json(['error' => 'Error obteniendo el dato ' . $ex->getMessage() . ', buscar en linea de codigo ' . $ex->getLine(), 'success' => false], 404);
+        }
+    }
+
+    public function customPsychologicalVisitsVisit($request)
+    {
+        try {
+            if (!$request->data) {
+                return Excel::download(new CustomVisitPsicosocialExport($request), "$request->type_excel.xlsx");
             }
             return User::count();
         } catch (\Exception $ex) {

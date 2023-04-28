@@ -38,7 +38,7 @@ class ChronogramRepository
                 ->whereNotIn('status_id', config('roles.APR'));
         }
 
-        if ($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_zona_maritima')) {
+        if ($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_enlace')) {
             $query->whereNotIn('created_by', [1,2])->with(['mes', 'municipio'])
                 ->whereHas('creator.roles', function ($query) {
                     $query->where('roles.slug', 'subdirector_tecnico');
@@ -59,16 +59,16 @@ class ChronogramRepository
     }
     public function create($request)
     {
-        $request->created_by = Auth::id();
-        $request->status_id = config('status.ENR');
+        $request['created_by'] = Auth::id();
+        $request['status_id'] = config('status.ENR');
         $cronograms = $this->model->create($request);
         // Guardamos en dataModel
         $this->control_data($cronograms, 'store');
 
         $schedulesModel = new Schedule();
 
-        $lista = json_decode( $request->groups );
-        
+        $lista = json_decode( $request['groups'] );
+
         foreach($lista as $group) {
             $groupsModel = new ChronogramsGroups();
             $groupsModel->chronograms_id             = $cronograms->id;
@@ -116,7 +116,7 @@ class ChronogramRepository
         $cronograms->note = $data['note'];
 
         // Actualizar estados
-        if ($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_zona_maritima')) {
+        if ($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_enlace')) {
             $cronograms->revised_by = $user_id;
             $cronograms->status_id = $data['status_id'];
             $cronograms->rejection_message = $data['rejection_message'];

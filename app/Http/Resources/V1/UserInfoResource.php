@@ -4,7 +4,7 @@ namespace App\Http\Resources\V1;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ChronogramResource extends JsonResource
+class UserInfoResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,16 +15,11 @@ class ChronogramResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'month' => $this->mes->name,
-            'municipio' => $this->municipio->name,
-            'note' => $this->note,
-            'groups' => $this->groups,
-            'status' => $this->statuses,
-            'reviewed' => [
-                'user' => $this->reviewed,
-                'roles' => $this->reviewed?->roles,
-            ],
+            'name'=>$this->name,
+            'lastname'=>$this->lastname,
+            'document_number'=>$this->document_number,
+            'gender' => $this->gender,
+            'visits'=>$this->visits,
             'created_at'=> $this->created_at ? $this->getPublishedAtAttribute():null,
         ];
     }

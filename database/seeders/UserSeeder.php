@@ -26,13 +26,6 @@ class UserSeeder extends Seeder
             'password' => Hash::make('root')
         ]);
 
-        /* ROOT */
-        User::create([
-            'name' => 'Admin',
-            'email' => '5465468786',
-            'password' => Hash::make('admin')
-        ]);
-
         /* DIRECTOR ADMINISTRATIVOS */
         User::create([
             'name' => 'Director administrativo',
@@ -54,6 +47,13 @@ class UserSeeder extends Seeder
             'password' => Hash::make('12345678')
         ]);
 
+        /* COORDINADOR ENLACE */
+        User::create([
+            'name' => 'Coordinador enlace',
+            'email' => 'coordinador_enlace@ssiset.com',
+            'password' => Hash::make('12345678')
+        ]);
+
         /* COORDINADOR PSICOSOCIAL */
         User::create([
             'name' => 'Coordinador psicosocial',
@@ -68,13 +68,6 @@ class UserSeeder extends Seeder
             'password' => Hash::make('12345678')
         ]);
 
-        /* CONTADOR GENERAL */
-        User::create([
-            'name' => 'Contador general',
-            'email' => 'contador_general@ssiset.com',
-            'password' => Hash::make('12345678')
-        ]);
-
         /* ASISTENTE ADMINISTRATIVO */
         User::create([
             'name' => 'Asistente administrativo',
@@ -82,52 +75,10 @@ class UserSeeder extends Seeder
             'password' => Hash::make('12345678')
         ]);
 
-        /* APOYO ADMINISTRATIVO */
-        User::create([
-            'name' => 'Apoyo administrativo',
-            'email' => 'apoyo_administrativo@ssiset.com',
-            'password' => Hash::make('12345678')
-        ]);
-
-        /* AUXILIAR ADMINISTRATIVO TECNICO */
-        User::create([
-            'name' => 'Auxiliar administrativo tecnico',
-            'email' => 'auxiliar_administrativo_tecnico@ssiset.com',
-            'password' => Hash::make('12345678')
-        ]);
-
-        /* APOYO JURIDICO */
-        User::create([
-            'name' => 'Apoyo juridico',
-            'email' => 'apoyo_juridico@ssiset.com',
-            'password' => Hash::make('12345678')
-        ]);
-
-        /* PERIODISTA */
-        User::create([
-            'name' => 'Periodista',
-            'email' => 'periodista@ssiset.com',
-            'password' => Hash::make('12345678')
-        ]);
-
-        /* MENSAJERO */
-        User::create([
-            'name' => 'Mensajero',
-            'email' => 'mensajero@ssiset.com',
-            'password' => Hash::make('12345678')
-        ]);
-
         /* COORDINADOR REGIONAL */
         User::create([
             'name' => 'Coordinador regional',
             'email' => 'coordinador_regional@ssiset.com',
-            'password' => Hash::make('12345678')
-        ]);
-
-        /* COORDINADOR ZONA MARITIMA */
-        User::create([
-            'name' => 'Coordinador zona maritima',
-            'email' => 'coordinador_zona_maritima@ssiset.com',
             'password' => Hash::make('12345678')
         ]);
 

@@ -127,6 +127,17 @@ class BeneficiarieController extends Controller
     }
 
 
-
+    // Trae solo beneficiarios por municipio
+    public function getBeneficiariesMunicipality($id) {
+        $response = Beneficiary::where('municipalities_id', $id)->get();
+        $beneficiaries = [];
+        foreach ($response as $bene) {
+            array_push($beneficiaries, [
+                'label' => $bene->full_name,
+                'value' => $bene->id
+            ]);
+        }
+        return response()->json($beneficiaries);
+    }
 
 }
