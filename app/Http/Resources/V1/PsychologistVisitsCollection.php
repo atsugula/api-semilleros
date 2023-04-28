@@ -15,15 +15,14 @@ class PsychologistVisitsCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
-            // "count_page" =>$request->session()->get('count_page_custom_visits'),
             'success' => true,
-            'action' => 'Consulta visita Psicologicas',
+            'action' => 'Consulta visitas psicológicas',
             'items' => $this->collection,
             'meta' => [
                 'organization' => 'OpenCode SAS',
                 'authors' => 'Naac Alvarez'
             ],
-            'type' => 'psichologist_visits'
+            'type' => 'psychologist_visits'
         ];
     }
 }

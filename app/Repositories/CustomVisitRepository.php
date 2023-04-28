@@ -33,6 +33,8 @@ class CustomVisitRepository
 
         switch ($rol_id) {
             case config('roles.coordinador_psicosocial'):
+            case config('roles.super-root'):
+            case config('roles.director_administrator'):
                 $query = $query->whereNotIn('created_by', [1,2])->whereHas('createdBy.roles', function ($query) {
                     $query->where('roles.slug', 'psicologo');
                 })->where('status_id', [config('status.ENR')]);
