@@ -30,7 +30,7 @@ class CustomVisitController extends Controller
             if ($results != null){
                 return $results->toArray($request);
             } else {
-                throw new \Exception('No está autorizado.');
+                throw new \Exception('No está autorizado.', 401);
             }
 
         } catch (\Exception $ex) {

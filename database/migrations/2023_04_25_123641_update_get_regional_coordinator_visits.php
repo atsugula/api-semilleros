@@ -22,7 +22,7 @@ return new class extends Migration
                 JOIN role_user ON users.id = role_user.user_id
                 JOIN roles ON role_user.role_id = roles.id
             INNER JOIN coordinator_visits ON users.id = coordinator_visits.created_by
-                WHERE roles.id = 14
+                WHERE roles.id = 9
                 GROUP BY users.id, users.name, users.lastname, users.document_number, users.gender,users.created_at;
         ";
         DB::unprepared($views);
