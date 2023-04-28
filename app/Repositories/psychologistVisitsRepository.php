@@ -205,7 +205,7 @@ class PsychologistVisitsRepository
             'concept' => 'Concepto',
             'guardian_knows_semilleros' => '¿El padre o acudiente conoce el proyecto de Semilleros Deportivos?',
             'month' => 'Cumple con el desarrollo tecnico del mes',
-            'beneficiary' => 'Beneficiario'
+            'beneficiary' => 'Beneficiario',
             'file' => 'Archivo',
             'municipality' => 'Municipio',
         ];
