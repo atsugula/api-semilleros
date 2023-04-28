@@ -1,0 +1,34 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::table('psychological_visits', function (Blueprint $table) {
+            $table->char('beneficiaries_recognize_name');
+            $table->char('beneficiary_recognize_value');
+            $table->char('all_ok');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('psychological_visits', function (Blueprint $table) {
+            //
+        });
+    }
+};
