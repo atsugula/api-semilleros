@@ -30,7 +30,8 @@ class psychologistVisitsSeeder extends Seeder
             'created_by' => 6,
             'reviewed_by' => 18,
             'status_id' => 4,
-            'reject_message' => 'Visit rejected',
+            'rejection_message' => 'Visit rejected',
+            'date_visit' => '2023-04-15',
         ]);
     }
 }
