@@ -19,8 +19,4 @@ class Disciplines extends Model
     public function MethodologistVisit(){
         return $this->belongsTo(MethodologistVisit::class);
     }
-
-    public function Discipline_users(){
-        return $this->hasMany(DisciplineUser::class);
-    }
 }

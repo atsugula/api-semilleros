@@ -46,23 +46,6 @@ class DisciplineController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function indexByMonitor($id)
-    {
-        // Gate::authorize('haveaccess');
-        try {
-            $results = $this->disciplineRepository->getByMonitor($id);
-            return $this->createResponse($results,'Disciplinas del monitor');
-        } catch (\Exception $ex) {
-            return  $this->createErrorResponse([], 'Algo salio mal al listar las disciplinas deportivas' . $ex->getMessage() . ' linea ' . $ex->getCode());
-        }
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

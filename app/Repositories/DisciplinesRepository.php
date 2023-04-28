@@ -17,23 +17,6 @@ class DisciplinesRepository implements CrudRepositoryInterface{
         return $results;
     }
 
-    public function getByMonitor($id){
-        $total = Disciplines::orderBy('id', 'DESC')->with('Discipline_users')->get();
-        $itemsResult = [];
-        foreach ($total as $item){
-            $include = false;
-            foreach ($item->Discipline_users as $valor){
-                if($valor->user_id == $id){
-                    $include = true;
-                }
-            }
-            if($include){
-                array_push($itemsResult, $item);
-            }
-        }
-        return new DisciplineCollection($itemsResult);
-    }
-
     public function create($request)
     {
         $disciplines = Disciplines::create($request);
@@ -54,7 +37,7 @@ class DisciplinesRepository implements CrudRepositoryInterface{
         $disiciplines->update($data);
         return $disiciplines;
     }
-    
+
     public function delete($id)
     {
         $disiciplines = Disciplines::findOrFail($id);

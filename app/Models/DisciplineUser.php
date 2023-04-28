@@ -25,7 +25,4 @@ class DisciplineUser extends Model
         return $this->hasMany(User::class, 'id', 'user_id');
     }
 
-    public function Dciplines(){
-        return $this->hasMany(Disciplines::class, 'id', 'disciplines_id');
-    }
 }
