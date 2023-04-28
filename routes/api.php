@@ -243,6 +243,13 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
     //Muestra los meses restantes del año
     Route::get('months', [MonthsController::class, 'index']);
 
+    //Visitas psicologicas
+    Route::apiResource('psychologistVisits', psychologistVisitsController::class)->only(['store']);
+    Route::get('psychologistVisits/byMonitor/{id}', [psychologistVisitsController::class, 'indexByMonitor']);
+    Route::post('psychologistVisits/{id}', [psychologistVisitsController::class, 'update']);
+    //Disciplinas del monitor
+    Route::get('diciplines/byMonitor/{id}',[DisciplineController::class ,'indexByMonitor']);
+
     // Subida de chronogram
     //Route::apiResource('chronogram', ChronogramController::class)->only(['index', 'store', 'show']);
     //Route::post('chronogram/{id}', [ChronogramController::class, 'update']);
@@ -255,8 +262,8 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
 });
 
 /*Rutas de prueba Zarrok*/
-    //Route::apiResource('psychologistVisits', psychologistVisitsController::class)->only(['index', 'store', 'show', 'destroy']);
-    //Route::post('psychologistVisits/{id}', [psychologistVisitsController::class, 'update'])->name('psychologistVisits.update');
+    //Route::apiResource('psychologistVisits', psychologistVisitsController::class)->only(['destroy']);
+    //Route::get('psychologistVisits/byMonitor/{id}', [psychologistVisitsController::class, 'indexByMonitor']);
 
 /* RUTAS DE PRUEBA JORGE */
 

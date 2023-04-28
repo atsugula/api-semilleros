@@ -37,7 +37,7 @@ return new class extends Migration
             $table->foreign('reviewed_by')
                 ->references('id')
                 ->on('users');
-            
+
 
             $table->string('scenery');
             $table->integer('number_beneficiaries');
