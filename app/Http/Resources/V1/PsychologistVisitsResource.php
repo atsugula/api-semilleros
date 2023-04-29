@@ -24,7 +24,7 @@ class PsychologistVisitsResource extends JsonResource
             'beneficiaries_knows_project' => $this->beneficiaries_recognize_name,
             'beneficiaries_knows_monthly_value' => $this->beneficiary_recognize_value,
             'monitor_organization_discipline_management' => $this->all_ok,
-            'file' => $this->evidence,
+            'file' => $this->file,
             'deleted_at' => $this->deleted_at,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
