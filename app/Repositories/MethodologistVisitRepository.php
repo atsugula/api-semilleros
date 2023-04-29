@@ -31,24 +31,24 @@ class MethodologistVisitRepository
         $results = [];
 
         if ($rol_id == config('roles.subdirector_tecnico')) {
-            $results = $query->whereNotIn('created_by', [1,2])
+            $query->whereNotIn('created_by', [1,2])
             ->whereHas('creator.roles', function ($query) {
                 $query->where('roles.slug', 'metodologo');
             })
-            ->whereNotIn('status_id', [config('status.APR')]);
+            ->where('status_id', [config('status.ENR')]);
         }
-
         if ($rol_id == config('roles.metodologo')) {
-            $query->where('created_by', $user_id)
-                ->whereNotIn('status_id', [config('status.APR')]);
+            $query->where('created_by', $user_id);
         }
+        $paginate = config('global.paginate');
+        session()->forget('count_page_visitMethodologists');
+        session()->put('count_page_visitMethodologists', ceil($query->get()->count()/$paginate));
 
-        // $methodologist_visits = new MethodologistVisitCollection($this->model->orderBy('id', 'DESC')->get());
-
-        return new MethodologistVisitCollection($results);
+        return new MethodologistVisitCollection($query->simplePaginate($paginate));
     }
     public function create($request)
     {
+        $user_id = $this->getIdUserAuth();
         $methodologist_visit = $this->model;
         $methodologist_visit->hour_visit = $request['hour_visit'];
         $methodologist_visit->date_visit = $request['date_visit'];
@@ -73,13 +73,14 @@ class MethodologistVisitRepository
         $methodologist_visit->swich_plans_mp_5 = $request['swich_plans_mp_5'] == "false" ? 0 : 1;
         $methodologist_visit->municipalitie_id = $request['municipalitie_id'] == "false" ? 0 : 1;
         /* RELACIONES CAMPOS */
-        $methodologist_visit->sidewalk_id = $request['sidewalk_id'];
+        $methodologist_visit->sidewalk = $request['sidewalk'];
         $methodologist_visit->user_id = $request['user_id'];
         $methodologist_visit->discipline_id = $request['discipline_id'];
         $methodologist_visit->evaluation_id = $request['evaluation_id'];
         $methodologist_visit->event_support_id = $request['event_support_id'];
         $methodologist_visit->observations = $request['observations'];
         $methodologist_visit->status_id = config('status.ENR');
+        $methodologist_visit->created_by = $user_id;
         $methodologist_visit->save();
         // Guardamos en dataModel
         $this->control_data($methodologist_visit, 'store');
@@ -124,7 +125,7 @@ class MethodologistVisitRepository
         $methodologist_visit->swich_plans_mp_5 = $request['swich_plans_mp_5'] ? 1 : 0;
         $methodologist_visit->municipalitie_id = $request['municipalitie_id'] ? 1 : 0;
         /* RELACIONES CAMPOS */
-        $methodologist_visit->sidewalk_id = $request['sidewalk_id'];
+        $methodologist_visit->sidewalk = $request['sidewalk'];
         $methodologist_visit->user_id = $request['user_id'];
         $methodologist_visit->discipline_id = $request['discipline_id'];
         $methodologist_visit->evaluation_id = $request['evaluation_id'];

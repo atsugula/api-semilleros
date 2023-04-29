@@ -34,7 +34,7 @@ class MethodologistVisit extends Model
         'swich_plans_mp_4',
         'swich_plans_mp_5',
         'municipalitie_id',
-        'sidewalk_id',
+        'sidewalk',
         'user_id',
         'discipline_id',
         'evaluation_id',
@@ -65,9 +65,9 @@ class MethodologistVisit extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function sidewalk(){
-        return $this->belongsTo(Sidewalk::class, 'sidewalk_id');
-    }
+    // public function sidewalk(){
+    //     return $this->belongsTo(Sidewalk::class, 'sidewalk');
+    // }
 
     public function status(){
         return $this->belongsTo(Status::class, 'status_id');
