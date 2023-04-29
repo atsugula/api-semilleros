@@ -17,7 +17,7 @@ return new class extends Migration
         $this->down();
         $views = "
         CREATE VIEW get_psychological_visit_review AS
-            SELECT 
+            SELECT
                 cpv.id AS id,
                 cpvr.reason AS rejection_message,
                 cpvr.status AS status,
@@ -34,15 +34,15 @@ return new class extends Migration
                 bg.firts_name AS guardian_first_name,
                 bg.last_name AS guardian_last_name,
                 bg.cedula AS guardian_cedula
-            FROM 
+            FROM
                 custom_psychological_visits cpv
                 LEFT JOIN custom_psychological_visit_review cpvr ON cpv.id = cpvr.Psicological_visit
-                JOIN beneficiaries b ON cpv.beneficiary = b.id
-                JOIN health_entities c ON b.health_entity_id = c.id
-                JOIN municipalities m ON cpv.municipality = m.id
+                LEFT JOIN beneficiaries b ON cpv.beneficiary = b.id
+                LEFT JOIN health_entities c ON b.health_entity_id = c.id
+                LEFT JOIN municipalities m ON cpv.municipality = m.id
                 LEFT JOIN know_guardians kg ON b.id = kg.id_beneficiary
                 LEFT JOIN beneficiary_guardians bg ON kg.id_guardian = bg.id
-                JOIN users u ON cpv.created_by = u.id;
+                LEFT JOIN users u ON cpv.created_by = u.id;
         ";
         DB::unprepared($views);
     }
@@ -56,6 +56,6 @@ return new class extends Migration
     {
         $views= "DROP VIEW IF EXISTS get_psychological_visit_review;";
         DB::unprepared($views);
-        
+
     }
 };

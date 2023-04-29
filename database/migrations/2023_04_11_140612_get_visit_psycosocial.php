@@ -16,7 +16,7 @@ return new class extends Migration
     {
         $views = "
         CREATE VIEW get_visit_psycosocial AS
-        SELECT 
+        SELECT
             users.created_by AS psicosocial,
             municipalities.name AS municipality,
             transversal_activities.date_visit AS date,
@@ -25,8 +25,8 @@ return new class extends Migration
             transversal_activities.status_id AS status,
             transversal_activities.created_at AS created_at
         FROM transversal_activities
-        JOIN municipalities ON transversal_activities.municipality_id = municipalities.id
-        JOIN users ON transversal_activities.created_by = users.id;
+            LEFT JOIN municipalities ON transversal_activities.municipality_id = municipalities.id
+            LEFT JOIN users ON transversal_activities.created_by = users.id;
         ";
         DB::unprepared($views);
     }

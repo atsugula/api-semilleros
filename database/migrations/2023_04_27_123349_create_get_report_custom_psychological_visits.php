@@ -19,10 +19,10 @@ return new class extends Migration
             SELECT DISTINCT u.name, u.lastname, b.full_name, m.name AS municipality,
                 tpt.date, tpt.agreemnets, tpt.topic, cpvr.status, tpt.created_at
             FROM custom_psychological_visits tpt
-                JOIN users u ON u.id = tpt.created_by
-                JOIN municipalities m ON m.id = tpt.municipality
-                JOIN custom_psychological_visit_review cpvr ON tpt.id = cpvr.Psicological_visit
-                JOIN beneficiaries b ON b.id = tpt.beneficiary
+                LEFT JOIN users u ON u.id = tpt.created_by
+                LEFT JOIN municipalities m ON m.id = tpt.municipality
+                LEFT JOIN custom_psychological_visit_review cpvr ON tpt.id = cpvr.Psicological_visit
+                LEFT JOIN beneficiaries b ON b.id = tpt.beneficiary
             WHERE
                 tpt.created_by NOT IN (1)
         ";
