@@ -42,8 +42,7 @@ class psychologistVisitsRepository
                 break;
 
             case config('roles.psicologo'):
-                $query->where('created_by', $user_id)
-                ->whereNotIn('status_id', [config('status.APR')]);
+                $query->where('created_by', $user_id);
                 break;
 
             default:
