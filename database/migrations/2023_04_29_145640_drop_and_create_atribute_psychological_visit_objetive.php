@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('psychological_visits', function (Blueprint $table) {
             $table->dropColumn('evidence');
-            $table->text('file')->default('No se ha cargado evidencia');
+            $table->text('file');
         });
     }
 
