@@ -25,11 +25,11 @@ class psychologistVisitsRepository
 
     public function getAll()
     {
-        // $rol_id = $this->getIdRolUserAuth();
-        // $user_id = $this->getIdUserAuth();
+        $rol_id = $this->getIdRolUserAuth();
+        $user_id = $this->getIdUserAuth();
 
-        $rol_id = 6;
-        $user_id = 6;
+        // $rol_id = 6;
+        // $user_id = 6;
 
         $query = $this->model->query()->orderBy('id', 'DESC');
 
@@ -65,29 +65,32 @@ class psychologistVisitsRepository
     }
     public function create($request)
     {
-        // $user_id = $this->getIdUserAuth();
-        $user_id = 6;
+        $user_id = $this->getIdUserAuth();
+        // $user_id = 320;
 
         $PsychologistVisit = $this->model;
         $PsychologistVisit->scenery = $request['scenery'];
+        $PsychologistVisit->objetive = $request['objetive'];
         $PsychologistVisit->number_beneficiaries = $request['number_beneficiaries'];
         $PsychologistVisit->beneficiaries_recognize_name = $request['beneficiaries_recognize_name'];
+        $PsychologistVisit->beneficiary_recognize_value = $request['beneficiary_recognize_value'];
         $PsychologistVisit->all_ok = $request['all_ok'];
         $PsychologistVisit->description = $request['description'];
         $PsychologistVisit->observations = $request['observations'];
         $PsychologistVisit->municipalities_id = $request['municipalities_id'];
-        $PsychologistVisit->diciplines_id = $request['discipline'];
+        $PsychologistVisit->date_visit = $request['municipalities_id'];
+        $PsychologistVisit->diciplines_id = $request['diciplines_id'];
         $PsychologistVisit->monitor_id = $request['monitor'];
+        $PsychologistVisit->date_visit = $request['date_visit'];
         $PsychologistVisit->created_by = $user_id;
-        $PsychologistVisit->reviewed_by = $request['coordinador_psicosocial'];
         $PsychologistVisit->status_id = config('status.ENR');
         $save = $PsychologistVisit->save();
 
         /* SUBIMOS EL ARCHIVO */
         if ($save) {
-            $handle_1 = $this->send_file($request, 'file', 'psychological_visits', $PsychologistVisit->id);
-            $PsychologistVisit->update(['file' => $handle_1['response']['payload']]);
-            $save &= $handle_1['response']['success'];
+           $handle_1 = $this->send_file($request, 'file', 'psychological_visits', $PsychologistVisit->id);
+           $PsychologistVisit->update(['file' => $handle_1['response']['payload']]);
+           $save &= $handle_1['response']['success'];
         }        
 
         $results = new PsychologistVisitsResource($PsychologistVisit);
@@ -106,11 +109,11 @@ class psychologistVisitsRepository
 
     public function update($request, $id)
     {
-        // $user_id = $this->getIdUserAuth();
-        // $rol_id = $this->getIdRolUserAuth();
+        $user_id = $this->getIdUserAuth();
+        $rol_id = $this->getIdRolUserAuth();
 
-        $user_id = 6;
-        $rol_id = 6;
+        // $user_id = 6;
+        // $rol_id = 6;
 
         $PsychologistVisit = $this->model->findOrFail($id);
 
@@ -158,15 +161,16 @@ class psychologistVisitsRepository
     public function getValidate($data, $method){
         
         $validate = [
-            'scenery' => 'bail|required', 
+            'scenery' => 'bail|required',
+            'objetive' => 'bail|required',
             'number_beneficiaries' => 'bail|required',
             'beneficiaries_recognize_name' => 'bail|required',
             'beneficiary_recognize_value' => 'bail|required',
             'all_ok' => 'bail|required',
             'description' => 'bail|required',
             'observations' => 'bail|required',
-            'municipality' => 'bail|required',
-            'dicipline' => 'bail|required',
+            'municipalities_id' => 'bail|required',
+            'diciplines_id' => 'bail|required',
             'monitor' => 'bail|required',
             'file' => $method != 'update' ? 'bail|required|mimes:application/pdf,pdf,png,webp,jpg,jpeg|max:' . (500 * 1049000) : 'bail',
 

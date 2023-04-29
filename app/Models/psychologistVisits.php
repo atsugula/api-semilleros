@@ -15,6 +15,7 @@ class psychologistVisits extends Model
 
     protected $fillable = [
         'scenery',
+        'objetive',
         'number_beneficiaries',
         'beneficiaries_recognize_name',
         'beneficiary_recognize_value',
