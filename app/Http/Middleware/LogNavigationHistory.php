@@ -23,7 +23,7 @@ class LogNavigationHistory
         $user_id = $this->getIdUserAuth();
         $currentRoute = $request->route()->getName();
 
-        if ($currentRoute != $exceptRoute) {
+        if ($currentRoute != $exceptRoute && !empty($currentRoute)) {
             $history = new NavigationHistory();
             $history->user_id = $user_id;
             $history->url = $currentRoute;

@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\ObjectsController;
-use App\Http\Controllers\psychological_visits;
 use App\Http\Controllers\V1\PDFController as PDFController_V1;
 use App\Http\Controllers\V1\ChronogramController;
 use App\Http\Controllers\V1\ValidityPeriodController;
@@ -49,7 +48,7 @@ use App\Http\Controllers\V1\SidewalkController;
 //use App\Http\Controllers\V1\VisitSubDirectorController;
 use App\Http\Controllers\V1\TransversalActivityController;
 use App\Http\Controllers\V1\VisitSubDirectorController;
-use App\Http\Controllers\psychologistVisitController;
+use App\Http\Controllers\V1\VisitPsichologistController;
 
 use Illuminate\Http\Request;
 
@@ -102,6 +101,7 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
         'chronogram' => ChronogramController::class,
     ]);
 
+
     /* VISITAS METODOLOGICAS */
     Route::apiResource('methodologist_visits', MethodologistVisitController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::post('methodologist_visits/{id}', [MethodologistVisitController::class, 'update']);
@@ -111,12 +111,13 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
     Route::apiResource('coordinator_visits', CoordinatorVistsController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::post('coordinator_visits/{id}', [CoordinatorVistsController::class, 'update'])->name('coordinator_visits.update');
 
-    /* VISITAS DE ASESORIAS PERSONALIZADAS */
-    Route::apiResource('custom_visits', CustomVisitController::class)->only(['index', 'store', 'show', 'destroy']);
-    Route::post('custom_visits/{id}', [CustomVisitController::class, 'update'])->name('custom_visits.update');
+    /* VISITAS DE PSICOLOGIA PERSONALIZADAS */
+     Route::apiResource('custom_visits', CustomVisitController::class)->only(['index', 'store', 'show', 'destroy']);
+     Route::post('custom_visits/{id}', [CustomVisitController::class, 'update'])->name('custom_visits.update');
 
-    // psicologic
-
+    // ViSITAS DE PSICOLOGIA
+    Route::apiResource('psychologistVisits', VisitPsichologistController::class)->only(['index', 'store', 'show', 'destroy']);
+    Route::post('psychologistVisits/{id}', [VisitPsichologistController::class, 'update'])->name('psychologistVisits.update');
 
     /* BUSCAR BENEFICIARIO */
     Route::get('findByBeneficiaryId/{id}', [CustomVisitController::class, 'getBeneficiary']);
@@ -236,6 +237,7 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
 
     // USUARIOS MONITORES POR MUNICIPIO
     Route::get('getMonitoringMunicipality/{id}', [MonitorsController::class, 'getMonitoringMunicipality']);
+    Route::get('getdisiplinesMonitoring/{id}', [MonitorsController::class, 'getdisiplinesMonitoring']);
 
     //LISTA EL NUMERO DE DOCUMENTOS APROBADOS POR CADA USUARIO
     Route::get('revised', [ContractorController::class, 'revised']);
@@ -256,9 +258,13 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
 });
 
 /*Rutas de prueba Zarrok*/
-    Route::apiResource('psychologistVisits', psychologistVisitController::class)->only(['index', 'store', 'show', 'destroy']);
-    Route::post('psychologistVisits/{id}', [psychologistVisitController::class, 'update'])->name('psychologistVisits.update');
+// Route::apiResource('custom_visits', CustomVisitController::class)->only(['index', 'store', 'show', 'destroy']);
+// Route::post('custom_visits/{id}', [CustomVisitController::class, 'update'])->name('custom_visits.update');
+// Route::apiResource('psychologistVisits', VisitPsichologistController::class)->only(['index', 'store', 'show', 'destroy']);
+// Route::post('psychologistVisits/{id}', [VisitPsichologistController::class, 'update'])->name('psychologistVisits.update');
+//Route::get('getdisiplinesMonitoring/{id}', [MonitorsController::class, 'getdisiplinesMonitoring']);
 
+    
 /* RUTAS DE PRUEBA JORGE */
 
 // Rutas de prueba V2 JOSE

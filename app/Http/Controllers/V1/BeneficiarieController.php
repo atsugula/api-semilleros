@@ -140,5 +140,4 @@ class BeneficiarieController extends Controller
         return response()->json($beneficiaries);
     }
 
-
 }
