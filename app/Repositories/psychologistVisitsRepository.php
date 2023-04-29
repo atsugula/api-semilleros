@@ -126,6 +126,7 @@ class psychologistVisitsRepository
         $PsychologistVisit->observations = $request['observations'];
         $PsychologistVisit->municipalities_id = $request['municipalities_id'];
         $PsychologistVisit->diciplines_id = $request['diciplines_id'];
+        $PsychologistVisit->date_visit = $request['date_visit'];
         
         if ($rol_id == config('roles.coordinador_psicosocial')) {
             $PsychologistVisit->reviewed_by = $user_id;
