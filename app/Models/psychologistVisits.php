@@ -22,7 +22,7 @@ class psychologistVisits extends Model
         'all_ok',
         'description',
         'observations',
-        'evidence',
+        'file',
         'municipalities_id',
         'diciplines_id',
         'monitor_id',
