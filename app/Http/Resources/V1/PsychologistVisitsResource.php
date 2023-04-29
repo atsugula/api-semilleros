@@ -19,6 +19,7 @@ class PsychologistVisitsResource extends JsonResource
             'created_by' => $this->created_by,
             'reviewed_by' => $this->reviewed_by,
             'scenery' => $this->scenery,
+            'objetive' => $this->objetive,
             'number_beneficiaries' => $this->number_beneficiaries,
             'beneficiaries_knows_project' => $this->beneficiaries_recognize_name,
             'beneficiaries_knows_monthly_value' => $this->beneficiary_recognize_value,

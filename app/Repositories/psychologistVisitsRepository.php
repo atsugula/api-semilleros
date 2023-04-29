@@ -70,6 +70,7 @@ class psychologistVisitsRepository
 
         $PsychologistVisit = $this->model;
         $PsychologistVisit->scenery = $request['scenery'];
+        $PsychologistVisit->objetive = $request['objetive'];
         $PsychologistVisit->number_beneficiaries = $request['number_beneficiaries'];
         $PsychologistVisit->beneficiaries_recognize_name = $request['beneficiaries_recognize_name'];
         $PsychologistVisit->beneficiary_recognize_value = $request['beneficiary_recognize_value'];
@@ -160,7 +161,8 @@ class psychologistVisitsRepository
     public function getValidate($data, $method){
         
         $validate = [
-            'scenery' => 'bail|required', 
+            'scenery' => 'bail|required',
+            'objetive' => 'bail|required',
             'number_beneficiaries' => 'bail|required',
             'beneficiaries_recognize_name' => 'bail|required',
             'beneficiary_recognize_value' => 'bail|required',
