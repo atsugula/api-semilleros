@@ -86,7 +86,7 @@ class TransversalActivityRepository
 
     public function update($request, $id)
     {
-        // $user_id = $this->getIdUserAuth();
+        $user_id = $this->getIdUserAuth();
 
         $transversalActivity = $this->model->findOrFail($id);;
         $transversalActivity->date_visit = $request['date_visit'];
@@ -102,6 +102,11 @@ class TransversalActivityRepository
         // $transversalActivity->created_by = $user_id;
         $save = $transversalActivity->save();
 
+        /* CAMBIAMOS EL ESTADO */
+        if ($request['status_id'] == config('status.REC') && $user_id == $transversalActivity->created_by) {
+            $transversalActivity->status_id = config('status.ENR');
+            $transversalActivity->reject_message = $request['reject_message'];
+        }
         // /* SUBIMOS EL ARCHIVO */
         if ($save) {
             $this->updateAllFiles($request, $transversalActivity->id);

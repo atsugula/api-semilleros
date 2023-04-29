@@ -28,11 +28,15 @@ class CustomVisitRepository
     {
         $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
+        //$user_id = 1;
+        //$rol_id = 6;
 
         $query = $this->model->query()->orderBy('id', 'DESC');
 
         switch ($rol_id) {
             case config('roles.coordinador_psicosocial'):
+            case config('roles.super-root'):
+            case config('roles.director_administrator'):
                 $query = $query->whereNotIn('created_by', [1,2])->whereHas('createdBy.roles', function ($query) {
                     $query->where('roles.slug', 'psicologo');
                 })->where('status_id', [config('status.ENR')]);
@@ -103,6 +107,7 @@ class CustomVisitRepository
 
         $customVisit = $this->model->findOrFail($id);
 
+        if ($rol_id == config('roles.psicologo')){
         $customVisit->theme = $request['theme'];
         $customVisit->agreements = $request['agreements'];
         $customVisit->concept = $request['concept'];
@@ -110,7 +115,7 @@ class CustomVisitRepository
         $customVisit->month_id = $request['month'];
         $customVisit->municipality_id = $request['municipality'];
         $customVisit->beneficiary_id = $request['beneficiary'];
-        $customVisit->created_by = $user_id;
+        }
 
         if ($rol_id == config('roles.coordinador_psicosocial')) {
             $customVisit->reviewed_by = $user_id;
