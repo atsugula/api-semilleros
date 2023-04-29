@@ -123,11 +123,8 @@ class psychologistVisitsRepository
         $PsychologistVisit->description = $request['description'];
         $PsychologistVisit->observations = $request['observations'];
         $PsychologistVisit->municipalities_id = $request['municipalities_id'];
-        $PsychologistVisit->diciplines_id = $request['discipline'];
-        $PsychologistVisit->monitor_id = $request['monitor'];
-        $PsychologistVisit->created_by = $request['psicologo'];
-        $PsychologistVisit->reviewed_by = $request['coordinador_psicosocial'];
-
+        $PsychologistVisit->diciplines_id = $request['diciplines_id'];
+        
         if ($rol_id == config('roles.coordinador_psicosocial')) {
             $PsychologistVisit->reviewed_by = $user_id;
             $PsychologistVisit->status_id = $request['status'];
