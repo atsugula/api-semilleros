@@ -30,7 +30,7 @@ class PsychologistVisitsResource extends JsonResource
             'deleted_at' => $this->deleted_at,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'regection_message' => $this->regection_message,
+            'rejection_message' => $this->rejection_message,
             'date_visit' => $this->date_visit,
             //llaves foraneas
             'municipalities_id' => $this->municipalities_id,
