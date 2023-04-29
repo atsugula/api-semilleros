@@ -62,8 +62,35 @@ class psychologistVisitsRepository
     }
     public function create($request)
     {
-        // por ver con nicolas
+        $user_id = $this->getIdUserAuth();
+
+        $PsychologistVisit = $this->model;
+        $PsychologistVisit->scenery = $request['scenery'];
+        $PsychologistVisit->number_beneficiaries = $request['number_beneficiaries'];
+        $PsychologistVisit->beneficiaries_recognize_name = $request['beneficiaries_recognize_name'];
+        $PsychologistVisit->all_ok = $request['all_ok'];
+        $PsychologistVisit->description = $request['description'];
+        $PsychologistVisit->observations = $request['observations'];
+        $PsychologistVisit->municipalities_id = $request['municipalities_id'];
+        $PsychologistVisit->diciplines_id = $request['discipline'];
+        $PsychologistVisit->monitor_id = $request['monitor'];
+        $PsychologistVisit->created_by = $user_id;
+        $PsychologistVisit->reviewed_by = $request['coordinador_psicosocial'];
+        $PsychologistVisit->status_id = config('status.ENR');
+        $save = $PsychologistVisit->save();
+
+        /* SUBIMOS EL ARCHIVO */
+        if ($save) {
+            $handle_1 = $this->send_file($request, 'file', 'psychological_visits', $PsychologistVisit->id);
+            $PsychologistVisit->update(['file' => $handle_1['response']['payload']]);
+            $save &= $handle_1['response']['success'];
+        }        
+
+        $results = new PsychologistVisitsResource($PsychologistVisit);
+        return $results;
     }
+
+
 
     public function findById($id){
 
@@ -132,11 +159,7 @@ class psychologistVisitsRepository
             'municipality' => 'bail|required',
             'dicipline' => 'bail|required',
             'monitor' => 'bail|required',
-            'created_by' => 'bail|required',
-            'reviewed_by' => 'bail|required',
-            'status' => 'bail|required',
-            'rejection_message' => 'bail|required',
-            'evidence' => $method != 'update' ? 'bail|required|mimes:application/pdf,pdf,png,webp,jpg,jpeg|max:' . (500 * 1049000) : 'bail',
+            'file' => $method != 'update' ? 'bail|required|mimes:application/pdf,pdf,png,webp,jpg,jpeg|max:' . (500 * 1049000) : 'bail',
 
         ];
 
@@ -156,10 +179,7 @@ class psychologistVisitsRepository
             'municipalities_id' => 'municipio', 
             'diciplines_id' => 'disciplina',
             'monitor_id' => 'monitor',
-            'created_by' => 'Psicologo',
-            'reviewed_by' => 'Coordinador Psicosocial',
-            'status_id' => 'Estatdo',
-            'rejection_message' => 'Acuerdos y recomendaciones',
+
         ];
 
         return $this->validator($data, $validate, $messages, $attrs);

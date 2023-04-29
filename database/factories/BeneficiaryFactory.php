@@ -38,7 +38,7 @@ class BeneficiaryFactory extends Factory
             'stratum' => rand(1, 7),
             'phone' => fake()->randomNumber(8), // generando un número de telefono aleatorio único de 8 dígitos
             'email' => fake()->safeEmail,
-            'status_id' => rand(1, 8),
+            'status_id' => rand(1, 8), 
             'audited' => fake()->randomElement(['0','1']), // generando si es aditado
             'created_at' => now(),
         ];
