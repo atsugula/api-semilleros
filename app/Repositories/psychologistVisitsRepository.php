@@ -117,8 +117,10 @@ class psychologistVisitsRepository
         $PsychologistVisit = $this->model->findOrFail($id);
 
         $PsychologistVisit->scenery = $request['scenery'];
+        $PsychologistVisit->objetive = $request['objetive'];
         $PsychologistVisit->number_beneficiaries = $request['number_beneficiaries'];
         $PsychologistVisit->beneficiaries_recognize_name = $request['beneficiaries_recognize_name'];
+        $PsychologistVisit->beneficiary_recognize_value = $request['beneficiary_recognize_value'];
         $PsychologistVisit->all_ok = $request['all_ok'];
         $PsychologistVisit->description = $request['description'];
         $PsychologistVisit->observations = $request['observations'];
