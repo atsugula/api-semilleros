@@ -115,8 +115,8 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
      Route::post('custom_visits/{id}', [CustomVisitController::class, 'update'])->name('custom_visits.update');
 
     // ViSITAS DE PSICOLOGIA
-    Route::apiResource('psychologistVisits', VisitPsichologistController::class)->only(['index', 'store', 'show', 'destroy']);
-    Route::post('psychologistVisits/{id}', [VisitPsichologistController::class, 'update'])->name('psychologistVisits.update');
+    // Route::apiResource('psychologistVisits', VisitPsichologistController::class)->only(['index', 'store', 'show', 'destroy']);
+    // Route::post('psychologistVisits/{id}', [VisitPsichologistController::class, 'update'])->name('psychologistVisits.update');
 
     /* BUSCAR BENEFICIARIO */
     Route::get('findByBeneficiaryId/{id}', [CustomVisitController::class, 'getBeneficiary']);
@@ -258,6 +258,8 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
 /*Rutas de prueba Zarrok*/
 // Route::apiResource('custom_visits', CustomVisitController::class)->only(['index', 'store', 'show', 'destroy']);
 // Route::post('custom_visits/{id}', [CustomVisitController::class, 'update'])->name('custom_visits.update');
+    Route::apiResource('psychologistVisits', VisitPsichologistController::class)->only(['index', 'store', 'show', 'destroy']);
+    Route::post('psychologistVisits/{id}', [VisitPsichologistController::class, 'update'])->name('psychologistVisits.update');
 
     
 /* RUTAS DE PRUEBA JORGE */
