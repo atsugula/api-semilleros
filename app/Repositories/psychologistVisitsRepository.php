@@ -9,7 +9,6 @@ use App\Models\psychologistVisits;
 use App\Models\Beneficiary;
 use App\Traits\FunctionGeneralTrait;
 use App\Traits\UserDataTrait;
-use App\Models\CustomVisit;
 use App\Traits\ImageTrait;
 
 class psychologistVisitsRepository
@@ -135,6 +134,11 @@ class psychologistVisitsRepository
             $PsychologistVisit->rejection_message = $request['rejection_message'];
         }
 
+        if ($request->hasFile('file')) {
+            $handle_1 = $this->update_file($request, 'file', 'custom_visits', $PsychologistVisit->id, $PsychologistVisit->file);
+            $PsychologistVisit->update(['file' => $handle_1['response']['payload']]);
+        }
+
         if ($request['status'] == config('status.REC') && $user_id == $PsychologistVisit->created_by) {
             $PsychologistVisit->status_id = config('status.ENR');
             $PsychologistVisit->rejection_message = $request['rejection_message'];
@@ -192,6 +196,7 @@ class psychologistVisitsRepository
             'municipalities_id' => 'municipio', 
             'diciplines_id' => 'disciplina',
             'monitor_id' => 'monitor',
+            'file' => 'Archivo',
 
         ];
 
