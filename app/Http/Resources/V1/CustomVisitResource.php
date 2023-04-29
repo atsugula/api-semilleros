@@ -33,7 +33,7 @@ class CustomVisitResource extends JsonResource
             'months' => $this->months,
             'municipalities' => $this->municipalities,
             'beneficiaries' => $this->beneficiaries,
-            'guadian' => $this->beneficiaries->acudientes[0]->guardian,
+            'guardian' => $this->beneficiaries->acudientes[0]->guardian,
             'createdBy' => $this->createdBy,
             'revisedBy' => $this->revisedBy,
             'status' => $this->statuses,

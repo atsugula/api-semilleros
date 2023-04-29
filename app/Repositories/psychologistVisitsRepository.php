@@ -25,8 +25,11 @@ class psychologistVisitsRepository
 
     public function getAll()
     {
-        $rol_id = $this->getIdRolUserAuth();
-        $user_id = $this->getIdUserAuth();
+        // $rol_id = $this->getIdRolUserAuth();
+        // $user_id = $this->getIdUserAuth();
+
+        $rol_id = 6;
+        $user_id = 6;
 
         $query = $this->model->query()->orderBy('id', 'DESC');
 
@@ -62,7 +65,8 @@ class psychologistVisitsRepository
     }
     public function create($request)
     {
-        $user_id = $this->getIdUserAuth();
+        // $user_id = $this->getIdUserAuth();
+        $user_id = 6;
 
         $PsychologistVisit = $this->model;
         $PsychologistVisit->scenery = $request['scenery'];
@@ -102,8 +106,11 @@ class psychologistVisitsRepository
 
     public function update($request, $id)
     {
-        $user_id = $this->getIdUserAuth();
-        $rol_id = $this->getIdRolUserAuth();
+        // $user_id = $this->getIdUserAuth();
+        // $rol_id = $this->getIdRolUserAuth();
+
+        $user_id = 6;
+        $rol_id = 6;
 
         $PsychologistVisit = $this->model->findOrFail($id);
 
@@ -138,7 +145,9 @@ class psychologistVisitsRepository
 
     public function delete($id)
     {
-        // Elimine Aca
+        $visitSubDirector = $this->model->findOrFail($id);
+        $visitSubDirector->delete();
+        return response()->json(['items' => 'La visita de subdirector fue eliminada correctamente.']);
     }
 
     public function getBeneficiary($id) {
