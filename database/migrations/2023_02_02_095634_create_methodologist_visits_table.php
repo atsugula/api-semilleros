@@ -19,6 +19,7 @@ return new class extends Migration
             $table->date('date_visit');
             $table->string('sports_scene');
             $table->string('beneficiary_coverage');
+            $table->string('sidewalk');
             /* REQUERIMIENTOS */
             $table->char('swich_plans_r')->default('0');
             $table->char('swich_plans_sc_1')->default('0');
@@ -42,7 +43,6 @@ return new class extends Migration
             $table->text('observations');
             /* RELACIONES */
             $table->foreignId('municipalitie_id')->constrained()->onDelete('cascade');
-            $table->foreignId('sidewalk_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('discipline_id')->constrained()->onDelete('cascade');
             $table->foreignId('evaluation_id')->constrained()->onDelete('cascade');
