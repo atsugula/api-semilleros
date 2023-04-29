@@ -137,7 +137,7 @@ class psychologistVisitsRepository
         }
         if ($request['status_id'] == config('status.REC') && $user_id == $PsychologistVisit->created_by) {
             $PsychologistVisit->status_id = config('status.ENR');
-            $PsychologistVisit->rejection_message = $request['rejection_message'];
+            $PsychologistVisit->rejection_message = '';
         }
         $PsychologistVisit->save();
 
