@@ -26,10 +26,11 @@ class CustomVisitRepository
 
     public function getAll()
     {
-        $rol_id = $this->getIdRolUserAuth();
-        $user_id = $this->getIdUserAuth();
-        //$user_id = 1;
-        //$rol_id = 6;
+         $rol_id = $this->getIdRolUserAuth();
+         $user_id = $this->getIdUserAuth();
+
+        // $user_id = 6;
+        // $rol_id = 6;
 
         $query = $this->model->query()->orderBy('id', 'DESC');
 
@@ -66,6 +67,7 @@ class CustomVisitRepository
     public function create($request)
     {
         $user_id = $this->getIdUserAuth();
+        // $user_id = 12;
 
         $customVisit = $this->model;
         $customVisit->theme = $request['theme'];
@@ -103,6 +105,9 @@ class CustomVisitRepository
     {
         $user_id = $this->getIdUserAuth();
         $rol_id = $this->getIdRolUserAuth();
+
+        // $user_id = 6;
+        // $rol_id = 6;
 
 
         $customVisit = $this->model->findOrFail($id);
