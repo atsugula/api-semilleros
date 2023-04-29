@@ -38,7 +38,7 @@ class psychologistVisitsRepository
             case config('roles.director_administrator'):
                 $query = $query->whereNotIn('created_by', [1,2])->whereHas('createdBy.roles', function ($query) {
                     $query->where('roles.slug', 'psicologo');
-                })->whereNotIn('status_id', [config('status.APR')]);
+                });
                 break;
 
             case config('roles.psicologo'):
