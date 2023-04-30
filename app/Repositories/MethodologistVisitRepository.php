@@ -129,24 +129,24 @@ class MethodologistVisitRepository
         $methodologist_visit->sports_scene = $request['sports_scene'];
         $methodologist_visit->beneficiary_coverage = $request['beneficiary_coverage'];
         /* BOOLEANOS CAMPOS */
-        $methodologist_visit->swich_plans_r = $request['swich_plans_r'] ? 1 : 0;
-        $methodologist_visit->swich_plans_sc_1 = $request['swich_plans_sc_1'] ? 1 : 0;
-        $methodologist_visit->swich_plans_sc_2 = $request['swich_plans_sc_2'] ? 1 : 0;
-        $methodologist_visit->swich_plans_sc_3 = $request['swich_plans_sc_3'] ? 1 : 0;
-        $methodologist_visit->swich_plans_sc_4 = $request['swich_plans_sc_4'] ? 1 : 0;
-        $methodologist_visit->swich_plans_gm_1 = $request['swich_plans_gm_1'] ? 1 : 0;
-        $methodologist_visit->swich_plans_gm_2 = $request['swich_plans_gm_2'] ? 1 : 0;
-        $methodologist_visit->swich_plans_gm_3 = $request['swich_plans_gm_3'] ? 1 : 0;
-        $methodologist_visit->swich_plans_gm_4 = $request['swich_plans_gm_4'] ? 1 : 0;
-        $methodologist_visit->swich_plans_gm_5 = $request['swich_plans_gm_5'] ? 1 : 0;
-        $methodologist_visit->swich_plans_gm_6 = $request['swich_plans_gm_6'] ? 1 : 0;
-        $methodologist_visit->swich_plans_mp_1 = $request['swich_plans_mp_1'] ? 1 : 0;
-        $methodologist_visit->swich_plans_mp_2 = $request['swich_plans_mp_2'] ? 1 : 0;
-        $methodologist_visit->swich_plans_mp_3 = $request['swich_plans_mp_3'] ? 1 : 0;
-        $methodologist_visit->swich_plans_mp_4 = $request['swich_plans_mp_4'] ? 1 : 0;
-        $methodologist_visit->swich_plans_mp_5 = $request['swich_plans_mp_5'] ? 1 : 0;
-        $methodologist_visit->municipalitie_id = $request['municipalitie_id'] ? 1 : 0;
+        $methodologist_visit->swich_plans_r = $request['swich_plans_r'] == "false" ? 0 : 1;
+        $methodologist_visit->swich_plans_sc_1 = $request['swich_plans_sc_1'] == "false" ? 0 : 1;
+        $methodologist_visit->swich_plans_sc_2 = $request['swich_plans_sc_2'] == "false" ? 0 : 1;
+        $methodologist_visit->swich_plans_sc_3 = $request['swich_plans_sc_3'] == "false" ? 0 : 1;
+        $methodologist_visit->swich_plans_sc_4 = $request['swich_plans_sc_4'] == "false" ? 0 : 1;
+        $methodologist_visit->swich_plans_gm_1 = $request['swich_plans_gm_1'] == "false" ? 0 : 1;
+        $methodologist_visit->swich_plans_gm_2 = $request['swich_plans_gm_2'] == "false" ? 0 : 1;
+        $methodologist_visit->swich_plans_gm_3 = $request['swich_plans_gm_3'] == "false" ? 0 : 1;
+        $methodologist_visit->swich_plans_gm_4 = $request['swich_plans_gm_4'] == "false" ? 0 : 1;
+        $methodologist_visit->swich_plans_gm_5 = $request['swich_plans_gm_5'] == "false" ? 0 : 1;
+        $methodologist_visit->swich_plans_gm_6 = $request['swich_plans_gm_6'] == "false" ? 0 : 1;
+        $methodologist_visit->swich_plans_mp_1 = $request['swich_plans_mp_1'] == "false" ? 0 : 1;
+        $methodologist_visit->swich_plans_mp_2 = $request['swich_plans_mp_2'] == "false" ? 0 : 1;
+        $methodologist_visit->swich_plans_mp_3 = $request['swich_plans_mp_3'] == "false" ? 0 : 1;
+        $methodologist_visit->swich_plans_mp_4 = $request['swich_plans_mp_4'] == "false" ? 0 : 1;
+        $methodologist_visit->swich_plans_mp_5 = $request['swich_plans_mp_5'] == "false" ? 0 : 1;
         /* RELACIONES CAMPOS */
+        $methodologist_visit->municipalitie_id = $request['municipalitie_id'];
         $methodologist_visit->sidewalk = $request['sidewalk'];
         $methodologist_visit->user_id = $request['user_id'];
         $methodologist_visit->discipline_id = $request['discipline_id'];
@@ -156,8 +156,17 @@ class MethodologistVisitRepository
         /* ACTUALIZAMOS EL ESTADO SOLO EL ROL AUTORIZADO */
         if ($rol_id == config('roles.subdirector_tecnico')) {
             $methodologist_visit->revised_by = $user_id;
-            $methodologist_visit->status_id = $request['status_id'];
             $methodologist_visit->rejection_message = $request['reject_message'];
+        }
+
+        if ($request['status_id'] == config('status.REC') && $user_id ==$methodologist_visit->created_by) {
+            $methodologist_visit->status_id = config('status.ENR');
+            $methodologist_visit->rejection_message = $request['rejection_message'];;
+        }
+
+        if ($request->hasFile('file')) {
+            $handle_1 = $this->update_file($request, 'file', 'PsychologistVisit', $methodologist_visit->id, $methodologist_visit->file);
+            $methodologist_visit->update(['file' => $handle_1['response']['payload']]);
         }
         $methodologist_visit->save();
         // Guardamos en dataModel
