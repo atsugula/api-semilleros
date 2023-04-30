@@ -94,7 +94,8 @@ class TransversalActivityRepository
         if ($request['status_id'] == config('status.REC') && $user_id == $transversalActivity->created_by) {
             $transversalActivity->status_id = config('status.ENR');
             $transversalActivity->reject_message = $request['reject_message'];
-        } else {
+        }
+        if ($user_id == $transversalActivity->created_by) {
             $transversalActivity->date_visit = $request['date_visit'];
             $transversalActivity->nro_assistants = $request['nro_assistants'];
             $transversalActivity->activity_name = $request['activity_name'];
