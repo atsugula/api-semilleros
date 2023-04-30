@@ -90,6 +90,18 @@ class MethodologistVisit extends Model
     public function control_data(){
 		return $this->morphMany(ControlChangeData::class,'data_model');
 	}
+    
+    public function scopeFilterByUrl($query)
+    {
+        $this->searchFilter($query);
+
+        $this->dateFilter($query);
+
+        $this->statusFilter($query);
+
+        return $query;
+    }
+
 
     private function searchFilter($query)
     {
