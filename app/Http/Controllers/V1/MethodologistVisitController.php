@@ -31,15 +31,16 @@ class MethodologistVisitController extends Controller
     {
         // Gate::authorize('haveaccess');
         try {
-            $data = $request->all();
-            $validator = $this->methodologistVisitRepository->getValidate($data, 'create');
+            $validator = $this->methodologistVisitRepository->getValidate($request->all(), 'create');
             if ($validator->fails()) {
                 return  $this->createErrorResponse([], $validator->errors()->first(), 422);
             }
-            $result = $this->methodologistVisitRepository->create($data);
-            return $this->createResponse($result, 'La visita del Metodologo fue creada correctamente.');
+
+            $result = $this->methodologistVisitRepository->create($request);
+
+            return $this->createResponse($result, 'Visita personalizada creada');
         } catch (\Exception $ex) {
-            return  $this->createErrorResponse([], 'Algo salio mal al guardar la visita del Metodologo ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+            return  $this->createErrorResponse([], 'Algo salio mal al guardar la visita  ' . $ex->getMessage() . ' linea ' . $ex->getCode());
         }
     }
 
