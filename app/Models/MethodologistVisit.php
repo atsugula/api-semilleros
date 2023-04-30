@@ -90,7 +90,7 @@ class MethodologistVisit extends Model
     public function control_data(){
 		return $this->morphMany(ControlChangeData::class,'data_model');
 	}
-    
+
     public function scopeFilterByUrl($query)
     {
         $this->searchFilter($query);
@@ -119,16 +119,6 @@ class MethodologistVisit extends Model
                 'municipality' => function ($query) use ($searchValue) {
                     $query->whereHas('municipalities', function ($query) use ($searchValue) {
                         $query->where('municipalities.name', 'like', '%' . $searchValue . '%');
-                    });
-                },
-                'discipline' => function ($query) use ($searchValue) {
-                    $query->whereHas('diciplines', function ($query) use ($searchValue) {
-                        $query->where('diciplines.name', 'like', '%' . $searchValue . '%');
-                    });
-                },
-                'monitor' => function ($query) use ($searchValue) {
-                    $query->whereHas('users', function ($query) use ($searchValue) {
-                        $query->where('users.name', 'like', '%' . $searchValue . '%');
                     });
                 },
             ];
