@@ -58,21 +58,24 @@ class MethodologistVisitController extends Controller
         }
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         // Gate::authorize('haveaccess');
         try {
-            $data = $request->all();
-            $validator = $this->methodologistVisitRepository->getValidate($data, 'update');
+            $validator = $this->methodologistVisitRepository->getValidate($request->all(), 'update');
+
             if ($validator->fails()) {
                 return  $this->createErrorResponse([], $validator->errors()->first(), 422);
             }
-            $result = $this->methodologistVisitRepository->update($data);
-            return $this->createResponse($result, 'La visita del Metodologofue actualizado correctamente.');
+
+            $result = $this->methodologistVisitRepository->update($request, $id);
+
+            return $this->createResponse($result, 'Visita personalizada editada');
         } catch (\Exception $ex) {
-            return  $this->createErrorResponse([], 'Algo salio mal al actualizar la visita del Metodologo' . $ex->getMessage() . ' linea ' . $ex->getCode());
+            return  $this->createErrorResponse([], 'Algo salio mal al actualizar visita personalizada ' . $ex->getMessage() . ' linea ' . $ex->getCode());
         }
     }
+
 
     public function destroy($id)
     {
