@@ -105,7 +105,6 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
     /* VISITAS METODOLOGICAS */
     Route::apiResource('methodologist_visits', MethodologistVisitController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::post('methodologist_visits/{id}', [MethodologistVisitController::class, 'update']);
-    Route::put('methodologist_visits/{id}', [MethodologistVisitController::class, 'update']);
 
     /* VISITA COORDINADORES */
     Route::apiResource('coordinator_visits', CoordinatorVistsController::class)->only(['index', 'store', 'show', 'destroy']);
@@ -260,7 +259,7 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
 //Route::apiResource('custom_visits', CustomVisitController::class)->only(['index', 'store', 'show', 'destroy']);
 //Route::post('custom_visits/{id}', [CustomVisitController::class, 'update'])->name('custom_visits.update');
 
-    
+
 /* RUTAS DE PRUEBA JORGE */
 
 // Rutas de prueba V2 JOSE

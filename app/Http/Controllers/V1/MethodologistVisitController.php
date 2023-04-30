@@ -67,7 +67,7 @@ class MethodologistVisitController extends Controller
                 return  $this->createErrorResponse([], $validator->errors()->first(), 422);
             }
             $result = $this->methodologistVisitRepository->update($data);
-            return $this->createResponse($result, 'La visita del Metodologofue actualizado correctamente.');
+            return $this->createResponse($result, 'La visita del Metodologo fue actualizado correctamente.');
         } catch (\Exception $ex) {
             return  $this->createErrorResponse([], 'Algo salio mal al actualizar la visita del Metodologo' . $ex->getMessage() . ' linea ' . $ex->getCode());
         }
