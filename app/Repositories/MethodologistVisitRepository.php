@@ -85,13 +85,13 @@ class MethodologistVisitRepository
         $save = $methodologist_visit->save();
         //
         if ($save) {
-            $handle_1 = $this->send_file($request, 'file', 'methodologist_visit', $methodologist_visit->id);
+            $handle_1 = $this->send_file($request, 'file', 'methodologist_visits', $methodologist_visit->id);
             $methodologist_visit->update(['file' => $handle_1['response']['payload']]);
             $save &= $handle_1['response']['success'];
          }   
 
         // Guardamos en dataModel
-        // $this->control_data($methodologist_visit, 'store');
+        //$this->control_data($methodologist_visit, 'store');
         $results = new MethodologistVisitResource($methodologist_visit);
         return $results;
     }
