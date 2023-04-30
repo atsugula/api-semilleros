@@ -146,7 +146,7 @@ class MethodologistVisitRepository
         $methodologist_visit->municipalitie_id = $request['municipalitie_id'] ? 1 : 0;
         /* RELACIONES CAMPOS */
         $methodologist_visit->sidewalk = $request['sidewalk'];
-        $methodologist_visit->user_id = $request['user_id'];
+        $methodologist_visit->user_id = $request['monitor_id'];
         $methodologist_visit->discipline_id = $request['discipline_id'];
         $methodologist_visit->evaluation_id = $request['evaluation_id'];
         $methodologist_visit->event_support_id = $request['event_support_id'];
