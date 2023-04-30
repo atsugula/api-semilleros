@@ -40,7 +40,8 @@ class MethodologistVisit extends Model
         'evaluation_id',
         'event_support_id',
         'observations',
-        'status_id'
+        'status_id',
+        'file',
     ];
 
     protected $hidden = ['created_at', 'deleted_at', 'updated_at'];
@@ -89,9 +90,4 @@ class MethodologistVisit extends Model
     public function control_data(){
 		return $this->morphMany(ControlChangeData::class,'data_model');
 	}
-
-    public function files(){
-        return $this->hasMany(DocumentVisit::class, 'visit_id')->where('type', 'methodologist_visits');
-    }
-
 }

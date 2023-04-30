@@ -37,7 +37,7 @@ class MethodologistVisitResource extends JsonResource
             'swich_plans_mp_4' => $this->swich_plans_mp_4,
             'swich_plans_mp_5' => $this->swich_plans_mp_5,
             'observations' => $this->observations,
-            'files' => $this->files,
+            'file' => $this->file,
             'municipalities' => $this->municipalities,
             'event_supports' => $this->event_supports,
             'evaluations' => $this->evaluations,
