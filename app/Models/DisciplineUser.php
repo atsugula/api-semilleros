@@ -16,6 +16,7 @@ class DisciplineUser extends Model
         'user_id',
         'disciplines_id'
     ];
+    use HasFactory;
 
     protected $guarded = [
         'created_at', 'updated_at'

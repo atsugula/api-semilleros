@@ -46,7 +46,8 @@ class MethodologistVisitResource extends JsonResource
             'sidewalk' => $this->sidewalk,
             'status' => $this-> status,
             'created_by' => $this->created_by,
-            'creator' => $this->creator
+            'creator' => $this->creator,
+            'rejection_message' => $this->rejection_message,
         ];
     }
 }

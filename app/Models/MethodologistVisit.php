@@ -43,6 +43,7 @@ class MethodologistVisit extends Model
         'status_id',
         'file',
         'created_by',
+        'rejection_message'
     ];
 
     protected $hidden = ['created_at', 'deleted_at', 'updated_at'];
