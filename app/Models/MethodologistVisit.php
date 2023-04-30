@@ -42,9 +42,15 @@ class MethodologistVisit extends Model
         'observations',
         'status_id',
         'file',
+        'created_by',
     ];
 
     protected $hidden = ['created_at', 'deleted_at', 'updated_at'];
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 
     public function municipalities(){
         return $this->belongsTo(Municipality::class, 'municipalitie_id');
@@ -72,10 +78,6 @@ class MethodologistVisit extends Model
 
     public function status(){
         return $this->belongsTo(Status::class, 'status_id');
-    }
-
-    public function creator(){
-        return $this->belongsTo(User::class, 'created_by');
     }
 
     public function getActivitylogOptions(): LogOptions

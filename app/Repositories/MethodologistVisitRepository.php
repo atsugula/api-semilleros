@@ -23,8 +23,11 @@ class MethodologistVisitRepository
     public function getAll()
     {
 
-        $rol_id = $this->getIdRolUserAuth();
-        $user_id = $this->getIdUserAuth();
+        // $rol_id = $this->getIdRolUserAuth();
+        // $user_id = $this->getIdUserAuth();
+
+        $rol_id = 10;
+        $user_id = 10;
 
         $query = $this->model->query();
 
