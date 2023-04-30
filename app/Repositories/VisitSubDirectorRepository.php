@@ -113,11 +113,12 @@ class VisitSubDirectorRepository
 
         $visitSubDirector = $this->model->findOrFail($id);
 
-        if ($rol_id == config('roles.director_tecnico') || $rol_id == config('roles.director_administrator') && $user_id != $visitSubDirector->created_by) {
+        if ($rol_id == config('roles.director_tecnico') || $rol_id == config('roles.director_administrator')) {
             $visitSubDirector->reviewed_by = $user_id;
             $visitSubDirector->status_id = $request['status_id'];
             $visitSubDirector->reject_message = $request['reject_message'];
-        } else {
+        }
+        if ($user_id == $visitSubDirector->created_by) {
             $visitSubDirector->date_visit = $request['date_visit'];
             $visitSubDirector->hour_visit = $request['hour_visit'];
             $visitSubDirector->sports_scene = $request['sports_scene'];
