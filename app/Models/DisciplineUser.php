@@ -16,6 +16,7 @@ class DisciplineUser extends Model
         'user_id',
         'disciplines_id'
     ];
+    use HasFactory;
 
     protected $guarded = [
         'created_at', 'updated_at'
@@ -23,6 +24,10 @@ class DisciplineUser extends Model
 
     public function users(){
         return $this->hasMany(User::class, 'id', 'user_id');
+    }
+
+    public function disciplines(){
+        return $this->hasMany(Disciplines::class, 'id', 'disciplines_id');
     }
 
 }

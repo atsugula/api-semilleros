@@ -20,7 +20,10 @@ class MethodologistVisitCollection extends ResourceCollection
             'items' => $this->collection,
             'meta' => [
                 'organization' => 'Arte y tecnologia',
-                'authors' => 'Jorge Usuga'
+                'authors' => [
+                    'Jorge Usuga',
+                    'Zarrok',
+                ]
             ],
             'type' => 'methodologist_visits'
 

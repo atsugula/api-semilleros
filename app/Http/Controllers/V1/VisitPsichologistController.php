@@ -46,9 +46,9 @@ class VisitPsichologistController extends Controller
 
             $result = $this->repository->create($request);
 
-            return $this->createResponse($result, 'Visita personalizada creada');
+            return $this->createResponse($result, 'Visita creada');
         } catch (\Exception $ex) {
-            return  $this->createErrorResponse([], 'Algo salio mal al guardar la visita personalizada ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+            return  $this->createErrorResponse([], 'Algo salio mal al guardar la visita  ' . $ex->getMessage() . ' linea ' . $ex->getCode());
         }
     } 
 
