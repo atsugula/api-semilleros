@@ -8,19 +8,19 @@
                 <b>PSICOSOCIAL</b>
             </th>
             <th style="width: 30px;text-align:center">
-                <b>BENEFICIARIO</b>
+                <b>MONITOR</b>
             </th>
             <th style="width: 30px;text-align:center">
                 <b>MUNICIPIO</b>
             </th>
             <th style="width: 30px;text-align:center">
-                <b>MES</b>
+                <b>FECHA</b>
             </th>
             <th style="width: 30px;text-align:center">
-                <b>TEMA DE LA VISITA</b>
+                <b>NUMERO DE BENEFICIARIOS</b>
             </th>
             <th style="width: 30px;text-align:center">
-                <b>CONOCIMIENTO DE LOS PADRES SOBRE EL PROYECTO</b>
+                <b>DISIPLINA</b>
             </th>
             <th style="width: 30px;text-align:center">
                 <b>ESTADO</b>
@@ -34,12 +34,12 @@
         @foreach ($psychologicalVisits as $key => $value)
             <tr>
                 <td>{{ $key+1 }}</td>
-                <td>{{ $value->name . ' ' . $value->lastname }}</td>
-                <td>{{ $value->full_name }}</td>
+                <td>{{ $value->creator_name . ' ' . $value->creator_lastname }}</td>
+                <td>{{ $value->monitor_name . ' ' . $value->monitor_lastname }}</td>
                 <td>{{ $value->municipality }}</td>
-                <td>{{ $value->month }}</td>
-                <td>{{ $value->theme }}</td>
-                <td>{{ $value->guardian_knows_semilleros }}</td>
+                <td>{{ $value->date_visit }}</td>
+                <td>{{ $value->number_beneficiaries }}</td>
+                <td>{{ $value->dicipline }}</td>
                 <td>{{ $value->status }}</td>
                 <td>{{ $value->created_at }}</td>
             </tr>
