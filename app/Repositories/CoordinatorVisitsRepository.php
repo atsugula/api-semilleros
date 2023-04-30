@@ -96,21 +96,21 @@ class CoordinatorVisitsRepository implements CrudRepositoryInterface
         $user_id = $this->getIdUserAuth();
         $coordinator_visits = $this->model->findOrFail($id);
 
-        $coordinator_visits->hour_visit = $request['hour_visit'];
-        $coordinator_visits->date_visit = $request['date_visit'];
-        $coordinator_visits->observations = $request['observations'];
-        $coordinator_visits->description = $request['description'];
-        $coordinator_visits->sports_scene = $request['sports_scene'];
-        $coordinator_visits->beneficiary_coverage = $request['beneficiary_coverage'];
-        $coordinator_visits->municipalitie_id = $request['municipalitie_id'];
-        $coordinator_visits->sidewalk = $request['sidewalk'];
-        $coordinator_visits->user_id = $request['user_id'];
-        $coordinator_visits->discipline_id = $request['discipline_id'];
-
         if ($rol_id == config('roles.subdirector_tecnico')) {
             $coordinator_visits->revised_by = $user_id;
             $coordinator_visits->status_id = $request['status_id'];
             $coordinator_visits->rejection_message = $request['rejection_message'];
+        } else {
+            $coordinator_visits->hour_visit = $request['hour_visit'];
+            $coordinator_visits->date_visit = $request['date_visit'];
+            $coordinator_visits->observations = $request['observations'];
+            $coordinator_visits->description = $request['description'];
+            $coordinator_visits->sports_scene = $request['sports_scene'];
+            $coordinator_visits->beneficiary_coverage = $request['beneficiary_coverage'];
+            $coordinator_visits->municipalitie_id = $request['municipalitie_id'];
+            $coordinator_visits->sidewalk = $request['sidewalk'];
+            $coordinator_visits->user_id = $request['user_id'];
+            $coordinator_visits->discipline_id = $request['discipline_id'];
         }
 
         /* CAMBIAMOS EL ESTADO */
