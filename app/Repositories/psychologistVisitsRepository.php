@@ -37,7 +37,7 @@ class psychologistVisitsRepository
             case config('roles.super-root'):
             case config('roles.director_administrator'):
                 $query = $query->whereNotIn('created_by', [1,2])->whereHas('createdBy.roles', function ($query) {
-                    $query->where('roles.slug', 'psicologo');
+                    $query->where('roles.slug', 'psicologo')->where('status_id', [config('status.ENR')]);
                 });
                 break;
 
@@ -115,21 +115,23 @@ class psychologistVisitsRepository
 
         $PsychologistVisit = $this->model->findOrFail($id);
 
-        $PsychologistVisit->scenery = $request['scenery'];
-        $PsychologistVisit->objetive = $request['objetive'];
-        $PsychologistVisit->number_beneficiaries = $request['number_beneficiaries'];
-        $PsychologistVisit->beneficiaries_recognize_name = $request['beneficiaries_recognize_name'];
-        $PsychologistVisit->beneficiary_recognize_value = $request['beneficiary_recognize_value'];
-        $PsychologistVisit->all_ok = $request['all_ok'];
-        $PsychologistVisit->description = $request['description'];
-        $PsychologistVisit->observations = $request['observations'];
-        $PsychologistVisit->municipalities_id = $request['municipalities_id'];
-        $PsychologistVisit->diciplines_id = $request['diciplines_id'];
-        $PsychologistVisit->date_visit = $request['date_visit'];
+        if ($rol_id == config('roles.psicologo')){
+            $PsychologistVisit->scenery = $request['scenery'];
+            $PsychologistVisit->objetive = $request['objetive'];
+            $PsychologistVisit->number_beneficiaries = $request['number_beneficiaries'];
+            $PsychologistVisit->beneficiaries_recognize_name = $request['beneficiaries_recognize_name'];
+            $PsychologistVisit->beneficiary_recognize_value = $request['beneficiary_recognize_value'];
+            $PsychologistVisit->all_ok = $request['all_ok'];
+            $PsychologistVisit->description = $request['description'];
+            $PsychologistVisit->observations = $request['observations'];
+            $PsychologistVisit->municipalities_id = $request['municipalities_id'];
+            $PsychologistVisit->diciplines_id = $request['diciplines_id'];
+            $PsychologistVisit->date_visit = $request['date_visit'];
+        }
         
         if ($rol_id == config('roles.coordinador_psicosocial')) {
             $PsychologistVisit->reviewed_by = $user_id;
-            $PsychologistVisit->status_id = $request['status'];
+            $PsychologistVisit->status_id = $request['status_id'];
             $PsychologistVisit->rejection_message = $request['rejection_message'];
         }
 
