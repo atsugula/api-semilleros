@@ -139,6 +139,7 @@ class psychologistVisitsRepository
             $handle_1 = $this->update_file($request, 'file', 'PsychologistVisit', $PsychologistVisit->id, $PsychologistVisit->file);
             $PsychologistVisit->update(['file' => $handle_1['response']['payload']]);
         }
+        
         if ($request['status_id'] == config('status.REC') && $user_id == $PsychologistVisit->created_by) {
             $PsychologistVisit->status_id = config('status.ENR');
             $PsychologistVisit->rejection_message = '';
