@@ -168,6 +168,8 @@ class MethodologistVisitRepository
             'beneficiary_coverage' => 'bail|required',
             'swich_plans_r' => 'bail|required',
             'observations' => 'bail|required',
+            'file' => $method != 'update' ? 'bail|required|mimes:application/pdf,pdf,png,webp,jpg,jpeg|max:' . (500 * 1049000) : 'bail',
+
         ];
 
         $messages = [
@@ -182,6 +184,7 @@ class MethodologistVisitRepository
             'beneficiary_coverage' => 'Cobertura de benificiario',
             'swich_plans_r' => 'Plan de clases',
             'observations' => 'Observaciones',
+            'file' => 'Archivo',
         ];
 
         return $this->validator($data, $validate, $messages, $attrs);
