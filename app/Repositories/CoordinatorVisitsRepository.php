@@ -96,7 +96,7 @@ class CoordinatorVisitsRepository implements CrudRepositoryInterface
         $user_id = $this->getIdUserAuth();
         $coordinator_visits = $this->model->findOrFail($id);
 
-        if ($rol_id == config('roles.subdirector_tecnico')) {
+        if ($rol_id == config('roles.subdirector_tecnico') && $user_id != $coordinator_visits->created_by) {
             $coordinator_visits->revised_by = $user_id;
             $coordinator_visits->status_id = $request['status_id'];
             $coordinator_visits->rejection_message = $request['rejection_message'];

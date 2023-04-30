@@ -113,7 +113,7 @@ class VisitSubDirectorRepository
 
         $visitSubDirector = $this->model->findOrFail($id);
 
-        if ($rol_id == config('roles.director_tecnico') || $rol_id == config('roles.director_administrator')) {
+        if ($rol_id == config('roles.director_tecnico') || $rol_id == config('roles.director_administrator') && $user_id != $visitSubDirector->created_by) {
             $visitSubDirector->reviewed_by = $user_id;
             $visitSubDirector->status_id = $request['status_id'];
             $visitSubDirector->reject_message = $request['reject_message'];
