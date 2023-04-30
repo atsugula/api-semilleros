@@ -28,19 +28,28 @@ class MethodologistVisitRepository
 
         $query = $this->model->query();
 
-        $results = [];
+        switch ($rol_id) {
+            case config('roles.subdirector_tecnico'):
+            case config('roles.super-root'):
+            case config('roles.director_administrator'):
+                $query = $query->whereNotIn('created_by', [1,2])
+                ->whereHas('createdBy.roles', function ($query) {
+                    $query->where('roles.slug', 'metodologo');
+                });
+                break;
 
-        if ($rol_id == config('roles.subdirector_tecnico')) {
-            $query->whereNotIn('created_by', [1,2])
-            ->whereHas('creator.roles', function ($query) {
-                $query->where('roles.slug', 'metodologo');
-            })
-            ->where('status_id', [config('status.ENR')]);
-        }
-        if ($rol_id == config('roles.metodologo')) {
-            $query->where('created_by', $user_id);
+            case config('roles.metodologo'):
+                $query->where('created_by', $user_id);
+                break;
+
+            default:
+                return null;
+                break;
         }
         $paginate = config('global.paginate');
+
+        $query = $this->model->scopeFilterByUrl($query);
+
         session()->forget('count_page_visitMethodologists');
         session()->put('count_page_visitMethodologists', ceil($query->get()->count()/$paginate));
 
