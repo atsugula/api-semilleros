@@ -23,13 +23,13 @@ class MethodologistVisitRepository
     public function getAll()
     {
 
-        // $rol_id = $this->getIdRolUserAuth();
-        // $user_id = $this->getIdUserAuth();
+        $rol_id = $this->getIdRolUserAuth();
+        $user_id = $this->getIdUserAuth();
 
-        $rol_id = 10;
-        $user_id = 10;
+        //$rol_id = 10;
+        //$user_id = 10;
 
-        $query = $this->model->query();
+        $query = $this->model->query()->orderBy('id', 'DESC');
 
         switch ($rol_id) {
             case config('roles.subdirector_tecnico'):
