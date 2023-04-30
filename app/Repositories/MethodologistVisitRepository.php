@@ -73,15 +73,23 @@ class MethodologistVisitRepository
         $methodologist_visit->swich_plans_mp_5 = $request['swich_plans_mp_5'] == "false" ? 0 : 1;
         $methodologist_visit->municipalitie_id = $request['municipalitie_id'] == "false" ? 0 : 1;
         /* RELACIONES CAMPOS */
+        $methodologist_visit->user_id = $request['monitor_id'];
         $methodologist_visit->sidewalk = $request['sidewalk'];
-        $methodologist_visit->user_id = $request['user_id'];
         $methodologist_visit->discipline_id = $request['discipline_id'];
         $methodologist_visit->evaluation_id = $request['evaluation_id'];
         $methodologist_visit->event_support_id = $request['event_support_id'];
         $methodologist_visit->observations = $request['observations'];
         $methodologist_visit->status_id = config('status.ENR');
         $methodologist_visit->created_by = $user_id;
-        $methodologist_visit->save();
+
+        $save = $methodologist_visit->save();
+        //
+        if ($save) {
+            $handle_1 = $this->send_file($request, 'file', 'methodologist_visit', $methodologist_visit->id);
+            $methodologist_visit->update(['file' => $handle_1['response']['payload']]);
+            $save &= $handle_1['response']['success'];
+         }   
+
         // Guardamos en dataModel
         $this->control_data($methodologist_visit, 'store');
         $results = new MethodologistVisitResource($methodologist_visit);
