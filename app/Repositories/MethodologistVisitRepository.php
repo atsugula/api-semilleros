@@ -91,7 +91,7 @@ class MethodologistVisitRepository
          }   
 
         // Guardamos en dataModel
-        $this->control_data($methodologist_visit, 'store');
+        // $this->control_data($methodologist_visit, 'store');
         $results = new MethodologistVisitResource($methodologist_visit);
         return $results;
     }
