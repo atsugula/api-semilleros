@@ -56,8 +56,8 @@ class psychologistVisitsRepository
         $query = $this->model->scopeFilterByUrl($query);
 
         // Calcular número de páginas para paginación
-        session()->forget('count_page_custom_visits');
-        session()->put('count_page_custom_visits', ceil($query->count()/$paginate));
+        session()->forget('count_page_visits');
+        session()->put('count_page_visits', ceil($query->count()/$paginate));
 
         return new PsychologistVisitsCollection($query->simplePaginate($paginate));
     }
@@ -136,7 +136,7 @@ class psychologistVisitsRepository
         }
 
         if ($request->hasFile('file')) {
-            $handle_1 = $this->update_file($request, 'file', 'custom_visits', $PsychologistVisit->id, $PsychologistVisit->file);
+            $handle_1 = $this->update_file($request, 'file', 'PsychologistVisit', $PsychologistVisit->id, $PsychologistVisit->file);
             $PsychologistVisit->update(['file' => $handle_1['response']['payload']]);
         }
         if ($request['status_id'] == config('status.REC') && $user_id == $PsychologistVisit->created_by) {
