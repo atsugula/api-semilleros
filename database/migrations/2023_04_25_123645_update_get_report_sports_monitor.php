@@ -19,9 +19,9 @@ return new class extends Migration
         CREATE VIEW get_report_sports_monitor AS
             SELECT users.name, users.lastname, users.document_number, users.gender,COUNT(beneficiaries.id) AS forms_beneficiaries, COUNT(chronograms.id) AS created_chronograms, users.created_at
             FROM users
-            INNER JOIN role_user ON users.id = role_user.user_id
-            INNER JOIN chronograms ON users.id = chronograms.created_by
-            INNER JOIN beneficiaries ON users.id = beneficiaries.created_by
+            LEFT JOIN role_user ON users.id = role_user.user_id
+            LEFT JOIN chronograms ON users.id = chronograms.created_by
+            LEFT JOIN beneficiaries ON users.id = beneficiaries.created_by
             WHERE role_user.role_id = 12
             GROUP BY users.id, users.name, users.lastname, users.document_number, users.gender,users.created_at;
         ";

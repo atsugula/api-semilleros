@@ -22,13 +22,13 @@ return new class extends Migration
                 d.name AS discipline, vs.event_support, vs.description, vs.beneficiary_coverage,
                 vs.technical, s.name AS status, vs.created_at
             FROM visit_sub_directors vs
-                JOIN users creator ON vs.created_by = creator.id
-                JOIN users monitor ON vs.monitor_id = monitor.id
-                JOIN municipality_users mu ON mu.user_id = creator.id
-                JOIN municipalities m ON m.id = mu.municipalities_id
-                JOIN discipline_users du ON du.user_id = creator.id
-                JOIN disciplines d ON d.id = du.disciplines_id
-                JOIN statuses s ON s.id = vs.status_id
+                LEFT JOIN users creator ON vs.created_by = creator.id
+                LEFT JOIN users monitor ON vs.monitor_id = monitor.id
+                LEFT JOIN municipality_users mu ON mu.user_id = creator.id
+                LEFT JOIN municipalities m ON m.id = mu.municipalities_id
+                LEFT JOIN discipline_users du ON du.user_id = creator.id
+                LEFT JOIN disciplines d ON d.id = du.disciplines_id
+                LEFT JOIN statuses s ON s.id = vs.status_id
             WHERE
                 vs.created_by NOT IN (1)
         ";

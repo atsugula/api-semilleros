@@ -17,12 +17,12 @@ return new class extends Migration
         $views = "
         drop view get_report_regional_coordinator;
         CREATE VIEW get_report_regional_coordinator AS
-                SELECT users.name, users.lastname, users.document_number, users.gender,COUNT(coordinator_visits.id) as visits, users.created_at
-                FROM users
-                JOIN role_user ON users.id = role_user.user_id
-                JOIN roles ON role_user.role_id = roles.id
-            INNER JOIN coordinator_visits ON users.id = coordinator_visits.created_by
-                WHERE roles.id = 9
+            SELECT users.name, users.lastname, users.document_number, users.gender,COUNT(coordinator_visits.id) as visits, users.created_at
+            FROM users
+                LEFT JOIN role_user ON users.id = role_user.user_id
+                LEFT JOIN roles ON role_user.role_id = roles.id
+                LEFT JOIN coordinator_visits ON users.id = coordinator_visits.created_by
+            WHERE roles.id = 9
                 GROUP BY users.id, users.name, users.lastname, users.document_number, users.gender,users.created_at;
         ";
         DB::unprepared($views);

@@ -9,7 +9,7 @@ use App\Traits\FunctionGeneralTrait;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\DB;
 
-class InscriptionExport implements FromView, WithTitle
+class VisitPsicosocialExport implements FromView, WithTitle
 {
     use Exportable, FunctionGeneralTrait;
 
@@ -22,7 +22,7 @@ class InscriptionExport implements FromView, WithTitle
 
     public function title(): string
     {
-        return 'INSCRIPCIONES';
+        return 'VISITA PSICOSOCIAL';
     }
 
     public function view(): View
@@ -30,10 +30,10 @@ class InscriptionExport implements FromView, WithTitle
         set_time_limit(0);
         ini_set('memory_limit', '20000M');
 
-        $inscriptions = DB::table('get_report_inscriptions')->get();
+        $psychologicalVisits = DB::table('get_report_psychological_visits')->get();
 
-        return view('exports.inscription', [
-            'inscriptions' => $inscriptions,
+        return view('exports.psychologicalVisits', [
+            'psychologicalVisits' => $psychologicalVisits,
         ]);
     }
 
