@@ -15,7 +15,7 @@ return new class extends Migration
     public function up()
     {
         $views = "
-        CREATE VIEW get_report_transversal_activities AS
+        CREATE OR REPLACE VIEW get_report_transversal_activities AS
             SELECT DISTINCT u.name, u.lastname, m.name AS municipality, ta.activity_name, ta.date_visit,
                 ta.objective_activity, ta.scene, ta.nro_assistants, s.name AS status, ta.created_at
             FROM transversal_activities ta

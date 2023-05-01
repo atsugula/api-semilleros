@@ -16,7 +16,7 @@ return new class extends Migration
     {
         $views = "
         DROP VIEW get_report_psicosocial;
-        CREATE VIEW get_report_psicosocial AS
+        CREATE OR REPLACE VIEW get_report_psicosocial AS
             SELECT users.name, users.lastname, users.document_number, users.gender,COUNT(custom_visits.id) AS custom_visits,COUNT(psychological_visits.id) AS visits,COUNT(transversal_activities.id) AS transversal_activities, users.created_at
             FROM users
             LEFT JOIN role_user ON users.id = role_user.user_id

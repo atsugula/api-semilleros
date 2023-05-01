@@ -15,7 +15,7 @@ return new class extends Migration
     public function up()
     {
         $procedure = "
-        CREATE PROCEDURE GetRoleByUserId(IN userId INT)
+        CREATE OR REPLACE PROCEDURE GetRoleByUserId(IN userId INT)
             BEGIN
                 SELECT users.id, roles.name
                 FROM users
@@ -33,7 +33,7 @@ return new class extends Migration
      * @return void
      */
     public function down()
-    {   
+    {
         $procedure= "DROP PROCEDURE IF EXISTS GetRoleByUserId;";
         DB::unprepared($procedure);
     }
