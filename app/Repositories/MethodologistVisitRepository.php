@@ -102,7 +102,7 @@ class MethodologistVisitRepository
             $handle_1 = $this->send_file($request, 'file', 'methodologist_visits', $methodologist_visit->id);
             $methodologist_visit->update(['file' => $handle_1['response']['payload']]);
             $save &= $handle_1['response']['success'];
-         }   
+         }
 
         // Guardamos en dataModel
         //$this->control_data($methodologist_visit, 'store');
@@ -156,6 +156,7 @@ class MethodologistVisitRepository
         /* ACTUALIZAMOS EL ESTADO SOLO EL ROL AUTORIZADO */
         if ($rol_id == config('roles.subdirector_tecnico')) {
             $methodologist_visit->revised_by = $user_id;
+            $methodologist_visit->status_id = $request['status_id'];
             $methodologist_visit->rejection_message = $request['reject_message'];
         }
 
