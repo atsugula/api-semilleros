@@ -74,10 +74,10 @@ class UserRepository
                 'municipalities_id' =>  $user['municipalities'],
             ]);
 
-            /* DisciplineUser::create([
+            DisciplineUser::create([
                 'user_id' => $new_user->id,
                 'disciplines_id' =>  $user['disciplines'],
-            ]); */
+            ]);
 
 
         }
@@ -214,4 +214,20 @@ class UserRepository
     {
         return User::with('roles', 'zone', 'hierarchy')->get();
     }
+
+    // Metodo para traer la gente que revisa
+    // en base al rol que se escoge en la creacion
+    public function reviewsUsers($role){
+        $result = [];
+        switch ($role) {
+            case 'value':
+                # code...
+                break;
+
+            default:
+                # code...
+                break;
+        }
+    }
+
 }
