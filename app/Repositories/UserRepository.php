@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Http\Resources\V1\UserCollection;
+use App\Models\Disciplines;
 use App\Traits\FunctionGeneralTrait;
 use Illuminate\Support\Facades\Hash;
 use App\Models\MunicipalityUser;
@@ -59,27 +60,34 @@ class UserRepository
         $new_user = $this->model->create($user);
 
         if ($new_user->wasRecentlyCreated) {
+
+            // Roles
             RoleUser::create([
                 'user_id' => $new_user->id,
                 'role_id' =>  $user['roles'],
             ]);
 
+            // Regiones o zonas
             ZoneUser::create([
                 'user_id' => $new_user->id,
                 'zones_id' =>  $user['zones'],
             ]);
 
-            MunicipalityUser::create([
-                'user_id' => $new_user->id,
-                'municipalities_id' =>  $user['municipalities'],
-            ]);
+            // Municipios
+            foreach ($user['municipalities'] as $key => $value) {
+                MunicipalityUser::create([
+                    'user_id' => $new_user->id,
+                    'municipalities_id' => $value,
+                ]);
+            }
 
-            DisciplineUser::create([
-                'user_id' => $new_user->id,
-                'disciplines_id' =>  $user['disciplines'],
-            ]);
-
-
+            // Diciplinas
+            foreach ($user['disciplines'] as $key => $value) {
+                DisciplineUser::create([
+                    'user_id' => $new_user->id,
+                    'disciplines_id' => $value,
+                ]);
+            }
         }
 
         $role = DB::table('roles')->where('id', '=', $user['roles'])->get();
@@ -127,6 +135,7 @@ class UserRepository
             $rol = RoleUser::where('user_id', $user_up->id)->first();
             $muni = MunicipalityUser::where('user_id', $user_up->id)->first();
             $zones = RoleUser::where('user_id', $user_up->id)->first();
+            $discipline = DisciplineUser::where('user_id', $user_up->id)->first();
 
             if ($rol) {
                 $rol->role_id = $data['roles'];
@@ -137,9 +146,19 @@ class UserRepository
                 $zones->user_id = $user_up->id;
                 $zones->save();
 
-                $muni->municipalities_id = $data['municipalities'];
-                $muni->user_id = $user_up->id;
-                $muni->save();
+                // Municipios
+                foreach ($data['municipalities'] as $key => $value) {
+                    $muni->municipalities_id = $value;
+                    $muni->user_id = $user_up->id;
+                    $muni->save();
+                }
+
+                // Diciplinas
+                foreach ($data['disciplines'] as $key => $value) {
+                    $discipline->disciplines_id = $value;
+                    $discipline->user_id = $user_up->id;
+                    $discipline->save();
+                }
             }
         }
         $role = DB::table('roles')->where('id', '=', $data['roles'])->get();
