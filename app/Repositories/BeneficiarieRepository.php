@@ -101,13 +101,13 @@ class BeneficiarieRepository
 
         // Ficha de Tamizaje
         $fichaTamizaje = BeneficiaryScreening::where('beneficiary_id', $beneficiarie->id)->firstOrFail();
-        $fichaTamizaje->estatura        = $request['morfologica']['estatura'];
-        $fichaTamizaje->envergadura     = $request['morfologica']['envergadura'];
-        $fichaTamizaje->masa            = $request['morfologica']['masa'];
-        $fichaTamizaje->flexibilidad    = $request['nutricional']['flexibilidad'];
-        $fichaTamizaje->velocidad       = $request['nutricional']['velocidad'];
-        $fichaTamizaje->fuerza          = $request['nutricional']['fuerza'];
-        $fichaTamizaje->oculomanual     = $request['nutricional']['oculomanual'];
+        $fichaTamizaje->estatura        = $request['estatura'];
+        $fichaTamizaje->envergadura     = $request['envergadura'];
+        $fichaTamizaje->masa            = $request['masa'];
+        $fichaTamizaje->flexibilidad    = $request['flexibilidad'];
+        $fichaTamizaje->velocidad       = $request['velocidad'];
+        $fichaTamizaje->fuerza          = $request['fuerza'];
+        $fichaTamizaje->oculomanual     = $request['oculomanual'];
         $fichaTamizaje->save();
 
         // Acudientes

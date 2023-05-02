@@ -16,7 +16,7 @@ return new class extends Migration
     {
         $views = "
         drop view get_report_regional_coordinator;
-        CREATE VIEW get_report_regional_coordinator AS
+        CREATE OR REPLACE VIEW get_report_regional_coordinator AS
             SELECT users.name, users.lastname, users.document_number, users.gender,COUNT(coordinator_visits.id) as visits, users.created_at
             FROM users
                 LEFT JOIN role_user ON users.id = role_user.user_id

@@ -15,7 +15,7 @@ return new class extends Migration
     public function up()
     {
         $views = "
-        CREATE VIEW getreport_of_deputy_regional_technical_director AS
+        CREATE OR REPLACE VIEW getreport_of_deputy_regional_technical_director AS
         SELECT users.name, users.lastname, users.document_number, users.gender, users.created_at
         FROM users
             LEFT JOIN role_user ON users.id = role_user.user_id

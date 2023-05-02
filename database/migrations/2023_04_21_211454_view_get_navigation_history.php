@@ -17,7 +17,7 @@ return new class extends Migration
     {
         // Traer data para los informes de historial de navegacion
         DB::statement("
-            CREATE VIEW get_navigation_history AS
+            CREATE OR REPLACE VIEW get_navigation_history AS
                 SELECT n.id, n.url, u.created_at, u.name, u.lastname
                 FROM navigation_history n
                     LEFT JOIN users u ON n.user_id = u.id

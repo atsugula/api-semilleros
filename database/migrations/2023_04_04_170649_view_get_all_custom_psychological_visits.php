@@ -15,7 +15,7 @@ return new class extends Migration
     public function up()
     {
         $views = "
-        CREATE VIEW get_all_custom_psychological_visits AS
+        CREATE OR REPLACE VIEW get_all_custom_psychological_visits AS
             SELECT cpv.id AS id,
                 DATE_FORMAT(cpv.date, '%Y-%m') AS month,
                 u.name AS user,

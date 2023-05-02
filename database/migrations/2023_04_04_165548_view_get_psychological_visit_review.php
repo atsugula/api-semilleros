@@ -16,7 +16,7 @@ return new class extends Migration
     {
         $this->down();
         $views = "
-        CREATE VIEW get_psychological_visit_review AS
+        CREATE OR REPLACE VIEW get_psychological_visit_review AS
             SELECT
                 cpv.id AS id,
                 cpvr.reason AS rejection_message,
