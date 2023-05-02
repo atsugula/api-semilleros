@@ -15,11 +15,11 @@ return new class extends Migration
     public function up()
     {
         $views = "
-        CREATE VIEW get_report_regional_coordinator AS
+        CREATE OR REPLACE VIEW get_report_regional_coordinator AS
         SELECT users.name, users.lastname, users.document_number, users.gender, users.created_at
         FROM users
-        JOIN role_user ON users.id = role_user.user_id
-        JOIN roles ON role_user.role_id = roles.id
+            LEFT JOIN role_user ON users.id = role_user.user_id
+            LEFT JOIN roles ON role_user.role_id = roles.id
         WHERE roles.id = 14;
         ";
         DB::unprepared($views);

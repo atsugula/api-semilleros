@@ -2,95 +2,39 @@
 
 namespace App\Exports\V1;
 
-use App\Http\Resources\V1\TransversalActivityCollection;
-use Maatwebsite\Excel\Concerns\WithColumnWidths;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Events\AfterSheet;
+use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Concerns\FromView;
 use App\Traits\FunctionGeneralTrait;
-use App\Models\TransversalActivity;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\DB;
 
-class TransversalActivityExport implements  FromCollection, WithMapping, WithHeadings, WithColumnWidths, WithEvents, ShouldAutoSize
+class TransversalActivityExport implements FromView, WithTitle
 {
     use Exportable, FunctionGeneralTrait;
+
     protected $data;
-    protected $model;
 
     public function __construct($data)
     {
         $this->data = $data;
-        $this->model = new TransversalActivity();
     }
 
-    public function map($transversalActivity): array
+    public function title(): string
     {
-        return [
-            $transversalActivity->id,
-            $transversalActivity->creator->name ?? '',
-            $transversalActivity->municipalities->name ?? '',
-            $transversalActivity->activity_name,
-            $transversalActivity->date_visit,
-            $transversalActivity->objective_activity,
-            $transversalActivity->scene,
-            $transversalActivity->nro_assistants,
-            $transversalActivity->created_at?->format('Y-m-d G:i:s'),
-        ];
-    }
-    //
-    public function columnWidths(): array
-    {
-        return [
-            'A' => 20,
-            'B' => 37,
-            'C' => 20,
-            'D' => 20,
-            'E' => 20,
-            'F' => 20,
-            'G' => 20,
-            'H' => 30,
-            'I' => 50,
-        ];
-    }
-    public function headings(): array
-    {
-        return [
-            '#',
-            "PSICÓLOGO",
-            "MUNICIPIO",
-            "ACTIVIDAD",
-            "FECHA",
-            "OBJETIVO",
-            "ESCENARIO",
-            "NUMERO DE ASISTENTES",
-            'FECHA SUBIDA',
-        ];
+        return 'ACTIVIDADES TRANSVERSALES';
     }
 
-    public function registerEvents(): array
+    public function view(): View
     {
-        return [
-            AfterSheet::class    => function (AfterSheet $event) {
-                $cellRange = 'A1:I1'; // All headers
-                $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setName('Arial Narrow')->setSize(11); // Letra primera fila
-                $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setBold(True); // Negrita primera fila
-                $event->sheet->getStyle('A:I')->getAlignment()->setHorizontal('center');
-                // $event->sheet->getStyle('C')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER);
-                $event->sheet->setAutoFilter('A:I');
-            },
-        ];
-    }
-
-    public function collection()
-    {
-
         set_time_limit(0);
-        ini_set('memory_limit', '6000M');
+        ini_set('memory_limit', '20000M');
 
-        $transversalActivities = $this->model->whereNotIn('created_by', [1,2])->get();
-        return new TransversalActivityCollection($transversalActivities);
+        $transversalActivities = DB::table('get_report_transversal_activities')->get();
+
+        return view('exports.transversalActivities', [
+            'transversalActivities' => $transversalActivities,
+        ]);
     }
+
 }

@@ -15,8 +15,8 @@ return new class extends Migration
     public function up()
     {
         $views = "
-        CREATE VIEW get_regional_coordinator_visits AS
-            SELECT
+        CREATE OR REPLACE VIEW get_regional_coordinator_visits AS
+            SELECT DISTINCT
                 users.name AS Coordinator,
                 coordinator_visits.date_visit AS Date,
                 coordinator_visits.hour_visit AS Hour,
@@ -27,14 +27,14 @@ return new class extends Migration
                 coordinator_visits.updated_at AS Upload_Date
             FROM
                 coordinator_visits
-                INNER JOIN users ON coordinator_visits.created_by = users.id
-                INNER JOIN users AS users_monitor ON coordinator_visits.revised_by = users_monitor.id
-                INNER JOIN disciplines ON coordinator_visits.discipline_id = disciplines.id
-                INNER JOIN municipalities ON coordinator_visits.municipalitie_id = municipalities.id
-                INNER JOIN role_user ON users.id = role_user.user_id
-                INNER JOIN statuses ON coordinator_visits.status_id = statuses.id
+                LEFT JOIN users ON coordinator_visits.created_by = users.id
+                LEFT JOIN users AS users_monitor ON coordinator_visits.revised_by = users_monitor.id
+                LEFT JOIN disciplines ON coordinator_visits.discipline_id = disciplines.id
+                LEFT JOIN municipalities ON coordinator_visits.municipalitie_id = municipalities.id
+                LEFT JOIN role_user ON users.id = role_user.user_id
+                LEFT JOIN statuses ON coordinator_visits.status_id = statuses.id
             WHERE
-                role_user.role_id = 14;
+                role_user.role_id = 9;
         ";
         DB::unprepared($views);
     }

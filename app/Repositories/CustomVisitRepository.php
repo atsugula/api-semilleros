@@ -26,22 +26,25 @@ class CustomVisitRepository
 
     public function getAll()
     {
-        $rol_id = $this->getIdRolUserAuth();
-        $user_id = $this->getIdUserAuth();
+         $rol_id = $this->getIdRolUserAuth();
+         $user_id = $this->getIdUserAuth();
 
+        // $user_id = 6;
+        // $rol_id = 6;
 
         $query = $this->model->query()->orderBy('id', 'DESC');
 
         switch ($rol_id) {
             case config('roles.coordinador_psicosocial'):
+            case config('roles.super-root'):
+            case config('roles.director_administrator'):
                 $query = $query->whereNotIn('created_by', [1,2])->whereHas('createdBy.roles', function ($query) {
                     $query->where('roles.slug', 'psicologo');
-                })->whereNotIn('status_id', [config('status.APR')]);
+                })->where('status_id', [config('status.ENR')]);
                 break;
 
             case config('roles.psicologo'):
-                $query->where('created_by', $user_id)
-                ->whereNotIn('status_id', [config('status.APR')]);
+                $query->where('created_by', $user_id);
                 break;
 
             default:
@@ -64,6 +67,7 @@ class CustomVisitRepository
     public function create($request)
     {
         $user_id = $this->getIdUserAuth();
+        // $user_id = 12;
 
         $customVisit = $this->model;
         $customVisit->theme = $request['theme'];
@@ -102,9 +106,13 @@ class CustomVisitRepository
         $user_id = $this->getIdUserAuth();
         $rol_id = $this->getIdRolUserAuth();
 
+        // $user_id = 6;
+        // $rol_id = 6;
+
 
         $customVisit = $this->model->findOrFail($id);
 
+        if ($rol_id == config('roles.psicologo')){
         $customVisit->theme = $request['theme'];
         $customVisit->agreements = $request['agreements'];
         $customVisit->concept = $request['concept'];
@@ -112,7 +120,7 @@ class CustomVisitRepository
         $customVisit->month_id = $request['month'];
         $customVisit->municipality_id = $request['municipality'];
         $customVisit->beneficiary_id = $request['beneficiary'];
-        $customVisit->created_by = $user_id;
+        }
 
         if ($rol_id == config('roles.coordinador_psicosocial')) {
             $customVisit->reviewed_by = $user_id;

@@ -112,40 +112,45 @@ class VisitSubDirectorRepository
         $rol_id = $this->getIdRolUserAuth();
 
         $visitSubDirector = $this->model->findOrFail($id);
-        $visitSubDirector->date_visit = $request['date_visit'];
-        $visitSubDirector->hour_visit = $request['hour_visit'];
-        $visitSubDirector->sports_scene = $request['sports_scene'];
-        $visitSubDirector->beneficiary_coverage = $request['beneficiary_coverage'];
-        /* CHAR CAMPOS */
-        $visitSubDirector->technical = $request['technical'];
-        $visitSubDirector->event_support = $request['event_support'];
-        /* OTROS CAMPOS */
-        $visitSubDirector->description = $request['description'];
-        $visitSubDirector->observations = $request['observations'];
-        // $visitSubDirector->transversal_activity = $request['transversal_activity'];
-        /* RELACIONES CAMPOS */
-        $visitSubDirector->municipality_id = $request['municipality_id'];
-        $visitSubDirector->sidewalk = $request['sidewalk'];
-        $visitSubDirector->discipline_id = $request['discipline_id'];
-        $visitSubDirector->monitor_id = $request['monitor_id'];
 
         if ($rol_id == config('roles.director_tecnico') || $rol_id == config('roles.director_administrator')) {
             $visitSubDirector->reviewed_by = $user_id;
             $visitSubDirector->status_id = $request['status_id'];
             $visitSubDirector->reject_message = $request['reject_message'];
         }
+        if ($user_id == $visitSubDirector->created_by) {
+            $visitSubDirector->date_visit = $request['date_visit'];
+            $visitSubDirector->hour_visit = $request['hour_visit'];
+            $visitSubDirector->sports_scene = $request['sports_scene'];
+            $visitSubDirector->beneficiary_coverage = $request['beneficiary_coverage'];
+            /* CHAR CAMPOS */
+            $visitSubDirector->technical = $request['technical'];
+            $visitSubDirector->event_support = $request['event_support'];
+            /* OTROS CAMPOS */
+            $visitSubDirector->description = $request['description'];
+            $visitSubDirector->observations = $request['observations'];
+            // $visitSubDirector->transversal_activity = $request['transversal_activity'];
+            /* RELACIONES CAMPOS */
+            $visitSubDirector->municipality_id = $request['municipality_id'];
+            $visitSubDirector->sidewalk = $request['sidewalk'];
+            $visitSubDirector->discipline_id = $request['discipline_id'];
+            $visitSubDirector->monitor_id = $request['monitor_id'];
+        }
+
+        /* CAMBIAMOS EL ESTADO */
+        if ($request['status_id'] == config('status.REC') && $user_id == $visitSubDirector->created_by) {
+            $visitSubDirector->status_id = config('status.ENR');
+            $visitSubDirector->reject_message = $request['reject_message'];
+        }
+
+        $visitSubDirector->save();
 
         /* ACTUALIZAMOS EL ARCHIVO */
         if ($request->hasFile('file')) {
             $handle_1 = $this->update_file($request, 'file', 'subdirector_visit', $visitSubDirector->id, $visitSubDirector->file);
             $visitSubDirector->update(['file' => $handle_1['response']['payload']]);
         }
-        /* CAMBIAMOS EL ESTADO */
-        if ($request['status_id'] == config('status.REC') && $user_id == $visitSubDirector->created_by) {
-            $visitSubDirector->status_id = config('status.ENR');
-            $visitSubDirector->reject_message = $request['reject_message'];
-        }
-        $visitSubDirector->save();
+
         /* GUARDAMOS EN DATAMODEL */
         $this->control_data($visitSubDirector, 'update');
         $results = new VisitSubDirectorResource($visitSubDirector);

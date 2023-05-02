@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Exports\V1\CustomVisitPsicosocialExport;
 use App\Exports\V1\TransversalActivityExport;
 use App\Exports\V1\NavigationHistoryExport;
 use App\Exports\V1\VisitSubDirectorExport;
@@ -11,6 +12,7 @@ use App\Exports\V1\InscriptionExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\V1\UsersInfoExport;
 use App\Exports\V1\UsersExport;
+use App\Exports\V1\VisitPsicosocialExport;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
@@ -38,11 +40,17 @@ class ReportRepository
             case 'customVisit':
                 return $this->exportCustomVisit($request);
                 break;
+            case 'customPsychologicalVisits':
+                return $this->customPsychologicalVisitsVisit($request);
+                break;
             case 'inscriptions':
                 return $this->exportInscription($request);
                 break;
             case 'navigationHistory':
                 return $this->exportNavigationHistory($request);
+                break;
+            case 'psychologicalVisits':
+                return $this->psychologicalVisits($request);
                 break;
             default:
                 return 0;
@@ -115,6 +123,19 @@ class ReportRepository
         }
     }
 
+    public function customPsychologicalVisitsVisit($request)
+    {
+        try {
+            if (!$request->data) {
+                return Excel::download(new CustomVisitPsicosocialExport($request), "$request->type_excel.xlsx");
+            }
+            return User::count();
+        } catch (\Exception $ex) {
+            report($ex);
+            return response()->json(['error' => 'Error obteniendo el dato ' . $ex->getMessage() . ', buscar en linea de codigo ' . $ex->getLine(), 'success' => false], 404);
+        }
+    }
+
     public function exportCustomVisit($request)
     {
         try {
@@ -146,6 +167,19 @@ class ReportRepository
         try {
             if (!$request->data) {
                 return Excel::download(new NavigationHistoryExport($request), "$request->type_excel.xlsx");
+            }
+            return User::count();
+        } catch (\Exception $ex) {
+            report($ex);
+            return response()->json(['error' => 'Error obteniendo el dato ' . $ex->getMessage() . ', buscar en linea de codigo ' . $ex->getLine(), 'success' => false], 404);
+        }
+    }
+
+    public function psychologicalVisits($request)
+    {
+        try {
+            if (!$request->data) {
+                return Excel::download(new VisitPsicosocialExport($request), "$request->type_excel.xlsx");
             }
             return User::count();
         } catch (\Exception $ex) {
