@@ -137,17 +137,20 @@ class VisitSubDirectorRepository
             $visitSubDirector->monitor_id = $request['monitor_id'];
         }
 
-        /* ACTUALIZAMOS EL ARCHIVO */
-        if ($request->hasFile('file')) {
-            $handle_1 = $this->update_file($request, 'file', 'subdirector_visit', $visitSubDirector->id, $visitSubDirector->file);
-            $visitSubDirector->update(['file' => $handle_1['response']['payload']]);
-        }
         /* CAMBIAMOS EL ESTADO */
         if ($request['status_id'] == config('status.REC') && $user_id == $visitSubDirector->created_by) {
             $visitSubDirector->status_id = config('status.ENR');
             $visitSubDirector->reject_message = $request['reject_message'];
         }
+
         $visitSubDirector->save();
+
+        /* ACTUALIZAMOS EL ARCHIVO */
+        if ($request->hasFile('file')) {
+            $handle_1 = $this->update_file($request, 'file', 'subdirector_visit', $visitSubDirector->id, $visitSubDirector->file);
+            $visitSubDirector->update(['file' => $handle_1['response']['payload']]);
+        }
+
         /* GUARDAMOS EN DATAMODEL */
         $this->control_data($visitSubDirector, 'update');
         $results = new VisitSubDirectorResource($visitSubDirector);
