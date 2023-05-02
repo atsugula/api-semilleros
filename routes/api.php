@@ -142,6 +142,7 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
     /* BENEFICIARIOS */
     Route::apiResource('beneficiaries', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::put('beneficiaries/{id}', [BeneficiarieController::class, 'update']);
+    Route::put('beneficiaries/changeStatus/{id}', [BeneficiarieController::class, 'changeStatus']);
 
     // BENEFICIARIOS POR MUNICIPIO
     Route::get('getBeneficiariesMunicipality/{id}', [BeneficiarieController::class, 'getBeneficiariesMunicipality']);

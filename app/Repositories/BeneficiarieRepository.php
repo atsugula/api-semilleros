@@ -207,11 +207,10 @@ class BeneficiarieRepository
 
     public function changeStatus($request, $id) {
 
-        //$rol_id = $this->getIdRolUserAuth();
-        //$user_id = $this->getIdUserAuth();
-
-        $rol_id = 9;//9,11,17 
-        $user_id = 9;//9,11,17
+        $rol_id = $this->getIdRolUserAuth();
+        $user_id = $this->getIdUserAuth();
+        //$rol_id = 9;//9,11,17 
+        //$user_id = 9;//9,11,17
 
         $beneficiarie = $this->model->findOrFail($id);
 
@@ -224,7 +223,7 @@ class BeneficiarieRepository
         $beneficiarie->save();
 
         // Guardamos en dataModel
-        //$this->control_data($beneficiarie, 'update');
+        $this->control_data($beneficiarie, 'update');
 
         $result = new BeneficiaryResource($beneficiarie);
 
