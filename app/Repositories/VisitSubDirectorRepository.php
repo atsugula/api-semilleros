@@ -112,27 +112,29 @@ class VisitSubDirectorRepository
         $rol_id = $this->getIdRolUserAuth();
 
         $visitSubDirector = $this->model->findOrFail($id);
-        $visitSubDirector->date_visit = $request['date_visit'];
-        $visitSubDirector->hour_visit = $request['hour_visit'];
-        $visitSubDirector->sports_scene = $request['sports_scene'];
-        $visitSubDirector->beneficiary_coverage = $request['beneficiary_coverage'];
-        /* CHAR CAMPOS */
-        $visitSubDirector->technical = $request['technical'];
-        $visitSubDirector->event_support = $request['event_support'];
-        /* OTROS CAMPOS */
-        $visitSubDirector->description = $request['description'];
-        $visitSubDirector->observations = $request['observations'];
-        // $visitSubDirector->transversal_activity = $request['transversal_activity'];
-        /* RELACIONES CAMPOS */
-        $visitSubDirector->municipality_id = $request['municipality_id'];
-        $visitSubDirector->sidewalk = $request['sidewalk'];
-        $visitSubDirector->discipline_id = $request['discipline_id'];
-        $visitSubDirector->monitor_id = $request['monitor_id'];
 
         if ($rol_id == config('roles.director_tecnico') || $rol_id == config('roles.director_administrator')) {
             $visitSubDirector->reviewed_by = $user_id;
             $visitSubDirector->status_id = $request['status_id'];
             $visitSubDirector->reject_message = $request['reject_message'];
+        }
+        if ($user_id == $visitSubDirector->created_by) {
+            $visitSubDirector->date_visit = $request['date_visit'];
+            $visitSubDirector->hour_visit = $request['hour_visit'];
+            $visitSubDirector->sports_scene = $request['sports_scene'];
+            $visitSubDirector->beneficiary_coverage = $request['beneficiary_coverage'];
+            /* CHAR CAMPOS */
+            $visitSubDirector->technical = $request['technical'];
+            $visitSubDirector->event_support = $request['event_support'];
+            /* OTROS CAMPOS */
+            $visitSubDirector->description = $request['description'];
+            $visitSubDirector->observations = $request['observations'];
+            // $visitSubDirector->transversal_activity = $request['transversal_activity'];
+            /* RELACIONES CAMPOS */
+            $visitSubDirector->municipality_id = $request['municipality_id'];
+            $visitSubDirector->sidewalk = $request['sidewalk'];
+            $visitSubDirector->discipline_id = $request['discipline_id'];
+            $visitSubDirector->monitor_id = $request['monitor_id'];
         }
 
         /* ACTUALIZAMOS EL ARCHIVO */

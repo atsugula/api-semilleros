@@ -89,24 +89,25 @@ class TransversalActivityRepository
         $user_id = $this->getIdUserAuth();
 
         $transversalActivity = $this->model->findOrFail($id);;
-        $transversalActivity->date_visit = $request['date_visit'];
-        $transversalActivity->nro_assistants = $request['nro_assistants'];
-        $transversalActivity->activity_name = $request['activity_name'];
-        $transversalActivity->objective_activity = $request['objective_activity'];
-        $transversalActivity->scene = $request['scene'];
-        $transversalActivity->meeting_planing = $request['meeting_planing'];
-        $transversalActivity->team_socialization = $request['team_socialization'];
-        $transversalActivity->development_activity = $request['development_activity'];
-        $transversalActivity->content_network = $request['content_network'];
-        $transversalActivity->municipality_id = $request['municipality_id'];
-        // $transversalActivity->created_by = $user_id;
-        $save = $transversalActivity->save();
 
         /* CAMBIAMOS EL ESTADO */
         if ($request['status_id'] == config('status.REC') && $user_id == $transversalActivity->created_by) {
             $transversalActivity->status_id = config('status.ENR');
             $transversalActivity->reject_message = $request['reject_message'];
         }
+        if ($user_id == $transversalActivity->created_by) {
+            $transversalActivity->date_visit = $request['date_visit'];
+            $transversalActivity->nro_assistants = $request['nro_assistants'];
+            $transversalActivity->activity_name = $request['activity_name'];
+            $transversalActivity->objective_activity = $request['objective_activity'];
+            $transversalActivity->scene = $request['scene'];
+            $transversalActivity->meeting_planing = $request['meeting_planing'];
+            $transversalActivity->team_socialization = $request['team_socialization'];
+            $transversalActivity->development_activity = $request['development_activity'];
+            $transversalActivity->content_network = $request['content_network'];
+            $transversalActivity->municipality_id = $request['municipality_id'];
+        }
+        $save = $transversalActivity->save();
         // /* SUBIMOS EL ARCHIVO */
         if ($save) {
             $this->updateAllFiles($request, $transversalActivity->id);

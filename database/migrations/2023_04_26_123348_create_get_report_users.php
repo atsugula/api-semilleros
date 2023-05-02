@@ -20,13 +20,13 @@ return new class extends Migration
                 u.document_number, u.document_type, u.phone, r.name AS rol,
                 z.name AS region, d.name AS discipline, acces.date AS end_date
             FROM users u
-                INNER JOIN role_user ru ON u.id = ru.user_id
-                INNER JOIN roles r ON r.id = ru.role_id
-                JOIN zone_users zu ON u.id = zu.user_id
-                JOIN zones z ON z.id = zu.zones_id
-                JOIN discipline_users du ON u.id = du.user_id
-                JOIN disciplines d ON d.id = du.disciplines_id
-                INNER JOIN access_logins acces ON u.id = acces.user_id
+                LEFT JOIN role_user ru ON u.id = ru.user_id
+                LEFT JOIN roles r ON r.id = ru.role_id
+                LEFT JOIN zone_users zu ON u.id = zu.user_id
+                LEFT JOIN zones z ON z.id = zu.zones_id
+                LEFT JOIN discipline_users du ON u.id = du.user_id
+                LEFT JOIN disciplines d ON d.id = du.disciplines_id
+                LEFT JOIN access_logins acces ON u.id = acces.user_id
             WHERE
                 u.id NOT IN (1)
         ";
