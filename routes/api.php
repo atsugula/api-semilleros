@@ -255,8 +255,8 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
 });
 
 /*Rutas de prueba Zarrok*/
-    //Route::apiResource('psychologistVisits', psychologistVisitsController::class)->only(['index', 'store', 'show', 'destroy']);
-    //Route::post('psychologistVisits/{id}', [psychologistVisitsController::class, 'update'])->name('psychologistVisits.update');
+//Route::apiResource('psychologistVisits', psychologistVisitsController::class)->only(['index', 'store', 'show', 'destroy']);
+//Route::post('psychologistVisits/{id}', [psychologistVisitsController::class, 'update'])->name('psychologistVisits.update');
 
 /* RUTAS DE PRUEBA JORGE */
 
@@ -264,3 +264,9 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
 Route::apiResources([
     'userss' => UserController::class,
 ]);
+
+
+//Rutas de Pruebas Crango
+Route::apiResource('beneficiariess', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);
+Route::put('beneficiariess/{id}', [BeneficiarieController::class, 'update']);
+Route::put('beneficiariess/changeStatus/{id}', [BeneficiarieController::class, 'changeStatus']);
