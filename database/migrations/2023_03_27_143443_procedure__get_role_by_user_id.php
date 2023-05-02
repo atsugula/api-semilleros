@@ -14,8 +14,10 @@ return new class extends Migration
      */
     public function up()
     {
+        $procedureDelete = "DROP PROCEDURE IF EXISTS GetRoleByUserId;";
+        DB::unprepared($procedureDelete);
         $procedure = "
-        CREATE OR REPLACE PROCEDURE GetRoleByUserId(IN userId INT)
+        CREATE PROCEDURE GetRoleByUserId(IN userId INT)
             BEGIN
                 SELECT users.id, roles.name
                 FROM users
