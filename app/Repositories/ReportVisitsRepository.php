@@ -12,7 +12,7 @@ class ReportVisitsRepository
     $templateProcessor = new TemplateProcessor(asset('Template\metodologo\Metodologist_Visit.docx'));
      
     $data = [
-      'nombre' => 'Juan',
+      'name' => 'Juan',
     ];
     $templateProcessor->setValues($data);
     $templateProcessor->saveAs('Template\metodologo\Metodologist_Visit.docx');
