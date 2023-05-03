@@ -127,7 +127,7 @@ class TransversalActivityRepository
         }
         $save = $transversalActivity->save();
         // /* SUBIMOS EL ARCHIVO */
-        if ($save) {
+        if ($save && $rol_id != config('roles.director_programa')) {
             $this->updateAllFiles($request, $transversalActivity->id);
         }
 
