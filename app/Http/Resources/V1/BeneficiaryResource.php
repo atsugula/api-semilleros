@@ -14,7 +14,7 @@ class BeneficiaryResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [           
+        return [
             'id' => $this->id,
             'registration_date'=> $this->registration_date,
             'affiliation_type'=> $this->affiliation_type,
@@ -59,7 +59,10 @@ class BeneficiaryResource extends JsonResource
 
             'know_guardian' => $this->acudientes[0],
             'acudiente' => $this->acudientes[0]->guardian,
-            'tamizaje' => $this->tamizaje
+            'tamizaje' => $this->tamizaje,
+            'revised_by' => $this->revised_user,
+            'status_id' => $this->status_id,
+            'rejection_message' => $this->rejection_message,
         ];
     }
 }

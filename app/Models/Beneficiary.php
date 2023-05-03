@@ -68,4 +68,8 @@ class Beneficiary extends Model
     public function tamizaje() {
         return $this->hasOne(BeneficiaryScreening::class, 'beneficiary_id', 'id');
     }
+
+    public function revised_user(){
+        return $this->belongsTo(User::class, 'revised_by', 'id');
+    }
 }

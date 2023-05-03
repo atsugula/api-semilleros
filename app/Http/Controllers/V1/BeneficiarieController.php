@@ -12,11 +12,11 @@ use Illuminate\Support\Facades\Gate;
 class BeneficiarieController extends Controller
 {
 
-    private $beneficiarieRepositorory;
+    private $beneficiarieRepository;
 
-    function __construct(BeneficiarieRepository $beneficiarieRepositorory)
+    function __construct(BeneficiarieRepository $beneficiarieRepository)
     {
-        $this->beneficiarieRepositorory = $beneficiarieRepositorory;
+        $this->beneficiarieRepository = $beneficiarieRepository;
     }
 
     /**
@@ -26,9 +26,9 @@ class BeneficiarieController extends Controller
      */
     public function index(Request $request)
     {
-        // Gate::authorize('haveaccess');
+        Gate::authorize('haveaccess');
         try {
-            $results = $this->beneficiarieRepositorory->getAll();
+            $results = $this->beneficiarieRepository->getAll();
             return $results->toArray($request);
         } catch (\Exception $ex) {
             return  $this->createErrorResponse([], 'Algo salio mal al listar los beneficiarios ' . $ex->getMessage() . ' linea ' . $ex->getCode());
@@ -47,14 +47,13 @@ class BeneficiarieController extends Controller
         try {
             $data = $request->all();
 
-            $validator = $this->beneficiarieRepositorory->getValidate($data, 'update');
+            $validator = $this->beneficiarieRepository->getValidate($data, 'update');
             if ($validator->fails()) {
                 return  $this->createErrorResponse([], $validator->errors()->first(), 422);
             }
 
-            $result = $this->beneficiarieRepositorory->create($data);
+            $result = $this->beneficiarieRepository->create($data);
             return $this->createResponse($result, 'El beneficiario fue creado correctamente.');
-
         } catch (\Exception $ex) {
             return  $this->createErrorResponse([], 'Algo salio mal al listar los beneficiarios ' . $ex->getMessage() . ' linea ' . $ex->getCode());
         }
@@ -70,7 +69,7 @@ class BeneficiarieController extends Controller
     {
         // Gate::authorize('haveaccess');
         try {
-            $result = $this->beneficiarieRepositorory->findById($id);
+            $result = $this->beneficiarieRepository->findById($id);
             if (empty($result)) {
                 return $this->createResponse($result, 'No se encontró el beneficiario', 404);
             }
@@ -96,12 +95,12 @@ class BeneficiarieController extends Controller
         try {
             $data = $request->all();
 
-            $validator = $this->beneficiarieRepositorory->getValidate($data, 'update');
+            $validator = $this->beneficiarieRepository->getValidate($data, 'update');
             if ($validator->fails()) {
                 return  $this->createErrorResponse([], $validator->errors()->first(), 422);
             }
 
-            $result = $this->beneficiarieRepositorory->update($data, $id);
+            $result = $this->beneficiarieRepository->update($data, $id);
 
             return $this->createResponse($result, 'El beneficiario fue modificado correctamente.');
         } catch (\Exception $ex) {
@@ -119,7 +118,7 @@ class BeneficiarieController extends Controller
     {
         // // Gate::authorize('haveaccess');
         try {
-            $results = $this->beneficiarieRepositorory->delete($id);
+            $results = $this->beneficiarieRepository->delete($id);
         } catch (\Exception $ex) {
             return  $this->createErrorResponse([], 'Algo salio mal al eliminar el beneficiario ' . $ex->getMessage() . ' linea ' . $ex->getCode());
         }
@@ -128,7 +127,8 @@ class BeneficiarieController extends Controller
 
 
     // Trae solo beneficiarios por municipio
-    public function getBeneficiariesMunicipality($id) {
+    public function getBeneficiariesMunicipality($id)
+    {
         $response = Beneficiary::where('municipalities_id', $id)->get();
         $beneficiaries = [];
         foreach ($response as $bene) {
@@ -140,4 +140,17 @@ class BeneficiarieController extends Controller
         return response()->json($beneficiaries);
     }
 
+    /**
+     * Cambia el estado de la ficha de inscripcion de Monitores.
+     */
+    public function changeStatus(Request $request, $id)
+    {
+        Gate::authorize('haveaccess');
+        try {
+            $result = $this->beneficiarieRepository->changeStatus($request, $id);
+            return $this->createResponse($result, 'El estado de la ficha tecnica fue cambiado correctamente.');
+        } catch (\Exception $ex) {
+            return  $this->createErrorResponse([], 'Algo salio mal al cambiar el estado de la ficha tecnica ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+        }
+    }
 }
