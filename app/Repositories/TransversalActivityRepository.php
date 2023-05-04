@@ -163,7 +163,7 @@ class TransversalActivityRepository
             'development_activity' => 'bail|required',
             'content_network' => 'bail|required',
             'municipality_id' => 'bail|required',
-            'file' => 'bail|required',
+            'file' => $method != 'update' ? 'bail|required|mimes:application/pdf,pdf,png,webp,jpg,jpeg|max:' . (500 * 1049000) : 'bail',
         ];
 
         $messages = [
@@ -233,13 +233,16 @@ class TransversalActivityRepository
     public function updateAllFiles($request, $id) {
 
         try {
+            $files = $request->file('file');
             $evidences = $this->modelEvidence->where('transversal_id', $id)->get();
-            foreach ($evidences as $evidence) {
-                Storage::disk('public')->delete($evidence->path);
-                $evidence->delete();
+            if (!empty($files)) {
+                foreach ($evidences as $evidence) {
+                    Storage::disk('public')->delete($evidence->path);
+                    $evidence->delete();
+                }
+                $response = $this->uploadAll($request, $id);
+                return $response;
             }
-            $response = $this->uploadAll($request, $id);
-            return $response;
         } catch (Exception $ex) {
             return [
                 'response' => ['success' => false, 'payload' => $ex->getMessage()]
