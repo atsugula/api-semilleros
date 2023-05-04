@@ -65,7 +65,7 @@ class BeneficiarieRepository
 
         $knowGuardian = KnowGuardians::updateOrCreate(
             [
-                'id_beneficiary'=> $beneficiarie->id,
+                'id_beneficiary' => $beneficiarie->id,
                 'id_guardian'   => $acudiente->id
             ],
             [
@@ -125,7 +125,7 @@ class BeneficiarieRepository
 
         $knowGuardian = KnowGuardians::updateOrCreate(
             [
-                'id_beneficiary'=> $beneficiarie->id,
+                'id_beneficiary' => $beneficiarie->id,
                 'id_guardian'   => $acudiente->id
             ],
             [
@@ -152,10 +152,11 @@ class BeneficiarieRepository
         return response()->json(['message' => 'Se ha eliminado correctamente']);
     }
 
-    public function getValidate($data, $method){
+    public function getValidate($data, $method)
+    {
 
         $validate = [
-            'affiliation_type'=> 'bail|required',
+            'affiliation_type' => 'bail|required',
             /* 'group_id' => 'bail|required',
             'full_name' => 'bail|required',
             'institution_entity_referred' => 'bail|required',
@@ -181,7 +182,7 @@ class BeneficiarieRepository
         ];
 
         $attrs = [
-            'affiliation_type'=> 'Tipo de afiliaciín',
+            'affiliation_type' => 'Tipo de afiliaciín',
             /* 'group_id' => 'bail|required',
             'full_name' => 'bail|required',
             'institution_entity_referred' => 'bail|required',
@@ -202,21 +203,20 @@ class BeneficiarieRepository
         ];
 
         return $this->validator($data, $validate, $messages, $attrs);
-
     }
 
-    public function changeStatus($request, $id) {
-
+    public function changeStatus($request, $id)
+    {
         $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
-        //$rol_id = 9;//9,11,17 
-        //$user_id = 9;//9,11,17
+        //$rol_id = 10; //8,9,10 
+        //$user_id = 10; //8,9,10
 
         $beneficiarie = $this->model->findOrFail($id);
 
-        if ($rol_id == config('roles.metodologo') || $rol_id == config('roles.asistente_administrativo') || $rol_id == config('roles.auxiliar_administrativo_tecnico')) {
+        if ($rol_id == config('roles.asistente_administrativo') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.metodologo')) {
             $beneficiarie->revised_by = $user_id;
-            $beneficiarie->status_id = $request['status_id'];
+            $beneficiarie->status_id = config("status.{$request['status']}");
             $beneficiarie->rejection_message = $request['rejection_message'];
         }
 
@@ -229,5 +229,4 @@ class BeneficiarieRepository
 
         return $result;
     }
-
 }
