@@ -114,6 +114,7 @@ class ChronogramRepository
         $cronograms->month = $data['month'];
         $cronograms->municipality = $data['municipality'];
         $cronograms->note = $data['note'];
+        $cronograms->status_id = config('status.ENR');
 
         // Actualizar estados
         if ($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_enlace')) {
