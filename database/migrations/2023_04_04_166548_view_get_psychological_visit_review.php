@@ -26,8 +26,8 @@ return new class extends Migration
                 b.full_name AS beneficiary,
                 cpv.topic AS topic,
                 cpv.agreemnets AS agreemnets,
-                kg.concept AS concept,
-                kg.know_needs AS guardian_know_needs,
+                /* kg.concept AS concept,
+                kg.know_needs AS guardian_know_needs, */
                 u.name AS psychologist,
                 b.scholar_level AS grade,
                 c.entity AS health_entity,
