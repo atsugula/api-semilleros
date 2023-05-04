@@ -265,6 +265,7 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
 
 
 /* RUTAS DE PRUEBA JORGE */
+Route::get('visits_review_director', [VisitSubDirectorController::class, 'indexReview'])->name('visits_review_director.indexReview');
 
 // Rutas de prueba V2 JOSE
 Route::apiResources([
