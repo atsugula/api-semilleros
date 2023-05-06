@@ -76,7 +76,7 @@ class ReportVisitsRepository
     $templateProcessor->setValues($data);
 
     try {
-      $templateProcessor->setImageValue('imagen', array('path' => storage_path("app/public/". $MethodologistVisitReport->file), 'width' => 100, 'height' => 100, 'ratio' => false));
+      $templateProcessor->setImageValue('imagen', array('path' => storage_path("app/public/". $MethodologistVisitReport->file), 'width' => 500, 'height' => 500, 'ratio' => false));
     } catch (\Exception $e) {
     }
     

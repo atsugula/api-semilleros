@@ -27,11 +27,11 @@ trait ImageTrait
                 $file = $request->file($input_name);
                 $rand = strtolower(Str::random(10));
                 $image = Image::make($file);
-                $image->encode('webp', 90);
+                $image->encode('png', 90);
 
                 // Create folder directory and save
                 Storage::disk('public')->makeDirectory($model . '/' . $id);
-                $image->save($path . $rand . '.webp');
+                $image->save($path . $rand . '.png');
                 return [
                     'response' => ['status' => true, 'name' => $rand, 'message' => 'Se ha guardado con éxito']
                 ];
@@ -54,13 +54,13 @@ trait ImageTrait
                     $file = $request->file($input_name);
                     $rand = strtolower(Str::random(10));
                     $image = Image::make($file);
-                    $image->encode('webp', 90);
+                    $image->encode('png', 90);
 
                     // Create folder directory and save
                     Storage::disk('public')->makeDirectory($model . '/' . $id);
-                    $image->save($path . $rand . '.webp');
+                    $image->save($path . $rand . '.png');
 
-                    $url = "{$model}/{$id}/{$rand}.webp";
+                    $url = "{$model}/{$id}/{$rand}.png";
                 }
             } else {
                 $uid = uniqid();

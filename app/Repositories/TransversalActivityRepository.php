@@ -187,12 +187,12 @@ class TransversalActivityRepository
                 foreach ($request->file('file') as $file) {
                     $name = strtolower(Str::random(10));
                     $image = Image::make($file);
-                    $image->encode('webp', 90);
+                    $image->encode('png', 90);
                     // Create folder directory and save
                     Storage::disk('public')->makeDirectory('transversal_activities/' . $id);
-                    $image->save($path . $name . '.webp');
+                    $image->save($path . $name . '.png');
                     // Save url image for load in database
-                    $url = "transversal_activities/{$id}/{$name}.webp";
+                    $url = "transversal_activities/{$id}/{$name}.png";
                     // Save in database with relation
                     $this->modelEvidence->create([
                         'model' => "Evidencia Actividad Transversal $id",
