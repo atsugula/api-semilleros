@@ -75,7 +75,7 @@ class ReportVisitsRepository
 
     $templateProcessor->saveAs($outputPath);
 
-    return Response::download($outputPath);
+    return $outputPath;
 
   }
 
