@@ -75,7 +75,7 @@ class ReportVisitsRepository
 
     $templateProcessor->saveAs($outputPath);
 
-    readfile($outputPath);
+    return readfile($outputPath);
 
   }
 
