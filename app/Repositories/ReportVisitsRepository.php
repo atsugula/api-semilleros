@@ -37,6 +37,8 @@ class ReportVisitsRepository
       'municipalities' => $MethodologistVisitReport->municipalities->name,
       'beneficiarycoverage' => $MethodologistVisitReport->beneficiary_coverage,
       'status' => $MethodologistVisitReport->status->name,
+      'corregimiento'=> $MethodologistVisitReport->sidewalk,
+      'region' => $MethodologistVisitReport->municipalities->zone_id,
       'plantrpositivo' =>$MethodologistVisitReport->swich_plans_r ==1 ? 'SI' :' ',
       'planRNegativo' =>$MethodologistVisitReport->swich_plans_r ==0 ? 'NO' :'',
       'SPW1P' =>$MethodologistVisitReport->swich_plans_sc_1 ==1 ? 'SI' :' ',
@@ -72,6 +74,12 @@ class ReportVisitsRepository
       'observaciones' =>$MethodologistVisitReport->observations,
     ];
     $templateProcessor->setValues($data);
+
+    try {
+      $templateProcessor->setImageValue('imagen', array('path' => storage_path("app/public/". $MethodologistVisitReport->file), 'width' => 100, 'height' => 100, 'ratio' => false));
+    } catch (\Exception $e) {
+    }
+    
 
     $templateProcessor->saveAs($outputPath);
 
