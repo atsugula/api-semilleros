@@ -75,7 +75,8 @@ class ReportVisitsRepository
 
     $templateProcessor->saveAs($outputPath);
 
-    return $outputPath;
+    $relative_path = 'Template/metodologo/Metodologist_Visit_'. $id .'.docx';
+    return $relative_path;
 
   }
 
