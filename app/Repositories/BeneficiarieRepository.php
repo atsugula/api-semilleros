@@ -26,7 +26,15 @@ class BeneficiarieRepository
 
     public function getAll()
     {
-        $beneficiaries = new BeneficiaryCollection($this->model->orderBy('id', 'DESC')->get());
+        $user_id = $this->getIdUserAuth();
+
+        $beneficiaries = new BeneficiaryCollection(
+            $this->model
+            ->orderBy('id', 'DESC')
+            ->where('created_by', $user_id)
+            ->get()
+        );
+
         return $beneficiaries;
     }
 

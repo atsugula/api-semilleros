@@ -26,7 +26,7 @@ class BeneficiarieController extends Controller
      */
     public function index(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $results = $this->beneficiarieRepository->getAll();
             return $results->toArray($request);
