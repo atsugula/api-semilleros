@@ -37,6 +37,8 @@ class ReportVisitsRepository
       'municipalities' => $MethodologistVisitReport->municipalities->name,
       'beneficiarycoverage' => $MethodologistVisitReport->beneficiary_coverage,
       'status' => $MethodologistVisitReport->status->name,
+      'corregimiento'=> $MethodologistVisitReport->sidewalk,
+      'region' => $MethodologistVisitReport->municipalities->zone_id,
       'plantrpositivo' =>$MethodologistVisitReport->swich_plans_r ==1 ? 'SI' :' ',
       'planRNegativo' =>$MethodologistVisitReport->swich_plans_r ==0 ? 'NO' :'',
       'SPW1P' =>$MethodologistVisitReport->swich_plans_sc_1 ==1 ? 'SI' :' ',
@@ -73,11 +75,16 @@ class ReportVisitsRepository
     ];
     $templateProcessor->setValues($data);
 
+    try {
+      $templateProcessor->setImageValue('imagen', array('path' => storage_path("app/public/". $MethodologistVisitReport->file), 'width' => 500, 'height' => 500, 'ratio' => false));
+    } catch (\Exception $e) {
+    }
+    
+
     $templateProcessor->saveAs($outputPath);
 
-    return Response::download($outputPath);
-
-
+    $relative_path = 'Template/metodologo/Metodologist_Visit_'. $id .'.docx';
+    return $relative_path;
 
   }
 
