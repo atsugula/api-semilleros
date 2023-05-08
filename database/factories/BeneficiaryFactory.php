@@ -20,6 +20,7 @@ class BeneficiaryFactory extends Factory
             'created_by' => 19, // Monitor
             'full_name' => fake()->name,
             'origin_place' => 'Origin place demo',
+            'municipalities_id' => fake()->numberBetween(1, 43),
             'accept' => fake()->randomElement(['0','1']), // generando un tipo de accept
             'linkage_project' => fake()->randomElement(['PMIE','PMEPUB','PMEPRI','PMGCP','PMMCP','PMR']), // generando un tipo de proyecto
             'participant_type' => fake()->randomElement(['C','NC']), // generando un tipo de participante
