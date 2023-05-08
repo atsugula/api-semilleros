@@ -26,7 +26,7 @@ class BeneficiarieRepository
 
     public function getAll()
     {
-        $beneficiaries = new BeneficiaryCollection($this->model->orderBy('id', 'DESC')->get());
+        $beneficiaries = new BeneficiaryCollection($this->model->orderBy('id', 'ASC')->get());
         return $beneficiaries;
     }
 

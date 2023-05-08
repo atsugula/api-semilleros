@@ -69,7 +69,15 @@ class Beneficiary extends Model
         return $this->hasOne(BeneficiaryScreening::class, 'beneficiary_id', 'id');
     }
 
-    public function revised_user(){
-        return $this->belongsTo(User::class, 'revised_by', 'id');
+    public function reviewed_user(){
+        return $this->belongsTo(User::class, 'reviewed_by', 'id');
+    }
+
+    public function approved_user(){
+        return $this->belongsTo(User::class, 'approved_by', 'id');
+    }
+
+    public function rejected_user(){
+        return $this->belongsTo(User::class, 'rejected_by', 'id');
     }
 }

@@ -17,7 +17,7 @@ class beneficiariesseeder extends Seeder
     public function run()
     {
         $faker = Faker::create();
-        
+
         foreach (range(1, 50) as $index) {
             DB::table('beneficiaries')->insert([
                 'created_by' => $faker->numberBetween(1, 10),
@@ -29,6 +29,7 @@ class beneficiariesseeder extends Seeder
                 'participant_type' => $faker->randomElement(['C', 'NC']),
                 'type_document' => $faker->randomElement(['RC', 'TI', 'CC']),
                 'document_number' => $faker->unique()->numberBetween(10000000, 999999999),
+                'municipalities_id' => $faker->numberBetween(1, 43),
                 'zone' => $faker->randomElement(['U', 'R']),
                 'stratum' => $faker->randomNumber(2),
                 'phone' => $faker->phoneNumber,
@@ -42,8 +43,8 @@ class beneficiariesseeder extends Seeder
                 'schoclar_Grade' => $faker->randomElement(['A', 'B', 'C', 'D', 'E']),
                 'health_entity' => $faker->company,
                 'created_at' => $faker->dateTimeBetween('-1 year', 'now')->format('Y-m-d H:i:s'),
-                'updated_at' => $faker->dateTimeBetween('-1 year', 'now')->format('Y-m-d H:i:s')
+                'updated_at' => $faker->dateTimeBetween('-1 year', 'now')->format('Y-m-d H:i:s'),
             ]);
-    } 
+        }
     }
 }
