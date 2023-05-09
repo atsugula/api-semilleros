@@ -32,6 +32,22 @@ class VisitSubDirectorController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexReview(Request $request)
+    {
+        // Gate::authorize('haveaccess');
+        try {
+            $results = $this->repository->getAllReview();
+            return $results->toArray($request);
+        } catch (\Exception $ex) {
+            return  $this->createErrorResponse([], 'Algo salio mal al listar las visitas a revisar director ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+        }
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

@@ -29,10 +29,19 @@ class TransversalActivityRepository
 
     public function getAll()
     {
-        // $rol_id = $this->getIdRolUserAuth();
+        $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
 
-        $query = $this->model->query()->where('created_by', $user_id)->orderBy('id', 'DESC');
+        $query = $this->model->query();
+
+        if ($rol_id == config('roles.director_programa')) {
+            $query->where('status_id', config('status.ENR'))
+                ->whereNotIn('created_by', [1,2]);
+        }
+
+        if ($rol_id == config('roles.psicologo')) {
+            $query->where('created_by', $user_id)->orderBy('id', 'DESC');
+        }
 
         $paginate = config('global.paginate');
 
@@ -86,15 +95,24 @@ class TransversalActivityRepository
 
     public function update($request, $id)
     {
+        $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
 
-        $transversalActivity = $this->model->findOrFail($id);;
+        $transversalActivity = $this->model->findOrFail($id);
 
-        /* CAMBIAMOS EL ESTADO */
+        /* CAMBIAMOS EL ESTADO SEGUN EL ROL ASIGNADO A REVISAR */
+        if ($rol_id == config('roles.director_programa')) {
+            $transversalActivity->reviewed_by = $user_id;
+            $transversalActivity->status_id = $request['status_id'];
+            $transversalActivity->reject_message = $request['reject_message'];
+        }
+
+        /* CAMBIAMOS EL ESTADO SI ESTA RECHAZADO*/
         if ($request['status_id'] == config('status.REC') && $user_id == $transversalActivity->created_by) {
             $transversalActivity->status_id = config('status.ENR');
             $transversalActivity->reject_message = $request['reject_message'];
         }
+
         if ($user_id == $transversalActivity->created_by) {
             $transversalActivity->date_visit = $request['date_visit'];
             $transversalActivity->nro_assistants = $request['nro_assistants'];
@@ -109,7 +127,7 @@ class TransversalActivityRepository
         }
         $save = $transversalActivity->save();
         // /* SUBIMOS EL ARCHIVO */
-        if ($save) {
+        if ($save && $rol_id != config('roles.director_programa')) {
             $this->updateAllFiles($request, $transversalActivity->id);
         }
 
@@ -145,7 +163,7 @@ class TransversalActivityRepository
             'development_activity' => 'bail|required',
             'content_network' => 'bail|required',
             'municipality_id' => 'bail|required',
-            'file' => 'bail|required',
+            'file' => $method != 'update' ? 'bail|required|mimes:application/pdf,pdf,png,webp,jpg,jpeg|max:' . (500 * 1049000) : 'bail',
         ];
 
         $messages = [
@@ -215,13 +233,16 @@ class TransversalActivityRepository
     public function updateAllFiles($request, $id) {
 
         try {
+            $files = $request->file('file');
             $evidences = $this->modelEvidence->where('transversal_id', $id)->get();
-            foreach ($evidences as $evidence) {
-                Storage::disk('public')->delete($evidence->path);
-                $evidence->delete();
+            if (!empty($files)) {
+                foreach ($evidences as $evidence) {
+                    Storage::disk('public')->delete($evidence->path);
+                    $evidence->delete();
+                }
+                $response = $this->uploadAll($request, $id);
+                return $response;
             }
-            $response = $this->uploadAll($request, $id);
-            return $response;
         } catch (Exception $ex) {
             return [
                 'response' => ['success' => false, 'payload' => $ex->getMessage()]

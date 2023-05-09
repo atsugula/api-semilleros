@@ -147,6 +147,7 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
     /* BENEFICIARIOS */
     Route::apiResource('beneficiaries', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::put('beneficiaries/{id}', [BeneficiarieController::class, 'update']);
+    Route::put('beneficiaries/changeStatus/{id}', [BeneficiarieController::class, 'changeStatus']);
 
     // BENEFICIARIOS POR MUNICIPIO
     Route::get('getBeneficiariesMunicipality/{id}', [BeneficiarieController::class, 'getBeneficiariesMunicipality']);
@@ -176,6 +177,7 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
     /* VISITA SUBDIRECTOR */
     Route::apiResource('subdirector_visits', VisitSubDirectorController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::post('subdirector_visits/{id}', [VisitSubDirectorController::class, 'update'])->name('subdirector_visits.update');
+    Route::get('visits_review_director', [VisitSubDirectorController::class, 'indexReview'])->name('visits_review_director.indexReview');
 
     //Informe mensual
     // Route::apiResource('monthly_monitoring_reports', 'App\Http\Controllers\V1\MonthlyMonitoringReportsController')->only(['index', 'store', 'show', 'destroy']);
@@ -263,10 +265,14 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
 /*Rutas de prueba Zarrok*/
 // Route::get('getReportMethodologisticsVisits/{id}',[ReportVisitsController::class,'exportMethodologistVisit']);
 
-
 /* RUTAS DE PRUEBA JORGE */
 
 // Rutas de prueba V2 JOSE
 Route::apiResources([
     'userss' => UserController::class,
 ]);
+
+//Rutas de Pruebas Crango
+Route::apiResource('beneficiariess', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);
+Route::put('beneficiariess/{id}', [BeneficiarieController::class, 'update']);
+Route::put('beneficiariess/changeStatus/{id}', [BeneficiarieController::class, 'changeStatus']);

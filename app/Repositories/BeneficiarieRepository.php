@@ -26,7 +26,15 @@ class BeneficiarieRepository
 
     public function getAll()
     {
-        $beneficiaries = new BeneficiaryCollection($this->model->orderBy('id', 'DESC')->get());
+        $user_id = $this->getIdUserAuth();
+
+        $beneficiaries = new BeneficiaryCollection(
+            $this->model
+            ->orderBy('id', 'DESC')
+            ->where('created_by', $user_id)
+            ->get()
+        );
+
         return $beneficiaries;
     }
 
@@ -203,6 +211,31 @@ class BeneficiarieRepository
 
         return $this->validator($data, $validate, $messages, $attrs);
 
+    }
+
+    public function changeStatus($request, $id) {
+
+        $rol_id = $this->getIdRolUserAuth();
+        $user_id = $this->getIdUserAuth();
+        //$rol_id = 9;//9,11,17 
+        //$user_id = 9;//9,11,17
+
+        $beneficiarie = $this->model->findOrFail($id);
+
+        if ($rol_id == config('roles.metodologo') || $rol_id == config('roles.asistente_administrativo') || $rol_id == config('roles.auxiliar_administrativo_tecnico')) {
+            $beneficiarie->revised_by = $user_id;
+            $beneficiarie->status_id = $request['status_id'];
+            $beneficiarie->rejection_message = $request['rejection_message'];
+        }
+
+        $beneficiarie->save();
+
+        // Guardamos en dataModel
+        $this->control_data($beneficiarie, 'update');
+
+        $result = new BeneficiaryResource($beneficiarie);
+
+        return $result;
     }
 
 }

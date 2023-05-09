@@ -20,24 +20,18 @@ class VisitSubDirectorRepository
         $this->model = new VisitSubDirector();
     }
 
-    public function getAll()
+    public function getAllReview()
     {
         $rol_id = $this->getIdRolUserAuth();
-        $user_id = $this->getIdUserAuth();
 
         $query = $this->model->query()->orderBy('id', 'DESC');
-
-        if ($rol_id == config('roles.subdirector_tecnico')) {
-            $query->where('created_by', $user_id);
-        }
 
         if ($rol_id == config('roles.director_tecnico')) {
             $query->whereNotIn('created_by', [1,2])
                 ->whereHas('creator.roles', function ($query) {
                     $query->where('roles.slug', 'subdirector_tecnico');
                 })
-                ->where('status_id', [config('status.ENR')])
-                ->orWhere('created_by', $user_id);
+                ->where('status_id', [config('status.ENR')]);
         }
 
         if ($rol_id == config('roles.director_administrator')) {
@@ -45,8 +39,7 @@ class VisitSubDirectorRepository
                 ->whereHas('creator.roles', function ($query) {
                     $query->where('roles.slug', 'director_tecnico');
                 })
-                ->where('status_id', [config('status.ENR')])
-                ->orWhere('created_by', $user_id);
+                ->where('status_id', [config('status.ENR')]);
         }
 
         $paginate = config('global.paginate');
@@ -60,6 +53,30 @@ class VisitSubDirectorRepository
 
         return new VisitSubDirectorCollection($query->simplePaginate($paginate));
     }
+
+    public function getAll()
+    {
+        $rol_id = $this->getIdRolUserAuth();
+        $user_id = $this->getIdUserAuth();
+
+        $query = $this->model->query()->orderBy('id', 'DESC');
+
+        if ($rol_id == config('roles.subdirector_tecnico') || $rol_id == config('roles.director_tecnico')) {
+            $query->where('created_by', $user_id);
+        }
+
+        $paginate = config('global.paginate');
+
+        // Aplicar filtros adicionales desde la URL
+        $query = $this->model->scopeFilterByUrl($query);
+
+        // Calcular número de páginas para paginación
+        session()->forget('count_page_visitSubDirectors');
+        session()->put('count_page_visitSubDirectors', ceil($query->get()->count()/$paginate));
+
+        return new VisitSubDirectorCollection($query->simplePaginate($paginate));
+    }
+
     public function create($request)
     {
         $user_id = $this->getIdUserAuth();
@@ -137,17 +154,20 @@ class VisitSubDirectorRepository
             $visitSubDirector->monitor_id = $request['monitor_id'];
         }
 
-        /* ACTUALIZAMOS EL ARCHIVO */
-        if ($request->hasFile('file')) {
-            $handle_1 = $this->update_file($request, 'file', 'subdirector_visit', $visitSubDirector->id, $visitSubDirector->file);
-            $visitSubDirector->update(['file' => $handle_1['response']['payload']]);
-        }
         /* CAMBIAMOS EL ESTADO */
         if ($request['status_id'] == config('status.REC') && $user_id == $visitSubDirector->created_by) {
             $visitSubDirector->status_id = config('status.ENR');
             $visitSubDirector->reject_message = $request['reject_message'];
         }
+
         $visitSubDirector->save();
+
+        /* ACTUALIZAMOS EL ARCHIVO */
+        if ($request->hasFile('file')) {
+            $handle_1 = $this->update_file($request, 'file', 'subdirector_visit', $visitSubDirector->id, $visitSubDirector->file);
+            $visitSubDirector->update(['file' => $handle_1['response']['payload']]);
+        }
+
         /* GUARDAMOS EN DATAMODEL */
         $this->control_data($visitSubDirector, 'update');
         $results = new VisitSubDirectorResource($visitSubDirector);
