@@ -35,7 +35,7 @@ class ChronogramRepository
         
         if ($rol_id == config('roles.monitor')) {            
             $query->where('created_by', $user_id)
-            ->whereNotIn('status_id', [config('roles.APR')]);
+            ->whereNotIn('status_id', [config('status.ENR')]);
         }
 
         if ($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_enlace')) {
