@@ -205,6 +205,48 @@ class BeneficiarieRepository
         return $this->validator($data, $validate, $messages, $attrs);
     }
 
+    public function getAllByUserRegion()
+    {
+
+        $rol_id = $this->getIdRolUserAuth();
+        $user_id = $this->getIdUserAuth();
+
+        if ($rol_id == config('roles.asistente_administrativo')) {
+
+            return new BeneficiaryCollection(
+                $this->model
+                    ->where('status_id', config('status.APR'))
+                    ->orWhere('status_id', config('status.REC'))
+                    ->orderBy('id', 'ASC')
+                    ->get()
+            );
+        } else if ($rol_id == config('roles.coordinador_regional')) {
+
+            return new BeneficiaryCollection(
+                $this->model
+                    ->where('status_id', config('status.ENR'))
+                    ->orWhere('status_id', config('status.APR'))
+                    ->orWhere('status_id', config('status.REC'))
+                    ->orderBy('id', 'ASC')
+                    ->get()
+            );
+        } else if ($rol_id == config('roles.metodologo')) {
+
+            return new BeneficiaryCollection(
+                $this->model
+                    ->where('status_id', config('status.ENP'))
+                    ->orWhere('status_id', config('status.ENR'))
+                    ->orWhere('status_id', config('status.REC'))
+                    ->orderBy('id', 'ASC')
+                    ->get()
+            );
+        } else{
+            return new BeneficiaryCollection($this->model->orderBy('id', 'ASC')->get());
+        }
+
+        //return $beneficiaries;
+    }
+
     public function changeStatus($request, $id)
     {
         $rol_id = $this->getIdRolUserAuth();
@@ -215,7 +257,13 @@ class BeneficiarieRepository
         $beneficiarie = $this->model->findOrFail($id);
 
         if ($rol_id == config('roles.asistente_administrativo') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.metodologo')) {
-            $beneficiarie->revised_by = $user_id;
+            if ($request['status'] == "ENR") {
+                $beneficiarie->reviewed_by = $user_id;
+            } else if ($request['status'] == "APR") {
+                $beneficiarie->approved_by = $user_id;
+            } else if ($request['status'] == "REC") {
+                $beneficiarie->rejected_by = $user_id;
+            }
             $beneficiarie->status_id = config("status.{$request['status']}");
             $beneficiarie->rejection_message = $request['rejection_message'];
         }

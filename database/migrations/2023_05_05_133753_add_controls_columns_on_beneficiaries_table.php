@@ -13,9 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('benificiaries', function (Blueprint $table) {
-            $table->dropConstrainedForeignId('revised_by');
-            $table->dropColumn('revised_by');
+        Schema::table('beneficiaries', function (Blueprint $table) {
             $table->unsignedBigInteger('rejected_by')->required()->nullable()->after('status_id');
             $table->foreign('rejected_by')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('approved_by')->required()->nullable()->after('status_id');
@@ -32,7 +30,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('benificiaries', function (Blueprint $table) {
+        Schema::table('beneficiaries', function (Blueprint $table) {
             $table->dropConstrainedForeignId('reviewed_by');
             $table->dropColumn('reviewed_by');
             $table->dropConstrainedForeignId('approved_by');
