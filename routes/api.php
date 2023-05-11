@@ -141,14 +141,15 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
     Route::get('get-document', [GeneralController::class, 'getDocument']);
 
     /* BENEFICIARIOS */
-    Route::apiResource('beneficiaries', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy', 'getAllByUserRegion']);
-    //Route::get('getAllByUserRegion', [BeneficiarieController::class, 'getAllByUserRegion']);
+    Route::apiResource('beneficiaries', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::put('beneficiaries/{id}', [BeneficiarieController::class, 'update']);
     Route::put('beneficiaries/changeStatus/{id}', [BeneficiarieController::class, 'changeStatus']);
-
+    
     // BENEFICIARIOS POR MUNICIPIO
     Route::get('getBeneficiariesMunicipality/{id}', [BeneficiarieController::class, 'getBeneficiariesMunicipality']);
-
+    
+    //Benficiarios por estado y region
+    Route::get('getAllByUserRegion', [BeneficiarieController::class, 'getAllByUserRegion']);
 
     // Subida de Documentos
     Route::apiResource('documents', DocumentController::class)->only(['index', 'store', 'show']);
