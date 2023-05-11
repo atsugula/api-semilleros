@@ -141,8 +141,8 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
     Route::get('get-document', [GeneralController::class, 'getDocument']);
 
     /* BENEFICIARIOS */
-    Route::apiResource('beneficiaries', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);
-    Route::get('getAllByUserRegion', [BeneficiarieController::class, 'getAllByUserRegion']);
+    Route::apiResource('beneficiaries', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy', 'getAllByUserRegion']);
+    //Route::get('getAllByUserRegion', [BeneficiarieController::class, 'getAllByUserRegion']);
     Route::put('beneficiaries/{id}', [BeneficiarieController::class, 'update']);
     Route::put('beneficiaries/changeStatus/{id}', [BeneficiarieController::class, 'changeStatus']);
 
