@@ -103,7 +103,7 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
 
 
     /* VISITAS METODOLOGICAS */
-     Route::apiResource('methodologist_visits', MethodologistVisitController::class)->only(['index', 'store', 'show', 'destroy']);
+    Route::apiResource('methodologist_visits', MethodologistVisitController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::post('methodologist_visits/{id}', [MethodologistVisitController::class, 'update']);
 
     /* VISITA COORDINADORES */
@@ -111,8 +111,8 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
     Route::post('coordinator_visits/{id}', [CoordinatorVistsController::class, 'update'])->name('coordinator_visits.update');
 
     /* VISITAS DE PSICOLOGIA PERSONALIZADAS */
-     Route::apiResource('custom_visits', CustomVisitController::class)->only(['index', 'store', 'show', 'destroy']);
-     Route::post('custom_visits/{id}', [CustomVisitController::class, 'update'])->name('custom_visits.update');
+    Route::apiResource('custom_visits', CustomVisitController::class)->only(['index', 'store', 'show', 'destroy']);
+    Route::post('custom_visits/{id}', [CustomVisitController::class, 'update'])->name('custom_visits.update');
 
     // ViSITAS DE PSICOLOGIA
     Route::apiResource('psychologistVisits', VisitPsichologistController::class)->only(['index', 'store', 'show', 'destroy']);
@@ -142,6 +142,7 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
 
     /* BENEFICIARIOS */
     Route::apiResource('beneficiaries', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);
+    Route::get('getAllByUserRegion', [BeneficiarieController::class, 'getAllByUserRegion']);
     Route::put('beneficiaries/{id}', [BeneficiarieController::class, 'update']);
     Route::put('beneficiaries/changeStatus/{id}', [BeneficiarieController::class, 'changeStatus']);
 
@@ -272,6 +273,7 @@ Route::apiResources([
 ]);
 
 //Rutas de Pruebas Crango
-Route::apiResource('beneficiariess', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);
-Route::put('beneficiariess/{id}', [BeneficiarieController::class, 'update']);
-Route::put('beneficiariess/changeStatus/{id}', [BeneficiarieController::class, 'changeStatus']);
+// Route::apiResource('beneficiariess', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);
+// Route::put('beneficiariess/{id}', [BeneficiarieController::class, 'update']);
+// Route::put('beneficiariess/changeStatus/{id}', [BeneficiarieController::class, 'changeStatus']);
+// Route::get('getAllByUserRegion', [BeneficiarieController::class, 'getAllByUserRegion']);

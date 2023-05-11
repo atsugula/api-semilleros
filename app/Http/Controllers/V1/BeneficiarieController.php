@@ -141,13 +141,30 @@ class BeneficiarieController extends Controller
     }
 
     /**
+     * Listado filtrado
+     */
+
+     public function getAllByUserRegion(Request $request)
+     {
+         try {
+             $results = $this->beneficiarieRepository->getAllByUserRegion();
+             return $results->toArray($request);
+         } catch (\Exception $ex) {
+             return  $this->createErrorResponse([], 'Algo salio mal al listar los beneficiarios ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+         }
+     }
+
+    /**
      * Cambia el estado de la ficha de inscripcion de Monitores.
      */
     public function changeStatus(Request $request, $id)
     {
-        Gate::authorize('haveaccess');
+        //var_dump($request->all);
+        //die;
+        //Gate::authorize('haveaccess');
         try {
             $result = $this->beneficiarieRepository->changeStatus($request, $id);
+            
             return $this->createResponse($result, 'El estado de la ficha tecnica fue cambiado correctamente.');
         } catch (\Exception $ex) {
             return  $this->createErrorResponse([], 'Algo salio mal al cambiar el estado de la ficha tecnica ' . $ex->getMessage() . ' linea ' . $ex->getCode());

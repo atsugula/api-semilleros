@@ -10,6 +10,10 @@ use App\Models\Beneficiary;
 use App\Models\BeneficiaryScreening;
 use App\Models\BeneficiaryGuardians;
 use App\Models\KnowGuardians;
+use App\Models\Municipality;
+use App\Models\MunicipalityUser;
+use App\Models\User;
+use App\Models\ZoneUser;
 use Illuminate\Support\Facades\Auth;
 
 class BeneficiarieRepository
@@ -211,12 +215,38 @@ class BeneficiarieRepository
         $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
 
+        // return new BeneficiaryCollection($this->model->orderBy('id', 'ASC')->get());
+        //$rol_id = 9;
+        //$user_id = 9;
+
+        $zoneUsers = new ZoneUser();
+        $municipalityUsers = new MunicipalityUser();
+
+        $municipalitiesByZone = $zoneUsers
+            ->join('municipalities', 'zone_users.id', '=', 'municipalities.zone_id')
+            ->where('zone_users.user_id', $user_id)
+            ->select('municipalities.id')
+            ->get()->toArray();
+
+        $municipalities = $municipalityUsers
+            ->join('municipalities', 'municipality_users.municipalities_id', '=', 'municipalities.id')
+            ->where('municipality_users.user_id', $user_id)
+            ->select('municipalities.id')
+            ->get()->toArray();
+
+        $mergedMunicipalities = array_merge($municipalitiesByZone, $municipalities);
+        $allMunicipalities = array();
+
+        foreach ($mergedMunicipalities as $key => $a) {
+            array_push($allMunicipalities, $a['id']);
+        }
+
         if ($rol_id == config('roles.asistente_administrativo')) {
 
             return new BeneficiaryCollection(
                 $this->model
-                    ->where('status_id', config('status.APR'))
-                    ->orWhere('status_id', config('status.REC'))
+                    ->whereIn('municipalities_id', $allMunicipalities)
+                    ->whereIn('status_id', [config('status.APR'), config('status.REC')])
                     ->orderBy('id', 'ASC')
                     ->get()
             );
@@ -224,9 +254,8 @@ class BeneficiarieRepository
 
             return new BeneficiaryCollection(
                 $this->model
-                    ->where('status_id', config('status.ENR'))
-                    ->orWhere('status_id', config('status.APR'))
-                    ->orWhere('status_id', config('status.REC'))
+                    ->whereIn('municipalities_id', $allMunicipalities)
+                    ->whereIn('status_id', [config('status.ENR'), config('status.APR'), config('status.REC')])
                     ->orderBy('id', 'ASC')
                     ->get()
             );
@@ -234,21 +263,21 @@ class BeneficiarieRepository
 
             return new BeneficiaryCollection(
                 $this->model
-                    ->where('status_id', config('status.ENP'))
-                    ->orWhere('status_id', config('status.ENR'))
-                    ->orWhere('status_id', config('status.REC'))
+                    ->whereIn('municipalities_id', $allMunicipalities)
+                    ->whereIn('status_id', [config('status.ENP'), config('status.ENR'), config('status.REC')])
                     ->orderBy('id', 'ASC')
                     ->get()
             );
-        } else{
-            return new BeneficiaryCollection($this->model->orderBy('id', 'ASC')->get());
+        } else {
+            return new BeneficiaryCollection($this->model->whereIn('municipalities_id', $allMunicipalities)->orderBy('id', 'ASC')->get());
         }
 
-        //return $beneficiaries;
     }
 
     public function changeStatus($request, $id)
     {
+        // var_dump($request);
+        //   die;
         $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
         //$rol_id = 10; //8,9,10 
