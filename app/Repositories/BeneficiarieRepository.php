@@ -217,7 +217,10 @@ class BeneficiarieRepository
 
         return json_encode([
             'user_id' => $this->getIdUserAuth(),
-            'rol_id' => $this->getIdRolUserAuth()
+            'rol_id' => $this->getIdRolUserAuth(),
+            'AA'=>config('roles.asistente_administrativo'),
+            'CR'=>config('roles.coordinador_regional'),
+            'M'=>config('roles.metodologo')
         ]);
 
 
