@@ -249,7 +249,7 @@ class BeneficiarieRepository
             return new BeneficiaryCollection(
                 $this->model
                     //->whereIn('municipalities_id', $allMunicipalities)
-                    ->whereIn('status_id', [config('status.APR'), config('status.REC')])
+                    ->whereIn('status_id_', [config('status.APR'), config('status.REC')])
                     ->orderBy('id', 'ASC')
                     ->get()
             );
