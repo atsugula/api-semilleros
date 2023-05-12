@@ -219,8 +219,8 @@ class BeneficiarieRepository
 
 
         // return new BeneficiaryCollection($this->model->orderBy('id', 'ASC')->get());
-        $rol_id = 9;
-        $user_id = 9;
+        //$rol_id = 9;
+        //$user_id = 9;
 
         $zoneUsers = new ZoneUser();
         $municipalityUsers = new MunicipalityUser();
