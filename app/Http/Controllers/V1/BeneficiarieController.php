@@ -146,7 +146,7 @@ class BeneficiarieController extends Controller
 
      public function getAllByUserRegion(Request $request)
      {
-        Gate::authorize('haveaccess');
+        //Gate::authorize('haveaccess');
          try {
              $results = $this->beneficiarieRepository->getAllByUserRegion();
              return $results->toArray($request);
@@ -162,7 +162,7 @@ class BeneficiarieController extends Controller
     {
         //var_dump($request->all);
         //die;
-        Gate::authorize('haveaccess');
+        //Gate::authorize('haveaccess');
         try {
             $result = $this->beneficiarieRepository->changeStatus($request, $id);
             
