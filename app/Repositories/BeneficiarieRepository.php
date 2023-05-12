@@ -215,6 +215,10 @@ class BeneficiarieRepository
         $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
 
+        return json_encode([
+            'user_id' => $this->getIdUserAuth(),
+            'rol_id' => $this->getIdRolUserAuth()
+        ]);
 
 
 

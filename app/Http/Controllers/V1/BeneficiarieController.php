@@ -146,13 +146,14 @@ class BeneficiarieController extends Controller
 
      public function getAllByUserRegion(Request $request)
      {
+        return $this->beneficiarieRepository->getAllByUserRegion();
         //Gate::authorize('haveaccess');
-         try {
-             $results = $this->beneficiarieRepository->getAllByUserRegion();
-             return $results->toArray($request);
-         } catch (\Exception $ex) {
-             return  $this->createErrorResponse([], 'Algo salio mal al listar los beneficiarios ' . $ex->getMessage() . ' linea ' . $ex->getCode());
-         }
+        //  try {
+        //      $results = $this->beneficiarieRepository->getAllByUserRegion();
+        //      return $results->toArray($request);
+        //  } catch (\Exception $ex) {
+        //      return  $this->createErrorResponse([], 'Algo salio mal al listar los beneficiarios ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+        //  }
      }
 
     /**
