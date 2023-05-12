@@ -272,7 +272,7 @@ class BeneficiarieRepository
                     ->get()
             );
         } else {
-            return new BeneficiaryCollection($this->model->whereIn('municipalities_id', $allMunicipalities)->orderBy('id', 'ASC')->get());
+            return new BeneficiaryCollection($this->model->orderBy('id_', 'ASC')->get());
         }
 
     }
