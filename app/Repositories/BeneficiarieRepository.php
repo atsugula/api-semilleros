@@ -244,12 +244,12 @@ class BeneficiarieRepository
             array_push($allMunicipalities, $a['id']);
         }
 
-        if ($rol_id == config('roles.asistente_administrativo')) {
+        if ($rol_id == config('roles.asistente_administrativo')) {//coordinador regional
 
             return new BeneficiaryCollection(
                 $this->model
                     //->whereIn('municipalities_id', $allMunicipalities)
-                    ->whereIn('status_id_', [config('status.APR'), config('status.REC')])
+                    ->whereIn('status_id', [config('status.APR'), config('status.REC')])
                     ->orderBy('id', 'ASC')
                     ->get()
             );
@@ -258,7 +258,7 @@ class BeneficiarieRepository
             return new BeneficiaryCollection(
                 $this->model
                   //  ->whereIn('municipalities_id', $allMunicipalities)
-                    ->whereIn('status_id', [config('status.ENR'), config('status.APR'), config('status.REC')])
+                    ->whereIn('status_id_', [config('status.ENR'), config('status.APR'), config('status.REC')])
                     ->orderBy('id', 'ASC')
                     ->get()
             );
