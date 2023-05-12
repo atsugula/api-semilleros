@@ -215,9 +215,12 @@ class BeneficiarieRepository
         $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
 
+
+
+
         // return new BeneficiaryCollection($this->model->orderBy('id', 'ASC')->get());
-        //$rol_id = 9;
-        //$user_id = 9;
+        $rol_id = 9;
+        $user_id = 9;
 
         $zoneUsers = new ZoneUser();
         $municipalityUsers = new MunicipalityUser();
@@ -245,7 +248,7 @@ class BeneficiarieRepository
 
             return new BeneficiaryCollection(
                 $this->model
-                    ->whereIn('municipalities_id', $allMunicipalities)
+                    //->whereIn('municipalities_id', $allMunicipalities)
                     ->whereIn('status_id', [config('status.APR'), config('status.REC')])
                     ->orderBy('id', 'ASC')
                     ->get()
@@ -254,7 +257,7 @@ class BeneficiarieRepository
 
             return new BeneficiaryCollection(
                 $this->model
-                    ->whereIn('municipalities_id', $allMunicipalities)
+                  //  ->whereIn('municipalities_id', $allMunicipalities)
                     ->whereIn('status_id', [config('status.ENR'), config('status.APR'), config('status.REC')])
                     ->orderBy('id', 'ASC')
                     ->get()
@@ -263,7 +266,7 @@ class BeneficiarieRepository
 
             return new BeneficiaryCollection(
                 $this->model
-                    ->whereIn('municipalities_id', $allMunicipalities)
+                  //  ->whereIn('municipalities_id', $allMunicipalities)
                     ->whereIn('status_id', [config('status.ENP'), config('status.ENR'), config('status.REC')])
                     ->orderBy('id', 'ASC')
                     ->get()
