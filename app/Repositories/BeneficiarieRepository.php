@@ -279,20 +279,20 @@ class BeneficiarieRepository
         $beneficiarie = $this->model->findOrFail($id);
 
         return json_encode([
-            "Rol"=>$rol_id,
-            "User"=>$user_id,
-            "config"=>[
-                "roles"=>[
-                    "AA"=>config('roles.asistente_administrativo'),
-                    "CR"=>config('roles.coordinador_regional'),
-                    "M"=>config('roles.metodologo')
-                ],"status"=>[
+            "Rol" => $rol_id,
+            "User" => $user_id,
+            "config" => [
+                "roles" => [
+                    "AA" => config('roles.asistente_administrativo'),
+                    "CR" => config('roles.coordinador_regional'),
+                    "M" => config('roles.metodologo')
+                ], "status" => [
                     "ENR" => config('status.ENR'),
                     "APR" => config('status.APR'),
                     "REC" => config('status.REC')
                 ]
             ]
-        ])
+        ]);
 
 
 
