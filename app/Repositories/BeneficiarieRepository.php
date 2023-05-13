@@ -276,26 +276,27 @@ class BeneficiarieRepository
         $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
 
-        // return json_encode($request['status']);
-
         $beneficiarie = $this->model->findOrFail($id);
 
-        if ($rol_id == config('roles.asistente_administrativo') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.metodologo')) {
-            if ($request['status'] == "ENR") {
-                $beneficiarie->status_id = config('status.ENR');
-                $beneficiarie->reviewed_by = $user_id;
-            } else if ($request['status'] == "APR") {
-                $beneficiarie->status_id = config('status.APR');
-                $beneficiarie->approved_by = $user_id;
-            } else if ($request['status'] == "REC") {
-                $beneficiarie->status_id = config('status.REC');
-                $beneficiarie->rejected_by = $user_id;
-            }
+        // if ($rol_id == config('roles.asistente_administrativo') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.metodologo')) {
+        //     if ($request['status'] == "ENR") {
+        //         $beneficiarie->status_id = config('status.ENR');
+        //         $beneficiarie->reviewed_by = $user_id;
+        //     } else if ($request['status'] == "APR") {
+        //         $beneficiarie->status_id = config('status.APR');
+        //         $beneficiarie->approved_by = $user_id;
+        //     } else if ($request['status'] == "REC") {
+        //         $beneficiarie->status_id = config('status.REC');
+        //         $beneficiarie->rejected_by = $user_id;
+        //     }
 
-            if (!empty($request['rejection_message'])) {
-                $beneficiarie->rejection_message = $request['rejection_message'];
-            }
-        }
+        //     if (!empty($request['rejection_message'])) {
+        //         $beneficiarie->rejection_message = $request['rejection_message'];
+        //     }
+        // }
+
+        $beneficiarie->status_id = '4';
+        $beneficiarie->reviewed_by = $user_id;
 
         $beneficiarie->save();
 
