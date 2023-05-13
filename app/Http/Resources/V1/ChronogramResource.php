@@ -15,12 +15,12 @@ class ChronogramResource extends JsonResource
     public function toArray($request)
     {
         return [
-           // 'id' => $this->id,
-            //'month' => $this->mes->name,
-           // 'municipio' => $this->municipio->name,
-           // 'note' => $this->note,
-           // 'groups' => $this->groups,
-            //'status' => $this->statuses,
+            'id' => $this->id,
+            'month' => $this->mes->name,
+            'municipio' => $this->municipio->name,
+            'note' => $this->note,
+            'groups' => $this->groups,
+            'status' => $this->statuses,
             'reviewed' => [
                 'user' => $this->reviewed,
                 'roles' => $this->reviewed?->roles,
