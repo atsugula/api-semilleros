@@ -18,10 +18,10 @@ class ChronogramsGroups extends Model
         'chronograms_id',
         'group_id',
         'sports_modality',
-        //'main_sports_stage_name',
-       // 'main_sports_stage_address',
-        //'alt_sports_stage_name',
-       // 'alt_sports_stage_address',
+        'main_sports_stage_name',
+        'main_sports_stage_address',
+        'alt_sports_stage_name',
+        'alt_sports_stage_address',
         'schedules',
     ];
 

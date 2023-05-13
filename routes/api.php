@@ -252,10 +252,10 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
     Route::get('months', [MonthsController::class, 'index']);
 
     // Subida de chronogram
-    //Route::apiResource('chronogram', ChronogramController::class)->only(['index', 'store', 'show']);
-    //Route::post('chronogram/{id}', [ChronogramController::class, 'update']);
-    //Route::delete('chronogram', [ChronogramController::class, 'destroy']);
-    //Route::post('document-upload', [UploadChronogramController::class, 'upload']);
+    Route::apiResource('chronogram', ChronogramController::class)->only(['index', 'store', 'show']);
+    Route::post('chronogram/{id}', [ChronogramController::class, 'update']);
+    Route::delete('chronogram', [ChronogramController::class, 'destroy']);
+    Route::post('document-upload', [UploadChronogramController::class, 'upload']);
 
     //Rutas de las excel apis
     //Route::get('descargas/export/', [UserExcelController::class, 'export']);
