@@ -161,7 +161,7 @@ class BeneficiarieController extends Controller
     public function changeStatus(Request $request, $id)
     {
         //return $this->beneficiarieRepository->changeStatus($request, $id);
-        Gate::authorize('haveaccess');
+        //Gate::authorize('haveaccess');
         try {
             $result = $this->beneficiarieRepository->changeStatus($request, $id);
             return $this->createResponse($result, 'El estado de la ficha tecnica fue cambiado correctamente.');
