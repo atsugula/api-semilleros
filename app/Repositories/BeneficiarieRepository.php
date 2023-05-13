@@ -278,10 +278,6 @@ class BeneficiarieRepository
 
         
         $beneficiarie = $this->model->findOrFail($id);
-        return json_encode([
-            "id"=>$id,
-            "beneficiario"=>$beneficiarie
-        ]);
 
         if ($rol_id == config('roles.asistente_administrativo') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.metodologo')) {
             if ($request['status'] == "ENP") {
