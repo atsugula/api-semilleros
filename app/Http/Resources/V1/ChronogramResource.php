@@ -19,7 +19,7 @@ class ChronogramResource extends JsonResource
             'month' => $this->mes->name,
             'municipio' => $this->municipio->name,
             'note' => $this->note,
-            //'groups' => $this->groups,
+            'groups' => $this->groups,
             'status' => $this->statuses,
             'reviewed' => [
                 'user' => $this->reviewed,
