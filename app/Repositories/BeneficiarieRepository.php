@@ -215,20 +215,6 @@ class BeneficiarieRepository
         $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
 
-        return json_encode([
-            'user_id' => $this->getIdUserAuth(),
-            'rol_id' => $this->getIdRolUserAuth(),
-            'AA'=>config('roles.asistente_administrativo'),
-            'CR'=>config('roles.coordinador_regional'),
-            'M'=>config('roles.metodologo')
-        ]);
-
-
-
-        // return new BeneficiaryCollection($this->model->orderBy('id', 'ASC')->get());
-        //$rol_id = 9;
-        //$user_id = 9;
-
         $zoneUsers = new ZoneUser();
         $municipalityUsers = new MunicipalityUser();
 
@@ -255,7 +241,7 @@ class BeneficiarieRepository
 
             return new BeneficiaryCollection(
                 $this->model
-                    //->whereIn('municipalities_id', $allMunicipalities)
+                    ->whereIn('municipalities_id', $allMunicipalities)
                     ->whereIn('status_id', [config('status.APR'), config('status.REC')])
                     ->orderBy('id', 'ASC')
                     ->get()
@@ -264,8 +250,8 @@ class BeneficiarieRepository
 
             return new BeneficiaryCollection(
                 $this->model
-                  //  ->whereIn('municipalities_id', $allMunicipalities)
-                    ->whereIn('status_id_', [config('status.ENR'), config('status.APR'), config('status.REC')])
+                    ->whereIn('municipalities_id', $allMunicipalities)
+                    ->whereIn('status_id', [config('status.ENR'), config('status.APR'), config('status.REC')])
                     ->orderBy('id', 'ASC')
                     ->get()
             );
@@ -273,13 +259,13 @@ class BeneficiarieRepository
 
             return new BeneficiaryCollection(
                 $this->model
-                  //  ->whereIn('municipalities_id', $allMunicipalities)
+                    ->whereIn('municipalities_id', $allMunicipalities)
                     ->whereIn('status_id', [config('status.ENP'), config('status.ENR'), config('status.REC')])
                     ->orderBy('id', 'ASC')
                     ->get()
             );
         } else {
-            return new BeneficiaryCollection($this->model->orderBy('id_', 'ASC')->get());
+            return new BeneficiaryCollection($this->model->orderBy('id', 'ASC')->get());
         }
 
     }

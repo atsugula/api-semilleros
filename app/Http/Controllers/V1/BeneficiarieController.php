@@ -146,14 +146,13 @@ class BeneficiarieController extends Controller
 
      public function getAllByUserRegion(Request $request)
      {
-        return $this->beneficiarieRepository->getAllByUserRegion();
         //Gate::authorize('haveaccess');
-        //  try {
-        //      $results = $this->beneficiarieRepository->getAllByUserRegion();
-        //      return $results->toArray($request);
-        //  } catch (\Exception $ex) {
-        //      return  $this->createErrorResponse([], 'Algo salio mal al listar los beneficiarios ' . $ex->getMessage() . ' linea ' . $ex->getCode());
-        //  }
+         try {
+             $results = $this->beneficiarieRepository->getAllByUserRegion();
+             return $results->toArray($request);
+         } catch (\Exception $ex) {
+             return  $this->createErrorResponse([], 'Algo salio mal al listar los beneficiarios ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+         }
      }
 
     /**
@@ -166,7 +165,6 @@ class BeneficiarieController extends Controller
         //Gate::authorize('haveaccess');
         try {
             $result = $this->beneficiarieRepository->changeStatus($request, $id);
-            
             return $this->createResponse($result, 'El estado de la ficha tecnica fue cambiado correctamente.');
         } catch (\Exception $ex) {
             return  $this->createErrorResponse([], 'Algo salio mal al cambiar el estado de la ficha tecnica ' . $ex->getMessage() . ' linea ' . $ex->getCode());
