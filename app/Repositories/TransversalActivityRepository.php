@@ -127,7 +127,7 @@ class TransversalActivityRepository
         }
         $save = $transversalActivity->save();
         // /* SUBIMOS EL ARCHIVO */
-        if ($save) {
+        if ($save && $rol_id != config('roles.director_programa')) {
             $this->updateAllFiles($request, $transversalActivity->id);
         }
 
@@ -163,7 +163,7 @@ class TransversalActivityRepository
             'development_activity' => 'bail|required',
             'content_network' => 'bail|required',
             'municipality_id' => 'bail|required',
-            'file' => 'bail|required',
+            'file' => $method != 'update' ? 'bail|required|mimes:application/pdf,pdf,png,webp,jpg,jpeg|max:' . (500 * 1049000) : 'bail',
         ];
 
         $messages = [
@@ -205,12 +205,12 @@ class TransversalActivityRepository
                 foreach ($request->file('file') as $file) {
                     $name = strtolower(Str::random(10));
                     $image = Image::make($file);
-                    $image->encode('webp', 90);
+                    $image->encode('jpg', 90);
                     // Create folder directory and save
                     Storage::disk('public')->makeDirectory('transversal_activities/' . $id);
-                    $image->save($path . $name . '.webp');
+                    $image->save($path . $name . '.jpg');
                     // Save url image for load in database
-                    $url = "transversal_activities/{$id}/{$name}.webp";
+                    $url = "transversal_activities/{$id}/{$name}.jpg";
                     // Save in database with relation
                     $this->modelEvidence->create([
                         'model' => "Evidencia Actividad Transversal $id",
@@ -233,13 +233,16 @@ class TransversalActivityRepository
     public function updateAllFiles($request, $id) {
 
         try {
+            $files = $request->file('file');
             $evidences = $this->modelEvidence->where('transversal_id', $id)->get();
-            foreach ($evidences as $evidence) {
-                Storage::disk('public')->delete($evidence->path);
-                $evidence->delete();
+            if (!empty($files)) {
+                foreach ($evidences as $evidence) {
+                    Storage::disk('public')->delete($evidence->path);
+                    $evidence->delete();
+                }
+                $response = $this->uploadAll($request, $id);
+                return $response;
             }
-            $response = $this->uploadAll($request, $id);
-            return $response;
         } catch (Exception $ex) {
             return [
                 'response' => ['success' => false, 'payload' => $ex->getMessage()]

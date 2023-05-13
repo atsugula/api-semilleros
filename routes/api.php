@@ -49,6 +49,7 @@ use App\Http\Controllers\V1\SidewalkController;
 use App\Http\Controllers\V1\TransversalActivityController;
 use App\Http\Controllers\V1\VisitSubDirectorController;
 use App\Http\Controllers\V1\VisitPsichologistController;
+use App\Http\Controllers\V1\ReportVisitsController;
 
 use Illuminate\Http\Request;
 
@@ -128,6 +129,9 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
     /* SUBIR ARCHIVOS VISITAS METODOLOGICAS */
     Route::post('upload/methodologist_visits', [MethodologistVisitController::class, 'uploadFiles']);
 
+    // Descargar archivos de visitas methodologicas
+    Route::get('getReportMethodologisticsVisits/{id}',[ReportVisitsController::class,'exportMethodologistVisit']);
+
     /* EVENTOS DE SOPORTE */
     Route::apiResource('eventSupports', EventSupportController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::post('eventSupports/{id}', [EventSupportController::class, 'update']);
@@ -175,6 +179,7 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
     /* VISITA SUBDIRECTOR */
     Route::apiResource('subdirector_visits', VisitSubDirectorController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::post('subdirector_visits/{id}', [VisitSubDirectorController::class, 'update'])->name('subdirector_visits.update');
+    Route::get('visits_review_director', [VisitSubDirectorController::class, 'indexReview'])->name('visits_review_director.indexReview');
 
     //Informe mensual
     // Route::apiResource('monthly_monitoring_reports', 'App\Http\Controllers\V1\MonthlyMonitoringReportsController')->only(['index', 'store', 'show', 'destroy']);
@@ -260,11 +265,7 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
 });
 
 /*Rutas de prueba Zarrok*/
-// Route::apiResource('custom_visits', CustomVisitController::class)->only(['index', 'store', 'show', 'destroy']);
-// Route::post('custom_visits/{id}', [CustomVisitController::class, 'update'])->name('custom_visits.update');
-// Route::apiResource('psychologistVisits', VisitPsichologistController::class)->only(['index', 'store', 'show', 'destroy']);
-// Route::post('psychologistVisits/{id}', [VisitPsichologistController::class, 'update'])->name('psychologistVisits.update');
-//Route::get('getdisiplinesMonitoring/{id}', [MonitorsController::class, 'getdisiplinesMonitoring']);
+// Route::get('getReportMethodologisticsVisits/{id}',[ReportVisitsController::class,'exportMethodologistVisit']);
 
 /* RUTAS DE PRUEBA JORGE */
 
