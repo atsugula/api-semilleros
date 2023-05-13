@@ -264,8 +264,10 @@ class BeneficiarieRepository
                     ->orderBy('id', 'ASC')
                     ->get()
             );
-        } else {
+        } else if ($rol_id == config('roles.super-root')) {
             return new BeneficiaryCollection($this->model->orderBy('id', 'ASC')->get());
+        } else {
+            return null;
         }
     }
 
@@ -274,20 +276,25 @@ class BeneficiarieRepository
         $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
 
-        return json_encode($request['status']);
+        // return json_encode($request['status']);
 
         $beneficiarie = $this->model->findOrFail($id);
 
         if ($rol_id == config('roles.asistente_administrativo') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.metodologo')) {
             if ($request['status'] == "ENR") {
+                $beneficiarie->status_id = config('status.ENR');
                 $beneficiarie->reviewed_by = $user_id;
             } else if ($request['status'] == "APR") {
+                $beneficiarie->status_id = config('status.APR');
                 $beneficiarie->approved_by = $user_id;
             } else if ($request['status'] == "REC") {
+                $beneficiarie->status_id = config('status.REC');
                 $beneficiarie->rejected_by = $user_id;
             }
-            $beneficiarie->status_id = config("status.{$request['status']}");
-            $beneficiarie->rejection_message = $request['rejection_message'];
+
+            if (!empty($request['rejection_message'])) {
+                $beneficiarie->rejection_message = $request['rejection_message'];
+            }
         }
 
         $beneficiarie->save();
