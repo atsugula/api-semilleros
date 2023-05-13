@@ -15,10 +15,10 @@ class GroupResource extends JsonResource
     public function toArray($request)
     {
         return [
-			'id'=>$this->id,
-            'name'=>$this->name,
-			'beneficiaries'=>$this->beneficiaries,
-            'schedule'=>$this->schedule,
+			//'id'=>$this->id,
+            //'name'=>$this->name,
+			//'beneficiaries'=>$this->beneficiaries,
+            //'schedule'=>$this->schedule,
 		];
     }
 }
