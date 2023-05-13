@@ -46,7 +46,7 @@ class ChronogramsGroups extends Model
     }
 
     public function group(){
-        return $this->hasOne(Groups::class, 'id', 'groups_id');
+        return $this->hasOne(Group::class, 'id', 'groups_id');
     }
 
     public function discipline(){
