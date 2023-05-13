@@ -160,15 +160,15 @@ class BeneficiarieController extends Controller
      */
     public function changeStatus(Request $request, $id)
     {
-        return $this->beneficiarieRepository->changeStatus($request, $id);
+        return $this->beneficiarieRepository->changeStatus($request->all(), $id);
         //var_dump($request->all);
         //die;
         //Gate::authorize('haveaccess');
-        try {
-            $result = $this->beneficiarieRepository->changeStatus($request, $id);
-            return $this->createResponse($result, 'El estado de la ficha tecnica fue cambiado correctamente.');
-        } catch (\Exception $ex) {
-            return  $this->createErrorResponse([], 'Algo salio mal al cambiar el estado de la ficha tecnica ' . $ex->getMessage() . ' linea ' . $ex->getCode());
-        }
+        // try {
+        //     $result = $this->beneficiarieRepository->changeStatus($request, $id);
+        //     return $this->createResponse($result, 'El estado de la ficha tecnica fue cambiado correctamente.');
+        // } catch (\Exception $ex) {
+        //     return  $this->createErrorResponse([], 'Algo salio mal al cambiar el estado de la ficha tecnica ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+        // }
     }
 }
