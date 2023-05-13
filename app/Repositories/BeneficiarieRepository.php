@@ -11,6 +11,7 @@ use App\Models\BeneficiaryScreening;
 use App\Models\BeneficiaryGuardians;
 use App\Models\KnowGuardians;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class BeneficiarieRepository
 {
@@ -27,20 +28,22 @@ class BeneficiarieRepository
     public function getAll()
     {
         $user_id = $this->getIdUserAuth();
+        $rol_id = $this->getIdRolUserAuth();
 
-        $beneficiaries = new BeneficiaryCollection(
-            $this->model
-            ->orderBy('id', 'DESC')
-            ->where('created_by', $user_id)
-            ->get()
-        );
+        $query = $this->model->query()->orderBy('id', 'DESC');
 
-        return $beneficiaries;
+        if ($rol_id == config('roles.metodologo')){
+            $query->whereNotIn('created_by', [1,2]);
+        }else{
+            $query->where('created_by', $user_id);
+        }
+
+        return new BeneficiaryCollection($query->simplePaginate(config('global.paginate')));
     }
 
     public function create($request)
     {
-        \DB::beginTransaction();
+        DB::beginTransaction();
 
         $request['created_by'] = Auth::id();
         $beneficiarie = Beneficiary::create($request);
@@ -87,7 +90,7 @@ class BeneficiarieRepository
         $this->control_data($beneficiarie, 'store');
         $result = new BeneficiaryResource($beneficiarie);
 
-        \DB::commit();
+        DB::commit();
 
         return $result;
     }
@@ -101,7 +104,7 @@ class BeneficiarieRepository
 
     public function update($request, $id)
     {
-        \DB::beginTransaction();
+        DB::beginTransaction();
 
         $request['created_by'] = Auth::id();
         $beneficiarie = $this->model->findOrFail($id);
@@ -147,7 +150,7 @@ class BeneficiarieRepository
         $this->control_data($beneficiarie, 'update');
         $result = new BeneficiaryResource($beneficiarie);
 
-        \DB::commit();
+        DB::commit();
 
         return $result;
     }

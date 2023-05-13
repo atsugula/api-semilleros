@@ -273,6 +273,6 @@ Route::apiResources([
 ]);
 
 //Rutas de Pruebas Crango
-Route::apiResource('beneficiariess', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);
-Route::put('beneficiariess/{id}', [BeneficiarieController::class, 'update']);
-Route::put('beneficiariess/changeStatus/{id}', [BeneficiarieController::class, 'changeStatus']);
+// Route::apiResource('beneficiariess', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);
+// Route::put('beneficiariess/{id}', [BeneficiarieController::class, 'update']);
+// Route::put('beneficiariess/changeStatus/{id}', [BeneficiarieController::class, 'changeStatus']);
