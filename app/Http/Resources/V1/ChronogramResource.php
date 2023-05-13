@@ -25,6 +25,7 @@ class ChronogramResource extends JsonResource
                 'user' => $this->reviewed,
                 'roles' => $this->reviewed?->roles,
             ],
+            'schedules' => $this->schedules,
             'created_by' => $this->creator,
             'created_at'=> $this->created_at ? $this->getPublishedAtAttribute():null,
         ];
