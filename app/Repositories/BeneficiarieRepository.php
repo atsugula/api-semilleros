@@ -278,6 +278,24 @@ class BeneficiarieRepository
 
         $beneficiarie = $this->model->findOrFail($id);
 
+        return json_encode([
+            "Rol"=>$rol_id,
+            "User"=>$user_id,
+            "config"=>[
+                "roles"=>[
+                    "AA"=>config('roles.asistente_administrativo'),
+                    "CR"=>config('roles.coordinador_regional'),
+                    "M"=>config('roles.metodologo')
+                ],"status"=>[
+                    "ENR" => config('status.ENR'),
+                    "APR" => config('status.APR'),
+                    "REC" => config('status.REC')
+                ]
+            ]
+        ])
+
+
+
         // if ($rol_id == config('roles.asistente_administrativo') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.metodologo')) {
         //     if ($request['status'] == "ENR") {
         //         $beneficiarie->status_id = config('status.ENR');
