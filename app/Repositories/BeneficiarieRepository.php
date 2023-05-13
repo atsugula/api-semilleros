@@ -251,7 +251,7 @@ class BeneficiarieRepository
             array_push($allMunicipalities, $a['id']);
         }
 
-        if ($rol_id == config('roles.asistente_administrativo')) {//coordinador regional
+        if ($rol_id == config('roles.asistente_administrativo')) {
 
             return new BeneficiaryCollection(
                 $this->model
