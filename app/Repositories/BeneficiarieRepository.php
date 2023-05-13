@@ -274,7 +274,7 @@ class BeneficiarieRepository
         $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
 
-        return json_encode($request);
+        return json_encode($request['status']);
 
         $beneficiarie = $this->model->findOrFail($id);
 
