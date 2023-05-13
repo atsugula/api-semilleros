@@ -22,6 +22,7 @@ class ChronogramsGroups extends Model
         'main_sports_stage_address',
         'alt_sports_stage_name',
         'alt_sports_stage_address',
+        'schedules',
     ];
 
     protected $hidden = ['created_at', 'deleted_at', 'updated_at'];
