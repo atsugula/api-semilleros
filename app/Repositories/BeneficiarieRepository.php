@@ -274,6 +274,8 @@ class BeneficiarieRepository
         $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
 
+        return json_encode($request);
+
         $beneficiarie = $this->model->findOrFail($id);
 
         if ($rol_id == config('roles.asistente_administrativo') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.metodologo')) {
