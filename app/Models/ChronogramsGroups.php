@@ -15,7 +15,14 @@ class ChronogramsGroups extends Model
     protected $table = "chronograms_groups";
 
     protected $fillable = [
-
+        'chronograms_id',
+        'group_id',
+        'sports_modality',
+        'main_sports_stage_name',
+        'main_sports_stage_address',
+        'alt_sports_stage_name',
+        'alt_sports_stage_address',
+        'schedules',
     ];
 
     protected $hidden = ['created_at', 'deleted_at', 'updated_at'];
