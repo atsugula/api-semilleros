@@ -251,7 +251,7 @@ class BeneficiarieRepository
             return new BeneficiaryCollection(
                 $this->model
                     ->whereIn('municipalities_id', $allMunicipalities)
-                    ->whereIn('status_id', [config('status.ENR'), config('status.APR'), config('status.REC')])
+                    ->whereIn('status_id', [config('status.ENP'), config('status.APR'), config('status.REC')])
                     ->orderBy('id', 'ASC')
                     ->get()
             );
@@ -267,17 +267,12 @@ class BeneficiarieRepository
         } else {
             return new BeneficiaryCollection($this->model->orderBy('id', 'ASC')->get());
         }
-
     }
 
     public function changeStatus($request, $id)
     {
-        // var_dump($request);
-        //   die;
         $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
-        //$rol_id = 10; //8,9,10 
-        //$user_id = 10; //8,9,10
 
         $beneficiarie = $this->model->findOrFail($id);
 
