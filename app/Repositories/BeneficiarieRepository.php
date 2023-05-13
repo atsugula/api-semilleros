@@ -278,45 +278,43 @@ class BeneficiarieRepository
 
         $beneficiarie = $this->model->findOrFail($id);
 
-        return json_encode([
-            "Rol" => $rol_id,
-            "User" => $user_id,
-            "config" => [
-                "roles" => [
-                    "AA" => config('roles.asistente_administrativo'),
-                    "CR" => config('roles.coordinador_regional'),
-                    "M" => config('roles.metodologo')
-                ], "status" => [
-                    "ENR" => config('status.ENR'),
-                    "APR" => config('status.APR'),
-                    "REC" => config('status.REC')
-                ]
-            ]
-        ]);
+        // return json_encode([
+        //     "Rol" => $rol_id,
+        //     "User" => $user_id,
+        //     "config" => [
+        //         "roles" => [
+        //             "AA" => config('roles.asistente_administrativo'),
+        //             "CR" => config('roles.coordinador_regional'),
+        //             "M" => config('roles.metodologo')
+        //         ], "status" => [
+        //             "ENR" => config('status.ENR'),
+        //             "APR" => config('status.APR'),
+        //             "REC" => config('status.REC')
+        //         ]
+        //     ]
+        // ]);
 
 
 
-        // if ($rol_id == config('roles.asistente_administrativo') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.metodologo')) {
-        //     if ($request['status'] == "ENR") {
-        //         $beneficiarie->status_id = config('status.ENR');
-        //         $beneficiarie->reviewed_by = $user_id;
-        //     } else if ($request['status'] == "APR") {
-        //         $beneficiarie->status_id = config('status.APR');
-        //         $beneficiarie->approved_by = $user_id;
-        //     } else if ($request['status'] == "REC") {
-        //         $beneficiarie->status_id = config('status.REC');
-        //         $beneficiarie->rejected_by = $user_id;
-        //     }
+        if ($rol_id == config('roles.asistente_administrativo') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.metodologo')) {
+            if ($request['status'] == "ENR") {
+                $beneficiarie->status_id = config('status.ENR');
+                $beneficiarie->reviewed_by = $user_id;
+            } else if ($request['status'] == "APR") {
+                $beneficiarie->status_id = config('status.APR');
+                $beneficiarie->approved_by = $user_id;
+            } else if ($request['status'] == "REC") {
+                $beneficiarie->status_id = config('status.REC');
+                $beneficiarie->rejected_by = $user_id;
+            }
 
-        //     if (!empty($request['rejection_message'])) {
-        //         $beneficiarie->rejection_message = $request['rejection_message'];
-        //     }
-        // }
+            if (!empty($request['rejection_message'])) {
+                $beneficiarie->rejection_message = $request['rejection_message'];
+            }
 
-        $beneficiarie->status_id = '4';
-        $beneficiarie->reviewed_by = $user_id;
+            $beneficiarie->save();
+        }
 
-        $beneficiarie->save();
 
         // Guardamos en dataModel
         $this->control_data($beneficiarie, 'update');
