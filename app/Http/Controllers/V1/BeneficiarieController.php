@@ -160,6 +160,7 @@ class BeneficiarieController extends Controller
      */
     public function changeStatus(Request $request, $id)
     {
+        return $this->beneficiarieRepository->changeStatus($request, $id);
         //var_dump($request->all);
         //die;
         //Gate::authorize('haveaccess');
