@@ -114,9 +114,10 @@ class ChronogramRepository
         $cronograms->municipality = $data['municipality'];
         $cronograms->note = $data['note'];
         $cronograms->status_id = config('status.ENR');
+        
 
         // Actualizar estados
-        if ($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_enlace')) {
+        if ($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_enlace') || $rol_id == config('roles.metodologo')) {
             $cronograms->revised_by = $user_id;
             $cronograms->status_id = $data['status_id'];
             $cronograms->rejection_message = $data['rejection_message'];
