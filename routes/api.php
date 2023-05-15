@@ -236,6 +236,8 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
     //MUNICIPALITY
     Route::get('municipalities', [MunicipalityController::class, 'index']);
 
+    // MUNICIPALITIES AND REGIONS
+    Route::get('/regions/{regionId}/municipalities', [MunicipalityController::class, 'getMunicipalitiesByRegion']);
 
     //Health Entities
     Route::get('health-entities', [HealthEntitiesController::class, 'index']);

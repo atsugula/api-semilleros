@@ -68,6 +68,10 @@ class DatabaseSeeder extends Seeder
             Health_Entities_Seeder::class,
             // DATA FAKE
             // DataFakeSeeder::class,
+            RegionsSeeder::class,
+            MunicipalitiesSeeder::class,
+            RolesActivitiesSeeder::class,
+            RolesObjectsActivitiesSeeder::class
         ]);
     }
 }

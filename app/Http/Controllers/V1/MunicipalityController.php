@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Utilities\Validates\dropDownListsValidates;
+use App\Models\Municipalities;
 use App\Repositories\MunicipalityRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,4 +29,25 @@ class MunicipalityController extends Controller
             return  $this->createErrorResponse([], 'Algo salio mal al listar los municipios' . $ex->getMessage() . ' linea ' . $ex->getCode());
         }
     }
+
+    public function getMunicipalitiesByRegion(Request $request, $regionId)
+    {
+        try {
+            // Obtener los municipios de la región por su ID
+            $municipios = Municipalities::where('region_id', $regionId)->pluck('description');
+
+            // Verificar si se encontraron municipios
+            if ($municipios->isEmpty()) {
+                return response()->json(['error' => 'No se encontraron municipios para la región'], 404);
+            }
+
+            // Retornar los nombres de los municipios como respuesta de la API
+            return response()->json($municipios);
+        } catch (\Exception $e) {
+            // Retornar una respuesta de error si ocurre una excepción
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+
 }
