@@ -20,6 +20,13 @@ class BeneficiaryGuardians extends Model
         'created_at', 'updated_at'
     ];
 
+    public $appends = ['full_name'];
+
+    public function getFullNameAttribute()
+    {
+        return "{$this->firts_name} {$this->last_name}";
+    }
+
     public function beneficiaries(){
         return $this->hasMany(KnowGuardians::class, 'id_guardian');
     }

@@ -60,8 +60,10 @@ class BeneficiaryResource extends JsonResource
             'know_guardian' => $this->acudientes[0],
             'acudiente' => $this->acudientes[0]->guardian,
             'tamizaje' => $this->tamizaje,
-            'revised_by' => $this->revised_user,
             'status_id' => $this->status_id,
+            'reviewed_by' => $this->reviewed_user,
+            'approved_by' => $this->approved_user,
+            'rejected_by' => $this->rejected_user,
             'rejection_message' => $this->rejection_message,
         ];
     }
