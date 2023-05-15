@@ -15,6 +15,7 @@ use App\Models\MunicipalityUser;
 use App\Models\User;
 use App\Models\ZoneUser;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class BeneficiarieRepository
 {
@@ -37,7 +38,7 @@ class BeneficiarieRepository
 
     public function create($request)
     {
-        \DB::beginTransaction();
+        DB::beginTransaction();
 
         $request['created_by'] = Auth::id();
         $beneficiarie = Beneficiary::create($request);
@@ -84,7 +85,7 @@ class BeneficiarieRepository
         $this->control_data($beneficiarie, 'store');
         $result = new BeneficiaryResource($beneficiarie);
 
-        \DB::commit();
+        DB::commit();
 
         return $result;
     }
@@ -98,7 +99,7 @@ class BeneficiarieRepository
 
     public function update($request, $id)
     {
-        \DB::beginTransaction();
+        DB::beginTransaction();
 
         $request['created_by'] = Auth::id();
         $beneficiarie = $this->model->findOrFail($id);
@@ -144,7 +145,7 @@ class BeneficiarieRepository
         $this->control_data($beneficiarie, 'update');
         $result = new BeneficiaryResource($beneficiarie);
 
-        \DB::commit();
+        DB::commit();
 
         return $result;
     }
