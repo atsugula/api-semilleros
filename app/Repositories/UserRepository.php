@@ -56,7 +56,8 @@ class UserRepository
      */
     function create($user)
     {
-        $user['password'] = Hash::make($user['password']);
+        // $user['password'] = Hash::make($user['password']);
+        $user['password'] = Hash::make('12345678');
         $new_user = $this->model->create($user);
 
         if ($new_user->wasRecentlyCreated) {

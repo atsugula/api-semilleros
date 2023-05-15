@@ -68,6 +68,12 @@ class User extends Authenticatable
      * @var array
      */
     // protected $appends = ['photo'];
+    public $appends = ['full_name'];
+
+    public function getFullNameAttribute()
+    {
+        return "{$this->name} {$this->lastname}";
+    }
 
     /**
      * The getter that return accessible URL for user photo.
