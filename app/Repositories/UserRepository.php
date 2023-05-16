@@ -46,6 +46,23 @@ class UserRepository
         return  new UserCollection($query->paginate(25));
 
     }
+    function getHistory($id)
+    {
+        $user =  $this->model->with('navigationHistory')->find($id);
+        return $user;
+        $query = $this->model->orderBy('id', 'ASC');
+
+        $rol_id = $this->getIdRolUserAuth();
+
+        if ($rol_id == config('roles.root')){
+            $query->whereHas('roles', function ($profile) {
+                $profile->whereNotIn('roles.id', [config('roles.super_root')]);
+            });
+        }
+
+        return  new UserCollection($query->paginate(25));
+
+    }
 
     /**
      * It creates a new user.

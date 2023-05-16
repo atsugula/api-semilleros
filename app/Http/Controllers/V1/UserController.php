@@ -211,4 +211,14 @@ class UserController extends Controller
             return  $this->createErrorResponse([], 'Algo salio mal al listar usuarios ' . $ex->getMessage() . ' linea ' . $ex->getCode());
         }
     }
+
+    public function history(Request $request, $id)
+    {
+        try {
+            $results = $this->userRepository->getHistory($id);
+            return $results->navigationHistory->toArray($request);
+        } catch (\Exception $ex) {
+            return  $this->createErrorResponse([], 'Algo salio mal al listar historial ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+        }
+    }
 }
