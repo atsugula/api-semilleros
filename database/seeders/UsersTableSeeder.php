@@ -47,11 +47,13 @@ class UsersTableSeeder extends Seeder
             $user->id = $row['A'];
             $user->name = $row['B'];
             $user->lastname = $row['C'];
-            $user->gender = $row['D'];
+            $user->address = $row['D'];
             $user->document_number = $row['E'];
-            $user->email = $row['F'];
+            $user->document_type = $row['F'];
             $user->phone = $row['G'];
-            $user->password = bcrypt($row['H']);
+            $user->gender = $row['H'];
+            $user->email = $row['I'];
+            $user->password = bcrypt($row['J']);
             $user->save();
 
             $counter++;

@@ -2,12 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Role;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\RoleUser;
 use Illuminate\Database\Seeder;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
-class RolesTableSeeder extends Seeder
+class RolesUsersTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,7 +16,7 @@ class RolesTableSeeder extends Seeder
     public function run()
     {
         // Ruta del archivo Excel con los datos
-        $file = storage_path('app/public/roles.xlsx');
+        $file = storage_path('app/public/role_users.xlsx');
 
         // Cargar el archivo Excel mediante la librería PHPSpreadsheet
         $spreadsheet = IOFactory::load($file);
@@ -39,14 +38,10 @@ class RolesTableSeeder extends Seeder
                 continue;
             }
 
-            $roles = new Role();
-            $roles->id = $row['A'];
-            $roles->name = $row['B'];
-            $roles->slug = $row['C'];
-            $roles->description = $row['D'];
-            // $roles->full-access = $row['E'];
-            $roles->public = $row['F'];
-            $roles->save();
+            $user_rol = new RoleUser();
+            $user_rol->user_id = $row['A'];
+            $user_rol->role_id = $row['B'];
+            $user_rol->save();
 
             $counter++;
         }

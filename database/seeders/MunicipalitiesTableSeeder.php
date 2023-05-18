@@ -2,11 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\RoleUser;
+use App\Models\Municipality;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
-class UsersRolesTableSeeder extends Seeder
+class MunicipalitiesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,7 +17,7 @@ class UsersRolesTableSeeder extends Seeder
     public function run()
     {
         // Ruta del archivo Excel con los datos
-        $file = storage_path('app/public/users-roles.xlsx');
+        $file = storage_path('app/public/municipalities.xlsx');
 
         // Cargar el archivo Excel mediante la librería PHPSpreadsheet
         $spreadsheet = IOFactory::load($file);
@@ -38,11 +39,11 @@ class UsersRolesTableSeeder extends Seeder
                 continue;
             }
 
-            $user_rol = new RoleUser();
-            $user_rol->id = $row['A'];
-            $user_rol->user_id = $row['B'];
-            $user_rol->role_id = $row['C'];
-            $user_rol->save();
+            $municipalities = new Municipality();
+            $municipalities->id = $row['A'];
+            $municipalities->zone_id = $row['B'];
+            $municipalities->name = $row['C'];
+            $municipalities->save();
 
             $counter++;
         }
