@@ -109,7 +109,7 @@ class User extends Authenticatable
     }
 
     public function municipalities(){
-        return $this->belongsTo(MunicipalityUser::class, 'user_id');
+        return $this->hasMany(MunicipalityUser::class, 'user_id');
     }
 
     public function getActivitylogOptions(): LogOptions
