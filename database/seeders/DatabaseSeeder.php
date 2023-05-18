@@ -25,12 +25,15 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             ZoneSeeder::class,
-            UserSeeder::class,
+            UsersTableSeeder::class, // mio
+            // UserSeeder::class,
             ModuleSeeder::class,
             ModuleItemSeeder::class,
-            RoleSeeder::class,
+            RolesTableSeeder::class, // mio
+           // RoleSeeder::class,
             PermissionSeeder::class,
-            RoleUserSeeder::class,
+            RolesUsersTableSeeder::class,// mio
+           // RoleUserSeeder::class,
             GroupSeeder::class,
             PermissionRoleSeeder::class,
             ValidityPeriodsSeeder::class,
@@ -40,34 +43,25 @@ class DatabaseSeeder extends Seeder
             StatusSeeder::class,
             BankSeeder::class,
             BankAccountTypeSeeder::class,
-            // ContractorSeeder::class,
-            // HiringSeeder::class,
-            MunicipalitySeeder::class,
-            // DocumentSeeder::class,
-            //StatusDocumentSeeder::class,
+            MunicipalitiesTableSeeder::class, // mio
+            // MunicipalitySeeder::class,
             ObjectSeeder::class,
-            // BaseClausesSeeder::class,
-            // NameClausesSeeder::class,
-            DisciplinesSeeder::class,
-            // DirectionSeeder::class,
+            DisciplinesTableSeeder::class,
+            // DisciplinesUsersTableSeeder::class,
+            // DisciplinesSeeder::class,
             DirectionSeeder::class,
-            // ContractSeeder::class,
-            // ClauseSeeder::class,
             ZoneUserSeeder::class,
-            MunicipalityUserSeeder::class,
-            // SpecificcontratoractivitySeeder::class,
+           // MunicipalityUserSeeder::class,
             EthnicitySeeder::class,
-            // UserHierarchySeeder::class,
             EventSupportSeederer::class,
             EvaluationSeeder::class,
             MonthsSeeder::class,
             MethodologistVisitPersonalizedSeeder::class,
             CoordinatorVisitSeeder::class,
-            // InfoContractorSeeder::class,
             SidewalkSeeder::class,
             Health_Entities_Seeder::class,
-            // DATA FAKE
-            // DataFakeSeeder::class,
+            RolesActivitiesSeeder::class, // mio
+            RolesObjectsActivitiesSeeder::class // mio
         ]);
     }
 }
