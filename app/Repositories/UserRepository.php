@@ -37,13 +37,13 @@ class UserRepository
 
         $rol_id = $this->getIdRolUserAuth();
 
-        if ($rol_id == config('roles.root')){
+        if ($rol_id == config('roles.super_root')){
             $query->whereHas('roles', function ($profile) {
                 $profile->whereNotIn('roles.id', [config('roles.super_root')]);
             });
         }
 
-        return  new UserCollection($query->paginate(25));
+        return  new UserCollection($query->paginate(200));
 
     }
 
