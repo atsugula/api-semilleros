@@ -125,7 +125,7 @@ class UserRepository
      */
     function findById($id)
     {
-        $user =  $this->model->with('roles', 'zone', 'municipalities')->find($id);
+        $user =  $this->model->with('roles', 'zone', 'municipalities', 'disciplines')->find($id);
         //$user
         $repoProfile = new ProfileRepository();
         $profile = $repoProfile->findByUserId($id);

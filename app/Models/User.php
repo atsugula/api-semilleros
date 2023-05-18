@@ -112,6 +112,10 @@ class User extends Authenticatable
         return $this->hasMany(MunicipalityUser::class, 'user_id');
     }
 
+    public function disciplines(){
+        return $this->hasMany(DisciplineUser::class, 'user_id');
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
