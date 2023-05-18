@@ -42,8 +42,8 @@ class UserRepository
                 $profile->whereNotIn('roles.id', [config('roles.super_root')]);
             });
         }
-
-        return  new UserCollection($query->paginate(25));
+        $cantRegistros = $query->get()->count();
+        return  new UserCollection($query->paginate($cantRegistros));
 
     }
     function getHistory($id)
