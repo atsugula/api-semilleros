@@ -17,7 +17,8 @@ class GroupResource extends JsonResource
         return [
 			'id'=>$this->id,
             'name'=>$this->name,
-			'beneficiaries'=>$this->beneficiaries
+			'beneficiaries'=>$this->beneficiaries,
+            'schedule'=>$this->schedule,
 		];
     }
 }

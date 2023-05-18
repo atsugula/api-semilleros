@@ -10,7 +10,12 @@ use App\Models\Beneficiary;
 use App\Models\BeneficiaryScreening;
 use App\Models\BeneficiaryGuardians;
 use App\Models\KnowGuardians;
+use App\Models\Municipality;
+use App\Models\MunicipalityUser;
+use App\Models\User;
+use App\Models\ZoneUser;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class BeneficiarieRepository
 {
@@ -27,20 +32,13 @@ class BeneficiarieRepository
     public function getAll()
     {
         $user_id = $this->getIdUserAuth();
-
-        $beneficiaries = new BeneficiaryCollection(
-            $this->model
-            ->orderBy('id', 'DESC')
-            ->where('created_by', $user_id)
-            ->get()
-        );
-
+        $beneficiaries = new BeneficiaryCollection($this->model->where('created_by', $user_id)->orderBy('id', 'ASC')->get());
         return $beneficiaries;
     }
 
     public function create($request)
     {
-        \DB::beginTransaction();
+        DB::beginTransaction();
 
         $request['created_by'] = Auth::id();
         $beneficiarie = Beneficiary::create($request);
@@ -73,7 +71,7 @@ class BeneficiarieRepository
 
         $knowGuardian = KnowGuardians::updateOrCreate(
             [
-                'id_beneficiary'=> $beneficiarie->id,
+                'id_beneficiary' => $beneficiarie->id,
                 'id_guardian'   => $acudiente->id
             ],
             [
@@ -87,7 +85,7 @@ class BeneficiarieRepository
         $this->control_data($beneficiarie, 'store');
         $result = new BeneficiaryResource($beneficiarie);
 
-        \DB::commit();
+        DB::commit();
 
         return $result;
     }
@@ -101,7 +99,7 @@ class BeneficiarieRepository
 
     public function update($request, $id)
     {
-        \DB::beginTransaction();
+        DB::beginTransaction();
 
         $request['created_by'] = Auth::id();
         $beneficiarie = $this->model->findOrFail($id);
@@ -133,7 +131,7 @@ class BeneficiarieRepository
 
         $knowGuardian = KnowGuardians::updateOrCreate(
             [
-                'id_beneficiary'=> $beneficiarie->id,
+                'id_beneficiary' => $beneficiarie->id,
                 'id_guardian'   => $acudiente->id
             ],
             [
@@ -147,7 +145,7 @@ class BeneficiarieRepository
         $this->control_data($beneficiarie, 'update');
         $result = new BeneficiaryResource($beneficiarie);
 
-        \DB::commit();
+        DB::commit();
 
         return $result;
     }
@@ -160,10 +158,11 @@ class BeneficiarieRepository
         return response()->json(['message' => 'Se ha eliminado correctamente']);
     }
 
-    public function getValidate($data, $method){
+    public function getValidate($data, $method)
+    {
 
         $validate = [
-            'affiliation_type'=> 'bail|required',
+            'affiliation_type' => 'bail|required',
             /* 'group_id' => 'bail|required',
             'full_name' => 'bail|required',
             'institution_entity_referred' => 'bail|required',
@@ -189,7 +188,7 @@ class BeneficiarieRepository
         ];
 
         $attrs = [
-            'affiliation_type'=> 'Tipo de afiliaciín',
+            'affiliation_type' => 'Tipo de afiliaciín',
             /* 'group_id' => 'bail|required',
             'full_name' => 'bail|required',
             'institution_entity_referred' => 'bail|required',
@@ -210,25 +209,100 @@ class BeneficiarieRepository
         ];
 
         return $this->validator($data, $validate, $messages, $attrs);
-
     }
 
-    public function changeStatus($request, $id) {
+    public function getAllByUserRegion()
+    {
 
         $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
-        //$rol_id = 9;//9,11,17 
-        //$user_id = 9;//9,11,17
 
-        $beneficiarie = $this->model->findOrFail($id);
+        $zoneUsers = new ZoneUser();
+        $municipalityUsers = new MunicipalityUser();
 
-        if ($rol_id == config('roles.metodologo') || $rol_id == config('roles.asistente_administrativo') || $rol_id == config('roles.auxiliar_administrativo_tecnico')) {
-            $beneficiarie->revised_by = $user_id;
-            $beneficiarie->status_id = $request['status_id'];
-            $beneficiarie->rejection_message = $request['rejection_message'];
+        $municipalitiesByZone = $zoneUsers
+            ->join('municipalities', 'zone_users.id', '=', 'municipalities.zone_id')
+            ->where('zone_users.user_id', $user_id)
+            ->select('municipalities.id')
+            ->get()->toArray();
+
+        $municipalities = $municipalityUsers
+            ->join('municipalities', 'municipality_users.municipalities_id', '=', 'municipalities.id')
+            ->where('municipality_users.user_id', $user_id)
+            ->select('municipalities.id')
+            ->get()->toArray();
+
+        $mergedMunicipalities = array_merge($municipalitiesByZone, $municipalities);
+        $allMunicipalities = array();
+
+        foreach ($mergedMunicipalities as $key => $a) {
+            array_push($allMunicipalities, $a['id']);
         }
 
-        $beneficiarie->save();
+        if ($rol_id == config('roles.asistente_administrativo')) {
+
+            return new BeneficiaryCollection(
+                $this->model
+                    ->whereIn('municipalities_id', $allMunicipalities)
+                    ->whereIn('status_id', [config('status.APR'), config('status.REC')])
+                    ->orderBy('id', 'ASC')
+                    ->get()
+            );
+        } else if ($rol_id == config('roles.coordinador_regional')) {
+
+            return new BeneficiaryCollection(
+                $this->model
+                    ->whereIn('municipalities_id', $allMunicipalities)
+                    ->whereIn('status_id', [config('status.ENP'), config('status.APR'), config('status.REC')])
+                    ->orderBy('id', 'ASC')
+                    ->get()
+            );
+        } else if ($rol_id == config('roles.metodologo')) {
+
+            return new BeneficiaryCollection(
+                $this->model
+                    ->whereIn('municipalities_id', $allMunicipalities)
+                    ->whereIn('status_id', [config('status.ENP'), config('status.ENR'), config('status.REC')])
+                    ->orderBy('id', 'ASC')
+                    ->get()
+            );
+        } else if ($rol_id == config('roles.super-root')) {
+            return new BeneficiaryCollection($this->model->orderBy('id', 'ASC')->get());
+        } else {
+            return null;
+        }
+    }
+
+    public function changeStatus($request, $id)
+    {
+        $rol_id = $this->getIdRolUserAuth();
+        $user_id = $this->getIdUserAuth();
+
+        
+        $beneficiarie = $this->model->findOrFail($id);
+
+        if ($rol_id == config('roles.asistente_administrativo') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.metodologo')) {
+            if ($request['status'] == "ENP") {
+                $beneficiarie->status_id = config('status.ENP');
+                $beneficiarie->reviewed_by = $user_id;
+            }else if ($request['status'] == "ENR") {
+                $beneficiarie->status_id = config('status.ENR');
+                $beneficiarie->reviewed_by = $user_id;
+            } else if ($request['status'] == "APR") {
+                $beneficiarie->status_id = config('status.APR');
+                $beneficiarie->approved_by = $user_id;
+            } else if ($request['status'] == "REC") {
+                $beneficiarie->status_id = config('status.REC');
+                $beneficiarie->rejected_by = $user_id;
+            }
+
+            if (!empty($request['rejection_message'])) {
+                $beneficiarie->rejection_message = $request['rejection_message'];
+            }
+
+            $beneficiarie->save();
+        }
+
 
         // Guardamos en dataModel
         $this->control_data($beneficiarie, 'update');
@@ -237,5 +311,4 @@ class BeneficiarieRepository
 
         return $result;
     }
-
 }
