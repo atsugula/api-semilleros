@@ -2,12 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\DisciplineUser;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\ZoneUser;
 use Illuminate\Database\Seeder;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
-class DisciplinesUsersTableSeeder extends Seeder
+class ZoneUserTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,7 +16,7 @@ class DisciplinesUsersTableSeeder extends Seeder
     public function run()
     {
         // Ruta del archivo Excel con los datos
-        $file = storage_path('app/public/disciplines_users.xlsx');
+        $file = storage_path('app/public/zone_user.xlsx');
 
         // Cargar el archivo Excel mediante la librería PHPSpreadsheet
         $spreadsheet = IOFactory::load($file);
@@ -39,11 +38,11 @@ class DisciplinesUsersTableSeeder extends Seeder
                 continue;
             }
 
-            $disciplines = new DisciplineUser();
-            $disciplines->user_id = $row['A'];
-            $disciplines->disciplines_id = $row['B'];
-            $disciplines->id = $row['C'];
-            $disciplines->save();
+            $zoneUser = new ZoneUser();
+            $zoneUser->id = $row['A'];
+            $zoneUser->user_id = $row['B'];
+            $zoneUser->zones_id = $row['C'];
+            $zoneUser->save();
 
             $counter++;
         }

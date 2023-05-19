@@ -2,12 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\DisciplineUser;
+use App\Models\Zone;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
-class DisciplinesUsersTableSeeder extends Seeder
+class ZoneTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,8 +16,11 @@ class DisciplinesUsersTableSeeder extends Seeder
      */
     public function run()
     {
+        // Obtener el último ID de la tabla users
+        // $lastUserId = optional(DB::table('users')->latest('id')->first())->id ?? 0;
+
         // Ruta del archivo Excel con los datos
-        $file = storage_path('app/public/disciplines_users.xlsx');
+        $file = storage_path('app/public/zones.xlsx');
 
         // Cargar el archivo Excel mediante la librería PHPSpreadsheet
         $spreadsheet = IOFactory::load($file);
@@ -27,7 +30,8 @@ class DisciplinesUsersTableSeeder extends Seeder
 
         // Obtener los datos de las filas
         $rows = $sheet->toArray(null, true, true, true);
-
+        //$id = 40;
+        // Recorrer los datos y crear los usuarios
         // Inicializar el contador
         $counter = 0;
   
@@ -39,11 +43,10 @@ class DisciplinesUsersTableSeeder extends Seeder
                 continue;
             }
 
-            $disciplines = new DisciplineUser();
-            $disciplines->user_id = $row['A'];
-            $disciplines->disciplines_id = $row['B'];
-            $disciplines->id = $row['C'];
-            $disciplines->save();
+            $user = new Zone();
+            $user->id = $row['A'];
+            $user->name = $row['B'];
+            $user->save();
 
             $counter++;
         }
