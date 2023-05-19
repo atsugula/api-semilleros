@@ -221,4 +221,19 @@ class UserController extends Controller
             return  $this->createErrorResponse([], 'Algo salio mal al listar historial ' . $ex->getMessage() . ' linea ' . $ex->getCode());
         }
     }
+
+    public function toggleUserStatus($id){
+        $user = User::find($id);
+        if($user->inactive){
+            $user->inactive = false;
+            $cambio = "Activado";
+        }else{
+            $user->inactive = true;
+            $cambio = "Inactivado";
+        }
+        if($user->save()){
+            return $this->createResponse([], 'Usuario ha sido '.$cambio.' Correctamente');
+        }
+        
+    }
 }

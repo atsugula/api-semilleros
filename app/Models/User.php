@@ -36,7 +36,8 @@ class User extends Authenticatable
         'lastname',
         'address',
         'phone',
-        'gender'
+        'gender',
+        'inactive',
         /*'zone_id',
         'municipalities_id',
         'document_type',
@@ -109,7 +110,11 @@ class User extends Authenticatable
     }
 
     public function municipalities(){
-        return $this->belongsTo(MunicipalityUser::class, 'user_id');
+        return $this->hasMany(MunicipalityUser::class, 'user_id');
+    }
+
+    public function disciplines(){
+        return $this->hasMany(DisciplineUser::class, 'user_id');
     }
 
     public function getActivitylogOptions(): LogOptions
