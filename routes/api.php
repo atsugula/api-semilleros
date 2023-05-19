@@ -68,7 +68,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix('v1')->group(function () {
+Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUserStatus'])->prefix('v1')->group(function () {
     Route::get('get-access', [AccessController::class, 'getAccess']);
     Route::post('have-access', [AccessController::class, 'userHaveAccess']);
     Route::get('get-permissions', [AccessController::class, 'getPermissions']);
@@ -203,6 +203,9 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
 
     //ALL USER INFORMATION OF HISTORY
     Route::get('users/history/{id}', [UserController::class, 'history']);
+
+    //CAMBIAR INACTIVO DE USUARIO
+    Route::post('users/toggleUserStatus/{id}', [UserController::class, 'toggleUserStatus']);
 
     // PROFILES
     Route::get('findByGestorId/{id}', [ProfileController::class, 'findByGestorId']);

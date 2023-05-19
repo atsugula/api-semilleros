@@ -36,7 +36,8 @@ class User extends Authenticatable
         'lastname',
         'address',
         'phone',
-        'gender'
+        'gender',
+        'inactive',
         /*'zone_id',
         'municipalities_id',
         'document_type',
