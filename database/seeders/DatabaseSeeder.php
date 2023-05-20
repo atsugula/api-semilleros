@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            ZoneSeeder::class,
+            // ZoneSeeder::class,
+            ZoneTableSeeder::class,  // mio
             UsersTableSeeder::class, // mio
             // UserSeeder::class,
             ModuleSeeder::class,
@@ -47,10 +48,11 @@ class DatabaseSeeder extends Seeder
             // MunicipalitySeeder::class,
             ObjectSeeder::class,
             DisciplinesTableSeeder::class,
-            // DisciplinesUsersTableSeeder::class,
+            DisciplinesUsersTableSeeder::class,
             // DisciplinesSeeder::class,
             DirectionSeeder::class,
-            ZoneUserSeeder::class,
+            ZoneUserTableSeeder::class,
+            // ZoneUserSeeder::class,
            // MunicipalityUserSeeder::class,
             EthnicitySeeder::class,
             EventSupportSeederer::class,
