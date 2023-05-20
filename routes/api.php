@@ -201,6 +201,9 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
     //ALL USER INFORMATION
     Route::get('information-users', [UserController::class, 'allData']);
 
+    //ALL USER INFORMATION OF HISTORY
+    Route::get('users/history/{id}', [UserController::class, 'history']);
+
     // PROFILES
     Route::get('findByGestorId/{id}', [ProfileController::class, 'findByGestorId']);
 
