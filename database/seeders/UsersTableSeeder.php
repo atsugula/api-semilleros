@@ -54,7 +54,7 @@ class UsersTableSeeder extends Seeder
             $user->phone = $row['G'];
             $user->gender = $row['H'];
             $user->email = $row['I'];
-            $user->password = Hash::make('E');
+            $user->password = Hash::make($row['E']);
             $user->save();
 
             $counter++;
