@@ -30,8 +30,14 @@ class ReportChronogramRepository
     $templateProcessor = new TemplateProcessor($templatePath);
      
     $data = [
-        ""
+        'update_date' => $ChronogramReport-> updated_at,
+        'MONTH' => $ChronogramReport-> mes -> name,
+        'MONITOR_name' => $ChronogramReport-> creator -> name,
+        'MONITOR_lastname' => $ChronogramReport-> creator -> lastname,
+        'zone' => $ChronogramReport-> zone -> name,
+        'municipio' => $ChronogramReport-> municipio -> name,
     ];
+
     $templateProcessor->setValues($data);
 
     try {
