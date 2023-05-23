@@ -52,6 +52,7 @@ class Beneficiary extends Model
     public function userbeneficiario(){
         return $this->hasOne(User::class, 'id','user_id');
     }
+    
     public function control_data(){
 		return $this->morphMany(ControlChangeData::class,'data_model');
 	}

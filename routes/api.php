@@ -44,6 +44,7 @@ use App\Http\Controllers\V1\CoordinatorVistsController;
 use App\Http\Controllers\V1\CustomVisitController;
 use App\Http\Controllers\V1\InfoContractorController;
 use App\Http\Controllers\V1\MonthsController;
+use App\Http\Controllers\v1\ReportRegistrationFileController;
 use App\Http\Controllers\V1\SidewalkController;
 //use App\Http\Controllers\V1\VisitSubDirectorController;
 use App\Http\Controllers\V1\TransversalActivityController;
@@ -130,7 +131,10 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
     Route::post('upload/methodologist_visits', [MethodologistVisitController::class, 'uploadFiles']);
 
     // Descargar archivos de visitas methodologicas
-    Route::get('getReportMethodologisticsVisits/{id}',[ReportVisitsController::class,'exportMethodologistVisit']);
+    Route::get('getReportMethodologisticsVisits/{id}', [ReportVisitsController::class, 'exportMethodologistVisit']);
+
+    // Descargar archivos de fichas de inscripcion.
+    // Route::get('getReporRegistrationFile/{id}', [ReportVisitsController::class, 'exportRegistrationFile']);
 
     /* EVENTOS DE SOPORTE */
     Route::apiResource('eventSupports', EventSupportController::class)->only(['index', 'store', 'show', 'destroy']);
@@ -145,13 +149,13 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory'])->prefix(
     Route::get('get-document', [GeneralController::class, 'getDocument']);
 
     /* BENEFICIARIOS */
-    Route::apiResource('beneficiaries', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']); 
+    Route::apiResource('beneficiaries', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::put('beneficiaries/{id}', [BeneficiarieController::class, 'update']);
     Route::put('beneficiaries/changeStatus/{id}', [BeneficiarieController::class, 'changeStatus']);
-    
+
     // BENEFICIARIOS POR MUNICIPIO
     Route::get('getBeneficiariesMunicipality/{id}', [BeneficiarieController::class, 'getBeneficiariesMunicipality']);
-    
+
     //Benficiarios por estado y region
     Route::get('getAllByUserRegion', [BeneficiarieController::class, 'getAllByUserRegion']);
 
@@ -279,3 +283,6 @@ Route::apiResources([
 // Route::put('beneficiariess/{id}', [BeneficiarieController::class, 'update']);
 // Route::put('beneficiariess/changeStatus/{id}', [BeneficiarieController::class, 'changeStatus']);
 //Route::get('getAllByUserRegions', [BeneficiarieController::class, 'getAllByUserRegion']);
+
+Route::get('getReportRegistrationFile/{id}', [ReportRegistrationFileController::class, 'exportRegistrationFile']);
+Route::get('getReportMethodologisticsVisitss/{id}', [ReportVisitsController::class, 'exportMethodologistVisit']);

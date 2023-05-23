@@ -20,23 +20,23 @@ class DataFakeSeeder extends Seeder
     public function run()
     {
         // Usuarios falsos para pruebas
-        User::factory()->count(1000)->create();
-        RoleUser::factory()->count(1000)->create();
+        // User::factory()->count(1000)->create();
+        //RoleUser::factory()->count(1000)->create();
 
-        NavigationHistory::factory()->count(10000)->create();
+        //NavigationHistory::factory()->count(10000)->create();
 
         // Benfiaciarios falsos para pruebas
         $guardians = BeneficiaryGuardians::factory()->count(100)->create();
         Beneficiary::factory()->count(100)->create();
         foreach ($guardians as $guardian) {
-                KnowGuardians::firstOrCreate([
-                    'id_guardian'=>$guardian->id,
-                    'id_beneficiary'=>$guardian->id,
-                    'relationship'=> fake()->randomElement(['Abuelo','Abuela','Padre','Madre','Hermano','Hermana','Tio','Tia','Padrastro','Madrastra','Padrino','Madrina','Primo','Prima']),
-                    'find_out'=>json_encode([]),
-                    'social_media'=>json_encode([]),
-                    'created_at'=>now()
-                ]);
+            KnowGuardians::firstOrCreate([
+                'id_guardian' => $guardian->id,
+                'id_beneficiary' => $guardian->id,
+                'relationship' => fake()->randomElement(['Abuelo', 'Abuela', 'Padre', 'Madre', 'Hermano', 'Hermana', 'Tio', 'Tia', 'Padrastro', 'Madrastra', 'Padrino', 'Madrina', 'Primo', 'Prima']),
+                'find_out' => json_encode([]),
+                'social_media' => json_encode([]),
+                'created_at' => now()
+            ]);
         }
     }
 }

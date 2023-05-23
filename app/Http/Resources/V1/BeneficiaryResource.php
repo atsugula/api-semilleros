@@ -16,8 +16,8 @@ class BeneficiaryResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'registration_date'=> $this->registration_date,
-            'affiliation_type'=> $this->affiliation_type,
+            'registration_date' => $this->registration_date,
+            'affiliation_type' => $this->affiliation_type,
             'created_by' => $this->created_user,
             'group_id' => $this->group,
             'full_name' => $this->full_name,

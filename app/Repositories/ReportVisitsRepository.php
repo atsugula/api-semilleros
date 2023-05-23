@@ -8,7 +8,7 @@ use PhpOffice\PhpWord\PhpWord;
 
 
 class ReportVisitsRepository
-{ 
+{
   private $MethodologistVisit;
 
   function __construct()
@@ -19,13 +19,13 @@ class ReportVisitsRepository
   public function generateDoc($id){
 
     $MethodologistVisitReport = $this->MethodologistVisit->findOrFail($id);
-    
+
     $templatePath = public_path('Template/metodologo/Metodologist_Visit.docx');
     $outputPath = public_path('Template/metodologo/Metodologist_Visit_'. $id .'.docx');
 
 
     $templateProcessor = new TemplateProcessor($templatePath);
-     
+
     $data = [
       'metodologo' => $MethodologistVisitReport->creator->name,
       'fecha' => $MethodologistVisitReport->date_visit,
@@ -79,7 +79,7 @@ class ReportVisitsRepository
       $templateProcessor->setImageValue('imagen', array('path' => storage_path("app/public/". $MethodologistVisitReport->file), 'width' => 500, 'height' => 500, 'ratio' => false));
     } catch (\Exception $e) {
     }
-    
+
 
     $templateProcessor->saveAs($outputPath);
 
