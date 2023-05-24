@@ -37,12 +37,7 @@ class User extends Authenticatable
         'address',
         'phone',
         'gender',
-        'inactive',
-        /*'zone_id',
-        'municipalities_id',
-        'document_type',
-        'profile_photo_path',
-        'status'*/
+        'inactive'
     ];
 
     /**

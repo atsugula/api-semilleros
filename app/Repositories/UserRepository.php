@@ -73,46 +73,56 @@ class UserRepository
      */
     function create($user)
     {
-        // $user['password'] = Hash::make($user['password']);
-        $user['password'] = Hash::make('12345678');
+        $user['password'] = Hash::make($user['document_number']);
         $new_user = $this->model->create($user);
 
         if ($new_user->wasRecentlyCreated) {
 
-            // Roles
-            RoleUser::create([
-                'user_id' => $new_user->id,
-                'role_id' =>  $user['roles'],
-            ]);
-
-            // Regiones o zonas
-            ZoneUser::create([
-                'user_id' => $new_user->id,
-                'zones_id' =>  $user['zones'],
-            ]);
-
-            // Municipios
-            foreach ($user['municipalities'] as $key => $value) {
-                MunicipalityUser::create([
+          
+            if( 
+                $user['roles'] == '1' || $user['roles'] == '2' || 
+                $user['roles'] == '4' || $user['roles'] == '8' || 
+                $user['roles'] == '9' || $user['roles'] == '10' || 
+                $user['roles'] == '11' || $user['roles'] == '12'
+            ) {
+                // Roles
+                RoleUser::create([
                     'user_id' => $new_user->id,
-                    'municipalities_id' => $value,
+                    'role_id' =>  $user['roles'],
                 ]);
-            }
 
-            // Diciplinas
-            foreach ($user['disciplines'] as $key => $value) {
-                DisciplineUser::create([
+                // Regiones o zonas - usuarios
+                ZoneUser::create([
                     'user_id' => $new_user->id,
-                    'disciplines_id' => $value,
+                    'zones_id' =>  $user['zones'],
+                ]);
+
+                // Municipios - usuarios
+                foreach ($user['municipalities'] as $key => $value) {
+                    MunicipalityUser::create([
+                        'user_id' => $new_user->id,
+                        'municipalities_id' => $value,
+                    ]);
+                }
+
+                // Diciplinas - usuarios
+                foreach ($user['disciplines'] as $key => $value) {
+                    DisciplineUser::create([
+                        'user_id' => $new_user->id,
+                        'disciplines_id' => $value,
+                    ]);
+                }
+            }else{
+                // Roles - usuarios
+                RoleUser::create([
+                    'user_id' => $new_user->id,
+                    'role_id' =>  $user['roles'],
                 ]);
             }
         }
-
-        $role = DB::table('roles')->where('id', '=', $user['roles'])->get();
-        $new_user->roles()->attach($role[0]->id);
-
         // Guardamos en ModelData
         $this->control_data($new_user, 'store');
+
         return $new_user;
     }
 
@@ -125,14 +135,35 @@ class UserRepository
      */
     function findById($id)
     {
-        $user =  $this->model->with('roles', 'zone', 'municipalities', 'disciplines')->find($id);
-        //$user
+        $user =  $this->model
+                ->join('role_user', 'users.id', 'role_user.user_id')
+                ->join('roles', 'role_user.role_id', 'roles.id')
+                ->join('discipline_users','users.id', 'discipline_users.user_id')
+                ->join('disciplines', 'discipline_users.disciplines_id', 'disciplines.id')
+                ->join('municipality_users', 'users.id', 'municipality_users.user_id')
+                ->join('municipalities', 'municipality_users.municipalities_id', 'municipalities.id')
+                ->join('zone_users', 'users.id', 'zone_users.user_id')
+                ->join('zones', 'zone_users.zones_id', 'zones.id')
+                ->select(
+                    'users.*',
+                    'role_user.role_id as rol_id',
+                    'roles.name as rol_name',
+                    'discipline_users.disciplines_id as discipline_id',
+                    'disciplines.name as discipline_name',
+                    'municipality_users.municipalities_id as municipalitie_id',
+                    'municipalities.name as municipalitie_name',
+                    'zone_users.zones_id as zone_id',
+                    'zones.name as zone_name'                  
+                )
+                ->find($id);
+                
         $repoProfile = new ProfileRepository();
         $profile = $repoProfile->findByUserId($id);
         if ($profile) {
             $profile->role;
             $user->profile = $profile;
         }
+
         return $user;
     }
 
