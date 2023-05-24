@@ -44,7 +44,6 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // Gate::authorize('haveaccess');
         try {
             $validator = Validator::make($request->all(), [
                 'email' => [
@@ -54,7 +53,6 @@ class UserController extends Controller
                     'max:255',
                     Rule::unique(User::class),
                 ],
-                //'password' => $this->passwordRules(),
             ]);
             if ($validator->fails()) {
                 return  $this->createErrorResponse([], $validator->errors()->first(), 422);

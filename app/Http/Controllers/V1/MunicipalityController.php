@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Utilities\Validates\dropDownListsValidates;
 use App\Models\Municipalities;
+use App\Models\Municipality;
 use App\Repositories\MunicipalityRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,7 +35,7 @@ class MunicipalityController extends Controller
     {
         try {
             // Obtener los municipios de la región por su ID
-            $municipios = Municipalities::where('region_id', $regionId)->pluck('description');
+            $municipios = Municipality::where('zone_id', $regionId)->pluck('name');
 
             // Verificar si se encontraron municipios
             if ($municipios->isEmpty()) {
