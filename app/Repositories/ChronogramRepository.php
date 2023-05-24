@@ -38,13 +38,13 @@ class ChronogramRepository
                 ->whereHas('creator.roles', function ($query) {
                     $query->where('roles.slug', 'subdirector_tecnico');
                 })
-                ->whereNotIn('status_id', [config('roles.APR')]);
+                ->whereNotIn('status_id', [config('status.APR')]);
         }
 
         if ($rol_id == config('roles.monitor')){
             $query->whereNotIn('created_by', [1,2])->with(['mes', 'municipio'])
                 ->where('created_by', $user_id)
-                ->whereNotIn('status_id', [config('roles.APR')]);
+                ->whereNotIn('status_id', [config('status.APR')]);
         }
 
         $paginate = config('global.paginate');
