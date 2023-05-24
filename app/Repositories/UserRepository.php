@@ -136,14 +136,14 @@ class UserRepository
     function findById($id)
     {
         $user =  $this->model
-                ->leftjoin('role_user', 'users.id', 'role_user.user_id')
-                ->leftjoin('roles', 'role_user.role_id', 'roles.id')
-                ->leftjoin('discipline_users','users.id', 'discipline_users.user_id')
-                ->leftjoin('disciplines', 'discipline_users.disciplines_id', 'disciplines.id')
-                ->leftjoin('municipality_users', 'users.id', 'municipality_users.user_id')
-                ->leftjoin('municipalities', 'municipality_users.municipalities_id', 'municipalities.id')
-                ->leftjoin('zone_users', 'users.id', 'zone_users.user_id')
-                ->leftjoin('zones', 'zone_users.zones_id', 'zones.id')
+                ->join('role_user', 'users.id', 'role_user.user_id')
+                ->join('roles', 'role_user.role_id', 'roles.id')
+                ->join('discipline_users','users.id', 'discipline_users.user_id')
+                ->join('disciplines', 'discipline_users.disciplines_id', 'disciplines.id')
+                ->join('municipality_users', 'users.id', 'municipality_users.user_id')
+                ->join('municipalities', 'municipality_users.municipalities_id', 'municipalities.id')
+                ->join('zone_users', 'users.id', 'zone_users.user_id')
+                ->join('zones', 'zone_users.zones_id', 'zones.id')
                 ->select(
                     'users.*',
                     'role_user.role_id as rol_id',
@@ -155,8 +155,8 @@ class UserRepository
                     'zone_users.zones_id as zone_id',
                     'zones.name as zone_name'                  
                 )
-                ->with('roles', 'zone', 'municipalities', 'disciplines')
                 ->find($id);
+                
         $repoProfile = new ProfileRepository();
         $profile = $repoProfile->findByUserId($id);
         if ($profile) {
@@ -182,41 +182,31 @@ class UserRepository
 
         if ($user_up->update($data)) {
             $rol = RoleUser::where('user_id', $user_up->id)->first();
+            $muni = MunicipalityUser::where('user_id', $user_up->id)->first();
+            $zones = RoleUser::where('user_id', $user_up->id)->first();
+            $discipline = DisciplineUser::where('user_id', $user_up->id)->first();
 
             if ($rol) {
                 $rol->role_id = $data['roles'];
                 $rol->user_id = $user_up->id;
                 $rol->save();
 
-                if($data['zones']){
-                    $zones = ZoneUSer::where('user_id', $user_up->id)->delete();
-                    foreach (explode(",", $data['zones']) as $key => $value) {
-                        $zones = new ZoneUser();
-                        $zones->zones_id = $value;
-                        $zones->user_id = $user_up->id;
-                        $zones->save();
-                    }
-                }
+                $zones->zones_id = $data['zones'];
+                $zones->user_id = $user_up->id;
+                $zones->save();
+
                 // Municipios
-                if($data['municipalities']){
-                    MunicipalityUser::where('user_id', $user_up->id)->delete();
-                    foreach ($data['municipalities'] as $key => $value) {
-                        $muni = new MunicipalityUser();
-                        $muni->municipalities_id = $value;
-                        $muni->user_id = $user_up->id;
-                        $muni->save();
-                    }
+                foreach ($data['municipalities'] as $key => $value) {
+                    $muni->municipalities_id = $value;
+                    $muni->user_id = $user_up->id;
+                    $muni->save();
                 }
 
                 // Diciplinas
-                if($data['disciplines']){
-                    $discipline = DisciplineUser::where('user_id', $user_up->id)->delete();
-                    foreach ($data['disciplines'] as $key => $value) {
-                        $discipline = new DisciplineUser();
-                        $discipline->disciplines_id = $value;
-                        $discipline->user_id = $user_up->id;
-                        $discipline->save();
-                    }
+                foreach ($data['disciplines'] as $key => $value) {
+                    $discipline->disciplines_id = $value;
+                    $discipline->user_id = $user_up->id;
+                    $discipline->save();
                 }
             }
         }
