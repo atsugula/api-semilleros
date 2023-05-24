@@ -32,12 +32,18 @@ class ChronogramRepository
         $user_id = $this->getIdUserAuth();
 
         $query = $this->model->query()->orderBy('id', 'DESC');
-        
-        if ($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_enlace')|| $rol_id == config('roles.monitor')) {
+
+        if ($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_enlace')/* || $rol_id == config('roles.monitor') */) {
             $query->whereNotIn('created_by', [1,2])->with(['mes', 'municipio'])
                 ->whereHas('creator.roles', function ($query) {
                     $query->where('roles.slug', 'subdirector_tecnico');
                 })
+                ->whereNotIn('status_id', [config('roles.APR')]);
+        }
+
+        if ($rol_id == config('roles.monitor')){
+            $query->whereNotIn('created_by', [1,2])->with(['mes', 'municipio'])
+                ->where('created_by', $user_id)
                 ->whereNotIn('status_id', [config('roles.APR')]);
         }
 
@@ -110,7 +116,7 @@ class ChronogramRepository
         $cronograms->municipality = $data['municipality'];
         $cronograms->note = $data['note'];
         $cronograms->status_id = config('status.ENR');
-        
+
 
         // Actualizar estados
         if ($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_enlace') || $rol_id == config('roles.metodologo')) {
