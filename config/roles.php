@@ -13,4 +13,5 @@ return [
     'metodologo'                        => 10,
     'psicologo'                         => 11,
     'monitor'                           => 12,
+    'coordinador_maritimo'              => 13,
 ];
