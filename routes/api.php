@@ -276,9 +276,6 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
 
 });
 
-/*Rutas de prueba Zarrok*/
-// Route::get('getReportMethodologisticsVisits/{id}',[ReportVisitsController::class,'exportMethodologistVisit']);
-
 /* RUTAS DE PRUEBA JORGE */
 
 // Rutas de prueba V2 JOSE

@@ -31,7 +31,7 @@ class CoordinatorVisitsRepository implements CrudRepositoryInterface
 
         $query = $this->model->query()->orderBy('id', 'DESC');
 
-        if($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_enlace') || $rol_id == config('roles.coordinador_maritimo') ) {
+        if($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_enlace') || $rol_id == config('roles.coordinador_enlace') ) {
             $query->where('created_by', $user_id);
         }
 

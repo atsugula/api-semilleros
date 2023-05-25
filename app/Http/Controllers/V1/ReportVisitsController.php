@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 //repositorio de reportes por visita
 use App\Repositories\ReportVisitsRepository;
-use App\Repositories\ReportChronogramRepository;
+
 
 class ReportVisitsController extends Controller
 {
@@ -33,6 +33,8 @@ class ReportVisitsController extends Controller
             return $this->createErrorResponse([], 'Algo salio mal ' . $ex->getMessage() . ' linea ' . $ex->getCode());
         }
     }
+
+
 
 }
 
