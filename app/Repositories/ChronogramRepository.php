@@ -33,7 +33,7 @@ class ChronogramRepository
 
         $query = $this->model->query()->orderBy('id', 'DESC');
         
-        if ($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_enlace')|| $rol_id == config('roles.monitor')) {
+        if ($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_maritimo') || $rol_id == config('roles.coordinador_enlace')|| $rol_id == config('roles.monitor')) {
             $query->whereNotIn('created_by', [1,2])->with(['mes', 'municipio'])
                 ->whereHas('creator.roles', function ($query) {
                     $query->where('roles.slug', 'subdirector_tecnico');
@@ -113,7 +113,7 @@ class ChronogramRepository
         
 
         // Actualizar estados
-        if ($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_enlace') || $rol_id == config('roles.metodologo')) {
+        if ($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_maritimo') || $rol_id == config('roles.coordinador_enlace') || $rol_id == config('roles.metodologo')) {
             $cronograms->revised_by = $user_id;
             $cronograms->status_id = $data['status_id'];
             $cronograms->rejection_message = $data['rejection_message'];

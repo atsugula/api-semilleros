@@ -128,6 +128,14 @@ class UserSeeder extends Seeder
             'password' => Hash::make('12345678')
         ]);
 
+        //cordinador martimo
+        User::create([
+            'name' => 'COORDINADOR MARITIMO',
+            'email' => 'coordinador_maritimo@ssiset.com',
+            'lastname' => 'COORDINADOR REGIOONAL',
+            'document_number' => '690980891',
+            'password' => Hash::make('12345678')
+        ]);
                    
     }
 }

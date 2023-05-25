@@ -248,7 +248,7 @@ class BeneficiarieRepository
                     ->orderBy('id', 'ASC')
                     ->get()
             );
-        } else if ($rol_id == config('roles.coordinador_regional')) {
+        } else if ($rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_maritimo')) {
 
             return new BeneficiaryCollection(
                 $this->model
@@ -281,7 +281,7 @@ class BeneficiarieRepository
         
         $beneficiarie = $this->model->findOrFail($id);
 
-        if ($rol_id == config('roles.asistente_administrativo') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.metodologo')) {
+        if ($rol_id == config('roles.asistente_administrativo') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.metodologo') || $rol_id == config('roles.coordinador_maritimo')) {
             if ($request['status'] == "ENP") {
                 $beneficiarie->status_id = config('status.ENP');
                 $beneficiarie->reviewed_by = $user_id;
