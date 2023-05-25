@@ -79,12 +79,12 @@ class UserRepository
         if ($new_user->wasRecentlyCreated) {
 
           
-            if( 
+            if ( 
                 $user['roles'] == '1' || $user['roles'] == '2' || 
                 $user['roles'] == '4' || $user['roles'] == '8' || 
                 $user['roles'] == '9' || $user['roles'] == '10' || 
                 $user['roles'] == '11' || $user['roles'] == '12'
-            ) {
+                ) {
                 // Roles
                 RoleUser::create([
                     'user_id' => $new_user->id,
@@ -92,10 +92,12 @@ class UserRepository
                 ]);
 
                 // Regiones o zonas - usuarios
-                ZoneUser::create([
-                    'user_id' => $new_user->id,
-                    'zones_id' =>  $user['zones'],
-                ]);
+                foreach ($user['zones'] as $key => $value) {
+                    ZoneUser::create([
+                        'user_id' => $new_user->id,
+                        'zones_id' =>  $value,
+                    ]);
+                }
 
                 // Municipios - usuarios
                 foreach ($user['municipalities'] as $key => $value) {
@@ -183,11 +185,18 @@ class UserRepository
         if ($user_up->update($data)) {
             $rol = RoleUser::where('user_id', $user_up->id)->first();
 
-            if ($rol) {
+            if( 
+                $data['roles'] == '1' || $data['roles'] == '2' || 
+                $data['roles'] == '4' || $data['roles'] == '8' || 
+                $data['roles'] == '9' || $data['roles'] == '10' || 
+                $data['roles'] == '11' || $data['roles'] == '12'
+            ){
+
                 $rol->role_id = $data['roles'];
                 $rol->user_id = $user_up->id;
                 $rol->save();
 
+                // Regiones o zonas - usuarios
                 if($data['zones']){
                     $zones = ZoneUSer::where('user_id', $user_up->id)->delete();
                     foreach (explode(",", $data['zones']) as $key => $value) {
@@ -197,6 +206,7 @@ class UserRepository
                         $zones->save();
                     }
                 }
+                
                 // Municipios
                 if($data['municipalities']){
                     MunicipalityUser::where('user_id', $user_up->id)->delete();
@@ -218,12 +228,15 @@ class UserRepository
                         $discipline->save();
                     }
                 }
+            }else{
+                $rol->role_id = $data['roles'];
+                $rol->user_id = $user_up->id;
+                $rol->save();
             }
         }
-        $role = DB::table('roles')->where('id', '=', $data['roles'])->get();
-        $user_up->roles()->attach($role[0]->id);
         // Guardamos en ModelData
         $this->control_data($user_up, 'update');
+
         return $user_up;
     }
 
