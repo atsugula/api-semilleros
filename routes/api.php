@@ -50,6 +50,7 @@ use App\Http\Controllers\V1\TransversalActivityController;
 use App\Http\Controllers\V1\VisitSubDirectorController;
 use App\Http\Controllers\V1\VisitPsichologistController;
 use App\Http\Controllers\V1\ReportVisitsController;
+use App\Http\Controllers\V1\ReportCronogramCrontroller;
 
 use Illuminate\Http\Request;
 
@@ -131,6 +132,9 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
 
     // Descargar archivos de visitas methodologicas
     Route::get('getReportMethodologisticsVisits/{id}',[ReportVisitsController::class,'exportMethodologistVisit']);
+
+    // Descargar archivos de chronogram
+    Route::get('getReportChronogram/{id}',[ReportVisitsController::class,'ReportChronogramController']);
 
     /* EVENTOS DE SOPORTE */
     Route::apiResource('eventSupports', EventSupportController::class)->only(['index', 'store', 'show', 'destroy']);
@@ -261,7 +265,7 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
     //Muestra los meses restantes del año
     Route::get('months', [MonthsController::class, 'index']);
 
-    // Subida de chronogram
+    // Subida de chronogramcx
     //Route::apiResource('chronogram', ChronogramController::class)->only(['index', 'store', 'show']);
     //Route::post('chronogram/{id}', [ChronogramController::class, 'update']);
     //Route::delete('chronogram', [ChronogramController::class, 'destroy']);
@@ -281,6 +285,9 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
 Route::apiResources([
     'userss' => UserController::class,
 ]);
+
+//zarrok rutas de prueba
+    Route::get('getReportChronogram/{id}',[ReportCronogramCrontroller::class,'exportChronogram']);
 
 //Rutas de Pruebas Crango
 // Route::apiResource('beneficiariess', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);
