@@ -92,10 +92,12 @@ class UserRepository
                 ]);
 
                 // Regiones o zonas - usuarios
-                ZoneUser::create([
-                    'user_id' => $new_user->id,
-                    'zones_id' =>  $user['zones'],
-                ]);
+                foreach ($user['zones'] as $key => $value) {
+                    ZoneUser::create([
+                            'user_id' => $new_user->id,
+                            'zones_id' =>  $value,
+                        ]);
+                }
 
                 // Municipios - usuarios
                 foreach ($user['municipalities'] as $key => $value) {
