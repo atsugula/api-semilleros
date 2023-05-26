@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('home_address')->after('document_number');
 
             $table->enum('conflict_victim', [0, 1])->after('zone');
-            $table->string('distric')->after('conflict_victim');
+            $table->string('distric')->nullable()->after('conflict_victim');
             $table->enum('gender', ['M', 'F'])->after('distric');
 
             $table->unsignedBigInteger('ethnicities_id')->required()->nullable()->after('gender');
