@@ -41,7 +41,9 @@
             <tr>
                 <td>{{ $key+1 }}</td>
                 <td>{{ $user->name . ' ' . $user->lastname }}</td>
+                <td>{{ $user->email }}</td>
                 <td>{{ $user->address }}</td>
+                <td>{{ $user->gender }}</td>
                 <td>{{ $user->document_number }}</td>
                 <td>{{ $user->document_type }}</td>
                 <td>{{ $user->phone }}</td>
