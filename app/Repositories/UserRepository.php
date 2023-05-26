@@ -78,11 +78,11 @@ class UserRepository
 
         if ($new_user->wasRecentlyCreated) {
 
-          
-            if ( 
-                $user['roles'] == '1' || $user['roles'] == '2' || 
-                $user['roles'] == '4' || $user['roles'] == '8' || 
-                $user['roles'] == '9' || $user['roles'] == '10' || 
+
+            if (
+                $user['roles'] == '1' || $user['roles'] == '2' ||
+                $user['roles'] == '4' || $user['roles'] == '8' ||
+                $user['roles'] == '9' || $user['roles'] == '10' ||
                 $user['roles'] == '11' || $user['roles'] == '12'
                 ) {
                 // Roles
@@ -90,9 +90,9 @@ class UserRepository
                     'user_id' => $new_user->id,
                     'role_id' =>  $user['roles'],
                 ]);
-
                 // Regiones o zonas - usuarios
-                foreach ($user['zones'] as $key => $value) {
+                $zonaArray = explode(",", $user['zones']);
+                foreach ($zonaArray as $key => $value) {
                     ZoneUser::create([
                         'user_id' => $new_user->id,
                         'zones_id' =>  $value,
@@ -155,7 +155,7 @@ class UserRepository
                     'municipality_users.municipalities_id as municipalitie_id',
                     'municipalities.name as municipalitie_name',
                     'zone_users.zones_id as zone_id',
-                    'zones.name as zone_name'                  
+                    'zones.name as zone_name'
                 )
                 ->with('roles', 'zone', 'municipalities', 'disciplines')
                 ->find($id);
@@ -185,10 +185,10 @@ class UserRepository
         if ($user_up->update($data)) {
             $rol = RoleUser::where('user_id', $user_up->id)->first();
 
-            if( 
-                $data['roles'] == '1' || $data['roles'] == '2' || 
-                $data['roles'] == '4' || $data['roles'] == '8' || 
-                $data['roles'] == '9' || $data['roles'] == '10' || 
+            if(
+                $data['roles'] == '1' || $data['roles'] == '2' ||
+                $data['roles'] == '4' || $data['roles'] == '8' ||
+                $data['roles'] == '9' || $data['roles'] == '10' ||
                 $data['roles'] == '11' || $data['roles'] == '12'
             ){
 
@@ -206,7 +206,7 @@ class UserRepository
                         $zones->save();
                     }
                 }
-                
+
                 // Municipios
                 if($data['municipalities']){
                     MunicipalityUser::where('user_id', $user_up->id)->delete();
