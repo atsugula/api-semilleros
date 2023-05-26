@@ -16,6 +16,7 @@ use App\Models\User;
 use App\Models\ZoneUser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class BeneficiarieRepository
 {
@@ -163,6 +164,10 @@ class BeneficiarieRepository
 
         $validate = [
             'affiliation_type' => 'bail|required',
+            'document_number' => [
+                'required',
+                Rule::unique(Beneficiary::class),
+            ],
             /* 'group_id' => 'bail|required',
             'full_name' => 'bail|required',
             'institution_entity_referred' => 'bail|required',

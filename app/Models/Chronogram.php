@@ -21,9 +21,10 @@ class Chronogram extends Model
         'note',
         'revised_by',
         'status_id',
+        'updated_at'
     ];
 
-    protected $hidden = ['created_at', 'deleted_at', 'updated_at'];
+    protected $hidden = ['created_at', 'deleted_at',];
 
 
     public function getActivitylogOptions(): LogOptions

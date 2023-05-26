@@ -15,7 +15,9 @@ class UserController extends Controller
 {
 
     use PasswordValidationRules;
+    
     private $userRepository;
+
     function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
@@ -44,7 +46,6 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // Gate::authorize('haveaccess');
         try {
             $validator = Validator::make($request->all(), [
                 'email' => [
@@ -54,7 +55,6 @@ class UserController extends Controller
                     'max:255',
                     Rule::unique(User::class),
                 ],
-                //'password' => $this->passwordRules(),
             ]);
             if ($validator->fails()) {
                 return  $this->createErrorResponse([], $validator->errors()->first(), 422);
@@ -100,7 +100,6 @@ class UserController extends Controller
         $editEmail = $request->get('editEmail');
         try {
             $validator = Validator::make($request->all(), [
-                // 'document_number' => ['required', 'max:12', Rule::unique(User::class)],
                 'email' => [
                     'required',
                     'string',
@@ -108,7 +107,6 @@ class UserController extends Controller
                     'max:255',
                     Rule::unique('users')->ignore($id),
                 ],
-                //'password' => $this->passwordRules(),
             ]);
             $data = $request->all();
             unset($data['editEmail']);

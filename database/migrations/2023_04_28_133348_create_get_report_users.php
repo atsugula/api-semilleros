@@ -16,7 +16,7 @@ return new class extends Migration
     {
         $views = "
         CREATE OR REPLACE VIEW get_report_users AS
-            SELECT DISTINCT u.name, u.lastname, u.address,
+            SELECT DISTINCT u.name, u.email, u.lastname, u.address, u.gender,
                 u.document_number, u.document_type, u.phone, r.name AS rol,
                 z.name AS region, d.name AS discipline, acces.date AS end_date
             FROM users u
