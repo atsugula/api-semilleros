@@ -8,6 +8,7 @@ use App\Models\Bank;
 use App\Models\Beneficiary;
 use App\Models\ControlChangeData;
 use App\Models\Disciplines;
+use App\Models\DisciplineUser;
 use App\Models\EntityName;
 use App\Models\Ethnicity;
 use App\Models\Evaluation;
@@ -56,13 +57,9 @@ class GeneralController extends Controller
         $municipalities = Municipality::select('name as label', 'id as value')->orderBy('name', 'ASC')->get();
 
         //MUNICIPALITYS BY USER
-        $my_municipalities = Municipality::select('name as label', 'id as value')
-                            ->with('users')
-                            ->whereHas('users', function($q) {
-                                $q->where('user_id', Auth::id() );
-                            })
-                            ->orderBy('name', 'ASC')
-                            ->get();
+        $user = Auth::user(); // Obtener el usuario autenticado
+        $zoneIds = $user->zone->pluck('zones_id')->toArray(); // Obtener los zone_id del usuario autenticado
+        $my_municipalities = Municipality::select('name as label', 'id as value')->whereIn('zone_id', $zoneIds)->get();
 
         //ZONES
         $zones = Zone::select('name as label', 'id as value')->orderBy('name', 'ASC')->get();
@@ -74,7 +71,14 @@ class GeneralController extends Controller
         $period = Validity_period::select('term as label', 'id as value')->get();
 
         //Dicpline
-        $diciplines = Disciplines::select('name as label', 'id as value')->orderBy('name', 'ASC')->get();
+        $disciplinas = DisciplineUser::where('user_id', $user->id)->with('discipline')->get();
+        $diciplines = $disciplinas->map(function ($disciplina) {
+            return [
+                'label' => $disciplina->discipline->name,
+                'value' => $disciplina->discipline->id,
+            ];
+        });
+        // $diciplines = Disciplines::select('name as label', 'id as value')->orderBy('name', 'ASC')->get();
 
         //Bancks
         $bancks = Bank::select('name as label', 'id as value')->orderBy('name', 'ASC')->get();

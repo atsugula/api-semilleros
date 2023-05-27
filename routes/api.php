@@ -50,6 +50,7 @@ use App\Http\Controllers\V1\TransversalActivityController;
 use App\Http\Controllers\V1\VisitSubDirectorController;
 use App\Http\Controllers\V1\VisitPsichologistController;
 use App\Http\Controllers\V1\ReportVisitsController;
+use App\Http\Controllers\V1\ReportCronogramCrontroller;
 
 use Illuminate\Http\Request;
 
@@ -132,6 +133,9 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
     // Descargar archivos de visitas methodologicas
     Route::get('getReportMethodologisticsVisits/{id}',[ReportVisitsController::class,'exportMethodologistVisit']);
 
+    // Descargar archivos de chronogram
+    Route::get('getReportChronogram/{id}',[ReportVisitsController::class,'ReportChronogramController']);
+
     /* EVENTOS DE SOPORTE */
     Route::apiResource('eventSupports', EventSupportController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::post('eventSupports/{id}', [EventSupportController::class, 'update']);
@@ -145,13 +149,13 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
     Route::get('get-document', [GeneralController::class, 'getDocument']);
 
     /* BENEFICIARIOS */
-    Route::apiResource('beneficiaries', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']); 
+    Route::apiResource('beneficiaries', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::put('beneficiaries/{id}', [BeneficiarieController::class, 'update']);
     Route::put('beneficiaries/changeStatus/{id}', [BeneficiarieController::class, 'changeStatus']);
-    
+
     // BENEFICIARIOS POR MUNICIPIO
     Route::get('getBeneficiariesMunicipality/{id}', [BeneficiarieController::class, 'getBeneficiariesMunicipality']);
-    
+
     //Benficiarios por estado y region
     Route::get('getAllByUserRegion', [BeneficiarieController::class, 'getAllByUserRegion']);
 
@@ -194,6 +198,9 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
     Route::get('getChangeDataModels/{id}', [GeneralController::class, 'getChangeDataModels'])->name('changeDataModels.show');
     Route::delete('destroyChangeDataModel/{id}', [GeneralController::class, 'destroyChangeDataModel'])->name('changeDataModels.destroy');
     Route::get('getGroupBeneficiaries/{id?}', [GeneralController::class, 'getGroupBeneficiaries'])->name('getGroupBeneficiaries')->where(['id' => '[0-9]+']);
+
+    /* TRAER REVISORES DISPONIBLES */
+    Route::get('getSelectUsers/{id?}', [UserController::class, 'getSelectUsers']);
 
     // USER
     Route::get('usersNoPaginate', [UserController::class, 'noPaginate']);
@@ -261,7 +268,7 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
     //Muestra los meses restantes del año
     Route::get('months', [MonthsController::class, 'index']);
 
-    // Subida de chronogram
+    // Subida de chronogramcx
     //Route::apiResource('chronogram', ChronogramController::class)->only(['index', 'store', 'show']);
     //Route::post('chronogram/{id}', [ChronogramController::class, 'update']);
     //Route::delete('chronogram', [ChronogramController::class, 'destroy']);
@@ -272,15 +279,15 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
 
 });
 
-/*Rutas de prueba Zarrok*/
-// Route::get('getReportMethodologisticsVisits/{id}',[ReportVisitsController::class,'exportMethodologistVisit']);
-
 /* RUTAS DE PRUEBA JORGE */
 
 // Rutas de prueba V2 JOSE
 Route::apiResources([
     'userss' => UserController::class,
 ]);
+
+//zarrok rutas de prueba
+    Route::get('getReportChronogram/{id}',[ReportCronogramCrontroller::class,'exportChronogram']);
 
 //Rutas de Pruebas Crango
 // Route::apiResource('beneficiariess', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);

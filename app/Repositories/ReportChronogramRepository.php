@@ -22,6 +22,7 @@ class ReportChronogramRepository
   public function generateDoc($id){
 
     $ChronogramReport = $this->cronogram->findOrFail($id);
+    $grupo = $ChronogramReport->load('groups');
     
     $templatePath = public_path('Template/Chronogram/template');
     $outputPath = public_path('Template/Chronogram/template/Chronograma_'. $id .'.docx');
@@ -30,12 +31,12 @@ class ReportChronogramRepository
     $templateProcessor = new TemplateProcessor($templatePath);
      
     $data = [
-        'update_date' => $ChronogramReport-> updated_at,
-        'MONTH' => $ChronogramReport-> mes -> name,
-        'MONITOR_name' => $ChronogramReport-> creator -> name,
-        'MONITOR_lastname' => $ChronogramReport-> creator -> lastname,
-        'zone' => $ChronogramReport-> zone -> name,
-        'municipio' => $ChronogramReport-> municipio -> name,
+        'update_date' => $grupo-> updated_at,
+        'MONTH' => $grupo-> mes -> name,
+        'MONITOR_name' => $grupo-> creator -> name,
+        'MONITOR_lastname' => $grupo-> creator -> lastname,
+        'zone' => $grupo-> zone -> name,
+        'municipio' => $grupo-> municipio -> name,
     ];
 
     $templateProcessor->setValues($data);

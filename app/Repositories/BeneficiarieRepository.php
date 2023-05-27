@@ -16,6 +16,7 @@ use App\Models\User;
 use App\Models\ZoneUser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class BeneficiarieRepository
 {
@@ -163,6 +164,10 @@ class BeneficiarieRepository
 
         $validate = [
             'affiliation_type' => 'bail|required',
+            'document_number' => [
+                'required',
+                Rule::unique(Beneficiary::class),
+            ],
             /* 'group_id' => 'bail|required',
             'full_name' => 'bail|required',
             'institution_entity_referred' => 'bail|required',
@@ -248,7 +253,7 @@ class BeneficiarieRepository
                     ->orderBy('id', 'ASC')
                     ->get()
             );
-        } else if ($rol_id == config('roles.coordinador_regional')) {
+        } else if ($rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_maritimo')) {
 
             return new BeneficiaryCollection(
                 $this->model
@@ -281,7 +286,7 @@ class BeneficiarieRepository
         
         $beneficiarie = $this->model->findOrFail($id);
 
-        if ($rol_id == config('roles.asistente_administrativo') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.metodologo')) {
+        if ($rol_id == config('roles.asistente_administrativo') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.metodologo') || $rol_id == config('roles.coordinador_maritimo')) {
             if ($request['status'] == "ENP") {
                 $beneficiarie->status_id = config('status.ENP');
                 $beneficiarie->reviewed_by = $user_id;

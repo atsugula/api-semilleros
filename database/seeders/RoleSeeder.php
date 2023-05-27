@@ -106,6 +106,13 @@ class RoleSeeder extends Seeder
                 'full-access' => 'no',
                 'public' => 1,
             ],
+            [
+                'name' => 'COORDINADOR MARITIMO',
+                'slug' => 'coordinador_maritimo',
+                'description' => 'Acceso a funciones básicas',
+                'full-access' => 'no',
+                'public' => 1,
+            ],
         ]);
     }
 }

@@ -49,13 +49,13 @@ class BeneficiarieController extends Controller
 
             $validator = $this->beneficiarieRepository->getValidate($data, 'update');
             if ($validator->fails()) {
-                return  $this->createErrorResponse([], $validator->errors()->first(), 422);
+                return  $this->createErrorResponse([], $validator->errors()->first(), 201);
             }
 
             $result = $this->beneficiarieRepository->create($data);
             return $this->createResponse($result, 'El beneficiario fue creado correctamente.');
         } catch (\Exception $ex) {
-            return  $this->createErrorResponse([], 'Algo salio mal al listar los beneficiarios ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+            return  $this->createErrorResponse([], 'Algo salio mal al Crear el beneficiario ' . $ex->getMessage() . ' linea ' . $ex->getCode());
         }
     }
 

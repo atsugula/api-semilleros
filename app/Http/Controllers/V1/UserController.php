@@ -15,7 +15,9 @@ class UserController extends Controller
 {
 
     use PasswordValidationRules;
+
     private $userRepository;
+
     function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
@@ -98,7 +100,6 @@ class UserController extends Controller
         $editEmail = $request->get('editEmail');
         try {
             $validator = Validator::make($request->all(), [
-                // 'document_number' => ['required', 'max:12', Rule::unique(User::class)],
                 'email' => [
                     'required',
                     'string',
@@ -106,7 +107,6 @@ class UserController extends Controller
                     'max:255',
                     Rule::unique('users')->ignore($id),
                 ],
-                //'password' => $this->passwordRules(),
             ]);
             $data = $request->all();
             unset($data['editEmail']);
@@ -210,6 +210,18 @@ class UserController extends Controller
         }
     }
 
+    // Metodo para traer la gente que revisa
+    // en base al rol que se escoge en la creacion
+    public function getSelectUsers($id)
+    {
+        try {
+            $data = $this->userRepository->reviewsUsers($id);
+            return response()->json($data);
+        } catch (\Exception $ex) {
+            return  $this->createErrorResponse([], 'Algo salio mal al listar usuarios ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+        }
+    }
+
     public function history(Request $request, $id)
     {
         try {
@@ -232,6 +244,6 @@ class UserController extends Controller
         if($user->save()){
             return $this->createResponse([], 'Usuario ha sido '.$cambio.' Correctamente');
         }
-        
+
     }
 }
