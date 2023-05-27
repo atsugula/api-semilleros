@@ -15,7 +15,7 @@ class UserController extends Controller
 {
 
     use PasswordValidationRules;
-    
+
     private $userRepository;
 
     function __construct(UserRepository $userRepository)
@@ -210,6 +210,18 @@ class UserController extends Controller
         }
     }
 
+    // Metodo para traer la gente que revisa
+    // en base al rol que se escoge en la creacion
+    public function getSelectUsers($id)
+    {
+        try {
+            $data = $this->userRepository->reviewsUsers($id);
+            return response()->json($data);
+        } catch (\Exception $ex) {
+            return  $this->createErrorResponse([], 'Algo salio mal al listar usuarios ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+        }
+    }
+
     public function history(Request $request, $id)
     {
         try {
@@ -232,6 +244,6 @@ class UserController extends Controller
         if($user->save()){
             return $this->createResponse([], 'Usuario ha sido '.$cambio.' Correctamente');
         }
-        
+
     }
 }

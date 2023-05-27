@@ -308,17 +308,21 @@ class UserRepository
 
     // Metodo para traer la gente que revisa
     // en base al rol que se escoge en la creacion
-    public function reviewsUsers($role){
-        $result = [];
-        switch ($role) {
-            case 'value':
-                # code...
+    public function reviewsUsers($role_id){
+        $data = [];
+        switch ($role_id) {
+            case config('roles.monitor'):
+                $data = User::select('id as value', 'name as label')
+                                ->whereHas('roles', function ($query) {
+                                    $query->where('roles.id', '=', config('roles.metodologo'));
+                                })->get();
                 break;
 
             default:
                 # code...
                 break;
         }
+        return $data;
     }
 
 }
