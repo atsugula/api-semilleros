@@ -1,26 +1,25 @@
 <?php
 
-namespace App\Http\Controllers\v1;
+namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-//repositorio de reportes por visita
-use App\Repositories\ReportVisitsRepository;
+use App\Repositories\ReportChronogramRepository;
 
-
-class ReportVisitsController extends Controller
+class ReportCronogramCrontroller extends Controller
 {
-    private $reportVisitsRepository;
 
-    public function __construct(ReportVisitsRepository $reportVisitsRepository)
+    private $reportChronogramRepository;
+
+    public function __construct(ReportChronogramRepository $reportChronogramRepository)
     {
-        $this->reportVisitsRepository = $reportVisitsRepository;
+        $this->reportChronogramRepository = $reportChronogramRepository;
     }
 
-    public function exportMethodologistVisit(Request $request)
+    public function exportChronogram(Request $request)
     {
         try {
-            $response = $this->reportVisitsRepository->generateDoc($request->id);
+            $response = $this->reportChronogramRepository->generateDoc($request->id);
             if ($response instanceof \Exception) {
                 return $this->createErrorResponse([], 'Algo salio mal ' . $response->getMessage() . ' linea ' . $response->getCode());
             } else {
@@ -33,8 +32,6 @@ class ReportVisitsController extends Controller
             return $this->createErrorResponse([], 'Algo salio mal ' . $ex->getMessage() . ' linea ' . $ex->getCode());
         }
     }
-
-
-
 }
+
 
