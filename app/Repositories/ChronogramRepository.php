@@ -31,8 +31,8 @@ class ChronogramRepository
         $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
 
-        $query = $this->model->query()->orderBy('id', 'DESC');
-        
+        $query = $this->model;
+
         if ($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_maritimo') || $rol_id == config('roles.coordinador_enlace')|| $rol_id == config('roles.monitor')) {
             $query->whereNotIn('created_by', [1,2])->with(['mes', 'municipio'])
                 ->whereHas('creator.roles', function ($query) {
