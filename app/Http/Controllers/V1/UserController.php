@@ -55,6 +55,9 @@ class UserController extends Controller
                     'max:255',
                     Rule::unique(User::class),
                 ],
+                'document_number' => [
+                    Rule::unique(User::class),
+                ],
             ]);
             if ($validator->fails()) {
                 return  $this->createErrorResponse([], $validator->errors()->first(), 422);
