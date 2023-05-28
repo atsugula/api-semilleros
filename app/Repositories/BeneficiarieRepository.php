@@ -37,7 +37,7 @@ class BeneficiarieRepository
 
 
         if($rol_id == config('asistente_administrativo') || config('super-root') || config('director_administrator')){
-            $beneficiaries = new BeneficiaryCollection($this->model->whereNotIn('created_by', 1)->orderBy('id', 'ASC')->get());
+            $beneficiaries = new BeneficiaryCollection($this->model->orderBy('id', 'ASC')->get());
         }
         else{
             $beneficiaries = new BeneficiaryCollection($this->model->where('created_by', $user_id)->orderBy('id', 'ASC')->get());
