@@ -25,6 +25,8 @@ class ReportVisitsRepository
     $this->MethodologistVisit = new MethodologistVisit();
     $this->psychologistVisit = new psychologistVisits();
     $this->visitSubDirector = new VisitSubDirector();
+    $this->PsychologisttransversalActivity = new TransversalActivity();
+    $this->PsychologistcustomVisit = new CustomVisit();
   }
 
   public function generateDoc($id){
@@ -99,6 +101,79 @@ class ReportVisitsRepository
 
   }
 
+  public function GenerateDocReportVisitsRepository($id){
+      
+      $psychologistVisitReport = $this->PsychologistcustomVisit->findOrFail($id);
 
+      $Psycologic_name = str_replace(' ', '_', $psychologistVisitReport->createdBY->name);
+      
+      $templatePath = public_path('Template/psicosocial/visitas/plantilla.docx');
+      $outputPath = public_path('Template/psicosocial/visitas/'.$id.'_Visita_psicologica_'.$Psycologic_name.'.docx');
+
+      $templateProcessor = new TemplateProcessor($templatePath);
+
+      $data = [
+        "region" => $psychologistVisitReport->municipalities->zone_id,
+      ];
+
+      $templateProcessor->setValues($data);
+
+      $templateProcessor->saveAs($outputPath);
+
+      $relative_path = 'Template/psicosocial/visitas/'.$id.'_Visita_psicologica_'.$Psycologic_name.'.docx';
+
+      return $relative_path;
+
+
+  }
+
+  public function GenerateDocPsychologistcustomVisit($id){
+
+    $psychologistCustomVisitReport = $this->PsychologistcustomVisit->findOrFail($id);
+
+    $Psycologic_name = str_replace(' ', '_', $psychologistCustomVisitReport->createdBY->name);
+    
+    $templatePath = public_path('Template/psicosocial/Psicosocialvisitaspersonalizadas/plantilla.docx');
+    $outputPath = public_path('Template/psicosocial/Psicosocialvisitaspersonalizadas/'.$id.'_Visita_personalizada_psicologica_'.$Psycologic_name.'.docx');
+
+    $templateProcessor = new TemplateProcessor($templatePath);
+
+    $data = [
+      "region" => $psychologistCustomVisitReport->municipalities->zone_id,
+    ];
+
+    $templateProcessor->setValues($data);
+
+    $templateProcessor->saveAs($outputPath);
+
+    $relative_path = 'Template/psicosocial/Psicosocialvisitaspersonalizadas/'.$id.'_Visita_personalizada_psicologica_'.$Psycologic_name.'.docx';
+
+    return $relative_path;
+  }
+
+  Public function GeneratedocPsychologisttransversalActivity($id){
+      
+      $psychologistTransversalActivity = $this->PsychologisttransversalActivity->findOrFail($id);
+  
+      $Psycologic_name = str_replace(' ', '_', $psychologistTransversalActivity->creator->name);
+      
+      $templatePath = public_path('Template/psicosocial/actividades-transversales/plantilla.docx');
+      $outputPath = public_path('Template/psicosocial/actividades-transversales/'.$id.'_Actividad_transversal_psicologica_'.$Psycologic_name.'.docx');
+  
+      $templateProcessor = new TemplateProcessor($templatePath);
+  
+      $data = [
+        "region" => $psychologistTransversalActivity->municipalities->zone_id,
+      ];
+  
+      $templateProcessor->setValues($data);
+  
+      $templateProcessor->saveAs($outputPath);
+  
+      $relative_path = 'Template/psicosocial/actividades-transversales/'.$id.'_Actividad_transversal_psicologica_'.$Psycologic_name.'.docx';
+  
+      return $relative_path;
+  
+  }
 
 }

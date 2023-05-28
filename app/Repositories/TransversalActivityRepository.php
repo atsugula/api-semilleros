@@ -163,7 +163,7 @@ class TransversalActivityRepository
             'development_activity' => 'bail|required',
             'content_network' => 'bail|required',
             'municipality_id' => 'bail|required',
-            'file' => $method != 'update' ? 'bail|required|mimes:application/pdf,pdf,png,webp,jpg,jpeg|max:' . (500 * 1049000) : 'bail',
+            //'file' => $method != 'update' ? 'bail|required|mimes:application/pdf,pdf,png,webp,jpg,jpeg|max:' . (500 * 1049000000) : 'bail',
         ];
 
         $messages = [
