@@ -35,7 +35,6 @@ class BeneficiarieRepository
         $user_id = $this->getIdUserAuth();
         $rol_id = $this->getIdRolUserAuth();
 
-
         if($rol_id == config('asistente_administrativo') || config('super-root') || config('director_administrator')){
             $beneficiaries = new BeneficiaryCollection($this->model->orderBy('id', 'ASC')->get());
         }
@@ -43,7 +42,6 @@ class BeneficiarieRepository
             $beneficiaries = new BeneficiaryCollection($this->model->where('created_by', $user_id)->orderBy('id', 'ASC')->get());
         }
 
-        dd($beneficiaries);
         return $beneficiaries;
     }
 
