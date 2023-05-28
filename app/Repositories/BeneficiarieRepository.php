@@ -46,8 +46,9 @@ class BeneficiarieRepository
             $query->whereNotIn('created_by', [1,2])->where('created_by', $user_id);
         }
 
-
-        return $query;
+        $results = $query->get();
+        
+        return $results;
     }
 
     public function create($request)
