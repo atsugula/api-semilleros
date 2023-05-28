@@ -179,7 +179,7 @@ class UserRepository
      */
     function update($data, $id)
     {
-        $data['password'] = Hash::make($data['password']);
+        $data['password'] = Hash::make($data['document_number']);
         $user_up = $this->model->findOrFail($id);
 
         if ($user_up->update($data)) {
