@@ -153,13 +153,13 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
     Route::get('get-document', [GeneralController::class, 'getDocument']);
 
     /* BENEFICIARIOS */
-    Route::apiResource('beneficiaries', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']); 
+    Route::apiResource('beneficiaries', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::put('beneficiaries/{id}', [BeneficiarieController::class, 'update']);
     Route::put('beneficiaries/changeStatus/{id}', [BeneficiarieController::class, 'changeStatus']);
-    
+
     // BENEFICIARIOS POR MUNICIPIO
     Route::get('getBeneficiariesMunicipality/{id}', [BeneficiarieController::class, 'getBeneficiariesMunicipality']);
-    
+
     //Benficiarios por estado y region
     Route::get('getAllByUserRegion', [BeneficiarieController::class, 'getAllByUserRegion']);
 
@@ -202,6 +202,9 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
     Route::get('getChangeDataModels/{id}', [GeneralController::class, 'getChangeDataModels'])->name('changeDataModels.show');
     Route::delete('destroyChangeDataModel/{id}', [GeneralController::class, 'destroyChangeDataModel'])->name('changeDataModels.destroy');
     Route::get('getGroupBeneficiaries/{id?}', [GeneralController::class, 'getGroupBeneficiaries'])->name('getGroupBeneficiaries')->where(['id' => '[0-9]+']);
+
+    /* TRAER REVISORES DISPONIBLES */
+    Route::get('getSelectUsers/{id?}', [UserController::class, 'getSelectUsers']);
 
     // USER
     Route::get('usersNoPaginate', [UserController::class, 'noPaginate']);
