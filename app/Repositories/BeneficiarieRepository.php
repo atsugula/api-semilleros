@@ -40,7 +40,7 @@ class BeneficiarieRepository
         $query = $this->model->query()->orderBy('id', 'DESC');
 
         if($rol_id == config('asistente_administrativo') || $rol_id == config('roles.super-root') || $rol_id == config('roles.director_administrator')) {
-            $query;
+            $query->whereNotIn('created_by', [1,2]);
         }
         if($rol_id == config('monitor') ){
             $query->whereNotIn('created_by', [1,2])->where('created_by', $user_id);
