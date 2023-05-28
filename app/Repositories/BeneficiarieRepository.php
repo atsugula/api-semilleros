@@ -42,6 +42,8 @@ class BeneficiarieRepository
         else{
             $beneficiaries = new BeneficiaryCollection($this->model->where('created_by', $user_id)->orderBy('id', 'ASC')->get());
         }
+
+        dd($beneficiaries);
         return $beneficiaries;
     }
 
