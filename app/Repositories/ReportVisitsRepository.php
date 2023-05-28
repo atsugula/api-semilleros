@@ -3,6 +3,11 @@ namespace App\Repositories;
 
 use PhpOffice\PhpWord\TemplateProcessor;
 use App\Models\MethodologistVisit;
+use App\Models\VisitSubDirector;
+use App\Models\TransversalActivity;
+use App\Models\CustomVisit;
+use App\Models\psychologistVisits;
+
 use Illuminate\Support\Facades\Response;
 use PhpOffice\PhpWord\PhpWord;
 
@@ -10,10 +15,16 @@ use PhpOffice\PhpWord\PhpWord;
 class ReportVisitsRepository
 { 
   private $MethodologistVisit;
+  private $psychologistVisit;
+  private $visitSubDirector;
+  private $PsychologisttransversalActivity;
+  private $PsychologistcustomVisit;
 
   function __construct()
   {
     $this->MethodologistVisit = new MethodologistVisit();
+    $this->psychologistVisit = new psychologistVisits();
+    $this->visitSubDirector = new VisitSubDirector();
   }
 
   public function generateDoc($id){

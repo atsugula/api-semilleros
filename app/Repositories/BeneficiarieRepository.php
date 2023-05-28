@@ -32,23 +32,14 @@ class BeneficiarieRepository
 
     public function getAll()
     {
-        
-
         $user_id = $this->getIdUserAuth();
-        $rol_id = $this->getIdRolUserAuth();
-
-        $query = $this->model->query()->orderBy('id', 'DESC');
-
-        if($rol_id == config('asistente_administrativo') || $rol_id == config('roles.super-root') || $rol_id == config('roles.director_administrator')) {
-            $query->whereNotIn('created_by', [1,2]);
+        if($user_id == config('asistente_administrativo')){
+            $beneficiaries = new BeneficiaryCollection($this->model->orderBy('id', 'ASC')->get());
         }
-        if($rol_id == config('monitor') ){
-            $query->whereNotIn('created_by', [1,2])->where('created_by', $user_id);
+        else{
+            $beneficiaries = new BeneficiaryCollection($this->model->where('created_by', $user_id)->orderBy('id', 'ASC')->get());
         }
-
-        $results = $query->get();
-        
-        return $results;
+        return $beneficiaries;
     }
 
     public function create($request)
