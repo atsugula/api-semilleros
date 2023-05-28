@@ -33,7 +33,7 @@ class BeneficiarieRepository
     public function getAll()
     {
         $user_id = $this->getIdUserAuth();
-        if($user_id == config('asistente_administrativo')){
+        if($user_id == config('asistente_administrativo') || config('super-root') || config('director_administrator')){
             $beneficiaries = new BeneficiaryCollection($this->model->orderBy('id', 'ASC')->get());
         }
         else{
