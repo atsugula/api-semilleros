@@ -271,11 +271,6 @@ Route::apiResources([
 ]);
 
 //zarrok rutas de prueba
-    Route::get('getReportChronogram/{id}',[ReportCronogramCrontroller::class,'exportChronogram']);
-    Route::get('GetReportPsycologicVisit/{id}',[ReportVisitsController::class,'exportPsychologistVisit']);
-    Route::get('GetReportPsycologicCustomVisit/{id}',[ReportVisitsController::class,'exportPsychologistcustomVisit']);
-    Route::get('GetReportTrasversalActivity/{id}',[ReportVisitsController::class,'exportPsychologisttransversalActivity']);
-    Route::get('GetReportSubdirectorCustom/{id}',[ReportVisitsController::class,'exportvisitSubDirector']);
 
 //Rutas de Pruebas Crango
 // Route::apiResource('beneficiariess', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);
