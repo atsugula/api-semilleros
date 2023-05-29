@@ -207,7 +207,7 @@ class ReportVisitsRepository
     
         $templateProcessor->saveAs($outputPath);
     
-        $relative_path = 'Template/Sub_director/visitas-subdirector/'.$id.'_Visita_subdirector_'.$sub_director_name .'.docx';
+        $relative_path = 'Template/Sub_director/visita/'.$id.'_Visita_subdirector_'.$sub_director_name .'.docx';
     
         return $relative_path;
     
