@@ -187,7 +187,7 @@ class ReportVisitsRepository
       "municipalitie" => $psychologistCustomVisitReport->municipalities->name,
       "month" => $psychologistCustomVisitReport->months->name,
       "beneficiary_name" => $psychologistCustomVisitReport->beneficiaries->full_name,
-      "benefeciarie_grade" => $psychologistCustomVisitReport->beneficiaries->scholar_level,
+      "benefeciarie_grade" => $psychologistCustomVisitReport->beneficiaries->scholar_level == 1 ? 'Primaria' : 'Bachillerato',
       "EPS" => $EPS->entity,
       "ac_name" => $acudientes->firts_name,
       "ac_lastname" => $acudientes->last_name,
