@@ -24,17 +24,17 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            ZoneSeeder::class,
-            //ZoneTableSeeder::class,  // mio
-            //UsersTableSeeder::class, // mio
-            UserSeeder::class,
+            // ZoneSeeder::class,
+            ZoneTableSeeder::class,
+            UsersTableSeeder::class,
+            // UserSeeder::class,
             ModuleSeeder::class,
             ModuleItemSeeder::class,
-            //RolesTableSeeder::class, // mio
-            RoleSeeder::class,
+            RolesTableSeeder::class,
+            // RoleSeeder::class,
             PermissionSeeder::class,
-            //RolesUsersTableSeeder::class,// mio
-            RoleUserSeeder::class,
+            RolesUsersTableSeeder::class,
+            // RoleUserSeeder::class,
             GroupSeeder::class,
             PermissionRoleSeeder::class,
             ValidityPeriodsSeeder::class,
@@ -44,16 +44,16 @@ class DatabaseSeeder extends Seeder
             StatusSeeder::class,
             BankSeeder::class,
             BankAccountTypeSeeder::class,
-            //MunicipalitiesTableSeeder::class, // mio
-            MunicipalitySeeder::class,
+            MunicipalitiesTableSeeder::class,
+            // MunicipalitySeeder::class,
             ObjectSeeder::class,
             //DisciplinesTableSeeder::class,
             //DisciplinesUsersTableSeeder::class,
             DisciplinesSeeder::class,
             DirectionSeeder::class,
-            //ZoneUserTableSeeder::class,
-            ZoneUserSeeder::class,
-            MunicipalityUserSeeder::class,
+            ZoneUserTableSeeder::class,
+            // ZoneUserSeeder::class,
+            // MunicipalityUserSeeder::class,
             EthnicitySeeder::class,
             EventSupportSeederer::class,
             EvaluationSeeder::class,
@@ -62,8 +62,8 @@ class DatabaseSeeder extends Seeder
             CoordinatorVisitSeeder::class,
             SidewalkSeeder::class,
             Health_Entities_Seeder::class,
-            //RolesActivitiesSeeder::class, // mio
-            //RolesObjectsActivitiesSeeder::class // mio
+            RolesActivitiesSeeder::class,
+            RolesObjectsActivitiesSeeder::class
         ]);
     }
 }

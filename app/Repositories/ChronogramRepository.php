@@ -178,7 +178,7 @@ class ChronogramRepository
         $validate = [
             'month'                     => 'bail|required',
             'municipality'              => 'bail|required',
-            'note'                      => 'bail|required|string',
+           // 'note'                      => 'bail|required|string',
             'groups'                    => 'bail|required'
         ];
 
@@ -190,7 +190,7 @@ class ChronogramRepository
         $attrs = [
             'month'         => 'Mes',
             'municipality'  => 'Municipio',
-            'note'          => 'Observación',
+           // 'note'          => 'Observación',
             'groups'        => 'Grupos',
         ];
 
