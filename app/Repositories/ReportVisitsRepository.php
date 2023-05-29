@@ -187,7 +187,7 @@ class ReportVisitsRepository
       "municipalitie" => $psychologistCustomVisitReport->municipalities->name,
       "month" => $psychologistCustomVisitReport->months->name,
       "beneficiary_name" => $psychologistCustomVisitReport->beneficiaries->full_name,
-      "benefeciarie_grade" => $psychologistCustomVisitReport->beneficiaries->scholar_level == 1 ? 'Primaria' : 'Bachillerato',
+      //"benefeciarie_grade" => $psychologistCustomVisitReport->beneficiaries->scholar_level == 1 ? 'Primaria' : 'Bachillerato',
       "EPS" => $EPS->entity,
       "ac_name" => $acudientes->firts_name,
       "ac_lastname" => $acudientes->last_name,
@@ -201,7 +201,17 @@ class ReportVisitsRepository
       "concept" => $psychologistCustomVisitReport->concept,
 
       ];
+      $beneficiaryGrade = $psychologistCustomVisitReport->beneficiaries->scholar_level;
+      if ($beneficiaryGrade == 1) {
+          $data["benefeciarie_grade"] = "Primaria";
+      } elseif ($beneficiaryGrade == 2) {
+          $data["benefeciarie_grade"] = "Bachillerato";
+      } elseif ($beneficiaryGrade == 3) {
+          $data["benefeciarie_grade"] = "Graduado";
+      }
+      
 
+      
     $templateProcessor->setValues($data);
 
     try {
