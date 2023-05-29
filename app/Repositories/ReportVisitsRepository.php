@@ -254,14 +254,61 @@ class ReportVisitsRepository
         "content_network" => $psychologistTransversalActivity->content_network
 
       ];
+
+      //  $files = $psychologistTransversalActivity->files;
+      //  $totalImages = count($files);
+      //  $maxImages = 4; // Número máximo de imágenes
+      //  for ($i = 0; $i < $totalImages; $i++) {
+      //    try {
+      //      $imagePath = $files[$i]['path'];
+      //      $templateProcessor->setImageValue('imagen' . ($i + 1), array('path' => storage_path("app/public/".$imagePath), 'width' => 400, 'height' => 400, 'ratio' => false));
+      //    }catch (\Exception $e) {
+      //      return $e;
+      //    } 
+      //  }
+
+       $files = $psychologistTransversalActivity->files;
+       $totalImages = count($files);
+       $maxImages = 4; // Número máximo de imágenes
+       for ($i = 0; $i < $maxImages; $i++) {
+        
+         try {
+            if($i < $totalImages){
+              $imagePath = $files[$i]['path'];
+              $templateProcessor->setImageValue('imagen' . ($i + 1), array('path' => storage_path("app/public/".$imagePath), 'width' => 400, 'height' => 400, 'ratio' => false));
+            }else{
+              $templateProcessor->setValue('imagen' . ($i + 1), ''); // Asignar el valor "" a las variables restantes
+          }           
+          }catch (\Exception $e) {
+           return $e;
+         } 
+       }
+
+      // $files = $psychologistTransversalActivity->files;
+      // $maxImages = 4; // Número máximo de imágenes
+      // for ($i = 0; $i < $maxImages; $i++) {
+      //     if ($i < count($files)) {
+      //         try {
+      //           $imagePath = $files[$i]['path'];
+      //           $templateProcessor->setImageValue('imagen' . ($i + 1), array('path' => storage_path("app/public/".$imagePath), 'width' => 400, 'height' => 400, 'ratio' => false));
+      //         } catch (\Exception $e) {
+      //             return $e;
+      //         }
+      //     } else {
+      //         $templateProcessor->setValue('imagen' . ($i + 1), ''); // Asignar el valor "" a las variables restantes
+      //     }
+      // }
+      
   
       $templateProcessor->setValues($data);
   
       $templateProcessor->saveAs($outputPath);
+
+
   
       $relative_path = 'Template/psicosocial/actividades-transversales/'.$id.'_Actividad_transversal_psicologica_'.$Psycologic_name.'.docx';
   
-      return $relative_path;
+      return $relative_path ;
       ;
   
   }
