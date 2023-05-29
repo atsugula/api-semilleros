@@ -2,4 +2,4 @@
 Template/Sub_director/visita/*
 
 # Incluir el archivo "plantilla.docx" en la carpeta "Template/psicosocial/visitas/"
-Template/Sub_director/visita/plantilla.docx
+!Template/Sub_director/visita/plantilla.docx
