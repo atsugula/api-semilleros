@@ -6,7 +6,11 @@ use App\Models\MethodologistVisit;
 use App\Models\VisitSubDirector;
 use App\Models\TransversalActivity;
 use App\Models\CustomVisit;
+use App\Models\HealthEntities;
 use App\Models\psychologistVisits;
+use App\Models\KnowGuardians;
+use App\Models\BeneficiaryGuardians;
+use App\Models\user;
 
 use Illuminate\Support\Facades\Response;
 use PhpOffice\PhpWord\PhpWord;
@@ -19,6 +23,10 @@ class ReportVisitsRepository
   private $visitSubDirector;
   private $PsychologisttransversalActivity;
   private $PsychologistcustomVisit;
+  private $HealthEntities;
+  private $KnowGuardians;
+  private $BeneficiaryGuardians;
+  private $user;
 
   function __construct()
   {
@@ -27,6 +35,10 @@ class ReportVisitsRepository
     $this->visitSubDirector = new VisitSubDirector();
     $this->PsychologisttransversalActivity = new TransversalActivity();
     $this->PsychologistcustomVisit = new CustomVisit();
+    $this->HealthEntities = new HealthEntities();
+    $this->KnowGuardians = new KnowGuardians();
+    $this->BeneficiaryGuardians = new BeneficiaryGuardians();
+    $this->user = new user();
   }
 
   public function generateDoc($id){
@@ -154,6 +166,15 @@ class ReportVisitsRepository
 
     $psychologistCustomVisitReport = $this->PsychologistcustomVisit->findOrFail($id);
 
+    $EPS = $this->HealthEntities->findOrFail($psychologistCustomVisitReport->beneficiaries->health_entity_id);
+
+    $relation_guardian = $psychologistCustomVisitReport->beneficiaries->acudientes[0]->id_guardian;
+
+    $acudientes = $this->BeneficiaryGuardians->findOrFail($relation_guardian);
+
+    $metodologo = $this->user->findOrFail($psychologistCustomVisitReport->beneficiaries->created_by);
+
+
     $Psycologic_name = str_replace(' ', '_', $psychologistCustomVisitReport->createdBY->name);
     
     $templatePath = public_path('Template/psicosocial/Psicosocialvisitaspersonalizadas/plantilla.docx');
@@ -163,15 +184,37 @@ class ReportVisitsRepository
 
     $data = [
       "region" => $psychologistCustomVisitReport->municipalities->zone_id,
-    ];
+      "municipalitie" => $psychologistCustomVisitReport->municipalities->name,
+      "month" => $psychologistCustomVisitReport->months->name,
+      "beneficiary_name" => $psychologistCustomVisitReport->beneficiaries->full_name,
+      "benefeciarie_grade" => $psychologistCustomVisitReport->beneficiaries->scholar_level,
+      "EPS" => $EPS->entity,
+      "ac_name" => $acudientes->firts_name,
+      "ac_lastname" => $acudientes->last_name,
+      "AC_DOC" => $acudientes->cedula,
+      "knT" => 'X',
+      "knF" => ' ',
+      "monitor_name" => $metodologo->name,
+      "monitor_lastname" => $metodologo->lastname,
+      "theme" => $psychologistCustomVisitReport->theme,
+      "agreements" => $psychologistCustomVisitReport->agreements,
+      "concept" => $psychologistCustomVisitReport->concept,
+
+      ];
 
     $templateProcessor->setValues($data);
+
+    try {
+      $templateProcessor->setImageValue('imagen', array('path' => storage_path("app/public/".$psychologistCustomVisitReport->file), 'width' => 400, 'height' => 400, 'ratio' => false));
+    } catch (\Exception $e) {
+    }
 
     $templateProcessor->saveAs($outputPath);
 
     $relative_path = 'Template/psicosocial/Psicosocialvisitaspersonalizadas/'.$id.'_Visita_personalizada_psicologica_'.$Psycologic_name.'.docx';
 
-    return $relative_path;
+   return $relative_path;
+   //return $psychologistCustomVisitReport;
   }
 
   Public function GeneratedocPsychologisttransversalActivity($id){

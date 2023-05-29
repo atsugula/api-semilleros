@@ -54,6 +54,12 @@ class CustomVisit extends Model
         return $this->belongsTo(User::class, 'reviewed_by');
     }
 
+    public function eps()
+    {
+        return $this->belongsTo(HealthEntities::class, 'health_entity_id');
+    }
+
+
     public function getPublishedAtAttribute()
     {
         return $this->created_at->format('Y-m-d');
@@ -68,6 +74,7 @@ class CustomVisit extends Model
     {
         return $this->morphMany(ControlChangeData::class, 'data_model');
     }
+
 
     public function scopeFilterByUrl($query)
     {
