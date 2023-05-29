@@ -114,11 +114,13 @@ class UserRepository
                 }
 
                 // Diciplinas - usuarios
-                foreach ($user['disciplines'] as $key => $value) {
-                    DisciplineUser::create([
-                        'user_id' => $new_user->id,
-                        'disciplines_id' => $value,
-                    ]);
+                if($user['roles'] == '12'){
+                    foreach ($user['disciplines'] as $key => $value) {
+                        DisciplineUser::create([
+                            'user_id' => $new_user->id,
+                            'disciplines_id' => $value,
+                        ]);
+                    }
                 }
             }else{
                 // Roles - usuarios
@@ -185,7 +187,7 @@ class UserRepository
      */
     function update($data, $id)
     {
-        $data['password'] = Hash::make($data['password']);
+        $data['password'] = Hash::make($data['document_number']);
         $user_up = $this->model->findOrFail($id);
 
         if ($user_up->update($data)) {
@@ -225,7 +227,7 @@ class UserRepository
                 }
 
                 // Diciplinas
-                if($data['disciplines']){
+                if($data['disciplines'] && $data['roles'] == '12'){
                     $discipline = DisciplineUser::where('user_id', $user_up->id)->delete();
                     foreach ($data['disciplines'] as $key => $value) {
                         $discipline = new DisciplineUser();

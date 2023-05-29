@@ -64,8 +64,7 @@ class devDatabase extends Command
         Artisan::call('db:seed --class=DepartmentsSeeder');
         Artisan::call('db:seed --class=CitySeeder');
         Artisan::call('db:seed --class=StatusSeeder');
-        Artisan::call('db:seed --class=BankSeeder');
-        Artisan::call('db:seed --class=BankAccountTypeSeeder');
+       // Artisan::call('db:seed --class=BankAccountTypeSeeder');
         Artisan::call('db:seed --class=MunicipalitiesTableSeeder');
         Artisan::call('db:seed --class=ObjectSeeder');
         Artisan::call('db:seed --class=DisciplinesTableSeeder');

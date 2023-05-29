@@ -35,6 +35,7 @@ class MunicipalityController extends Controller
     {
         try {
             // Obtener los municipios de la región por su ID
+          
             $municipios = Municipality::where('zone_id', $regionId)->pluck('id', 'name');
 
             // Verificar si se encontraron municipios
