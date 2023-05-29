@@ -114,6 +114,18 @@ class ReportVisitsRepository
 
       $data = [
         "region" => $psychologistVisitReport->municipalities->zone_id,
+        "fecha" => $psychologistVisitReport->date_visit,
+        "municipalitie" => $psychologistVisitReport->municipalities->name,
+        "psi_name" => $psychologistVisitReport->createdBY->lastname,
+        "psi_lastname" => $psychologistVisitReport->createdBY->last,
+        "monitor_name" => $psychologistVisitReport->monitor->name,
+        "monitor_lastname" => $psychologistVisitReport->monitor->lastname,
+        "discipline" => $psychologistVisitReport->discipline->name,
+        "n_ben" => $psychologistVisitReport->number_beneficiaries,
+        "scenary" => $psychologistVisitReport->scenery,
+        "obj.activity" => $psychologistVisitReport->objetive
+
+
       ];
 
       $templateProcessor->setValues($data);
