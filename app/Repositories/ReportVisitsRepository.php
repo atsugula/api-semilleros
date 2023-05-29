@@ -182,8 +182,8 @@ class ReportVisitsRepository
     
         $sub_director_name = str_replace(' ', '_', $visitSubDirector->creator->name);
         
-        $templatePath = public_path('Template/psicosocial/visitas-subdirector/plantilla.docx');
-        $outputPath = public_path('Template/psicosocial/visitas-subdirector/'.$id.'_Visita_subdirector_'.$sub_director_name .'.docx');
+        $templatePath = public_path('Template/Sub_director/visita/plantilla.docx');
+        $outputPath = public_path('Template/Sub_director/visita/'.$id.'_Visita_subdirector_'.$sub_director_name .'.docx');
     
         $templateProcessor = new TemplateProcessor($templatePath);
     
