@@ -15,7 +15,7 @@ class ObjectSeeder extends Seeder
      */
     public function run()
     {
-        Objects::create([
+       /* Objects::create([
             'name' => 'PRESTACIÓN DE SERVICIOS DE APOYO A LA GESTIÓN COMO APOYO METODOLOGO'
         ]);
 
@@ -29,6 +29,6 @@ class ObjectSeeder extends Seeder
 
         Objects::create([
             'name' => 'PRESTACIÓN DE SERVICIOS DE APOYO A LA GESTIÓN COMO COORDINADOR REGIONAL'
-        ]);
+        ]);*/
     }
 }
