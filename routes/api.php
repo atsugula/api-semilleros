@@ -126,8 +126,13 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
     /* SUBIR ARCHIVOS VISITAS METODOLOGICAS */
     Route::post('upload/methodologist_visits', [MethodologistVisitController::class, 'uploadFiles']);
 
-    // Descargar archivos de visitas methodologicas
+    // Descarga de reportes
     Route::get('getReportMethodologisticsVisits/{id}',[ReportVisitsController::class,'exportMethodologistVisit']);
+    Route::get('GetReportPsycologicVisit/{id}',[ReportVisitsController::class,'exportPsychologistVisit']);
+    Route::get('GetReportPsycologicCustomVisit/{id}',[ReportVisitsController::class,'exportPsychologistcustomVisit']);
+    Route::get('GetReportTrasversalActivity/{id}',[ReportVisitsController::class,'exportPsychologisttransversalActivity']);
+    Route::get('GetReportSubdirectorCustom/{id}',[ReportVisitsController::class,'exportvisitSubDirector']);
+
 
     // Descargar archivos de chronogram
     Route::get('getReportChronogram/{id}',[ReportVisitsController::class,'ReportChronogramController']);
@@ -266,7 +271,6 @@ Route::apiResources([
 ]);
 
 //zarrok rutas de prueba
-    Route::get('getReportChronogram/{id}',[ReportCronogramCrontroller::class,'exportChronogram']);
 
 //Rutas de Pruebas Crango
 // Route::apiResource('beneficiariess', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);
