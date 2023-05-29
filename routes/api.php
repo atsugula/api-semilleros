@@ -135,6 +135,7 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
     Route::get('GetReportPsycologicVisit/{id}',[ReportVisitsController::class,'exportPsychologistVisit']);
     Route::get('GetReportPsycologicCustomVisit/{id}',[ReportVisitsController::class,'exportPsychologistcustomVisit']);
     Route::get('GetReportTrasversalActivity/{id}',[ReportVisitsController::class,'exportPsychologisttransversalActivity']);
+    Route::get('GetReportSubdirectorCustom/{id}',[ReportVisitsController::class,'exportvisitSubDirector']);
 
 
     // Descargar archivos de chronogram

@@ -1,0 +1,5 @@
+# Ignorar todo en la carpeta "Template/psicosocial/visitas/"
+Template/psicosocial/visitas/*
+
+# Incluir el archivo "plantilla.docx" en la carpeta "Template/psicosocial/visitas/"
+!Template/psicosocial/visitas/plantilla.docx
