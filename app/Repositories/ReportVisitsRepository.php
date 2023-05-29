@@ -123,12 +123,23 @@ class ReportVisitsRepository
         "discipline" => $psychologistVisitReport->discipline->name,
         "n_ben" => $psychologistVisitReport->number_beneficiaries,
         "scenary" => $psychologistVisitReport->scenery,
-        "obj.activity" => $psychologistVisitReport->objetive
-
-
+        "obj.activity" => $psychologistVisitReport->objetive,
+        "BNT" => $psychologistVisitReport->beneficiaries_recognize_name ==true ? 'X' :' ',
+        "BNF" => $psychologistVisitReport->beneficiaries_recognize_name ==false ? 'X' :' ',
+        "BDT" => $psychologistVisitReport->beneficiary_recognize_value =='true' ? 'X' :' ',
+        "BDF" => $psychologistVisitReport->beneficiary_recognize_value =='false' ? 'X' :' ',
+        "all_ok" => $psychologistVisitReport->all_ok =='true' ? 'X' :' ',
+        "all_not_ok" => $psychologistVisitReport->all_ok =='false' ? 'X' :' ',
+        "descripcion" => $psychologistVisitReport->description,
+        "observaciones" => $psychologistVisitReport->observations,
       ];
 
       $templateProcessor->setValues($data);
+
+      try {
+        $templateProcessor->setImageValue('imagen', array('path' => storage_path("app/public/".$psychologistVisitReport->file), 'width' => 500, 'height' => 500, 'ratio' => false));
+      } catch (\Exception $e) {
+      }
 
       $templateProcessor->saveAs($outputPath);
 
