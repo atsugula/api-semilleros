@@ -82,5 +82,22 @@ class ReportVisitsController extends Controller
             return $this->createErrorResponse([], 'Algo salio mal ' . $ex->getMessage() . ' linea ' . $ex->getCode());
         }
     }
+
+    Public function exportvisitSubDirector(Request $request){
+        try{
+            $response = $this->reportVisitsRepository->GenerateDocvisitSubDirector($request->id);
+            if ($response instanceof \Exception) {
+                return $this->createErrorResponse([], 'Algo salio mal ' . $response->getMessage() . ' linea ' . $response->getCode());
+            } else {
+                if (!$request->type) {
+                    return $response;
+                }
+                return response()->json(['count' => $response]);
+            }
+        } catch (\Exception $ex) {
+            return $this->createErrorResponse([], 'Algo salio mal ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+        }
+
 }
 
+}

@@ -103,7 +103,7 @@ class ReportVisitsRepository
 
   public function GenerateDocReportVisitsRepository($id){
       
-      $psychologistVisitReport = $this->PsychologistcustomVisit->findOrFail($id);
+      $psychologistVisitReport = $this->psychologistVisit->findOrFail($id);
 
       $Psycologic_name = str_replace(' ', '_', $psychologistVisitReport->createdBY->name);
       
@@ -174,6 +174,31 @@ class ReportVisitsRepository
   
       return $relative_path;
   
+  }
+
+  Public function GeneratedocvisitSubDirector($id){
+        
+        $visitSubDirector = $this->visitSubDirector->findOrFail($id);
+    
+        $sub_director_name = str_replace(' ', '_', $visitSubDirector->creator->name);
+        
+        $templatePath = public_path('Template/psicosocial/visitas-subdirector/plantilla.docx');
+        $outputPath = public_path('Template/psicosocial/visitas-subdirector/'.$id.'_Visita_subdirector_'.$sub_director_name .'.docx');
+    
+        $templateProcessor = new TemplateProcessor($templatePath);
+    
+        $data = [
+          "region" => $visitSubDirector->municipalities->zone_id,
+        ];
+    
+        $templateProcessor->setValues($data);
+    
+        $templateProcessor->saveAs($outputPath);
+    
+        $relative_path = 'Template/psicosocial/visitas-subdirector/'.$id.'_Visita_subdirector_'.$sub_director_name .'.docx';
+    
+        return $relative_path;
+    
   }
 
 }
