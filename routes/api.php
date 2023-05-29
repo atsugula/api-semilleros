@@ -86,16 +86,12 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
         'roleUser' => RoleUserController::class,
         'assistants' => AsistantController::class,
         'profiles' => ProfileController::class,
-        'contractors' => ContractorController::class,
-        'clausesContracts' => ClauseController::class,
-        'banks' => BankController::class,
         'objects' => V1ObjectsController::class,
         'diciplines' => DisciplineController::class,
         'zones' => ZonesController::class,
         'status-documents' => StatusDocumentController::class,
         'specificcontratoractivitys' => SpecificcontratoractivityController::class,
         'hirings' => HiringController::class,
-        'baseClauses' => ClauseBaseController::class,
         'evaluations' => EvaluationController::class,
         'userZones' => ZoneUserController::class,
         // 'coordinator_visits' => CoordinatorVistsController::class,
@@ -149,8 +145,6 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
     Route::apiResource('sidewalks', SidewalkController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::post('sidewalks/{id}', [SidewalkController::class, 'update']);
 
-    Route::get('clausesContracts/findByContractor/{id}', [ClauseController::class, 'findByContractor'])->name('clausesContracts.findByContractor');
-
     Route::get('get-document', [GeneralController::class, 'getDocument']);
 
     /* BENEFICIARIOS */
@@ -164,22 +158,11 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
     //Benficiarios por estado y region
     Route::get('getAllByUserRegion', [BeneficiarieController::class, 'getAllByUserRegion']);
 
-    // Subida de Documentos
-    Route::apiResource('documents', DocumentController::class)->only(['index', 'store', 'show']);
-    Route::post('documents/{id}', [DocumentController::class, 'update']);
-    Route::delete('documents', [DocumentController::class, 'destroy']);
-    Route::post('document-upload', [UploadDocumentController::class, 'upload']);
-    // Gestion de Documentos
-    Route::put('documents-management', [DocumentController::class, 'management']);
-
     // CONTRATOS
     Route::apiResource('contracts', ContractController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::post('contracts/{id}', [ContractController::class, 'update']);
     Route::post('contracts-management', [ContractController::class, 'management']);
     Route::post('contracts-cancellation', [ContractController::class, 'cancellation']);
-
-    // CONTROL DE CLAUSULAS
-    Route::post('clauses-control', [ClauseController::class, 'control']);
 
     // Periodo de vigencia
     Route::apiResource('validity_periods', ValidityPeriodController::class)->only(['index', 'store', 'show', 'destroy']);
@@ -265,10 +248,6 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
     // USUARIOS MONITORES POR MUNICIPIO
     Route::get('getMonitoringMunicipality/{id}', [MonitorsController::class, 'getMonitoringMunicipality']);
     Route::get('getdisiplinesMonitoring/{id}', [MonitorsController::class, 'getdisiplinesMonitoring']);
-
-    //LISTA EL NUMERO DE DOCUMENTOS APROBADOS POR CADA USUARIO
-    Route::get('revised', [ContractorController::class, 'revised']);
-    Route::get('clever-documents', [ContractorController::class, 'clever']);
 
     //Muestra los meses restantes del año
     Route::get('months', [MonthsController::class, 'index']);
