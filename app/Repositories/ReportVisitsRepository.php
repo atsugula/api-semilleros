@@ -230,6 +230,19 @@ class ReportVisitsRepository
   
       $data = [
         "region" => $psychologistTransversalActivity->municipalities->zone_id,
+        "date_visit" => $psychologistTransversalActivity->date_visit,
+        "municipitie_name" => $psychologistTransversalActivity->municipalities->name,
+        "psi_name" => $psychologistTransversalActivity->creator->name,
+        "psi_lastname" => $psychologistTransversalActivity->creator->lastname,
+        "activity_name" => $psychologistTransversalActivity->activity_name,
+        "objective_activity" => $psychologistTransversalActivity->objective_activity,
+        "nro_assistants" => $psychologistTransversalActivity->nro_assistants,
+        "scene" => $psychologistTransversalActivity->scene,
+        "meeting_planing" => $psychologistTransversalActivity->meeting_planing,
+        "team_socialization" => $psychologistTransversalActivity->team_socialization,
+        "development_activity" => $psychologistTransversalActivity->development_activity,
+        "content_network" => $psychologistTransversalActivity->content_network
+
       ];
   
       $templateProcessor->setValues($data);
@@ -239,6 +252,7 @@ class ReportVisitsRepository
       $relative_path = 'Template/psicosocial/actividades-transversales/'.$id.'_Actividad_transversal_psicologica_'.$Psycologic_name.'.docx';
   
       return $relative_path;
+      ;
   
   }
 
@@ -255,15 +269,37 @@ class ReportVisitsRepository
     
         $data = [
           "region" => $visitSubDirector->municipalities->zone_id,
+          "creator_name" => $visitSubDirector->creator->name,
+          "creator_lastname" => $visitSubDirector->creator->lastname,
+          "date_visit" => $visitSubDirector->date_visit,
+          "hour_visit" => $visitSubDirector->hour_visit,
+          "municipitie_name" => $visitSubDirector->municipalities->name,
+          "sidewalk" => $visitSubDirector->sidewalk,
+          "monitor_name" => $visitSubDirector->monitor->name,
+          "monitor_lastname" => $visitSubDirector->monitor->lastname,
+          "discipline" => $visitSubDirector->disciplines->name,
+          "sport_scenary" => $visitSubDirector->sports_scene,
+          "evt" => $visitSubDirector->event_support == 1 ? 'X' : ' ',
+          "evf" => $visitSubDirector->event_support == 0 ? 'X' : ' ',
+          "beneficiary_coverage" => $visitSubDirector->beneficiary_coverage,
+          "technical" => $visitSubDirector->technical == 1 ? 'SI' : 'NO',
+          "observations" => $visitSubDirector->observations,
+          "description" => $visitSubDirector->description,
+
         ];
     
         $templateProcessor->setValues($data);
+
+        try {
+          $templateProcessor->setImageValue('imagen', array('path' => storage_path("app/public/".$visitSubDirector->file), 'width' => 400, 'height' => 400, 'ratio' => false));
+        } catch (\Exception $e) {
+        }
     
         $templateProcessor->saveAs($outputPath);
     
         $relative_path = 'Template/Sub_director/visita/'.$id.'_Visita_subdirector_'.$sub_director_name .'.docx';
     
-        return $relative_path;
+        return $relative_path ;
     
   }
 
