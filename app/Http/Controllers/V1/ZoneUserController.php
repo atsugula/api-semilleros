@@ -4,6 +4,12 @@ namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Utilities\Validates\dropDownListsValidates;
+use App\Models\DisciplineUser;
+use App\Models\Municipality;
+use App\Models\MunicipalityUser;
+use App\Models\RoleUser;
+use App\Models\User;
+use App\Models\ZoneUser;
 use App\Repositories\UsersZonesRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -78,5 +84,18 @@ class ZoneUserController extends Controller
             return  $this->createErrorResponse([], 'Algo salio mal al eliminar la zona del usuario' . $ex->getMessage() . ' linea ' . $ex->getCode());
         }
         return $results;
+    }
+
+    public function getUserRegionsMunicipalities($id) {
+        $userId = $id; // Recibo el id del usuario que está logueado
+        $zoneUser = ZoneUser::where('user_id', $userId)->first(); // Obtener el primer resultado
+        $municipalitiesUserRegion = Municipality::where('zone_id', $zoneUser->id)->get(); // Acceder al atributo id
+    
+        return response()->json([$municipalitiesUserRegion]);
+    }
+
+    public function getMunicipalitiesUser($id) {
+        $municipalitiesId = $id;
+        // preguntar que pasa con esta tabla municipality_users      
     }
 }
