@@ -270,7 +270,7 @@ class BeneficiarieRepository
 
             return new BeneficiaryCollection(
                 $this->model
-                    ->whereIn('municipalities_id', $allMunicipalities)
+                ->whereIn('municipalities_id', $idMunicipios)
                     ->whereIn('status_id', [config('status.ENP'), config('status.APR'), config('status.REC')])
                     ->orderBy('id', 'ASC')
                     ->get()
