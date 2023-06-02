@@ -140,6 +140,10 @@ class GeneralController extends Controller
                     $record = User::select('name as label', 'id as value')->whereHas('roles', function ($query) {
                         $query->where('role_id', 8);
                     })->get();
+                }elseif('metodologoList' == $value){
+                    $record = User::select('name as label', 'id as value')->whereHas('roles', function ($query) {
+                        $query->where('role_id', 12);
+                    })->get();
                 }
                 else {
                     $record = DB::table($value)->select('name as label', 'id as value')->get();
