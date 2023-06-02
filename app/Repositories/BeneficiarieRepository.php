@@ -54,16 +54,16 @@ class BeneficiarieRepository
         $beneficiarie->save();
 
         // Ficha de Tamizaje
-        $fichaTamizaje = new BeneficiaryScreening();
-        $fichaTamizaje->estatura        = $request['estatura'];
-        $fichaTamizaje->envergadura     = $request['envergadura'];
-        $fichaTamizaje->masa            = $request['masa'];
-        $fichaTamizaje->flexibilidad    = $request['flexibilidad'];
-        $fichaTamizaje->velocidad       = $request['velocidad'];
-        $fichaTamizaje->fuerza          = $request['fuerza'];
-        $fichaTamizaje->oculomanual     = $request['oculomanual'];
-        $fichaTamizaje->beneficiary_id  = $beneficiarie->id;
-        $fichaTamizaje->save();
+        // $fichaTamizaje = new BeneficiaryScreening();
+        // $fichaTamizaje->estatura        = $request['estatura'];
+        // $fichaTamizaje->envergadura     = $request['envergadura'];
+        // $fichaTamizaje->masa            = $request['masa'];
+        // $fichaTamizaje->flexibilidad    = $request['flexibilidad'];
+        // $fichaTamizaje->velocidad       = $request['velocidad'];
+        // $fichaTamizaje->fuerza          = $request['fuerza'];
+        // $fichaTamizaje->oculomanual     = $request['oculomanual'];
+        // $fichaTamizaje->beneficiary_id  = $beneficiarie->id;
+        // $fichaTamizaje->save();
 
         // Acudientes
         $acudiente = BeneficiaryGuardians::updateOrCreate(
@@ -115,15 +115,15 @@ class BeneficiarieRepository
         $beneficiarie->update($request);
 
         // Ficha de Tamizaje
-        $fichaTamizaje = BeneficiaryScreening::where('beneficiary_id', $beneficiarie->id)->firstOrFail();
-        $fichaTamizaje->estatura        = $request['estatura'];
-        $fichaTamizaje->envergadura     = $request['envergadura'];
-        $fichaTamizaje->masa            = $request['masa'];
-        $fichaTamizaje->flexibilidad    = $request['flexibilidad'];
-        $fichaTamizaje->velocidad       = $request['velocidad'];
-        $fichaTamizaje->fuerza          = $request['fuerza'];
-        $fichaTamizaje->oculomanual     = $request['oculomanual'];
-        $fichaTamizaje->save();
+        // $fichaTamizaje = BeneficiaryScreening::where('beneficiary_id', $beneficiarie->id)->firstOrFail();
+        // $fichaTamizaje->estatura        = $request['estatura'];
+        // $fichaTamizaje->envergadura     = $request['envergadura'];
+        // $fichaTamizaje->masa            = $request['masa'];
+        // $fichaTamizaje->flexibilidad    = $request['flexibilidad'];
+        // $fichaTamizaje->velocidad       = $request['velocidad'];
+        // $fichaTamizaje->fuerza          = $request['fuerza'];
+        // $fichaTamizaje->oculomanual     = $request['oculomanual'];
+        // $fichaTamizaje->save();
 
         // Acudientes
         $acudiente = BeneficiaryGuardians::updateOrCreate(
@@ -169,7 +169,6 @@ class BeneficiarieRepository
 
     public function getValidate($data, $method)
     {
-
         $validate = [
             'affiliation_type' => 'bail|required',
             'document_number' => [
