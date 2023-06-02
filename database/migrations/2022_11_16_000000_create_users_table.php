@@ -47,6 +47,7 @@ return new class extends Migration
                 ->references('id')
                 ->on('users');
 
+            $table->unsignedBigInteger('asistent')->nullable();
             $table->enum('status', ['REC', 'REV', 'ENREV', 'APRO'])->nullable()->default('ENREV');
             $table->text('rejection_message')->nullable();
 

@@ -136,6 +136,10 @@ class GeneralController extends Controller
             try {
                 if ($value == 'identification_types') {
                     $record = $identification_types;
+                }elseif('asistentList' == $value){
+                    $record = User::select('name as label', 'id as value')->whereHas('roles', function ($query) {
+                        $query->where('role_id', 8);
+                    })->get();
                 }
                 else {
                     $record = DB::table($value)->select('name as label', 'id as value')->get();
