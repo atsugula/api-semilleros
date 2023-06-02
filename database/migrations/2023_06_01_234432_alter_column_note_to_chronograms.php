@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::table('chronograms', function (Blueprint $table) {
             $table->text('note')->nullable()->change();
+            $table->text('note_holiday')->nullable()->after('note');
         });
     }
 
