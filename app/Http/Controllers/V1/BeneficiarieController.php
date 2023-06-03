@@ -153,7 +153,6 @@ class BeneficiarieController extends Controller
         //Gate::authorize('haveaccess');
          try {
              $results = $this->beneficiarieRepository->getAllByUserRegion();
-             return $results;
              if($results != null){
                 return $results->toArray($request);
             }else{
@@ -177,5 +176,15 @@ class BeneficiarieController extends Controller
         } catch (\Exception $ex) {
             return  $this->createErrorResponse([], 'Algo salio mal al cambiar el estado de la ficha tecnica ' . $ex->getMessage() . ' linea ' . $ex->getCode());
         }
+    }
+
+    public function getAllByBenefeciaryRegion(Request $request){
+
+        try{
+
+        }catch(\Exception $ex){
+
+        }
+
     }
 }

@@ -100,4 +100,8 @@ class ReportVisitsController extends Controller
 
 }
 
+    public function exportVisitDirector(Request $request){
+        
+    }
+
 }

@@ -273,6 +273,9 @@ Route::apiResources([
 Route::get('getAllByUserRegion', [BeneficiarieController::class, 'getAllByUserRegion']);
 Route::apiResource('beneficiaries', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);
 
+Route::get('GetReportSubdirectorCustom/{id}',[ReportVisitsController::class,'exportvisitSubDirector']);
+Route::get('getAllBeneRegion', [BeneficiarieController::class, 'getAllByBenefeciaryRegion']);
+
 //Rutas de Pruebas Crango
 // Route::apiResource('beneficiariess', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);
 // Route::put('beneficiariess/{id}', [BeneficiarieController::class, 'update']);

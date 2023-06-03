@@ -328,4 +328,8 @@ class BeneficiarieRepository
 
         return $result;
     }
+
+    public function allByBeneficiaryRegion($request, $id){
+        
+    }
 }
