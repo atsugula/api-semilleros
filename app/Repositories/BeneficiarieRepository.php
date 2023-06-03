@@ -233,7 +233,12 @@ class BeneficiarieRepository
 
         $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
-
+        $user = User::where('id', $user_id)->with('municipalities')->first();
+        $idMunicipios = [];
+        foreach ($user->municipalities as $item) {
+            $municipalities_id = $item['municipalities_id'];
+            $idMunicipios[] = $municipalities_id;
+        }
         $zoneUsers = new ZoneUser();
         $municipalityUsers = new MunicipalityUser();
 
@@ -269,7 +274,7 @@ class BeneficiarieRepository
 
             return new BeneficiaryCollection(
                 $this->model
-                    ->whereIn('municipalities_id', $allMunicipalities)
+                ->whereIn('municipalities_id', $idMunicipios)
                     ->whereIn('status_id', [config('status.ENP'), config('status.APR'), config('status.REC')])
                     ->orderBy('id', 'ASC')
                     ->get()
@@ -278,7 +283,7 @@ class BeneficiarieRepository
 
             return new BeneficiaryCollection(
                 $this->model
-                    ->whereIn('municipalities_id', $allMunicipalities)
+                    ->whereIn('municipalities_id', $idMunicipios)
                     ->whereIn('status_id', [config('status.ENP'), config('status.ENR'), config('status.REC')])
                     ->orderBy('id', 'ASC')
                     ->get()
@@ -295,7 +300,7 @@ class BeneficiarieRepository
         $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
 
-        
+
         $beneficiarie = $this->model->findOrFail($id);
 
         if ($rol_id == config('roles.asistente_administrativo') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.metodologo') || $rol_id == config('roles.coordinador_maritimo')) {

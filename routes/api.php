@@ -260,7 +260,14 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
     //Rutas de las excel apis
     //Route::get('descargas/export/', [UserExcelController::class, 'export']);
 
-});
+
+    // Ruta municipios y region de usuario logueado
+    Route::get('User/Municipalities/{id}', [ZoneUserController::class, 'getUserRegionsMunicipalities']);
+
+    // Ruta municipios usuarios disciplinas
+    Route::get('Municipalities/User/Disciplines/{id}', [ZoneUserController::class, 'getMunicipalitiesUserDisciplines']);
+
+ });
 
 /* RUTAS DE PRUEBA JORGE */
 

@@ -4,6 +4,12 @@ namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Utilities\Validates\dropDownListsValidates;
+use App\Models\DisciplineUser;
+use App\Models\Municipality;
+use App\Models\MunicipalityUser;
+use App\Models\RoleUser;
+use App\Models\User;
+use App\Models\ZoneUser;
 use App\Repositories\UsersZonesRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -78,5 +84,33 @@ class ZoneUserController extends Controller
             return  $this->createErrorResponse([], 'Algo salio mal al eliminar la zona del usuario' . $ex->getMessage() . ' linea ' . $ex->getCode());
         }
         return $results;
+    }
+
+    public function getUserRegionsMunicipalities($id) {
+        $userId = $id; // Recibo el id del usuario que está logueado METODOLOGO
+        $zoneUser = ZoneUser::where('user_id', $userId)->first(); // Obtener el primer resultado
+        $municipalitiesUserRegion = Municipality::where('zone_id', $zoneUser->id)->get(); // Acceder al atributo id
+    
+        return response()->json([$municipalitiesUserRegion]);
+    }
+
+    public function getMunicipalitiesUserDisciplines($id) {
+        $municipalitieId = $id; // recibo el id del municipio
+    
+        // en la tabla municipios con el id del municipio obtengo la zona
+        $municipality = Municipality::find($municipalitieId);
+        $zoneId = $municipality->zone_id; 
+    
+        // con el id de la zona obtengo los usuarios de esa zona
+        $users = ZoneUser::where('zone_id', $zoneId)->get();
+    
+        // con esos usuarios obtengo las disciplinas
+        $userIds = $users->pluck('id');
+        $disciplinesUsers = DisciplineUser::whereIn('user_id', $userIds)->get(); 
+        
+        return response()->json([
+            'users' => $users,
+            'disciplinesUsers' => $disciplinesUsers
+        ]);
     }
 }

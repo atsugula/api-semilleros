@@ -81,7 +81,7 @@ class GeneralController extends Controller
         // $diciplines = Disciplines::select('name as label', 'id as value')->orderBy('name', 'ASC')->get();
 
         //Bancks
-        $bancks = Bank::select('name as label', 'id as value')->orderBy('name', 'ASC')->get();
+        // $bancks = Bank::select('name as label', 'id as value')->orderBy('name', 'ASC')->get();
 
         //Ethniea
         $ethniacity = Ethnicity::select('name as label', 'id as value')->orderBy('name', 'ASC')->get();
@@ -103,7 +103,7 @@ class GeneralController extends Controller
             "evaluations" => $evaluations,
             "eventSuport" => $eventSuport,
             "ethniacity" => $ethniacity,
-            "bancks" => $bancks,
+            // "bancks" => $bancks,
             "diciplines" => $diciplines,
             "period" => $period,
             "status" => $status,

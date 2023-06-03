@@ -36,7 +36,7 @@ class StatusSeeder extends Seeder
         ]);
 
         Status::create([
-            'name' => 'En proceso',
+            'name' => 'Revisado', //se cambia En Proceso a Revisado
             'slug' => 'ENP',
         ]);
 
