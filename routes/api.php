@@ -248,6 +248,7 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
     // USUARIOS MONITORES POR MUNICIPIO
     Route::get('getMonitoringMunicipality/{id}', [MonitorsController::class, 'getMonitoringMunicipality']);
     Route::get('getdisiplinesMonitoring/{id}', [MonitorsController::class, 'getdisiplinesMonitoring']);
+    
 
     //Muestra los meses restantes del año
     Route::get('months', [MonthsController::class, 'index']);
@@ -263,9 +264,12 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
 
 
     // Ruta municipios y region de usuario logueado
-    Route::get('getUserMunicipalities/{id}', [ZoneUserController::class, 'getUserRegionsMunicipalities']);
+    Route::get('User/Municipalities/{id}', [ZoneUserController::class, 'getUserRegionsMunicipalities']);
 
-});
+    // Ruta municipios usuarios disciplinas
+    Route::get('Municipalities/User/Disciplines/{id}', [ZoneUserController::class, 'getMunicipalitiesUserDisciplines']);
+
+ });
 
 /* RUTAS DE PRUEBA JORGE */
 
