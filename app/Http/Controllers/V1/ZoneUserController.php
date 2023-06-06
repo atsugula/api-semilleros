@@ -14,6 +14,8 @@ use App\Repositories\UsersZonesRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Contracts\Database\Eloquent\Builder;
+
 
 class ZoneUserController extends Controller
 {
@@ -89,28 +91,48 @@ class ZoneUserController extends Controller
     public function getUserRegionsMunicipalities($id) {
         $userId = $id; // Recibo el id del usuario que está logueado METODOLOGO
         $zoneUser = ZoneUser::where('user_id', $userId)->first(); // Obtener el primer resultado
-        $municipalitiesUserRegion = Municipality::where('zone_id', $zoneUser->id)->get(); // Acceder al atributo id
-    
-        return response()->json([$municipalitiesUserRegion]);
+        $municipalitiesUserRegion = Municipality::where('zone_id', $zoneUser->zones_id)
+            ->orderBy("name", "ASC")
+            ->get(); // Acceder al atributo id
+
+            $users = ZoneUser::query()
+            ->select([
+                "users.name as user_name", "users.id as user_id",
+                "disciplines.name as discipline", "disciplines.id as discipline_id",
+                "role_user.role_id as role_id", "users.lastname as last_name"
+            ])
+            ->join("users", "users.id", "=", "zone_users.user_id")
+            ->join("discipline_users", "discipline_users.user_id", "=", "users.id")
+            ->join("disciplines", "discipline_users.disciplines_id", "=", "disciplines.id")
+            ->join("role_user", "role_user.user_id", "=", "users.id")
+            ->where("zone_users.zones_id", $zoneUser->zones_id)
+            ->where("role_user.role_id", 12)
+            ->get();
+
+        return response()->json([
+            "municipalities" => $municipalitiesUserRegion, "users" => $users]);
     }
 
     public function getMunicipalitiesUserDisciplines($id) {
         $municipalitieId = $id; // recibo el id del municipio
-    
+
         // en la tabla municipios con el id del municipio obtengo la zona
         $municipality = Municipality::find($municipalitieId);
-        $zoneId = $municipality->zone_id; 
-    
-        // con el id de la zona obtengo los usuarios de esa zona
-        $users = ZoneUser::where('zone_id', $zoneId)->get();
-    
-        // con esos usuarios obtengo las disciplinas
-        $userIds = $users->pluck('id');
-        $disciplinesUsers = DisciplineUser::whereIn('user_id', $userIds)->get(); 
-        
-        return response()->json([
-            'users' => $users,
-            'disciplinesUsers' => $disciplinesUsers
-        ]);
+        $zoneId = $municipality->zone_id;
+
+        $users = ZoneUser::query()
+            ->select([
+                "users.name as user_name", "users.id as user_id",
+                "disciplines.name as discipline", "disciplines.id as discipline_id"
+            ])
+            ->join("users", "users.id", "=", "zone_users.user_id")
+            ->join("discipline_users", "discipline_users.user_id", "=", "users.id")
+            ->join("disciplines", "discipline_users.disciplines_id", "=", "disciplines.id")
+            ->join("role_user", "role_user.user_id", "=", "users.id")
+            ->where("zone_users.zones_id", $zoneId)
+            ->where("role_user.role_id", 12)
+            ->get();
+
+        return response()->json($users);
     }
 }

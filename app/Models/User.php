@@ -116,7 +116,7 @@ class User extends Authenticatable
     {
         return LogOptions::defaults();
     }
-    
+
     public function navigationHistory()
     {
         return $this->hasMany(NavigationHistory::class, 'user_id');
@@ -127,7 +127,7 @@ class User extends Authenticatable
      */
     public function roles()
     {
-        return $this->belongsToMany(Role::class);
+        return $this->belongsToMany(Role::class, "role_user", "role_id");
     }
 
     /**
