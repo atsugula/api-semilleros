@@ -278,11 +278,7 @@ Route::apiResources([
 ]);
 
 //zarrok rutas de prueba
-Route::get('getAllByUserRegion', [BeneficiarieController::class, 'getAllByUserRegion']);
-Route::apiResource('beneficiaries', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);
-
-Route::get('GetReportSubdirectorCustom/{id}',[ReportVisitsController::class,'exportvisitSubDirector']);
-Route::get('getAllBeneRegion', [BeneficiarieController::class, 'getAllByBenefeciaryRegion']);
+Route::get('GetVisitRegionalCordinator/{id}',[ReportVisitsController::class,'exportvisitSubDirector']);
 
 
 //Rutas de Pruebas Crango
