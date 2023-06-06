@@ -85,8 +85,8 @@ class MethodologistVisitRepository
         $methodologist_visit->swich_plans_mp_3 = $request['swich_plans_mp_3'] == "false" ? 0 : 1;
         $methodologist_visit->swich_plans_mp_4 = $request['swich_plans_mp_4'] == "false" ? 0 : 1;
         $methodologist_visit->swich_plans_mp_5 = $request['swich_plans_mp_5'] == "false" ? 0 : 1;
-        $methodologist_visit->municipalitie_id = $request['municipalitie_id'] == "false" ? 0 : 1;
         /* RELACIONES CAMPOS */
+        $methodologist_visit->municipalitie_id = $request['municipalitie_id'];
         $methodologist_visit->user_id = $request['monitor_id'];
         $methodologist_visit->sidewalk = $request['sidewalk'];
         $methodologist_visit->discipline_id = $request['discipline_id'];
