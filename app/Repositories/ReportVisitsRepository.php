@@ -11,6 +11,7 @@ use App\Models\psychologistVisits;
 use App\Models\KnowGuardians;
 use App\Models\BeneficiaryGuardians;
 use App\Models\user;
+use App\Models\CoordinatorVisit;
 
 use Illuminate\Support\Facades\Response;
 use PhpOffice\PhpWord\PhpWord;
@@ -27,9 +28,11 @@ class ReportVisitsRepository
   private $KnowGuardians;
   private $BeneficiaryGuardians;
   private $user;
+  private $CoordinatorVisit;
 
   function __construct()
   {
+    $this->CoordinatorVisit = new CoordinatorVisit();
     $this->MethodologistVisit = new MethodologistVisit();
     $this->psychologistVisit = new psychologistVisits();
     $this->visitSubDirector = new VisitSubDirector();
@@ -358,6 +361,43 @@ class ReportVisitsRepository
     
         return $relative_path ;
     
+  }
+
+  public function GenerateDocVisitCoordinador($id){
+    // buscar la visita
+    $visit = $this->CoordinatorVisit->findOrFail($id);
+
+    $coordinador_name = str_replace(' ', '_', $visit->creator->name);
+
+    //ruta de la plantilla
+    $templatePath = public_path('Template/Regional_coordinator/visita/plantilla.docx');
+    $outputPath = public_path('Template/Regional_coordinator/visita/'.$id.'_Visita_subdirector_'.$coordinador_name .'.docx');
+
+    $templateProcessor = new TemplateProcessor($templatePath);
+
+
+    $data = [
+      "region" => $visit->municipalities->zone_id,
+      "creator_name" => $visit->creator->name,
+      "creator_lastname" => $visit->creator->lastname,
+      "date_visit" => $visit->date_visit,
+      "hour_visit" => $visit->hour_visit,
+      "municipitie_name" => $visit->municipalities->name,
+      "sidewalk" => $visit->sidewalk,
+      "monitor_name" => $visit->monitor->name,
+      "monitor_lastname" => $visit->monitor->lastname,
+      "discipline" => $visit->disciplines->name,
+      "sport_scenary" => $visit->sports_scene,
+      "evt" => $visit->event_support == 1 ? 'X' : ' ',
+      "evf" => $visit->event_support == 0 ? 'X' : ' ',
+      "beneficiary_coverage" => $visit->beneficiary_coverage,
+      "technical" => $visit->technical == 1 ? 'SI' : 'NO',
+      "observations" => $visit->observations,
+      "description" => $visit->description,
+
+    ];
+
+
   }
 
 }

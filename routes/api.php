@@ -273,7 +273,7 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
 
 // Rutas de prueba V2 JOSE
 Route::apiResources([
-    'userss' => UserController::class,
+    'users' => UserController::class,
 ]);
 
 //zarrok rutas de prueba
@@ -282,6 +282,7 @@ Route::apiResource('beneficiaries', BeneficiarieController::class)->only(['index
 
 Route::get('GetReportSubdirectorCustom/{id}',[ReportVisitsController::class,'exportvisitSubDirector']);
 Route::get('getAllBeneRegion', [BeneficiarieController::class, 'getAllByBenefeciaryRegion']);
+
 
 //Rutas de Pruebas Crango
 // Route::apiResource('beneficiariess', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);
