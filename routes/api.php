@@ -273,12 +273,8 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
 /* RUTAS DE PRUEBA JORGE */
 
 // Rutas de prueba V2 JOSE
-Route::apiResources([
-    'users' => UserController::class,
-]);
-
 //zarrok rutas de prueba
-Route::get('GetVisitRegionalCordinator/{id}',[ReportVisitsController::class,'exportvisitSubDirector']);
+Route::get('GetVisitRegionalCordinator/{id}',[ReportVisitsController::class,'ExportCoordinadorRegional']);
 
 
 //Rutas de Pruebas Crango

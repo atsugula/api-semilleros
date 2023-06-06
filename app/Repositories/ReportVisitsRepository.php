@@ -367,37 +367,49 @@ class ReportVisitsRepository
     // buscar la visita
     $visit = $this->CoordinatorVisit->findOrFail($id);
 
-    $coordinador_name = str_replace(' ', '_', $visit->creator->name);
+    $coordinador_name = str_replace(' ', '_', $visit->createdBy->name);
 
     //ruta de la plantilla
     $templatePath = public_path('Template/Regional_coordinator/visita/plantilla.docx');
-    $outputPath = public_path('Template/Regional_coordinator/visita/'.$id.'_Visita_subdirector_'.$coordinador_name .'.docx');
+    $outputPath = public_path('Template/Regional_coordinator/visita/'.$id.'_Visita_subdirector_'. $coordinador_name .'.docx');
 
     $templateProcessor = new TemplateProcessor($templatePath);
 
 
     $data = [
-      "region" => $visit->municipalities->zone_id,
-      "creator_name" => $visit->creator->name,
-      "creator_lastname" => $visit->creator->lastname,
-      "date_visit" => $visit->date_visit,
-      "hour_visit" => $visit->hour_visit,
-      "municipitie_name" => $visit->municipalities->name,
-      "sidewalk" => $visit->sidewalk,
+      "name" => $visit->createdBy->name,
+      "last_name" => $visit->createdBy->lastname,
+      "date" => $visit->date_visit,
+      "hour" => $visit->hour_visit,
       "monitor_name" => $visit->monitor->name,
       "monitor_lastname" => $visit->monitor->lastname,
-      "discipline" => $visit->disciplines->name,
-      "sport_scenary" => $visit->sports_scene,
-      "evt" => $visit->event_support == 1 ? 'X' : ' ',
-      "evf" => $visit->event_support == 0 ? 'X' : ' ',
-      "beneficiary_coverage" => $visit->beneficiary_coverage,
-      "technical" => $visit->technical == 1 ? 'SI' : 'NO',
-      "observations" => $visit->observations,
-      "description" => $visit->description,
-
+      "disciplines" => $visit->disciplines->name,
+      "scenaris" => $visit->sports_scene,
+      "region" => $visit->municipalities->zone_id,
+      "municipie" => $visit->municipalities->name,
+      "Corrigimiento" => $visit->sidewalk,
+      "Num_beneficiarie" => $visit->beneficiary_coverage,
+      "descripcion" => $visit->description,
+      "observaciones" => $visit->observations,
     ];
 
+    $templateProcessor->setValues($data);
 
+    try {
+      $templateProcessor->setImageValue('image', array('path' => storage_path("app/public/".$visit->file), 'width' => 400, 'height' => 400, 'ratio' => false));
+    } catch (\Exception $e) {
+      $data2 = [
+        "image" => '',
+      ];
+      $templateProcessor->setValues($data2);
+    }
+
+
+    $templateProcessor->saveAs($outputPath);
+
+    $relative_path = 'Template/Regional_coordinator/visita/'.$id.'_Visita_subdirector_'. $coordinador_name .'.docx';
+
+    return $relative_path;
   }
 
 }
