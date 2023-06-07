@@ -35,14 +35,15 @@ class BeneficiarieRepository
         $user_id = $this->getIdUserAuth();
         $rol_id = $this->getIdRolUserAuth();
 
-        if($rol_id == config('asistente_administrativo') || config('super-root') || config('director_administrator')){
-            $beneficiaries = new BeneficiaryCollection($this->model->orderBy('id', 'ASC')->get());
+        if($rol_id == config('roles.asistente_administrativo') || config('roles.super-root') || config('roles.director_administrator')){
+            $beneficiaries =  $this->model->query()->orderBy('id', 'DESC')->get();
         }
         else{
             $beneficiaries = new BeneficiaryCollection($this->model->where('created_by', $user_id)->orderBy('id', 'ASC')->get());
+            $beneficiaries =  $this->model->query()->where('created_by', $user_id)->orderBy('id', 'DESC')->get();
         }
 
-        return $beneficiaries;
+        return new BeneficiaryCollection($beneficiaries);
     }
 
     public function create($request)
@@ -225,6 +226,9 @@ class BeneficiarieRepository
 
     public function getAllByUserRegion()
     {
+            // codigo por revisar 
+        $rol_id = $this->getIdRolUserAuth();
+        $user_id = $this->getIdUserAuth();
 
         $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
@@ -327,5 +331,9 @@ class BeneficiarieRepository
         $result = new BeneficiaryResource($beneficiarie);
 
         return $result;
+    }
+
+    public function allByBeneficiaryRegion($request, $id){
+        
     }
 }

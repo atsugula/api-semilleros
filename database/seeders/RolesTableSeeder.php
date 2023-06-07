@@ -40,7 +40,7 @@ class RolesTableSeeder extends Seeder
             }
 
             $roles = new Role();
-            $roles->name = $row['A'];
+            $roles->name = $row['B'];
             $roles->slug = $row['C'];
             $roles->description = $row['D'];
             // $roles->full-access = $row['E'];

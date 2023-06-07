@@ -24,17 +24,17 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            // ZoneSeeder::class,
-            ZoneTableSeeder::class,
-            UsersTableSeeder::class,
-            // UserSeeder::class,
+            ZoneSeeder::class,
+            //ZoneTableSeeder::class, NO DESCOMENTAR
+            //UsersTableSeeder::class, NO DESCOMENTAR
+            UserSeeder::class,
             ModuleSeeder::class,
             ModuleItemSeeder::class,
-            RolesTableSeeder::class,
-            // RoleSeeder::class,
+            //RolesTableSeeder::class, NO DESCOMENTAR
+            RoleSeeder::class,
             PermissionSeeder::class,
-            RolesUsersTableSeeder::class,
-            // RoleUserSeeder::class,
+            //RolesUsersTableSeeder::class, NO DESCOMENTAR
+             RoleUserSeeder::class, 
             GroupSeeder::class,
             PermissionRoleSeeder::class,
             ValidityPeriodsSeeder::class,
@@ -42,16 +42,16 @@ class DatabaseSeeder extends Seeder
             DepartmentsSeeder::class,
             CitySeeder::class,
             StatusSeeder::class,
-            MunicipalitiesTableSeeder::class,
-            // MunicipalitySeeder::class,
+            //MunicipalitiesTableSeeder::class, NO DESCOMENTAR
+             MunicipalitySeeder::class,
            // ObjectSeeder::class,
-            //DisciplinesTableSeeder::class,
-            //DisciplinesUsersTableSeeder::class,
+            //DisciplinesTableSeeder::class, NO DESCOMENTAR
+            //DisciplinesUsersTableSeeder::class, NO DESCOMENTAR
             DisciplinesSeeder::class,
             DirectionSeeder::class,
-            ZoneUserTableSeeder::class,
-            // ZoneUserSeeder::class,
-            // MunicipalityUserSeeder::class,
+            //ZoneUserTableSeeder::class, NO DESCOMENTAR
+             ZoneUserSeeder::class,
+            // MunicipalityUserSeeder::class, NO DESCOMENTAR
             EthnicitySeeder::class,
             EventSupportSeederer::class,
             EvaluationSeeder::class,

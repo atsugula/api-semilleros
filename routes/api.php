@@ -118,7 +118,6 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
 
     /* BUSCAR BENEFICIARIO */
     Route::get('findByBeneficiaryId/{id}', [CustomVisitController::class, 'getBeneficiary']);
-
     /* ACTIVIDAD TRANSVERSAL VISITA */
     Route::apiResource('transversal_activity', TransversalActivityController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::post('transversal_activity/{id}', [TransversalActivityController::class, 'update'])->name('transversal_activity.update');
@@ -132,6 +131,7 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
     Route::get('GetReportPsycologicCustomVisit/{id}',[ReportVisitsController::class,'exportPsychologistcustomVisit']);
     Route::get('GetReportTrasversalActivity/{id}',[ReportVisitsController::class,'exportPsychologisttransversalActivity']);
     Route::get('GetReportSubdirectorCustom/{id}',[ReportVisitsController::class,'exportvisitSubDirector']);
+    Route::get('GetVisitRegionalCordinator/{id}',[ReportVisitsController::class,'ExportCoordinadorRegional']);
 
 
     // Descargar archivos de chronogram
@@ -148,7 +148,7 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
     Route::get('get-document', [GeneralController::class, 'getDocument']);
 
     /* BENEFICIARIOS */
-    Route::apiResource('beneficiaries', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);
+    //Route::apiResource('beneficiaries', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::put('beneficiaries/{id}', [BeneficiarieController::class, 'update']);
     Route::put('beneficiaries/changeStatus/{id}', [BeneficiarieController::class, 'changeStatus']);
 
@@ -274,11 +274,9 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
 /* RUTAS DE PRUEBA JORGE */
 
 // Rutas de prueba V2 JOSE
-Route::apiResources([
-    'userss' => UserController::class,
-]);
-
 //zarrok rutas de prueba
+Route::get('GetVisitRegionalCordinator/{id}',[ReportVisitsController::class,'ExportCoordinadorRegional']);
+
 
 //Rutas de Pruebas Crango
 // Route::apiResource('beneficiariess', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);

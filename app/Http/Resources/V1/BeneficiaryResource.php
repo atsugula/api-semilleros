@@ -57,8 +57,8 @@ class BeneficiaryResource extends JsonResource
             'scholar_level' => $this->scholar_level,
             'health_entity_id' => $this->health_entity_id,
 
-            'know_guardian' => $this->acudientes[0],
-            'acudiente' => $this->acudientes[0]->guardian,
+            'know_guardian' => isset($this->acudientes) ? $this->acudientes[0] : '',
+            'acudiente' => isset($this->acudientes[0]->guardian) ? $this->acudientes[0]->guardian : '',
             'tamizaje' => $this->tamizaje,
             'status_id' => $this->status_id,
             'reviewed_by' => $this->reviewed_user,

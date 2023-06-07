@@ -11,6 +11,7 @@ use App\Models\psychologistVisits;
 use App\Models\KnowGuardians;
 use App\Models\BeneficiaryGuardians;
 use App\Models\user;
+use App\Models\CoordinatorVisit;
 
 use Illuminate\Support\Facades\Response;
 use PhpOffice\PhpWord\PhpWord;
@@ -27,9 +28,11 @@ class ReportVisitsRepository
   private $KnowGuardians;
   private $BeneficiaryGuardians;
   private $user;
+  private $CoordinatorVisit;
 
   function __construct()
   {
+    $this->CoordinatorVisit = new CoordinatorVisit();
     $this->MethodologistVisit = new MethodologistVisit();
     $this->psychologistVisit = new psychologistVisits();
     $this->visitSubDirector = new VisitSubDirector();
@@ -358,6 +361,55 @@ class ReportVisitsRepository
     
         return $relative_path ;
     
+  }
+
+  public function GenerateDocVisitCoordinador($id){
+    // buscar la visita
+    $visit = $this->CoordinatorVisit->findOrFail($id);
+
+    $coordinador_name = str_replace(' ', '_', $visit->createdBy->name);
+
+    //ruta de la plantilla
+    $templatePath = public_path('Template/Regional_coordinator/visita/plantilla.docx');
+    $outputPath = public_path('Template/Regional_coordinator/visita/'.$id.'_Visita_subdirector_'. $coordinador_name .'.docx');
+
+    $templateProcessor = new TemplateProcessor($templatePath);
+
+
+    $data = [
+      "name" => $visit->createdBy->name,
+      "last_name" => $visit->createdBy->lastname,
+      "date" => $visit->date_visit,
+      "hour" => $visit->hour_visit,
+      "monitor_name" => $visit->monitor->name,
+      "monitor_lastname" => $visit->monitor->lastname,
+      "disciplines" => $visit->disciplines->name,
+      "scenaris" => $visit->sports_scene,
+      "region" => $visit->municipalities->zone_id,
+      "municipie" => $visit->municipalities->name,
+      "Corrigimiento" => $visit->sidewalk,
+      "Num_beneficiarie" => $visit->beneficiary_coverage,
+      "descripcion" => $visit->description,
+      "observaciones" => $visit->observations,
+    ];
+
+    $templateProcessor->setValues($data);
+
+    try {
+      $templateProcessor->setImageValue('image', array('path' => storage_path("app/public/".$visit->file), 'width' => 400, 'height' => 400, 'ratio' => false));
+    } catch (\Exception $e) {
+      $data2 = [
+        "image" => '',
+      ];
+      $templateProcessor->setValues($data2);
+    }
+
+
+    $templateProcessor->saveAs($outputPath);
+
+    $relative_path = 'Template/Regional_coordinator/visita/'.$id.'_Visita_subdirector_'. $coordinador_name .'.docx';
+
+    return $relative_path;
   }
 
 }
