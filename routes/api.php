@@ -268,6 +268,8 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
     // Ruta municipios usuarios disciplinas
     Route::get('Municipalities/User/Disciplines/{id}', [ZoneUserController::class, 'getMunicipalitiesUserDisciplines']);
 
+    Route::get('users/disciplines/regions', [ZoneUserController::class, 'getUserDisciplineRegions']);
+
  });
 
 /* RUTAS DE PRUEBA JORGE */
