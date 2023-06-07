@@ -275,7 +275,9 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
 
 // Rutas de prueba V2 JOSE
 //zarrok rutas de prueba
-Route::get('GetVisitRegionalCordinator/{id}',[ReportVisitsController::class,'ExportCoordinadorRegional']);
+//Route::get('GetVisitRegionalCordinator/{id}',[ReportVisitsController::class,'ExportCoordinadorRegional']);
+Route::get('GetChronogram/{id}',[ReportVisitsController::class,'ExportChronogram']);
+
 
 
 //Rutas de Pruebas Crango

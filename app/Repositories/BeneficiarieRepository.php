@@ -333,7 +333,7 @@ class BeneficiarieRepository
         return $result;
     }
 
-    public function allByBeneficiaryRegion($request, $id){
+    public function allByBeneficiaryRegion($region){
         
     }
 }

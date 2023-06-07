@@ -19,12 +19,12 @@ class ChronogramResource extends JsonResource
             'month' => $this->mes->name,
             'municipio' => $this->municipio->name,
             'note' => $this->note,
-            'groups' => $this->groups,
+            'groups' => ChronogramsGroupsResource::collection($this->groups),
             'status' => $this->statuses,
             'reviewed' => [
                 'user' => $this->reviewed,
                 'roles' => $this->reviewed?->roles,
-            ],
+            ],            
             'created_by' => $this->creator,
             'created_at'=> $this->created_at ? $this->getPublishedAtAttribute():null,
         ];

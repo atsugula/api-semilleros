@@ -134,4 +134,20 @@ class ReportVisitsController extends Controller
          }
     }
 
+    public function ExportChronogram(Request $request){
+        try{
+            $response = $this->reportVisitsRepository->GenerateChronogram($request->id);
+            if ($response instanceof \Exception) {
+                return $this->createErrorResponse([], 'Algo salio mal ' . $response->getMessage() . ' linea ' . $response->getCode());
+            } else {
+                if (!$request->type) {
+                    return $response;
+                }
+                return response()->json(['count' => $response]);
+            }
+        } catch (\Exception $ex) {
+            return $this->createErrorResponse([], 'Algo salio mal ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+         }
+    }
+
 }
