@@ -22,6 +22,7 @@ use App\Models\Status;
 use App\Models\User;
 use App\Models\Validity_period;
 use App\Models\Zone;
+use App\Models\ZoneUser;
 use App\Traits\FunctionGeneralTrait;
 use Illuminate\Http\Request;
 use App\Traits\UserDataTrait;
@@ -29,6 +30,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
 
 class GeneralController extends Controller
 {
@@ -136,9 +138,25 @@ class GeneralController extends Controller
             try {
                 if ($value == 'identification_types') {
                     $record = $identification_types;
+                }elseif('asistentList' == $value){
+                    $record = User::select('name as label', 'id as value')->whereHas('roles', function ($query) {
+                        $query->where('role_id', 8);
+                    })->get();
+                }elseif('metodologoList' == $value){
+                    $record = User::select('name as label', 'id as value')->whereHas('roles', function ($query) {
+                        $query->where('role_id', 12);
+                    })->get();
                 }
                 else {
-                    $record = DB::table($value)->select('name as label', 'id as value')->get();
+                    $record = DB::table($value)->select('name as label', 'id as value');
+                    if($request->auth == "true"){
+                        if (Schema::hasColumn($value, 'zone_id')) {
+                            $user = Auth::user()->id;
+                            $zones = ZoneUser::where('user_id', $user)->pluck('zones_id');
+                            $record = $record->whereIn('zone_id', $zones);
+                        }
+                    }
+                    $record = $record->get();
                 }
             } catch (\Throwable $th) {
                 $record = DB::table($value)->select('term as label', 'id as value')->get();

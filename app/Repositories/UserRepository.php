@@ -91,12 +91,6 @@ class UserRepository
                     'role_id' =>  $user['roles'],
                 ]);
                 // Regiones o zonas - usuarios
-                // foreach ($user['zones'] as $key => $value) {
-                //     ZoneUser::create([
-                //             'user_id' => $new_user->id,
-                //             'zones_id' =>  $value,
-                //         ]);
-                // }
                 $zonaArray = explode(",", $user['zones']);
                 foreach ($zonaArray as $key => $value) {
                     ZoneUser::create([
@@ -227,7 +221,7 @@ class UserRepository
                 }
 
                 // Diciplinas
-                if($data['disciplines'] && $data['roles'] == '12'){
+                if(isset($data['disciplines']) && $data['roles'] == '12'){
                     $discipline = DisciplineUser::where('user_id', $user_up->id)->delete();
                     foreach ($data['disciplines'] as $key => $value) {
                         $discipline = new DisciplineUser();
