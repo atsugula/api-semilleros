@@ -13,6 +13,8 @@ use App\Models\RoleUser;
 use App\Models\User;
 use App\Traits\UserDataTrait;
 use Illuminate\Support\Facades\DB;
+use App\Mail\RegisterUserMailable;
+use Illuminate\Support\Facades\Mail;
 
 class UserRepository
 {
@@ -127,6 +129,11 @@ class UserRepository
         // Guardamos en ModelData
         $this->control_data($new_user, 'store');
 
+
+        $correo = new RegisterUserMailable($new_user);
+
+        Mail::to($new_user['email'])->send($correo);
+
         return $new_user;
     }
 
@@ -238,6 +245,10 @@ class UserRepository
         }
         // Guardamos en ModelData
         $this->control_data($user_up, 'update');
+
+        $correo = new RegisterUserMailable($user_up);
+
+        Mail::to($user_up['email'])->send($correo);
 
         return $user_up;
     }
