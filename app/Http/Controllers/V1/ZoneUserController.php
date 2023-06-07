@@ -121,14 +121,14 @@ class ZoneUserController extends Controller
         $region = ZoneUser::where('user_id', $userId)->first(); // Obtener la región del usuario logueado
         $regions = ZoneUser::where('user_id', $userId)->pluck('zone_id');
 
-        if ($user['role_id'] == 10) { // Verificar si el rol es "metodolog"
+        if ($user->rol_id == 10) { // Verificar si el rol es "metodolog"
             $usersRegions = ZoneUser::where('zone_id', $region->zone_id)->pluck('user_id'); // Obtener los IDs de usuarios con la misma región
             $users = RoleUser::whereIn('user_id', $usersRegions)->where('role_id', $user->role_id)->get(); // Obtener los usuarios con el mismo rol y región
 
             return response()->json($users);
         }
 
-        if($user['role_id'] == 9){ // coordinador regional
+        if($user->rol_id == 9){ // coordinador regional
             $users = RoleUser::whereIn('role_id', $user->role_id)
             ->whereIn('user_id', function ($query) use ($regions) {
                 $query->select('user_id')
@@ -139,17 +139,21 @@ class ZoneUserController extends Controller
 
             return response()->json($users);
         }
-        if($user['role_id'] == 6){ // coordinador psicosocial
+        if($user->rol_id == 6){ // coordinador psicosocial
             $usersRegions = ZoneUser::where('zone_id', $region->zone_id)->pluck('user_id'); // Obtener los IDs de usuarios con la misma región
             $users = RoleUser::whereIn('user_id', $usersRegions)->where('role_id', $user->role_id)->get(); // Obtener los usuarios con el mismo rol y región
 
             return response()->json($users);
         }
-        if($user['role_id'] == 4){ // subdirector tecnico regional
+        if($user->rol_id == 4){ // subdirector tecnico regional
             $usersRegions = ZoneUser::where('zone_id', $region->zone_id)->pluck('user_id'); // Obtener los IDs de usuarios con la misma región
             $users = RoleUser::whereIn('user_id', $usersRegions)->where('role_id', $user->role_id)->get(); // Obtener los usuarios con el mismo rol y región
 
             return response()->json($users);
         }
+        if($user->rol_id == 2 || $user->rol_id == 8 || $user->rol_id == 1 ){ // director administrativo, asistente administrativo, superroot
+            $users = User::all();
+            return response()->json($users);   
+        } 
     }
 }
