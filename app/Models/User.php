@@ -124,6 +124,10 @@ class User extends Authenticatable
         return $this->hasMany(NavigationHistory::class, 'user_id');
     }
 
+    public function metodologo() {
+        return $this->hasMany(Users::class, 'methodology_id', 'id');
+    }
+
     /**
      * Relationship many to many
      */

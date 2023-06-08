@@ -55,6 +55,8 @@ class UsersTableSeeder extends Seeder
             $user->gender = $row['H'];
             $user->email = $row['I'];
             $user->password = Hash::make($row['E']);
+            $user->revised_by = $row['J'];
+            $user->methodology_id = $row['K'] == '' ? null : $row['K'];
             $user->save();
             // Guardar el ID del usuario creado y la cédula en el metodologo
             $userIdsAndCedulas[] = [

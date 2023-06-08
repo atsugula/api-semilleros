@@ -1,6 +1,7 @@
 <?php
 namespace App\Repositories;
 
+use App\Http\Resources\V1\ChronogramResource;
 use PhpOffice\PhpWord\TemplateProcessor;
 use App\Models\MethodologistVisit;
 use App\Models\VisitSubDirector;
@@ -12,7 +13,9 @@ use App\Models\KnowGuardians;
 use App\Models\BeneficiaryGuardians;
 use App\Models\user;
 use App\Models\CoordinatorVisit;
-
+use App\Models\Chronogram;
+use Exception;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use PhpOffice\PhpWord\PhpWord;
 
@@ -29,6 +32,7 @@ class ReportVisitsRepository
   private $BeneficiaryGuardians;
   private $user;
   private $CoordinatorVisit;
+  private $Chronogram;
 
   function __construct()
   {
@@ -41,6 +45,7 @@ class ReportVisitsRepository
     $this->HealthEntities = new HealthEntities();
     $this->KnowGuardians = new KnowGuardians();
     $this->BeneficiaryGuardians = new BeneficiaryGuardians();
+    $this->Chronogram = new Chronogram();
     $this->user = new user();
   }
 
@@ -410,6 +415,25 @@ class ReportVisitsRepository
     $relative_path = 'Template/Regional_coordinator/visita/'.$id.'_Visita_subdirector_'. $coordinador_name .'.docx';
 
     return $relative_path;
+  }
+
+  public function GenerateChronogram($id) {
+
+    try {
+      $ChronogramReport = new ChronogramResource($this->Chronogram->findOrFail($id));
+
+
+  
+      $templatePath = public_path('Template/Chronogram/Template');
+        
+        
+      return $ChronogramReport;
+
+    } catch (Exception $e) {
+      Log::info($e);
+    }
+        
+
   }
 
 }
