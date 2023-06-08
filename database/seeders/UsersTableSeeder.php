@@ -56,7 +56,7 @@ class UsersTableSeeder extends Seeder
             $user->email = $row['I'];
             $user->password = Hash::make($row['E']);
             $user->revised_by = $row['J'];
-            $user->methodology_id = $row['K'];
+            $user->methodology_id = $row['K'] == '' ? null : $row['K'];
             $user->save();
 
             $counter++;
