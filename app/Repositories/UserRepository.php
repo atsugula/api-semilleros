@@ -13,6 +13,8 @@ use App\Models\RoleUser;
 use App\Models\User;
 use App\Traits\UserDataTrait;
 use Illuminate\Support\Facades\DB;
+use App\Mail\RegisterUserMailable;
+use Illuminate\Support\Facades\Mail;
 
 class UserRepository
 {
@@ -91,12 +93,6 @@ class UserRepository
                     'role_id' =>  $user['roles'],
                 ]);
                 // Regiones o zonas - usuarios
-                // foreach ($user['zones'] as $key => $value) {
-                //     ZoneUser::create([
-                //             'user_id' => $new_user->id,
-                //             'zones_id' =>  $value,
-                //         ]);
-                // }
                 $zonaArray = explode(",", $user['zones']);
                 foreach ($zonaArray as $key => $value) {
                     ZoneUser::create([
@@ -132,6 +128,11 @@ class UserRepository
         }
         // Guardamos en ModelData
         $this->control_data($new_user, 'store');
+
+
+        $correo = new RegisterUserMailable($new_user);
+
+        Mail::to($new_user['email'])->send($correo);
 
         return $new_user;
     }
@@ -227,7 +228,7 @@ class UserRepository
                 }
 
                 // Diciplinas
-                if($data['disciplines'] && $data['roles'] == '12'){
+                if(isset($data['disciplines']) && $data['roles'] == '12'){
                     $discipline = DisciplineUser::where('user_id', $user_up->id)->delete();
                     foreach ($data['disciplines'] as $key => $value) {
                         $discipline = new DisciplineUser();
@@ -244,6 +245,10 @@ class UserRepository
         }
         // Guardamos en ModelData
         $this->control_data($user_up, 'update');
+
+        $correo = new RegisterUserMailable($user_up);
+
+        Mail::to($user_up['email'])->send($correo);
 
         return $user_up;
     }

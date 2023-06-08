@@ -37,7 +37,9 @@ class User extends Authenticatable
         'address',
         'phone',
         'gender',
-        'inactive'
+        'inactive',
+        'asistent',
+        'methodology_id',
     ];
 
     /**
@@ -116,7 +118,7 @@ class User extends Authenticatable
     {
         return LogOptions::defaults();
     }
-    
+
     public function navigationHistory()
     {
         return $this->hasMany(NavigationHistory::class, 'user_id');
