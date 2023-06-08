@@ -35,7 +35,7 @@ class UsersTableSeeder extends Seeder
         // Recorrer los datos y crear los usuarios
         // Inicializar el contador
         $counter = 0;
-  
+
         // Recorrer los datos y crear los usuarios
         foreach ($rows as $row) {
             // Saltar la primera fila
@@ -56,8 +56,26 @@ class UsersTableSeeder extends Seeder
             $user->email = $row['I'];
             $user->password = Hash::make($row['E']);
             $user->save();
+            // Guardar el ID del usuario creado y la cédula en el metodologo
+            $userIdsAndCedulas[] = [
+                'userId' => $user->id,
+                'cedula' => $row['J'],
+            ];
 
             $counter++;
+        }
+        // Recorrer el array y asignar el methodology_id
+        foreach ($userIdsAndCedulas as $data) {
+            $user = User::find($data['userId']);
+            $cedula = $data['cedula'];
+
+            // Buscar el usuario con la cédula correspondiente
+            $relatedUser = User::where('document_number', $cedula)->first();
+
+            if ($relatedUser) {
+                $user->methodology_id = $relatedUser->id;
+                $user->save();
+            }
         }
     }
 }
