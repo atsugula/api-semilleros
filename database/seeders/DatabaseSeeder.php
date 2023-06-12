@@ -61,7 +61,8 @@ class DatabaseSeeder extends Seeder
             SidewalkSeeder::class,
             Health_Entities_Seeder::class,
             RolesActivitiesSeeder::class,
-            RolesObjectsActivitiesSeeder::class
+            RolesObjectsActivitiesSeeder::class,
+            AdministrativeSeeder::class
         ]);
     }
 }

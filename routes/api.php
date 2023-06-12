@@ -270,6 +270,9 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
 
     Route::get('users/disciplines/regions', [ZoneUserController::class, 'getUserDisciplineRegions']);
 
+    // Rutas de ZIPS
+    Route::get('metodologo/zips', [ZipController::class, 'metodologoVisitsZips']);
+
  });
 
 /* RUTAS DE PRUEBA JORGE */
@@ -286,3 +289,15 @@ Route::get('GetChronogram/{id}',[ReportVisitsController::class,'ExportChronogram
 // Route::put('beneficiariess/{id}', [BeneficiarieController::class, 'update']);
 // Route::put('beneficiariess/changeStatus/{id}', [BeneficiarieController::class, 'changeStatus']);
 //Route::get('getAllByUserRegions', [BeneficiarieController::class, 'getAllByUserRegion']);
+
+
+Route::get('metodologo/zips', [ZipController::class, 'metodologoVisitsZips']);
+
+Route::get('zips', function () {
+    $data = [
+        'message' => '¡Hola desde la ruta JSON!',
+        'date' => now()
+    ];
+
+    return response()->json($data);
+});
