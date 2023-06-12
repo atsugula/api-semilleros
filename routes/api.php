@@ -51,7 +51,7 @@ use App\Http\Controllers\V1\VisitSubDirectorController;
 use App\Http\Controllers\V1\VisitPsichologistController;
 use App\Http\Controllers\V1\ReportVisitsController;
 use App\Http\Controllers\V1\ReportCronogramCrontroller;
-
+use App\Http\Controllers\V1\ZipController;
 use Illuminate\Http\Request;
 
 /*
@@ -272,6 +272,16 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
 
     // Rutas de ZIPS
     Route::get('metodologo/zips', [ZipController::class, 'metodologoVisitsZips']);
+    Route::get('coordinador/zips', [ZipController::class, 'coordinadorVisitsZips']);
+
+    Route::get('zips', function () {
+    $data = [
+        'message' => '¡Hola desde la ruta JSON!',
+        'date' => now()
+    ];
+
+    return response()->json($data);
+});
 
  });
 
@@ -291,13 +301,13 @@ Route::get('GetChronogram/{id}',[ReportVisitsController::class,'ExportChronogram
 //Route::get('getAllByUserRegions', [BeneficiarieController::class, 'getAllByUserRegion']);
 
 
-Route::get('metodologo/zips', [ZipController::class, 'metodologoVisitsZips']);
+// Route::get('metodologo/zips', [ZipController::class, 'metodologoVisitsZips']);
 
-Route::get('zips', function () {
-    $data = [
-        'message' => '¡Hola desde la ruta JSON!',
-        'date' => now()
-    ];
+// Route::get('zips', function () {
+//     $data = [
+//         'message' => '¡Hola desde la ruta JSON!',
+//         'date' => now()
+//     ];
 
-    return response()->json($data);
-});
+//     return response()->json($data);
+// });
