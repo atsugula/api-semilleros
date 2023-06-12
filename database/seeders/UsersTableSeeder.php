@@ -43,7 +43,9 @@ class UsersTableSeeder extends Seeder
                 $counter++;
                 continue;
             }
-
+            if($row['B'] == null){
+                continue;
+            }
             $user = new User();
             $user->id = $row['A'];
             $user->name = $row['B'];
@@ -60,7 +62,7 @@ class UsersTableSeeder extends Seeder
             $userIdsAndCedulas[] = [
                 'userId' => $user->id,
                 'cedulaMetodologo' => $row['J'],
-                'cedulaManagment' => $row['k'],
+                'cedulaManagment' => $row['K'],
             ];
 
             $counter++;
@@ -77,7 +79,7 @@ class UsersTableSeeder extends Seeder
             // Buscar el usuario con la cédula correspondiente
             $relatedUserManagment = User::where('document_number', $data['cedulaManagment'])->first();
             if ($relatedUserManagment) {
-                $user->revised_by = $relatedUserManagment->id;
+                $user->manager_id = $relatedUserManagment->id;
                 $user->save();
             }
         }
