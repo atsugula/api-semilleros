@@ -47,8 +47,8 @@ return new class extends Migration
                 ->references('id')
                 ->on('users');
 
-            $table->unsignedBigInteger('managment_id')->nullable()->constrained()->onDelete('cascade');
-            $table->foreign('managment_id')
+            $table->unsignedBigInteger('manager_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreign('manager_id')
                 ->references('id')
                 ->on('users');
             $table->unsignedBigInteger('asistent_id')->nullable();
