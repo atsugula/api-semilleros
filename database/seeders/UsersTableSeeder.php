@@ -59,7 +59,8 @@ class UsersTableSeeder extends Seeder
             // Guardar el ID del usuario creado y la cédula en el metodologo
             $userIdsAndCedulas[] = [
                 'userId' => $user->id,
-                'cedula' => $row['J'],
+                'cedulaMetodologo' => $row['J'],
+                'cedulaManagment' => $row['k'],
             ];
 
             $counter++;
@@ -67,13 +68,16 @@ class UsersTableSeeder extends Seeder
         // Recorrer el array y asignar el methodology_id
         foreach ($userIdsAndCedulas as $data) {
             $user = User::find($data['userId']);
-            $cedula = $data['cedula'];
-
             // Buscar el usuario con la cédula correspondiente
-            $relatedUser = User::where('document_number', $cedula)->first();
-
+            $relatedUser = User::where('document_number', $data['cedulaMetodologo'])->first();
             if ($relatedUser) {
                 $user->methodology_id = $relatedUser->id;
+                $user->save();
+            }
+            // Buscar el usuario con la cédula correspondiente
+            $relatedUserManagment = User::where('document_number', $data['cedulaManagment'])->first();
+            if ($relatedUserManagment) {
+                $user->revised_by = $relatedUserManagment->id;
                 $user->save();
             }
         }

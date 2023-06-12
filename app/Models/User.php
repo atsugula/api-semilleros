@@ -40,6 +40,7 @@ class User extends Authenticatable
         'inactive',
         'asistent',
         'methodology_id',
+        'managment_id',
     ];
 
     /**
