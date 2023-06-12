@@ -146,6 +146,10 @@ class GeneralController extends Controller
                     $record = User::select('name as label', 'id as value')->whereHas('roles', function ($query) {
                         $query->where('role_id', 10);
                     })->get();
+                }elseif('managerList' == $value){
+                    $record = User::select('name as label', 'id as value')->whereHas('roles', function ($query) {
+                        $query->whereNotIn('role_id', [12, 11]);
+                    })->get();
                 }
                 else {
                     $record = DB::table($value)->select('name as label', 'id as value');
