@@ -11,6 +11,7 @@ use App\Models\HealthEntities;
 use App\Models\psychologistVisits;
 use App\Models\KnowGuardians;
 use App\Models\BeneficiaryGuardians;
+use App\Models\Beneficiary;
 use App\Models\user;
 use App\Models\CoordinatorVisit;
 use App\Models\Chronogram;
@@ -28,6 +29,7 @@ class ReportVisitsRepository
   private $PsychologisttransversalActivity;
   private $PsychologistcustomVisit;
   private $HealthEntities;
+  private $beneficiaries;
   private $KnowGuardians;
   private $BeneficiaryGuardians;
   private $user;
@@ -47,6 +49,7 @@ class ReportVisitsRepository
     $this->BeneficiaryGuardians = new BeneficiaryGuardians();
     $this->Chronogram = new Chronogram();
     $this->user = new user();
+    $this->beneficiaries = new Beneficiary();
   }
 
   public function generateDoc($id){
@@ -420,7 +423,7 @@ class ReportVisitsRepository
   public function GenerateChronogram($id) {
 
     try {
-      $ChronogramReport = new ChronogramResource($this->Chronogram->findOrFail($id));
+      $ChronogramReport = $this->Chronogram->findOrFail($id);
 
 
   
@@ -431,6 +434,52 @@ class ReportVisitsRepository
 
     } catch (Exception $e) {
       Log::info($e);
+    }
+        
+
+  }
+
+  public function GenerateBenefisiaries($id) {
+
+    try {
+
+      $BeneficiariesReport = $this->beneficiaries->findOrFail($id);
+
+      $bene_name = str_replace(' ', '_', $BeneficiariesReport->full_name);
+
+      //ruta de la plantilla
+      $templatePath = public_path('Template/Benefisiaries/Ficha/ficha.docx');
+      $outputPath = public_path('Template/Benefisiaries/fichas/Ficha_'.$id.'_beneficiario_'. $bene_name .'.docx');
+
+      //formatear fecha
+      $birth_date_parts = explode('-', $BeneficiariesReport->birth_date);
+      $birth_year = $birth_date_parts[0];
+      $birth_month = $birth_date_parts[1];
+      $birth_day = $birth_date_parts[2];
+
+      $templateProcessor = new TemplateProcessor($templatePath);
+
+      $data = [
+        "id" => $BeneficiariesReport->id,
+        "date" => $BeneficiariesReport->registration_date,
+        "zone" => $BeneficiariesReport->municipality->zone_id,
+        "municipality" => $BeneficiariesReport->municipality->name,
+        "full_name" => $BeneficiariesReport->full_name,
+        "BD" => $birth_day,
+        "BM" => $birth_month,
+        "BY" => $birth_year,
+      ];
+
+      $templateProcessor->setValues($data);
+
+      $templateProcessor->saveAs($outputPath);
+
+      $relative_path = 'Template/Benefisiaries/fichas/Ficha_'.$id.'_beneficiari_'. $bene_name .'.docx';
+
+      return  $BeneficiariesReport->municipality->zone_id;
+
+    } catch (Exception $e) {
+      return $e;
     }
         
 
