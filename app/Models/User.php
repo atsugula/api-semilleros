@@ -38,8 +38,9 @@ class User extends Authenticatable
         'phone',
         'gender',
         'inactive',
-        'asistent',
+        'asistent_id',
         'methodology_id',
+        'manager_id',
     ];
 
     /**
