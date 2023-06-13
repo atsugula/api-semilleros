@@ -144,7 +144,11 @@ class GeneralController extends Controller
                     })->get();
                 }elseif('metodologoList' == $value){
                     $record = User::select('name as label', 'id as value')->whereHas('roles', function ($query) {
-                        $query->where('role_id', 12);
+                        $query->where('role_id', 10);
+                    })->get();
+                }elseif('managerList' == $value){
+                    $record = User::select('name as label', 'id as value')->whereHas('roles', function ($query) {
+                        $query->whereNotIn('role_id', [12, 11]);
                     })->get();
                 }
                 else {
