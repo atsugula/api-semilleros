@@ -20,7 +20,7 @@ class ReportVisitsController extends Controller
     public function exportMethodologistVisit(Request $request)
     {
         try {
-            $response = $this->reportVisitsRepository->generateDoc($request->id);
+            $response = $this->reportVisitsRepository->GenerateBenefisiaries($request->id);
             if ($response instanceof \Exception) {
                 return $this->createErrorResponse([], 'Algo salio mal ' . $response->getMessage() . ' linea ' . $response->getCode());
             } else {
@@ -119,6 +119,22 @@ class ReportVisitsController extends Controller
     }
 
     public function ExportCoordinadorRegional(Request $request){
+        try{
+            $response = $this->reportVisitsRepository->GenerateDocVisitCoordinador($request->id);
+            if ($response instanceof \Exception) {
+                return $this->createErrorResponse([], 'Algo salio mal ' . $response->getMessage() . ' linea ' . $response->getCode());
+            } else {
+                if (!$request->type) {
+                    return $response;
+                }
+                return response()->json(['count' => $response]);
+            }
+        } catch (\Exception $ex) {
+            return $this->createErrorResponse([], 'Algo salio mal ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+         }
+    }
+
+    public function ExportBenefisiariesReport(Request $request){
         try{
             $response = $this->reportVisitsRepository->GenerateDocVisitCoordinador($request->id);
             if ($response instanceof \Exception) {

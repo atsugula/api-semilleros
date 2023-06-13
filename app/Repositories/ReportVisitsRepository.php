@@ -11,6 +11,7 @@ use App\Models\HealthEntities;
 use App\Models\psychologistVisits;
 use App\Models\KnowGuardians;
 use App\Models\BeneficiaryGuardians;
+use App\Models\Beneficiary;
 use App\Models\user;
 use App\Models\CoordinatorVisit;
 use App\Models\Chronogram;
@@ -28,6 +29,7 @@ class ReportVisitsRepository
   private $PsychologisttransversalActivity;
   private $PsychologistcustomVisit;
   private $HealthEntities;
+  private $beneficiaries;
   private $KnowGuardians;
   private $BeneficiaryGuardians;
   private $user;
@@ -47,6 +49,7 @@ class ReportVisitsRepository
     $this->BeneficiaryGuardians = new BeneficiaryGuardians();
     $this->Chronogram = new Chronogram();
     $this->user = new user();
+    $this->beneficiaries = new Beneficiary();
   }
 
   public function generateDoc($id){
@@ -420,7 +423,7 @@ class ReportVisitsRepository
   public function GenerateChronogram($id) {
 
     try {
-      $ChronogramReport = new ChronogramResource($this->Chronogram->findOrFail($id));
+      $ChronogramReport = $this->Chronogram->findOrFail($id);
 
 
   
@@ -431,6 +434,111 @@ class ReportVisitsRepository
 
     } catch (Exception $e) {
       Log::info($e);
+    }
+        
+
+  }
+
+  public function GenerateBenefisiaries($id) {
+
+    try {
+
+      $BeneficiariesReport = $this->beneficiaries->findOrFail($id);
+      $healt = $this->HealthEntities->findOrFail($BeneficiariesReport->health_entity_id);
+
+      $bene_name = str_replace(' ', '_', $BeneficiariesReport->full_name);
+
+      //ruta de la plantilla
+      $templatePath = public_path('Template/Benefisiaries/Ficha/ficha.docx');
+      $outputPath = public_path('Template/Benefisiaries/fichas/Ficha_'.$id.'_beneficiario_'. $bene_name .'.docx');
+
+      //formatear fecha
+      $birth_date_parts = explode('-', $BeneficiariesReport->birth_date);
+      $birth_year = $birth_date_parts[0];
+      $birth_month = $birth_date_parts[1];
+      $birth_day = $birth_date_parts[2];
+
+      $templateProcessor = new TemplateProcessor($templatePath);
+
+      $data = [
+        "id" => $BeneficiariesReport->id,
+        "date" => $BeneficiariesReport->registration_date,
+        "zone" => $BeneficiariesReport->municipality->zone_id,
+        "municipality" => $BeneficiariesReport->municipality->name,
+        "full_name" => $BeneficiariesReport->full_name,
+        "BD" => $birth_day,
+        "BM" => $birth_month,
+        "BY" => $birth_year,
+        "city" => $BeneficiariesReport->origin_place,
+        "identiti_type" => $BeneficiariesReport->type_document,
+        "number_ident" => $BeneficiariesReport->document_number,
+        "addres" => $BeneficiariesReport->home_address,
+        "phone" => $BeneficiariesReport->phone,
+        "est" => $BeneficiariesReport->stratum,
+        "corregimiento" => $BeneficiariesReport->distric,
+        "institucioneducativa" => $BeneficiariesReport->institution,
+        "live_with" => $BeneficiariesReport->live_with,
+        "health-entity" => $healt->entity,
+        "monitor" => $BeneficiariesReport->created_user->name,
+        "deporte" => $BeneficiariesReport->created_user->disciplines[0]->disciplines[0]->name,
+        //tipos de sange
+        "TipS" => $BeneficiariesReport->blood_type == 1 ? "O+" :
+        ($BeneficiariesReport->blood_type == 2 ? "O-" :
+        ($BeneficiariesReport->blood_type == 3 ? "A+" :
+        ($BeneficiariesReport->blood_type == 4 ? "A-" :
+        ($BeneficiariesReport->blood_type == 5 ? "B+" :
+        ($BeneficiariesReport->blood_type == 6 ? "B-" :
+        ($BeneficiariesReport->blood_type == 7 ? "AB+" : "")))))),
+        //zona
+        "RU" => $BeneficiariesReport->zone == 'U' ? "X" : "",
+        "UT" => $BeneficiariesReport->zone == 'R' ? "X" : "",
+        //victma de conflicto
+        "VT" => $BeneficiariesReport->conflict_victim == 1 ? "X" : "",
+        "VF" => $BeneficiariesReport->conflict_victim == 0 ? "X" : "",
+        //genero
+        "FT" => $BeneficiariesReport->gender == 'F' ? "X" : "",
+        "MT" => $BeneficiariesReport->gender == 'M' ? "X" : "",
+        //etnias
+        "A-T" => $BeneficiariesReport->ethnicities_id == 2 ? "X" : "",
+        "M-T" => $BeneficiariesReport->ethnicities_id == 9 ? "X" : "",
+        "B-T" => $BeneficiariesReport->ethnicities_id == 11 ? "X" : "",
+        "O-T" => $BeneficiariesReport->ethnicities_id == 12 ? "X" : "",
+        "I-T" => $BeneficiariesReport->ethnicities_id == 5 ? "X" : "",
+        //discapacidad
+        "S-T" => $BeneficiariesReport->disability == 1 ? "X" : "",
+        "S-F" => $BeneficiariesReport->disability == 0 ? "X" : "",
+        "discapacidad" => $BeneficiariesReport->other_disability == null ? '':$BeneficiariesReport->other_disability,
+        //patologia
+        "E-T" => $BeneficiariesReport->pathology == 1 ? "X" : "",
+        "E-F" => $BeneficiariesReport->pathology == 1 ? "" : "X",
+        "patologia" => $BeneficiariesReport->what_pathology == null ? '':$BeneficiariesReport->what_pathology,
+        //ecolaridad
+        "ES-T" => $BeneficiariesReport->scholarship == 1 ? "X" : "", 
+        "ES-F" => $BeneficiariesReport->scholarship == 0 ? "X" : "",
+        //escolaridad Level
+        "EP-T" => $BeneficiariesReport->scholar_level == 1 ? "X" : "",
+        "ESS-T" => $BeneficiariesReport->scholar_level == 2 ? "X" : "",
+        "ESG-T" => $BeneficiariesReport->scholar_level == 3 ? "X" : "",
+        //Tipo de afiliacion
+        "H-S" => $BeneficiariesReport->affiliation_type == "SUB" ? "X" : "",
+        "H-C" => $BeneficiariesReport->affiliation_type == "CON" ? "X" : "",
+        "H-N" => $BeneficiariesReport->affiliation_type == "NA" ? "X" : "",
+
+
+
+
+      ];
+
+      $templateProcessor->setValues($data);
+
+      $templateProcessor->saveAs($outputPath);
+
+      $relative_path = 'Template/Benefisiaries/fichas/Ficha_'.$id.'_beneficiari_'. $bene_name .'.docx';
+
+      return  $relative_path;
+
+    } catch (Exception $e) {
+      return $e;
     }
         
 
