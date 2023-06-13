@@ -444,6 +444,7 @@ class ReportVisitsRepository
     try {
 
       $BeneficiariesReport = $this->beneficiaries->findOrFail($id);
+      $healt = $this->HealthEntities->findOrFail($BeneficiariesReport->health_entity_id);
 
       $bene_name = str_replace(' ', '_', $BeneficiariesReport->full_name);
 
@@ -468,6 +469,64 @@ class ReportVisitsRepository
         "BD" => $birth_day,
         "BM" => $birth_month,
         "BY" => $birth_year,
+        "city" => $BeneficiariesReport->origin_place,
+        "identiti_type" => $BeneficiariesReport->type_document,
+        "number_ident" => $BeneficiariesReport->document_number,
+        "addres" => $BeneficiariesReport->home_address,
+        "phone" => $BeneficiariesReport->phone,
+        "est" => $BeneficiariesReport->stratum,
+        "corregimiento" => $BeneficiariesReport->distric,
+        "institucioneducativa" => $BeneficiariesReport->institution,
+        "live_with" => $BeneficiariesReport->live_with,
+        "health-entity" => $healt->entity,
+        "monitor" => $BeneficiariesReport->created_user->name,
+        "deporte" => $BeneficiariesReport->created_user->disciplines[0]->disciplines[0]->name,
+        //tipos de sange
+        "TipS" => $BeneficiariesReport->blood_type == 1 ? "O+" :
+        ($BeneficiariesReport->blood_type == 2 ? "O-" :
+        ($BeneficiariesReport->blood_type == 3 ? "A+" :
+        ($BeneficiariesReport->blood_type == 4 ? "A-" :
+        ($BeneficiariesReport->blood_type == 5 ? "B+" :
+        ($BeneficiariesReport->blood_type == 6 ? "B-" :
+        ($BeneficiariesReport->blood_type == 7 ? "AB+" : "")))))),
+        //zona
+        "RU" => $BeneficiariesReport->zone == 'U' ? "X" : "",
+        "UT" => $BeneficiariesReport->zone == 'R' ? "X" : "",
+        //victma de conflicto
+        "VT" => $BeneficiariesReport->conflict_victim == 1 ? "X" : "",
+        "VF" => $BeneficiariesReport->conflict_victim == 0 ? "X" : "",
+        //genero
+        "FT" => $BeneficiariesReport->gender == 'F' ? "X" : "",
+        "MT" => $BeneficiariesReport->gender == 'M' ? "X" : "",
+        //etnias
+        "A-T" => $BeneficiariesReport->ethnicities_id == 2 ? "X" : "",
+        "M-T" => $BeneficiariesReport->ethnicities_id == 9 ? "X" : "",
+        "B-T" => $BeneficiariesReport->ethnicities_id == 11 ? "X" : "",
+        "O-T" => $BeneficiariesReport->ethnicities_id == 12 ? "X" : "",
+        "I-T" => $BeneficiariesReport->ethnicities_id == 5 ? "X" : "",
+        //discapacidad
+        "S-T" => $BeneficiariesReport->disability == 1 ? "X" : "",
+        "S-F" => $BeneficiariesReport->disability == 0 ? "X" : "",
+        "discapacidad" => $BeneficiariesReport->other_disability == null ? '':$BeneficiariesReport->other_disability,
+        //patologia
+        "E-T" => $BeneficiariesReport->pathology == 1 ? "X" : "",
+        "E-F" => $BeneficiariesReport->pathology == 1 ? "" : "X",
+        "patologia" => $BeneficiariesReport->what_pathology == null ? '':$BeneficiariesReport->what_pathology,
+        //ecolaridad
+        "ES-T" => $BeneficiariesReport->scholarship == 1 ? "X" : "", 
+        "ES-F" => $BeneficiariesReport->scholarship == 0 ? "X" : "",
+        //escolaridad Level
+        "EP-T" => $BeneficiariesReport->scholar_level == 1 ? "X" : "",
+        "ESS-T" => $BeneficiariesReport->scholar_level == 2 ? "X" : "",
+        "ESG-T" => $BeneficiariesReport->scholar_level == 3 ? "X" : "",
+        //Tipo de afiliacion
+        "H-S" => $BeneficiariesReport->affiliation_type == "SUB" ? "X" : "",
+        "H-C" => $BeneficiariesReport->affiliation_type == "CON" ? "X" : "",
+        "H-N" => $BeneficiariesReport->affiliation_type == "NA" ? "X" : "",
+
+
+
+
       ];
 
       $templateProcessor->setValues($data);
@@ -476,7 +535,7 @@ class ReportVisitsRepository
 
       $relative_path = 'Template/Benefisiaries/fichas/Ficha_'.$id.'_beneficiari_'. $bene_name .'.docx';
 
-      return  $BeneficiariesReport->municipality->zone_id;
+      return  $relative_path;
 
     } catch (Exception $e) {
       return $e;
