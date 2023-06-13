@@ -172,10 +172,7 @@ class BeneficiarieRepository
     {
         $validate = [
             'affiliation_type' => 'bail|required',
-            'document_number' => [
-                'required',
-                Rule::unique(Beneficiary::class),
-            ],
+            'document_number' => $method != 'update' ? ['bail', 'required', 'string', Rule::unique(Asistant::class)] : ['bail', 'required', 'string'],
             /* 'group_id' => 'bail|required',
             'full_name' => 'bail|required',
             'institution_entity_referred' => 'bail|required',
@@ -226,7 +223,7 @@ class BeneficiarieRepository
 
     public function getAllByUserRegion()
     {
-            // codigo por revisar 
+            // codigo por revisar
         $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
 
@@ -334,6 +331,6 @@ class BeneficiarieRepository
     }
 
     public function allByBeneficiaryRegion($region){
-        
+
     }
 }
