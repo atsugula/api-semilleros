@@ -19,6 +19,7 @@ class Chronogram extends Model
         'month',
         'municipality',
         'note',
+        'note_holiday',
         'revised_by',
         'status_id',
         'updated_at'
