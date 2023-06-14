@@ -54,7 +54,7 @@ class Chronogram extends Model
     }
 
     public function municipio(){
-        return $this->hasOne(City::class, 'id', 'municipality');
+        return $this->hasOne(Municipality::class, 'id', 'municipality');
     }
 
     public function estado(){
