@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use App\Models\MunicipalityUser;
 use App\Models\DisciplineUser;
+use App\Models\User;
+use App\Models\ZoneUser;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class MonitorsController extends Controller
 {
@@ -38,7 +42,23 @@ class MonitorsController extends Controller
                 ]);
             }
         }
-    
+
         return response()->json($disciplinesArray);
+    }
+
+    public function getMonitorByAuth(){
+        $authUser = Auth::user();
+        $userZonesAuth = ZoneUser::where('user_id', $authUser->id)->pluck('zones_id');
+        // return $userZonesAuth;
+
+        $usersMonitorAuth = User::select(DB::raw("CONCAT(name, ' ', lastname) as label"), 'id as value')
+            ->whereHas('roles', function ($query) {
+                $query->where('role_id', 12);
+            })
+            ->whereHas('zone', function ($query) use($userZonesAuth){
+                $query->whereIn('zones_id', $userZonesAuth);
+            })
+        ->get();
+        return $usersMonitorAuth;
     }
 }

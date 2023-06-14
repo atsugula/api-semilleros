@@ -249,7 +249,7 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
     // USUARIOS MONITORES POR MUNICIPIO
     Route::get('getMonitoringMunicipality/{id}', [MonitorsController::class, 'getMonitoringMunicipality']);
     Route::get('getdisiplinesMonitoring/{id}', [MonitorsController::class, 'getdisiplinesMonitoring']);
-
+    Route::get('getMonitorByAuth', [MonitorsController::class, 'getMonitorByAuth']);
 
     //Muestra los meses restantes del año
     Route::get('months', [MonthsController::class, 'index']);
