@@ -258,8 +258,7 @@ class BeneficiarieRepository
             array_push($allMunicipalities, $a['id']);
         }
 
-        if ($rol_id == config('roles.asistente_administrativo')) {
-
+        if ($rol_id == config('roles.asistente_administrativo') || $rol_id == config('roles.subdirector_tecnico')) {
             return new BeneficiaryCollection(
                 $this->model
                     // ->whereIn('municipalities_id', $allMunicipalities)
