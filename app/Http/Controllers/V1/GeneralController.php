@@ -143,11 +143,11 @@ class GeneralController extends Controller
                         $query->where('role_id', 8);
                     })->get();
                 }elseif('metodologoList' == $value){
-                    $record = User::select('name as label', 'id as value')->whereHas('roles', function ($query) {
+                    $record = User::select(DB::raw("CONCAT(name, ' ', lastname) as label"), 'id as value')->whereHas('roles', function ($query) {
                         $query->where('role_id', 10);
                     })->get();
                 }elseif('managerList' == $value){
-                    $record = User::select('name as label', 'id as value')->whereHas('roles', function ($query) {
+                    $record = User::select(DB::raw("CONCAT(name, ' ', lastname) as label"), 'id as value')->whereHas('roles', function ($query) {
                         $query->whereNotIn('role_id', [12, 11]);
                     })->get();
                 }
