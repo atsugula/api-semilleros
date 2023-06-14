@@ -19,6 +19,7 @@ class Chronogram extends Model
         'month',
         'municipality',
         'note',
+        'note_holiday',
         'revised_by',
         'status_id',
         'updated_at'
@@ -53,7 +54,7 @@ class Chronogram extends Model
     }
 
     public function municipio(){
-        return $this->hasOne(City::class, 'id', 'municipality');
+        return $this->hasOne(Municipality::class, 'id', 'municipality');
     }
 
     public function estado(){
