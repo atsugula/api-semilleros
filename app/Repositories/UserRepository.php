@@ -49,6 +49,10 @@ class UserRepository
         if ($rol_id == config('roles.asistente_administrativo')){
             $query = $query->where('asistent_id', Auth::user()->id);
         }
+
+        if ($rol_id == config('roles.metodologo')){
+            $query = $query->where('methodology_id', Auth::user()->id);
+        }
         $cantRegistros = $query->get()->count();
         return  new UserCollection($query->paginate($cantRegistros));
 
