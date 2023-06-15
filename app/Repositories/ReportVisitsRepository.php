@@ -425,12 +425,33 @@ class ReportVisitsRepository
     try {
       $ChronogramReport = $this->Chronogram->findOrFail($id);
 
+      $bene_name = str_replace(' ', '_', $ChronogramReport->creator->lastname);
 
+      $relative_path = 'Template\Chronogram\fichas\chronogram_'.$id.'_por_'. $bene_name .'.docx';
   
-      $templatePath = public_path('Template/Chronogram/Template');
-        
-        
-      return $ChronogramReport;
+      $templatePath = public_path('Template/Chronogram/template/Template.docx');
+      $outputPath = public_path($relative_path);
+      
+       $templateProcessor = new TemplateProcessor($templatePath);
+
+       $data = [
+        'update_date' => $ChronogramReport->updated_at,
+        'status' => $ChronogramReport->statuses->name,
+        'MONTH' => $ChronogramReport->mes->name,
+        'MONITOR_name' => $ChronogramReport->creator->name,
+        'MONITOR_lastname' => $ChronogramReport->creator->lastname,
+        'zone' => $ChronogramReport->municipio->zone_id,
+        'municipio' => $ChronogramReport->municipio->name
+       ];
+
+       foreach($ChronogramReport->groups as $group){
+        $datos[] = $group->group_id;}
+      
+       $templateProcessor->setValues($data);
+
+       $templateProcessor->saveAs($outputPath);
+
+      return $datos;
 
     } catch (Exception $e) {
       Log::info($e);
