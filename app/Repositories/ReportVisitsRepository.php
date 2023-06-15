@@ -445,7 +445,8 @@ class ReportVisitsRepository
        ];
        $index = 1;
        foreach($ChronogramReport->groups as $group){
-        $gruopID = 'idG' . $index;
+        $gruopID = 'idG'.$index;
+        $discipline = 'modDep' . $index;
         $templateProcessor->setValue($gruopID, $group->group_id);
         $index++;
       }
@@ -553,9 +554,6 @@ class ReportVisitsRepository
         "H-S" => $BeneficiariesReport->affiliation_type == "SUB" ? "X" : "",
         "H-C" => $BeneficiariesReport->affiliation_type == "CON" ? "X" : "",
         "H-N" => $BeneficiariesReport->affiliation_type == "NA" ? "X" : "",
-
-
-
 
       ];
 
