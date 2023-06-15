@@ -11,6 +11,7 @@ use App\Traits\UserDataTrait;
 use App\Traits\ImageTrait;
 use App\Models\Chronogram;
 use App\Models\Schedule;
+use Illuminate\Support\Facades\Log;
 
 class ChronogramRepository
 {
@@ -31,9 +32,9 @@ class ChronogramRepository
         $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
 
-        $query = $this->model;
+        $query = $this->model->query();
 
-        if ($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_maritimo') || $rol_id == config('roles.coordinador_enlace')|| $rol_id == config('roles.monitor')) {
+        if ($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_maritimo') || $rol_id == config('roles.coordinador_enlace')/*|| $rol_id == config('roles.monitor')*/) {
             $query->whereNotIn('created_by', [1,2])->with(['mes', 'municipio'])
                 ->whereHas('creator.roles', function ($query) {
                     $query->where('roles.slug', 'subdirector_tecnico');
@@ -45,6 +46,12 @@ class ChronogramRepository
             $query->whereNotIn('created_by', [1,2])->with(['mes', 'municipio'])
                 ->where('created_by', $user_id)
                 ->whereNotIn('status_id', [config('status.APR')]);
+        }
+
+        if($rol_id == config('roles.subdirector_tecnico')){
+            $query->whereNotIn('created_by', [1,2])
+                ->with(['mes', 'municipio'])
+                ->where('status_id', 5);
         }
 
         $paginate = config('global.paginate');
@@ -121,6 +128,11 @@ class ChronogramRepository
         // Actualizar estados
         if ($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_maritimo') || $rol_id == config('roles.coordinador_enlace') || $rol_id == config('roles.metodologo')) {
             $cronograms->revised_by = $user_id;
+            $cronograms->status_id = $data['status_id'];
+            $cronograms->rejection_message = $data['rejection_message'];
+        }
+
+        if($rol_id == config('roles.subdirector_tecnico')){
             $cronograms->status_id = $data['status_id'];
             $cronograms->rejection_message = $data['rejection_message'];
         }
