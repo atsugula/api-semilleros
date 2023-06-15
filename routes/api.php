@@ -278,17 +278,10 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
 
     // Ruta monitores relacion metodologos
     Route::get('monitor/methodologist/{id}', [ZoneUserController::class, 'xxxxx']);
+    
     // Rutas de ZIPS
-    Route::get('methodologist/zips', [ZipController::class, 'metodologoVisitsZips']);
-    Route::get('cordinator/zips', [ZipController::class, 'coordinadorVisitsZips']);
-    Route::get('zips', function () {
-    $data = [
-        'message' => '¡Hola desde la ruta JSON!',
-        'date' => now()
-    ];
-
-    return response()->json($data);
-});
+    Route::get('methodologist/zips', [ZipController::class, 'metodologoVisitsZips']); // ruta para descargar los zip metodologo
+    Route::get('cordinator/zips', [ZipController::class, 'coordinadorVisitsZips']); // ruta para descargar los zip coordinadores
 
  });
 
