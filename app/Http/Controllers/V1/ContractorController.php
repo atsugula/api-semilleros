@@ -29,7 +29,7 @@ class ContractorController extends Controller
      */
     public function index(Request $request)
     {
-       Gate::authorize('haveaccess');
+       // Gate::authorize('haveaccess');
         try {
             $results = $this->contractorRepositorory->getAll();
             return $this->createResponse($results);
@@ -46,7 +46,7 @@ class ContractorController extends Controller
      */
     public function store(Request $request)
     {
-       Gate::authorize('haveaccess');
+       // Gate::authorize('haveaccess');
         try {
             $data = $request->all();
             $validator = $this->contractorValidates->validates($data);
@@ -68,7 +68,7 @@ class ContractorController extends Controller
      */
     public function show($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $result = $this->contractorRepositorory->findById($id);
             if (empty($result)) {
@@ -90,7 +90,7 @@ class ContractorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $data = $request->all();
             $validator = $this->contractorValidates->validates($data);
@@ -112,7 +112,7 @@ class ContractorController extends Controller
      */
     public function destroy($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $results = $this->contractorRepositorory->delete($id);
         } catch (\Exception $ex) {
@@ -123,7 +123,7 @@ class ContractorController extends Controller
 
     public function revised(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $results = $this->contractorRepositorory->revised();
             return $results;
@@ -134,7 +134,7 @@ class ContractorController extends Controller
 
     public function clever(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $results = $this->contractorRepositorory->clever();
             return $results;

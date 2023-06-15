@@ -15,7 +15,9 @@ class UserController extends Controller
 {
 
     use PasswordValidationRules;
+
     private $userRepository;
+
     function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
@@ -27,7 +29,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $results = $this->userRepository->getAll();
             return $results->toArray($request);
@@ -44,7 +46,6 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('haveaccess');
         try {
             $validator = Validator::make($request->all(), [
                 'email' => [
@@ -54,7 +55,9 @@ class UserController extends Controller
                     'max:255',
                     Rule::unique(User::class),
                 ],
-                //'password' => $this->passwordRules(),
+                'document_number' => [
+                    Rule::unique(User::class),
+                ],
             ]);
             if ($validator->fails()) {
                 return  $this->createErrorResponse([], $validator->errors()->first(), 422);
@@ -75,7 +78,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-       // Gate::authorize('haveaccess');
+       // // Gate::authorize('haveaccess');
         try {
             $result = $this->userRepository->findById($id);
             if (empty($result)) {
@@ -96,11 +99,10 @@ class UserController extends Controller
      */
     public function update(Request $request,  $id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         $editEmail = $request->get('editEmail');
         try {
             $validator = Validator::make($request->all(), [
-                // 'document_number' => ['required', 'max:12', Rule::unique(User::class)],
                 'email' => [
                     'required',
                     'string',
@@ -108,7 +110,6 @@ class UserController extends Controller
                     'max:255',
                     Rule::unique('users')->ignore($id),
                 ],
-                //'password' => $this->passwordRules(),
             ]);
             $data = $request->all();
             unset($data['editEmail']);
@@ -134,7 +135,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $result = $this->userRepository->delete($id);
 
@@ -203,12 +204,49 @@ class UserController extends Controller
 
     public function allData(Request $request)
     {
-        // Gate::authorize('haveaccess');
+        // // Gate::authorize('haveaccess');
         try {
             $results = $this->userRepository->allData();
             return $results->toArray($request);
         } catch (\Exception $ex) {
             return  $this->createErrorResponse([], 'Algo salio mal al listar usuarios ' . $ex->getMessage() . ' linea ' . $ex->getCode());
         }
+    }
+
+    // Metodo para traer la gente que revisa
+    // en base al rol que se escoge en la creacion
+    public function getSelectUsers($id)
+    {
+        try {
+            $data = $this->userRepository->reviewsUsers($id);
+            return response()->json($data);
+        } catch (\Exception $ex) {
+            return  $this->createErrorResponse([], 'Algo salio mal al listar usuarios ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+        }
+    }
+
+    public function history(Request $request, $id)
+    {
+        try {
+            $results = $this->userRepository->getHistory($id);
+            return $results->navigationHistory->toArray($request);
+        } catch (\Exception $ex) {
+            return  $this->createErrorResponse([], 'Algo salio mal al listar historial ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+        }
+    }
+
+    public function toggleUserStatus($id){
+        $user = User::find($id);
+        if($user->inactive){
+            $user->inactive = false;
+            $cambio = "Activado";
+        }else{
+            $user->inactive = true;
+            $cambio = "Inactivado";
+        }
+        if($user->save()){
+            return $this->createResponse([], 'Usuario ha sido '.$cambio.' Correctamente');
+        }
+
     }
 }

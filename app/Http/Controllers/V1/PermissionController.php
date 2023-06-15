@@ -24,7 +24,7 @@ class PermissionController extends Controller
      */
     public function index(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $results = $this->permissionRepository->getAll();
             return $results->toArray($request);
@@ -41,7 +41,7 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $validator = Validator::make($request->all(), [
                 'name' => ['required', 'string', 'max:255'],
@@ -68,7 +68,7 @@ class PermissionController extends Controller
      */
     public function show(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $result = $this->permissionRepository->show($request->permission);
             if (empty($result)) {
@@ -88,7 +88,7 @@ class PermissionController extends Controller
      */
     public function update(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
@@ -116,7 +116,7 @@ class PermissionController extends Controller
      */
     public function destroy($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $result = $this->permissionRepository->delete($id);
 

@@ -1,12 +1,12 @@
 <?php
 
 return [
-    'APR' => 1,
-    'ENR' => 2,
-    'ING' => 3,
-    'REC' => 4,
-    'ENP' => 5,
-    'COM' => 6,
-    'ARC' => 7,
-    'NUL' => 8,
+    'APR' => 1, //Aprovado
+    'ENR' => 2, //Revision
+    'ING' => 3, //Ingresado
+    'REC' => 4, //Rechazado
+    'ENP' => 5, //En Proceso
+    'COM' => 6, //Completado
+    'ARC' => 7, //Archivado
+    'NUL' => 8, //Anulado
 ];

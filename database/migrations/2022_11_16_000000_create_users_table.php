@@ -47,6 +47,14 @@ return new class extends Migration
                 ->references('id')
                 ->on('users');
 
+            $table->unsignedBigInteger('manager_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreign('manager_id')
+                ->references('id')
+                ->on('users');
+            $table->unsignedBigInteger('asistent_id')->nullable();
+            $table->foreign('asistent_id')
+                ->references('id')
+                ->on('users');
             $table->enum('status', ['REC', 'REV', 'ENREV', 'APRO'])->nullable()->default('ENREV');
             $table->text('rejection_message')->nullable();
 

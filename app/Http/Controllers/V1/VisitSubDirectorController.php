@@ -22,12 +22,28 @@ class VisitSubDirectorController extends Controller
      */
     public function index(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $results = $this->repository->getAll();
             return $results->toArray($request);
         } catch (\Exception $ex) {
             return  $this->createErrorResponse([], 'Algo salio mal al listar las visitas del Subdirector ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+        }
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexReview(Request $request)
+    {
+        // Gate::authorize('haveaccess');
+        try {
+            $results = $this->repository->getAllReview();
+            return $results->toArray($request);
+        } catch (\Exception $ex) {
+            return  $this->createErrorResponse([], 'Algo salio mal al listar las visitas a revisar director ' . $ex->getMessage() . ' linea ' . $ex->getCode());
         }
     }
 
@@ -39,7 +55,7 @@ class VisitSubDirectorController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $validator = $this->repository->getValidate($request->all(), 'create');
             if ($validator->fails()) {
@@ -62,7 +78,7 @@ class VisitSubDirectorController extends Controller
      */
     public function show($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $result = $this->repository->findById($id);
             if (empty($result)) {
@@ -83,7 +99,7 @@ class VisitSubDirectorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $validator = $this->repository->getValidate($request->all(), 'update');
 
@@ -107,7 +123,7 @@ class VisitSubDirectorController extends Controller
      */
     public function destroy($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $result = $this->repository->delete($id);
 

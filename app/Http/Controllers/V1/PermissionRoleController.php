@@ -20,7 +20,7 @@ class PermissionRoleController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $validator = Validator::make($request->all(), [
                 'role_id' => 'required',

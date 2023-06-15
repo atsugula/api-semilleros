@@ -31,19 +31,20 @@ class ChronogramRepository
         $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
 
-        $query = $this->model->query()->orderBy('id', 'DESC');
+        $query = $this->model;
 
-        if ($rol_id == config('roles.monitor')) {
-            $query->where('created_by', $user_id)
-                ->whereNotIn('status_id', config('roles.APR'));
-        }
-
-        if ($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_zona_maritima')) {
+        if ($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_maritimo') || $rol_id == config('roles.coordinador_enlace')|| $rol_id == config('roles.monitor')) {
             $query->whereNotIn('created_by', [1,2])->with(['mes', 'municipio'])
                 ->whereHas('creator.roles', function ($query) {
                     $query->where('roles.slug', 'subdirector_tecnico');
                 })
-                ->whereNotIn('status_id', config('roles.APR'));
+                ->whereNotIn('status_id', [config('status.APR')]);
+        }
+
+        if ($rol_id == config('roles.monitor')){
+            $query->whereNotIn('created_by', [1,2])->with(['mes', 'municipio'])
+                ->where('created_by', $user_id)
+                ->whereNotIn('status_id', [config('status.APR')]);
         }
 
         $paginate = config('global.paginate');
@@ -59,8 +60,8 @@ class ChronogramRepository
     }
     public function create($request)
     {
-        $request->created_by = Auth::id();
-        $request->status_id = config('status.ENR');
+        $request['created_by'] = Auth::id();
+        $request['status_id'] = config('status.ENR');
         $cronograms = $this->model->create($request);
         // Guardamos en dataModel
         $this->control_data($cronograms, 'store');
@@ -71,7 +72,7 @@ class ChronogramRepository
 
         foreach($lista as $group) {
             $groupsModel = new ChronogramsGroups();
-            $groupsModel->chronograms_id             = $request['id'];
+            $groupsModel->chronograms_id             = $cronograms->id;
             $groupsModel->group_id                   = $group->group_id;
             $groupsModel->sports_modality            = $group->sports_modality;
             $groupsModel->main_sports_stage_name     = $group->main_sports_stage_name;
@@ -114,9 +115,11 @@ class ChronogramRepository
         $cronograms->month = $data['month'];
         $cronograms->municipality = $data['municipality'];
         $cronograms->note = $data['note'];
+        $cronograms->status_id = config('status.ENR');
+
 
         // Actualizar estados
-        if ($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_zona_maritima')) {
+        if ($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_maritimo') || $rol_id == config('roles.coordinador_enlace') || $rol_id == config('roles.metodologo')) {
             $cronograms->revised_by = $user_id;
             $cronograms->status_id = $data['status_id'];
             $cronograms->rejection_message = $data['rejection_message'];
@@ -175,7 +178,7 @@ class ChronogramRepository
         $validate = [
             'month'                     => 'bail|required',
             'municipality'              => 'bail|required',
-            'note'                      => 'bail|required|string',
+           // 'note'                      => 'bail|required|string',
             'groups'                    => 'bail|required'
         ];
 
@@ -187,7 +190,7 @@ class ChronogramRepository
         $attrs = [
             'month'         => 'Mes',
             'municipality'  => 'Municipio',
-            'note'          => 'Observación',
+           // 'note'          => 'Observación',
             'groups'        => 'Grupos',
         ];
 

@@ -25,7 +25,7 @@ class CoordinatorVisitSeeder extends Seeder
             'municipalitie_id' => 5,
             'sidewalk' => 'Poponte',
             'file' => 'Doc prueba',
-            'user_id' => 9,
+            'user_id' => 5,
             'discipline_id' =>9,
             'status_id'=>2
         ]);
@@ -40,7 +40,7 @@ class CoordinatorVisitSeeder extends Seeder
             'municipalitie_id' => 6,
             'sidewalk' => 'Arenas Blancas',
             'file' => 'Doc prueba',
-            'user_id' => 5,
+            'user_id' => 6,
             'discipline_id' =>10,
             'status_id'=>2
         ]);
@@ -55,7 +55,7 @@ class CoordinatorVisitSeeder extends Seeder
             'municipalitie_id' => 9,
             'sidewalk' => 'La Sierra',
             'file' => 'Doc prueba',
-            'user_id' => 14,
+            'user_id' => 9,
             'discipline_id' =>3,
             'status_id'=>2
         ]);

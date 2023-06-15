@@ -5,15 +5,16 @@ namespace App\Http\Controllers\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\GroupResource;
 use App\Models\Bank;
+use App\Models\Beneficiary;
 use App\Models\ControlChangeData;
 use App\Models\Disciplines;
+use App\Models\DisciplineUser;
 use App\Models\EntityName;
 use App\Models\Ethnicity;
 use App\Models\Evaluation;
 use App\Models\Event_support;
 use App\Models\Group;
 use App\Models\Municipality;
-use App\Models\MunicipalityUser;
 use App\Models\Pedagogical;
 use App\Models\Role;
 use App\Models\Sidewalk;
@@ -21,12 +22,15 @@ use App\Models\Status;
 use App\Models\User;
 use App\Models\Validity_period;
 use App\Models\Zone;
+use App\Models\ZoneUser;
 use App\Traits\FunctionGeneralTrait;
 use Illuminate\Http\Request;
 use App\Traits\UserDataTrait;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
 
 class GeneralController extends Controller
 {
@@ -40,45 +44,7 @@ class GeneralController extends Controller
     {
         $monitors = [];
         $managers = [];
-     // // $rol_id = $this->getIdRolUserAuth();
         $group_beneficiaries = [];
-
-        /*if (config('roles.gestor') == $this->getIdRolUserAuth()) {
-
-            $monitors = User::whereHas('roles', function ($query) {
-                $roles_where =  [14, 15, 16];
-                $gestor_id =  $this->getIdUserAuth();
-                $query->whereHas('users.profile', function ($query_role) use ($gestor_id) {
-                    $query_role->where("profiles.gestor_id",  $gestor_id);
-                });
-                $query->whereHas('users.roles', function ($query_role) use ($roles_where) {
-                    $query_role->whereIn("roles.id",  $roles_where);
-                });
-            })->select('users.name as label', 'users.id as value')->get();
-
-
-            $managers = User::whereHas('roles', function ($query) {
-                $roles_where =  13;
-                $gestor_id =  $this->getIdUserAuth();
-                $query->whereHas('users.profile', function ($query_role) use ($gestor_id) {
-                    $query_role->where("profiles.gestor_id",  $gestor_id);
-                });
-                $query->whereHas('users.roles', function ($query_role) use ($roles_where) {
-                    $query_role->where("roles.id",  $roles_where);
-                });
-            })->select('users.name as label', 'users.id as value')->get();
-        } else {
-
-
-            $monitors = User::whereHas('roles', function ($query) {
-                $query->where('roles.id', 14);
-            })->select('users.name as label', 'users.id as value')->get();
-
-
-            $managers = User::whereHas('roles', function ($query) {
-                $query->where('roles.id', 13);
-            })->select('users.name as label', 'users.id as value')->get();
-        }*/
 
         /* SIDEWALKS O CORREGIMIENTOS */
         $sidewalks = Sidewalk::select('name as label', 'id as value')->orderBy('name', 'ASC')->get();
@@ -92,6 +58,11 @@ class GeneralController extends Controller
         //MUNICIPALITYS
         $municipalities = Municipality::select('name as label', 'id as value')->orderBy('name', 'ASC')->get();
 
+        //MUNICIPALITYS BY USER
+        $user = Auth::user(); // Obtener el usuario autenticado
+        $zoneIds = $user->zone->pluck('zones_id')->toArray(); // Obtener los zone_id del usuario autenticado
+        $my_municipalities = Municipality::select('name as label', 'id as value')->whereIn('zone_id', $zoneIds)->get();
+
         //ZONES
         $zones = Zone::select('name as label', 'id as value')->orderBy('name', 'ASC')->get();
 
@@ -102,10 +73,17 @@ class GeneralController extends Controller
         $period = Validity_period::select('term as label', 'id as value')->get();
 
         //Dicpline
-        $diciplines = Disciplines::select('name as label', 'id as value')->orderBy('name', 'ASC')->get();
+        $disciplinas = DisciplineUser::where('user_id', $user->id)->with('discipline')->get();
+        $diciplines = $disciplinas->map(function ($disciplina) {
+            return [
+                'label' => $disciplina->discipline->name,
+                'value' => $disciplina->discipline->id,
+            ];
+        });
+        // $diciplines = Disciplines::select('name as label', 'id as value')->orderBy('name', 'ASC')->get();
 
         //Bancks
-        $bancks = Bank::select('name as label', 'id as value')->orderBy('name', 'ASC')->get();
+        // $bancks = Bank::select('name as label', 'id as value')->orderBy('name', 'ASC')->get();
 
         //Ethniea
         $ethniacity = Ethnicity::select('name as label', 'id as value')->orderBy('name', 'ASC')->get();
@@ -127,11 +105,12 @@ class GeneralController extends Controller
             "evaluations" => $evaluations,
             "eventSuport" => $eventSuport,
             "ethniacity" => $ethniacity,
-            "bancks" => $bancks,
+            // "bancks" => $bancks,
             "diciplines" => $diciplines,
             "period" => $period,
             "status" => $status,
             "municipalities" => $municipalities,
+            "my_municipalities" => $my_municipalities,
             "zones" => $zones,
             "roles" => $roles,
             "users_table" => $users_table,
@@ -159,9 +138,29 @@ class GeneralController extends Controller
             try {
                 if ($value == 'identification_types') {
                     $record = $identification_types;
+                }elseif('asistentList' == $value){
+                    $record = User::select('name as label', 'id as value')->whereHas('roles', function ($query) {
+                        $query->where('role_id', 8);
+                    })->get();
+                }elseif('metodologoList' == $value){
+                    $record = User::select(DB::raw("CONCAT(name, ' ', lastname) as label"), 'id as value')->whereHas('roles', function ($query) {
+                        $query->where('role_id', 10);
+                    })->get();
+                }elseif('managerList' == $value){
+                    $record = User::select(DB::raw("CONCAT(name, ' ', lastname) as label"), 'id as value')->whereHas('roles', function ($query) {
+                        $query->whereNotIn('role_id', [12, 11]);
+                    })->get();
                 }
                 else {
-                    $record = DB::table($value)->select('name as label', 'id as value')->get();
+                    $record = DB::table($value)->select('name as label', 'id as value');
+                    if($request->auth == "true"){
+                        if (Schema::hasColumn($value, 'zone_id')) {
+                            $user = Auth::user()->id;
+                            $zones = ZoneUser::where('user_id', $user)->pluck('zones_id');
+                            $record = $record->whereIn('zone_id', $zones);
+                        }
+                    }
+                    $record = $record->get();
                 }
             } catch (\Throwable $th) {
                 $record = DB::table($value)->select('term as label', 'id as value')->get();
@@ -226,23 +225,6 @@ class GeneralController extends Controller
         );
     }
 
-    // Trae solo usuarios monitores
-    public function getMonitoringMunicipality($id) {
-        $response = MunicipalityUser::where('municipalities_id', $id)->with('users')->get();
-        $users = [];
-        foreach ($response as $muni) {
-            foreach ($muni->users as $user) {
-                if ($user->roles[0]->id == config('roles.monitor')) {
-                    array_push($users, [
-                        'label' => $user->name,
-                        'value' => $user->id
-                    ]);
-                }
-            }
-        }
-        return response()->json($users);
-    }
-
     public function getConsecutive(Request $request)
     {
         $response = DB::select("SELECT COUNT(id) as consecutive FROM $request->table");
@@ -295,32 +277,5 @@ class GeneralController extends Controller
         }
         return $results;
     }
-    /* public function getGroupBeneficiaries(Request $request)
-    {
-        try {
-            if ($request->id == '' || $request->id == null || $request->id == 'undefined') {
-                return  $this->createErrorResponse([], 'Se requiere enviar el id del grupo.');
-            }
-            $rol_id = $this->getIdRolUserAuth();
-            $user_id = $this->getIdUserAuth();
-            $query = Group::query();
 
-            $beneficiaries = $query->find($request->id);
-
-            try {
-                $groupBeneficiaries = [];
-                if ($rol_id == config('roles.root') || $rol_id == config('roles.super-root')) {
-                    $groupBeneficiaries =  $beneficiaries->where('id', $request->id)->first();
-                }
-                if ($rol_id == config('roles.monitor')) {
-                    $groupBeneficiaries =  $beneficiaries->where('user_id', $user_id)->where('id', $request->id)->first();
-                }
-                return response()->json(['items' => new GroupResource($groupBeneficiaries)]);
-            } catch (\Exception $ex) {
-                return  $this->createErrorResponse([], 'Algo salio mal al eliminar el data' . $ex->getMessage() . ' linea ' . $ex->getCode());
-            }
-        } catch (\Exception $ex) {
-            return  $this->createErrorResponse([], 'Algo salio mal al eliminar el data' . $ex->getMessage() . ' linea ' . $ex->getCode());
-        }
-    } */
 }

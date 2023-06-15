@@ -17,12 +17,14 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'name'=>$this->name,
-            'name'=>$this->name,
+            'lastname'=>$this->lastname,
+            'document_number'=>$this->document_number,
             'email'=>$this->email,
             'roles' => $this->roles,
             'status'=>$this->status,
             'created_at'=> $this->created_at ? $this->getPublishedAtAttribute():null,
             'profile'=>$this->profile,
+            'inactive'=>$this->inactive,
         ];
     }
 }

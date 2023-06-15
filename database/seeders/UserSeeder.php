@@ -19,319 +19,123 @@ class UserSeeder extends Seeder
     {
         DB::table('users')->delete();
 
-        // Super - root
+        /* SUPER - ROOT */
         User::create([
             'name' => 'Super admin',
             'email' => '5676797567',
+            'lastname' => 'ejemplo',
+            'phone' => '12345678',
+            'document_number' => '00000000000',
             'password' => Hash::make('root')
         ]);
 
-        // Root
+        /* DIRECTOR ADMINISTRATIVOS */
         User::create([
-            'name' => 'Admin',
-            'email' => '5465468786',
-            'password' => Hash::make('admin')
+            'name' => 'Director administrativo',
+            'email' => 'director_administrator@ssiset.com',
+            'lastname' => 'Director administrativo',
+            'document_number' => '888888888',
+            'password' => Hash::make('12345678')
         ]);
 
-        // ASISTENTES Y AUXILIARES ADMINISTRATIVOS
+        /* DIRECTOR TECNICO */
         User::create([
-            'name' => 'auxiliar1',
-            'email' => 'auxiliar1@gmail.com',
-            'password' => Hash::make('38567996')
+            'name' => 'Director Tecnico',
+            'email' => 'director_tecnico@ssiset.com',
+            'lastname' => 'Director Tecnico',
+            'document_number' => '79078098',
+            'password' => Hash::make('12345678')
         ]);
 
+        /* SUBDIRECTOR TECNICO */
         User::create([
-            'name' => 'auxiliar2',
-            'email' => 'auxiliar2@gmail.com',
-            'password' => Hash::make('1112489267')
+            'name' => 'Subirector Tecnico',
+            'email' => 'subdirector_tecnico@ssiset.com',
+            'lastname' => 'Subirector Tecnico',
+            'document_number' => '346345643656',
+            'password' => Hash::make('12345678')
         ]);
 
+        /* COORDINADOR ENLACE */
         User::create([
-            'name' => 'auxiliar3',
-            'email' => 'auxiliar3@gmail.com',
-            'password' => Hash::make('94417713')
+            'name' => 'Coordinador enlace',
+            'email' => 'coordinador_enlace@ssiset.com',
+            'lastname' => 'Subirector Tecnico',
+            'document_number' => '658768647876',
+            'password' => Hash::make('12345678')
         ]);
 
+        /* COORDINADOR PSICOSOCIAL */
         User::create([
-            'name' => 'auxiliar4',
-            'email' => 'auxiliar4@gmail.com',
-            'password' => Hash::make('29233976')
+            'name' => 'Coordinador psicosocial',
+            'email' => 'coordinador_psicosocial@ssiset.com',
+            'lastname' => 'Coordinador psicosocial',
+            'document_number' => '6789789997',
+            'password' => Hash::make('12345678')
         ]);
 
+        /* DIRECTOR TECNICO */
         User::create([
-            'name' => 'auxiliar5',
-            'email' => 'auxiliar5@gmail.com',
-            'password' => Hash::make('31902881')
+            'name' => 'Director programa',
+            'email' => 'director_programa@ssiset.com',
+            'lastname' => 'Director programa',
+            'document_number' => '5678565678',
+            'password' => Hash::make('12345678')
         ]);
 
+        /* ASISTENTE ADMINISTRATIVO */
         User::create([
-            'name' => 'auxiliar6',
-            'email' => 'auxiliar6@gmail.com',
-            'password' => Hash::make('1107092803')
+            'name' => 'Asistente administrativo',
+            'email' => 'asistente_administrativo@ssiset.com',
+            'lastname' => 'Asistente administrativo',
+            'document_number' => '8567567765677',
+            'password' => Hash::make('12345678')
         ]);
 
+        /* COORDINADOR REGIONAL */
         User::create([
-            'name' => 'auxiliar7',
-            'email' => 'auxiliar7@gmail.com',
-            'password' => Hash::make('1005368219')
+            'name' => 'Coordinador regional',
+            'email' => 'coordinador_regional@ssiset.com',
+            'lastname' => 'Coordinador regional',
+            'document_number' => '6758678678',
+            'password' => Hash::make('12345678')
         ]);
 
+        /* METODOLOGO */
         User::create([
-            'name' => 'auxiliar8',
-            'email' => 'auxiliar8@hotmail.com',
-            'password' => Hash::make('1136059849'),
+            'name' => 'Metodologo',
+            'email' => 'metodologo@ssiset.com',
+            'lastname' => 'Metodologo',
+            'document_number' => '7869789789',
+            'password' => Hash::make('12345678')
         ]);
 
-        //JURIDICOS
+        /* PSICOLOGO */
         User::create([
-            'name' => 'juridico1',
-            'email' => 'juridico1@gmail.com',
-            'password' => Hash::make('3854799')
+            'name' => 'Psicologo',
+            'email' => 'psicologo@ssiset.com',
+            'lastname' => 'Psicologo',
+            'document_number' => '98777987',
+            'password' => Hash::make('12345678')
         ]);
 
+        /* MONITOR */
         User::create([
-            'name' => 'juridico2',
-            'email' => 'juridico2@gmail.com',
-            'password' => Hash::make('111248')
+            'name' => 'Monitor',
+            'email' => 'monitor@ssiset.com',
+            'lastname' => 'Monitor',
+            'document_number' => '69098089',
+            'password' => Hash::make('12345678')
         ]);
 
+        //cordinador martimo
         User::create([
-            'name' => 'juridico3',
-            'email' => 'juridico3@gmail.com',
-            'password' => Hash::make('77417713')
+            'name' => 'COORDINADOR MARITIMO',
+            'email' => 'coordinador_maritimo@ssiset.com',
+            'lastname' => 'COORDINADOR REGIOONAL',
+            'document_number' => '690980891',
+            'password' => Hash::make('12345678')
         ]);
-
-        User::create([
-            'name' => 'juridico4',
-            'email' => 'juridico4@gmail.com',
-            'password' => Hash::make('1233976')
-        ]);
-
-        User::create([
-            'name' => 'juridico5',
-            'email' => 'juridico5@gmail.com',
-            'password' => Hash::make('9875214')
-        ]);
-
-        User::create([
-            'name' => 'juridico6',
-            'email' => 'juridico6@gmail.com',
-            'password' => Hash::make('9654123')
-        ]);
-
-        User::create([
-            'name' => 'juridico7',
-            'email' => 'juridico7@gmail.com',
-            'password' => Hash::make('145711110')
-        ]);
-
-        User::create([
-            'name' => 'juridico8',
-            'email' => 'juridico8@hotmail.com',
-            'password' => Hash::make('963145'),
-        ]);
-
-        //SUPERVISORES
-        User::create([
-            'name' => 'supervisor1',
-            'email' => 'supervisor1@hotmail.com',
-            'password' => Hash::make('10963145'),
-        ]);
-
-        User::create([
-            'name' => 'supervisor2',
-            'email' => 'supervisor2@hotmail.com',
-            'password' => Hash::make('22963141'),
-        ]);
-
-        User::create([
-            'name' => 'supervisor3',
-            'email' => 'supervisor3@hotmail.com',
-            'password' => Hash::make('50963145'),
-        ]);
-
-        User::create([
-            'name' => 'supervisor4',
-            'email' => 'supervisor4@hotmail.com',
-            'password' => Hash::make('85963145'),
-        ]);
-
-        User::create([
-            'name' => 'supervisor5',
-            'email' => 'supervisor5@hotmail.com',
-            'password' => Hash::make('8500145'),
-        ]);
-
-        User::create([
-            'name' => 'supervisor6',
-            'email' => 'supervisor6@hotmail.com',
-            'password' => Hash::make('00963145'),
-        ]);
-
-        User::create([
-            'name' => 'supervisor7',
-            'email' => 'supervidor7@hotmail.com',
-            'password' => Hash::make('12500145'),
-        ]);
-
-        User::create([
-            'name' => 'supervisor8',
-            'email' => 'supervidor8@hotmail.com',
-            'password' => Hash::make('88500145'),
-        ]);
-
-        //COORDINADOR REGIONAL
-        User::create([
-            'name' => 'coodinador regional1',
-            'email' => 'coordinador1@hotmail.com',
-            'password' => Hash::make('8800145'),
-        ]);
-
-        User::create([
-            'name' => 'coodinador regional2',
-            'email' => 'coordinador2@hotmail.com',
-            'password' => Hash::make('178500145'),
-        ]);
-
-        User::create([
-            'name' => 'coodinador regional3',
-            'email' => 'coordinador3@hotmail.com',
-            'password' => Hash::make('9900145'),
-        ]);
-
-        User::create([
-            'name' => 'coodinador regional4',
-            'email' => 'coordinador4@hotmail.com',
-            'password' => Hash::make('2588500145'),
-        ]);
-
-        User::create([
-            'name' => 'coodinador regional5',
-            'email' => 'coordinador5@hotmail.com',
-            'password' => Hash::make('008500145'),
-        ]);
-
-        User::create([
-            'name' => 'coodinador regional6',
-            'email' => 'coordinador6@hotmail.com',
-            'password' => Hash::make('608500145'),
-        ]);
-
-        User::create([
-            'name' => 'coodinador regional7',
-            'email' => 'coordinador7@hotmail.com',
-            'password' => Hash::make('88905'),
-        ]);
-
-        User::create([
-            'name' => 'coodinador regional8',
-            'email' => 'coordinador8@hotmail.com',
-            'password' => Hash::make('123688905'),
-        ]);
-
-      /*  User::create([
-            'name' => 'KATHERINE MARTINEZ SANDOVAL',
-            'email' => 'semilleroskathe@gmail.com',
-            'password' => Hash::make('38567996')
-        ]);
-
-        User::create([
-            'name' => 'CINDY JOHANNA FLOREZ UPARELA',
-            'email' => 'florezuparela18@gmail.com',
-            'password' => Hash::make('1112489267')
-        ]);
-
-        User::create([
-            'name' => 'JUAN MAURICIO DINAS RODRIGUEZ',
-            'email' => 'mao.dinas@gmail.com',
-            'password' => Hash::make('94417713')
-        ]);
-
-        User::create([
-            'name' => 'DIANA CRISTINA GARCIA CASTRO',
-            'email' => 'dianacristinagarciacastro@gmail.com',
-            'password' => Hash::make('29233976')
-        ]);
-
-        User::create([
-            'name' => 'MARTHA LUCIA GONZALEZ',
-            'email' => 'martaluciag23@gmail.com',
-            'password' => Hash::make('31902881')
-        ]);
-
-        User::create([
-            'name' => 'TOMAS  MENDEZ ORTIZ',
-            'email' => 'region6semilleros@gmail.com',
-            'password' => Hash::make('1107092803')
-        ]);
-
-        User::create([
-            'name' => 'NATALIA TIRADO CAMACHO',
-            'email' => 'nataliacamacho0926@gmail.com',
-            'password' => Hash::make('1005368219')
-        ]);
-
-        User::create([
-            'name' => 'LITZA ANDREA CIFUENTES GOMEZ',
-            'email' => 'litzandreacg@hotmail.com',
-            'password' => Hash::make('1136059849'),
-        ]);*/
-
-
-        /*  DB::table('users')->insert([
-            // Super - root
-            [
-                'name' => 'Super admin',
-                'email' => '5676797567',
-                'password' => Hash::make('root')
-            ],
-            // Root
-            [
-                'name' => 'Admin',
-                'email' => '5465468786',
-                'password' => Hash::make('admin')
-            ],
-            // ASISTENTES Y AUXILIARES ADMINISTRATIVOS
-            [
-                'name' => 'KATHERINE MARTINEZ SANDOVAL',
-                'email' => 'semilleroskathe@gmail.com',
-                'password' => Hash::make('38567996')
-            ],
-            [
-                'name' => 'CINDY JOHANNA FLOREZ UPARELA',
-                'email' => 'florezuparela18@gmail.com',
-                'password' => Hash::make('1112489267')
-            ],
-            [
-                'name' => 'JUAN MAURICIO DINAS RODRIGUEZ',
-                'email' => 'mao.dinas@gmail.com',
-                'password' => Hash::make('94417713')
-            ],
-            [
-                'name' => 'DIANA CRISTINA GARCIA CASTRO',
-                'email' => 'dianacristinagarciacastro@gmail.com',
-                'password' => Hash::make('29233976')
-            ],
-            [
-                'name' => 'MARTHA LUCIA GONZALEZ',
-                'email' => 'martaluciag23@gmail.com',
-                'password' => Hash::make('31902881')
-            ],
-            [
-                'name' => 'TOMAS  MENDEZ ORTIZ',
-                'email' => 'region6semilleros@gmail.com',
-                'password' => Hash::make('1107092803')
-            ],
-            [
-                'name' => 'NATALIA TIRADO CAMACHO',
-                'email' => 'nataliacamacho0926@gmail.com',
-                'password' => Hash::make('1005368219')
-            ],
-            [
-                'name' => 'LITZA ANDREA CIFUENTES GOMEZ',
-                'email' => 'litzandreacg@hotmail.com',
-                'password' => Hash::make('1136059849')
-            ],
-        ]);*/
+                   
     }
 }

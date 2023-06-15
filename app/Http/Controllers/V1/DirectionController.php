@@ -20,7 +20,7 @@ class DirectionController extends Controller
     }
 
     public function index(Request $request){
-       Gate::authorize('haveaccess');
+       // Gate::authorize('haveaccess');
         try{
            return  $result = $this->directionRepository->getAll();
         }catch(\Exception $ex){

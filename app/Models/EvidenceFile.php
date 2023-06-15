@@ -13,7 +13,7 @@ class EvidenceFile extends Model
     protected $table = "evidence_files";
 
     protected $fillable = [
-        'name',
+        'model',
         'path',
         'transversal_id',
     ];

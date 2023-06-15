@@ -16,11 +16,12 @@ class BeneficiaryResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'registration_date'=> $this->registration_date,
             'affiliation_type'=> $this->affiliation_type,
             'created_by' => $this->created_user,
             'group_id' => $this->group,
             'full_name' => $this->full_name,
-            'institution_entity_referred' => $this->institution_entity_referred,
+            'institution' => $this->institution,
             'accept' => $this->accept,
             'linkage_project' => $this->linkage_project,
             'participant_type' => $this->participant_type,
@@ -32,10 +33,38 @@ class BeneficiaryResource extends JsonResource
             'email' => $this->email,
             'file' => $this->file,
             'status' => $this->status,
+            'municipality'  => $this->municipality,
             'audited' => $this->audited,
             'rejection_message' => $this->rejection_message,
             'referrer_name' => $this->referrer_name,
-            'created_at' => $this->created_at
+            'created_at' => $this->created_at,
+
+            'disciplines_id' => $this->disciplines_id,
+            'birth_date' => $this->birth_date,
+            'origin_place' => $this->origin_place,
+            'home_address' => $this->home_address,
+            'conflict_victim' => $this->conflict_victim,
+            'distric' => $this->distric,
+            'gender' => $this->gender,
+            'ethnicities_id' => $this->ethnicities_id,
+            'disability' => $this->disability,
+            'other_disability' => $this->other_disability,
+            'pathology' => $this->pathology,
+            'what_pathology' => $this->what_pathology,
+            'blood_type' => $this->blood_type,
+            'live_with' => $this->live_with,
+            'scholarship' => $this->scholarship,
+            'scholar_level' => $this->scholar_level,
+            'health_entity_id' => $this->health_entity_id,
+
+            'know_guardian' => isset($this->acudientes) ? $this->acudientes[0] : '',
+            'acudiente' => isset($this->acudientes[0]->guardian) ? $this->acudientes[0]->guardian : '',
+            'tamizaje' => $this->tamizaje,
+            'status_id' => $this->status_id,
+            'reviewed_by' => $this->reviewed_user,
+            'approved_by' => $this->approved_user,
+            'rejected_by' => $this->rejected_user,
+            'rejection_message' => $this->rejection_message,
         ];
     }
 }

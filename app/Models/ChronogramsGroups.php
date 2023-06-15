@@ -22,6 +22,7 @@ class ChronogramsGroups extends Model
         'main_sports_stage_address',
         'alt_sports_stage_name',
         'alt_sports_stage_address',
+        'schedules',
     ];
 
     protected $hidden = ['created_at', 'deleted_at', 'updated_at'];
@@ -45,7 +46,7 @@ class ChronogramsGroups extends Model
     }
 
     public function group(){
-        return $this->hasOne(Groups::class, 'id', 'groups_id');
+        return $this->hasOne(Group::class, 'id', 'groups_id');
     }
 
     public function discipline(){

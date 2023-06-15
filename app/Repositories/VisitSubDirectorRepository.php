@@ -20,25 +20,18 @@ class VisitSubDirectorRepository
         $this->model = new VisitSubDirector();
     }
 
-    public function getAll()
+    public function getAllReview()
     {
         $rol_id = $this->getIdRolUserAuth();
-        $user_id = $this->getIdUserAuth();
 
         $query = $this->model->query()->orderBy('id', 'DESC');
-
-        if ($rol_id == config('roles.subdirector_tecnico')) {
-            $query->where('created_by', $user_id)
-                ->whereNotIn('status_id', config('roles.APR'));
-        }
 
         if ($rol_id == config('roles.director_tecnico')) {
             $query->whereNotIn('created_by', [1,2])
                 ->whereHas('creator.roles', function ($query) {
                     $query->where('roles.slug', 'subdirector_tecnico');
                 })
-                ->orWhere('created_by', $user_id)
-                ->whereNotIn('status_id', config('roles.APR'));
+                ->where('status_id', [config('status.ENR')]);
         }
 
         if ($rol_id == config('roles.director_administrator')) {
@@ -46,8 +39,7 @@ class VisitSubDirectorRepository
                 ->whereHas('creator.roles', function ($query) {
                     $query->where('roles.slug', 'director_tecnico');
                 })
-                ->orWhere('created_by', $user_id)
-                ->whereNotIn('status_id', config('roles.APR'));
+                ->where('status_id', [config('status.ENR')]);
         }
 
         $paginate = config('global.paginate');
@@ -61,6 +53,30 @@ class VisitSubDirectorRepository
 
         return new VisitSubDirectorCollection($query->simplePaginate($paginate));
     }
+
+    public function getAll()
+    {
+        $rol_id = $this->getIdRolUserAuth();
+        $user_id = $this->getIdUserAuth();
+
+        $query = $this->model->query()->orderBy('id', 'DESC');
+
+        if ($rol_id == config('roles.subdirector_tecnico') || $rol_id == config('roles.director_tecnico')) {
+            $query->where('created_by', $user_id);
+        }
+
+        $paginate = config('global.paginate');
+
+        // Aplicar filtros adicionales desde la URL
+        $query = $this->model->scopeFilterByUrl($query);
+
+        // Calcular número de páginas para paginación
+        session()->forget('count_page_visitSubDirectors');
+        session()->put('count_page_visitSubDirectors', ceil($query->get()->count()/$paginate));
+
+        return new VisitSubDirectorCollection($query->simplePaginate($paginate));
+    }
+
     public function create($request)
     {
         $user_id = $this->getIdUserAuth();
@@ -113,40 +129,45 @@ class VisitSubDirectorRepository
         $rol_id = $this->getIdRolUserAuth();
 
         $visitSubDirector = $this->model->findOrFail($id);
-        $visitSubDirector->date_visit = $request['date_visit'];
-        $visitSubDirector->hour_visit = $request['hour_visit'];
-        $visitSubDirector->sports_scene = $request['sports_scene'];
-        $visitSubDirector->beneficiary_coverage = $request['beneficiary_coverage'];
-        /* CHAR CAMPOS */
-        $visitSubDirector->technical = $request['technical'];
-        $visitSubDirector->event_support = $request['event_support'];
-        /* OTROS CAMPOS */
-        $visitSubDirector->description = $request['description'];
-        $visitSubDirector->observations = $request['observations'];
-        // $visitSubDirector->transversal_activity = $request['transversal_activity'];
-        /* RELACIONES CAMPOS */
-        $visitSubDirector->municipality_id = $request['municipality_id'];
-        $visitSubDirector->sidewalk = $request['sidewalk'];
-        $visitSubDirector->discipline_id = $request['discipline_id'];
-        $visitSubDirector->monitor_id = $request['monitor_id'];
 
         if ($rol_id == config('roles.director_tecnico') || $rol_id == config('roles.director_administrator')) {
             $visitSubDirector->reviewed_by = $user_id;
             $visitSubDirector->status_id = $request['status_id'];
             $visitSubDirector->reject_message = $request['reject_message'];
         }
+        if ($user_id == $visitSubDirector->created_by) {
+            $visitSubDirector->date_visit = $request['date_visit'];
+            $visitSubDirector->hour_visit = $request['hour_visit'];
+            $visitSubDirector->sports_scene = $request['sports_scene'];
+            $visitSubDirector->beneficiary_coverage = $request['beneficiary_coverage'];
+            /* CHAR CAMPOS */
+            $visitSubDirector->technical = $request['technical'];
+            $visitSubDirector->event_support = $request['event_support'];
+            /* OTROS CAMPOS */
+            $visitSubDirector->description = $request['description'];
+            $visitSubDirector->observations = $request['observations'];
+            // $visitSubDirector->transversal_activity = $request['transversal_activity'];
+            /* RELACIONES CAMPOS */
+            $visitSubDirector->municipality_id = $request['municipality_id'];
+            $visitSubDirector->sidewalk = $request['sidewalk'];
+            $visitSubDirector->discipline_id = $request['discipline_id'];
+            $visitSubDirector->monitor_id = $request['monitor_id'];
+        }
+
+        /* CAMBIAMOS EL ESTADO */
+        if ($request['status_id'] == config('status.REC') && $user_id == $visitSubDirector->created_by) {
+            $visitSubDirector->status_id = config('status.ENR');
+            $visitSubDirector->reject_message = $request['reject_message'];
+        }
+
+        $visitSubDirector->save();
 
         /* ACTUALIZAMOS EL ARCHIVO */
         if ($request->hasFile('file')) {
             $handle_1 = $this->update_file($request, 'file', 'subdirector_visit', $visitSubDirector->id, $visitSubDirector->file);
             $visitSubDirector->update(['file' => $handle_1['response']['payload']]);
         }
-        /* CAMBIAMOS EL ESTADO */
-        if ($request['status_id'] == config('status.REC') && $user_id == $visitSubDirector->created_by) {
-            $visitSubDirector->status_id = config('status.ENR');
-            $visitSubDirector->reject_message = $request['reject_message'];
-        }
-        $visitSubDirector->save();
+
         /* GUARDAMOS EN DATAMODEL */
         $this->control_data($visitSubDirector, 'update');
         $results = new VisitSubDirectorResource($visitSubDirector);

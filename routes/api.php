@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\ObjectsController;
-use App\Http\Controllers\psychological_visits;
 use App\Http\Controllers\V1\PDFController as PDFController_V1;
 use App\Http\Controllers\V1\ChronogramController;
 use App\Http\Controllers\V1\ValidityPeriodController;
@@ -32,6 +31,8 @@ use App\Http\Controllers\V1\EventSupportController;
 use App\Http\Controllers\V1\HiringController;
 use App\Http\Controllers\V1\MethodologistVisitController;
 use App\Http\Controllers\V1\MunicipalityController;
+use App\Http\Controllers\V1\HealthEntitiesController;
+use App\Http\Controllers\V1\MonitorsController;
 use App\Http\Controllers\V1\ObjectsController as V1ObjectsController;
 use App\Http\Controllers\V1\UploadDocumentController;
 use App\Http\Controllers\V1\StatusDocumentController;
@@ -45,9 +46,12 @@ use App\Http\Controllers\V1\InfoContractorController;
 use App\Http\Controllers\V1\MonthsController;
 use App\Http\Controllers\V1\SidewalkController;
 //use App\Http\Controllers\V1\VisitSubDirectorController;
-
 use App\Http\Controllers\V1\TransversalActivityController;
 use App\Http\Controllers\V1\VisitSubDirectorController;
+use App\Http\Controllers\V1\VisitPsichologistController;
+use App\Http\Controllers\V1\ReportVisitsController;
+use App\Http\Controllers\V1\ReportCronogramCrontroller;
+
 use Illuminate\Http\Request;
 
 /*
@@ -65,7 +69,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function () {
+Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUserStatus'])->prefix('v1')->group(function () {
     Route::get('get-access', [AccessController::class, 'getAccess']);
     Route::post('have-access', [AccessController::class, 'userHaveAccess']);
     Route::get('get-permissions', [AccessController::class, 'getPermissions']);
@@ -82,16 +86,12 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
         'roleUser' => RoleUserController::class,
         'assistants' => AsistantController::class,
         'profiles' => ProfileController::class,
-        'contractors' => ContractorController::class,
-        'clausesContracts' => ClauseController::class,
-        'banks' => BankController::class,
         'objects' => V1ObjectsController::class,
         'diciplines' => DisciplineController::class,
         'zones' => ZonesController::class,
         'status-documents' => StatusDocumentController::class,
         'specificcontratoractivitys' => SpecificcontratoractivityController::class,
         'hirings' => HiringController::class,
-        'baseClauses' => ClauseBaseController::class,
         'evaluations' => EvaluationController::class,
         'userZones' => ZoneUserController::class,
         // 'coordinator_visits' => CoordinatorVistsController::class,
@@ -99,28 +99,44 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
         'chronogram' => ChronogramController::class,
     ]);
 
+
     /* VISITAS METODOLOGICAS */
     Route::apiResource('methodologist_visits', MethodologistVisitController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::post('methodologist_visits/{id}', [MethodologistVisitController::class, 'update']);
-    Route::put('methodologist_visits/{id}', [MethodologistVisitController::class, 'update']);
 
     /* VISITA COORDINADORES */
     Route::apiResource('coordinator_visits', CoordinatorVistsController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::post('coordinator_visits/{id}', [CoordinatorVistsController::class, 'update'])->name('coordinator_visits.update');
 
-    /* VISITAS DE ASESORIAS PERSONALIZADAS */
+    /* VISITAS DE PSICOLOGIA PERSONALIZADAS */
     Route::apiResource('custom_visits', CustomVisitController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::post('custom_visits/{id}', [CustomVisitController::class, 'update'])->name('custom_visits.update');
 
+    // ViSITAS DE PSICOLOGIA
+    Route::apiResource('psychologistVisits', VisitPsichologistController::class)->only(['index', 'store', 'show', 'destroy']);
+    Route::post('psychologistVisits/{id}', [VisitPsichologistController::class, 'update'])->name('psychologistVisits.update');
+
     /* BUSCAR BENEFICIARIO */
     Route::get('findByBeneficiaryId/{id}', [CustomVisitController::class, 'getBeneficiary']);
-
     /* ACTIVIDAD TRANSVERSAL VISITA */
     Route::apiResource('transversal_activity', TransversalActivityController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::post('transversal_activity/{id}', [TransversalActivityController::class, 'update'])->name('transversal_activity.update');
 
     /* SUBIR ARCHIVOS VISITAS METODOLOGICAS */
     Route::post('upload/methodologist_visits', [MethodologistVisitController::class, 'uploadFiles']);
+
+    // Descarga de reportes
+    Route::get('getReportMethodologisticsVisits/{id}',[ReportVisitsController::class,'exportMethodologistVisit']);
+    Route::get('GetReportPsycologicVisit/{id}',[ReportVisitsController::class,'exportPsychologistVisit']);
+    Route::get('GetReportPsycologicCustomVisit/{id}',[ReportVisitsController::class,'exportPsychologistcustomVisit']);
+    Route::get('GetReportTrasversalActivity/{id}',[ReportVisitsController::class,'exportPsychologisttransversalActivity']);
+    Route::get('GetReportSubdirectorCustom/{id}',[ReportVisitsController::class,'exportvisitSubDirector']);
+    Route::get('GetVisitRegionalCordinator/{id}',[ReportVisitsController::class,'ExportCoordinadorRegional']);
+    Route::get('getReportBenefisiaries/{id}',[ReportVisitsController::class,'exportMethodologistVisit']);
+
+
+    // Descargar archivos de chronogram
+    Route::get('getReportChronogram/{id}',[ReportVisitsController::class,'ReportChronogramController']);
 
     /* EVENTOS DE SOPORTE */
     Route::apiResource('eventSupports', EventSupportController::class)->only(['index', 'store', 'show', 'destroy']);
@@ -130,31 +146,24 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
     Route::apiResource('sidewalks', SidewalkController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::post('sidewalks/{id}', [SidewalkController::class, 'update']);
 
-    Route::get('clausesContracts/findByContractor/{id}', [ClauseController::class, 'findByContractor'])->name('clausesContracts.findByContractor');
-
     Route::get('get-document', [GeneralController::class, 'getDocument']);
 
     /* BENEFICIARIOS */
     Route::apiResource('beneficiaries', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);
-    Route::post('beneficiaries/{id}', [BeneficiarieController::class, 'update']);
+    Route::put('beneficiaries/{id}', [BeneficiarieController::class, 'update']);
+    Route::put('beneficiaries/changeStatus/{id}', [BeneficiarieController::class, 'changeStatus']);
 
+    // BENEFICIARIOS POR MUNICIPIO
+    Route::get('getBeneficiariesMunicipality/{id}', [BeneficiarieController::class, 'getBeneficiariesMunicipality']);
 
-    // Subida de Documentos
-    Route::apiResource('documents', DocumentController::class)->only(['index', 'store', 'show']);
-    Route::post('documents/{id}', [DocumentController::class, 'update']);
-    Route::delete('documents', [DocumentController::class, 'destroy']);
-    Route::post('document-upload', [UploadDocumentController::class, 'upload']);
-    // Gestion de Documentos
-    Route::put('documents-management', [DocumentController::class, 'management']);
+    //Benficiarios por estado y region
+    Route::get('getAllByUserRegion', [BeneficiarieController::class, 'getAllByUserRegion']);
 
     // CONTRATOS
     Route::apiResource('contracts', ContractController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::post('contracts/{id}', [ContractController::class, 'update']);
     Route::post('contracts-management', [ContractController::class, 'management']);
     Route::post('contracts-cancellation', [ContractController::class, 'cancellation']);
-
-    // CONTROL DE CLAUSULAS
-    Route::post('clauses-control', [ClauseController::class, 'control']);
 
     // Periodo de vigencia
     Route::apiResource('validity_periods', ValidityPeriodController::class)->only(['index', 'store', 'show', 'destroy']);
@@ -163,6 +172,7 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
     /* VISITA SUBDIRECTOR */
     Route::apiResource('subdirector_visits', VisitSubDirectorController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::post('subdirector_visits/{id}', [VisitSubDirectorController::class, 'update'])->name('subdirector_visits.update');
+    Route::get('visits_review_director', [VisitSubDirectorController::class, 'indexReview'])->name('visits_review_director.indexReview');
 
     //Informe mensual
     // Route::apiResource('monthly_monitoring_reports', 'App\Http\Controllers\V1\MonthlyMonitoringReportsController')->only(['index', 'store', 'show', 'destroy']);
@@ -178,11 +188,20 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
     Route::delete('destroyChangeDataModel/{id}', [GeneralController::class, 'destroyChangeDataModel'])->name('changeDataModels.destroy');
     Route::get('getGroupBeneficiaries/{id?}', [GeneralController::class, 'getGroupBeneficiaries'])->name('getGroupBeneficiaries')->where(['id' => '[0-9]+']);
 
+    /* TRAER REVISORES DISPONIBLES */
+    Route::get('getSelectUsers/{id?}', [UserController::class, 'getSelectUsers']);
+
     // USER
     Route::get('usersNoPaginate', [UserController::class, 'noPaginate']);
 
     //ALL USER INFORMATION
     Route::get('information-users', [UserController::class, 'allData']);
+
+    //ALL USER INFORMATION OF HISTORY
+    Route::get('users/history/{id}', [UserController::class, 'history']);
+
+    //CAMBIAR INACTIVO DE USUARIO
+    Route::post('users/toggleUserStatus/{id}', [UserController::class, 'toggleUserStatus']);
 
     // PROFILES
     Route::get('findByGestorId/{id}', [ProfileController::class, 'findByGestorId']);
@@ -221,17 +240,21 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
     //MUNICIPALITY
     Route::get('municipalities', [MunicipalityController::class, 'index']);
 
-    // USUARIOS MONITORES POR MUNICIPIO
-    Route::get('getMonitoringMunicipality/{id}', [GeneralController::class, 'getMonitoringMunicipality']);
+    // MUNICIPALITIES AND REGIONS
+    Route::get('/regions/{regionId}/municipalities', [MunicipalityController::class, 'getMunicipalitiesByRegion']);
 
-    //LISTA EL NUMERO DE DOCUMENTOS APROBADOS POR CADA USUARIO
-    Route::get('revised', [ContractorController::class, 'revised']);
-    Route::get('clever-documents', [ContractorController::class, 'clever']);
+    //Health Entities
+    Route::get('health-entities', [HealthEntitiesController::class, 'index']);
+
+    // USUARIOS MONITORES POR MUNICIPIO
+    Route::get('getMonitoringMunicipality/{id}', [MonitorsController::class, 'getMonitoringMunicipality']);
+    Route::get('getdisiplinesMonitoring/{id}', [MonitorsController::class, 'getdisiplinesMonitoring']);
+    Route::get('getMonitorByAuth', [MonitorsController::class, 'getMonitorByAuth']);
 
     //Muestra los meses restantes del año
     Route::get('months', [MonthsController::class, 'index']);
 
-    // Subida de chronogram
+    // Subida de chronogramcx
     //Route::apiResource('chronogram', ChronogramController::class)->only(['index', 'store', 'show']);
     //Route::post('chronogram/{id}', [ChronogramController::class, 'update']);
     //Route::delete('chronogram', [ChronogramController::class, 'destroy']);
@@ -239,19 +262,31 @@ Route::middleware(['auth:sanctum', 'verified'])->prefix('v1')->group(function ()
 
     //Rutas de las excel apis
     //Route::get('descargas/export/', [UserExcelController::class, 'export']);
-    
-});
 
-Route::get('psychological_visit',[psychological_visits::class, 'index']);
+    // Ruta municipios y region de usuario logueado
+    Route::get('User/Municipalities/{id}', [ZoneUserController::class, 'getUserRegionsMunicipalities']);
 
+    // Ruta municipios usuarios disciplinas
+    Route::get('Municipalities/User/Disciplines/{id}', [ZoneUserController::class, 'getMunicipalitiesUserDisciplines']);
 
+    Route::get('users/disciplines/regions', [ZoneUserController::class, 'getUserDisciplineRegions']);
 
-
-
+ });
 
 /* RUTAS DE PRUEBA JORGE */
 
 // Rutas de prueba V2 JOSE
-Route::apiResources([
-    'userss' => UserController::class,
-]);
+//zarrok rutas de prueba
+//Route::get('getReportBenefisiaries/{id}',[ReportVisitsController::class,'exportMethodologistVisit']);
+
+
+//Route::get('GetVisitRegionalCordinator/{id}',[ReportVisitsController::class,'ExportCoordinadorRegional']);
+Route::get('GetChronogram/{id}',[ReportVisitsController::class,'ExportChronogram']);
+
+
+
+//Rutas de Pruebas Crango
+// Route::apiResource('beneficiariess', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);
+// Route::put('beneficiariess/{id}', [BeneficiarieController::class, 'update']);
+// Route::put('beneficiariess/changeStatus/{id}', [BeneficiarieController::class, 'changeStatus']);
+//Route::get('getAllByUserRegions', [BeneficiarieController::class, 'getAllByUserRegion']);

@@ -18,7 +18,7 @@ class MethodologistVisitController extends Controller
 
     public function index(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $results = $this->methodologistVisitRepository->getAll();
             return $results->toArray($request);
@@ -29,23 +29,24 @@ class MethodologistVisitController extends Controller
 
     public function store(Request $request)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
-            $data = $request->all();
-            $validator = $this->methodologistVisitRepository->getValidate($data, 'create');
+            $validator = $this->methodologistVisitRepository->getValidate($request->all(), 'create');
             if ($validator->fails()) {
                 return  $this->createErrorResponse([], $validator->errors()->first(), 422);
             }
-            $result = $this->methodologistVisitRepository->create($data);
-            return $this->createResponse($result, 'La visita del Metodologo fue creada correctamente.');
+
+            $result = $this->methodologistVisitRepository->create($request);
+
+            return $this->createResponse($result, 'Visita personalizada creada');
         } catch (\Exception $ex) {
-            return  $this->createErrorResponse([], 'Algo salio mal al guardar la visita del Metodologo ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+            return  $this->createErrorResponse([], 'Algo salio mal al guardar la visita  ' . $ex->getMessage() . ' linea ' . $ex->getCode());
         }
     }
 
     public function show($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $result = $this->methodologistVisitRepository->findById($id);
             if (empty($result)) {
@@ -57,25 +58,26 @@ class MethodologistVisitController extends Controller
         }
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
-            $data = $request->all();
-            $validator = $this->methodologistVisitRepository->getValidate($data, 'update');
+            $validator = $this->methodologistVisitRepository->getValidate($request->all(), 'update');
+
             if ($validator->fails()) {
                 return  $this->createErrorResponse([], $validator->errors()->first(), 422);
             }
-            $result = $this->methodologistVisitRepository->update($data);
+            $result = $this->methodologistVisitRepository->update($request, $id);
             return $this->createResponse($result, 'La visita del Metodologofue actualizado correctamente.');
         } catch (\Exception $ex) {
-            return  $this->createErrorResponse([], 'Algo salio mal al actualizar la visita del Metodologo' . $ex->getMessage() . ' linea ' . $ex->getCode());
+            return  $this->createErrorResponse([], 'Algo salio mal al actualizar visita personalizada ' . $ex->getMessage() . ' linea ' . $ex->getCode());
         }
     }
 
+
     public function destroy($id)
     {
-        Gate::authorize('haveaccess');
+        // Gate::authorize('haveaccess');
         try {
             $result = $this->methodologistVisitRepository->delete($id);
             return $result;

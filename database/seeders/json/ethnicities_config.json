@@ -24,7 +24,16 @@
         "name":"Raizal"
     },
     {
+        "name":"Mestizo"
+    },
+    {
         "name": "Mulato"
+    },
+    {
+        "name": "Blanco"
+    },
+    {
+        "name": "otro"
     },
     {
         "name":"Ninguna"

@@ -131,71 +131,7 @@ class ProfileSeeder extends Seeder
                 'phone' => '3822996',
                 'user_id' => 12,
             ],
-            [
-                'contractor_full_name' => 'juridico3',
-                'document_number' => '113312',
-                'phone' => '13311267',
-                'user_id' => 13,
-                'address' => 'CALLE 12 # 35 OESTE 100 ',
-                'gender' => 'Femenino',
-                'document_type' => 'CC',
-            ],
-            [
-                'contractor_full_name' => 'juridico4',
-                'document_number' => '4001713',
-                'phone' => '987713',
-                'user_id' => 14,
-                'address' => 'CALLE 50 #3N-60',
-                'gender' => 'Masculino',
-                'document_type' => 'CC',
-            ],
-            [
-                'contractor_full_name' => 'juridico5',
-                'document_number' => '993976',
-                'phone' => '10233976',
-                'user_id' => 15,
-                'address' => 'CALLE 69 #1-440',
-                'gender' => 'Femenino',
-                'document_type' => 'CC',
-            ],
-            [
-                'contractor_full_name' => 'juridico6',
-                'document_number' => '002881',
-                'phone' => '75902881',
-                'user_id' => 16,
-                'address' => 'CALLE 48 # 28G--34',
-                'gender' => 'Femenino',
-                'document_type' => 'CC',
-            ],
-            [
-                'contractor_full_name' => 'juridio7',
-                'document_number' => '127092803',
-                'phone' => '70892803',
-                'user_id' => 17,
-                'address' => 'CRA. 27 #3-38',
-                'gender' => 'Masculino',
-                'document_type' => 'CC',
-            ],
-            [
-                'contractor_full_name' => 'juridico8',
-                'document_number' => '9005368219',
-                'phone' => '12368219',
-                'user_id' => 18,
-                'address' => 'CALLE 18#6N-7',
-                'gender' => 'Femenino',
-                'document_type' => 'CC',
-            ],
-
-             //SUPERVISORES
-            [
-                'contractor_full_name' => 'juridico1',
-                'document_number' => '985417',
-                'phone' => '65147',
-                'user_id' => 19,
-                'address' => 'CALLE 50 # 28 E 37 DOCE DE OCTUBRE -CALI',
-                'gender' => 'Femenino',
-                'document_type' => 'CC',
-            ],
+            /*
             [
                 'contractor_full_name' => 'juridico2',
                 'document_number' => '96314',
@@ -258,7 +194,7 @@ class ProfileSeeder extends Seeder
                 'address' => 'CALLE 50 # 28 E 37 DOCE DE OCTUBRE -CALI',
                 'gender' => 'Femenino',
                 'document_type' => 'CC',
-            ]
+            ] */
            /* [
                 'contractor_full_name' => 'KATHERINE MARTINEZ SANDOVAL',
                 'address' => 'CRA.94A #42-61',

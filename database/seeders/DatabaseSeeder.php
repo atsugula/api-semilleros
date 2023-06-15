@@ -25,12 +25,16 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             ZoneSeeder::class,
+            //ZoneTableSeeder::class, NO DESCOMENTAR
+            //UsersTableSeeder::class, NO DESCOMENTAR
             UserSeeder::class,
             ModuleSeeder::class,
             ModuleItemSeeder::class,
+            //RolesTableSeeder::class, NO DESCOMENTAR
             RoleSeeder::class,
             PermissionSeeder::class,
-            RoleUserSeeder::class,
+            //RolesUsersTableSeeder::class, NO DESCOMENTAR
+             RoleUserSeeder::class, 
             GroupSeeder::class,
             PermissionRoleSeeder::class,
             ValidityPeriodsSeeder::class,
@@ -38,33 +42,26 @@ class DatabaseSeeder extends Seeder
             DepartmentsSeeder::class,
             CitySeeder::class,
             StatusSeeder::class,
-            BankSeeder::class,
-            BankAccountTypeSeeder::class,
-            ContractorSeeder::class,
-            HiringSeeder::class,
-            MunicipalitySeeder::class,
-            DocumentSeeder::class,
-            //StatusDocumentSeeder::class,
-            ObjectSeeder::class,
-            BaseClausesSeeder::class,
-            NameClausesSeeder::class,
+            //MunicipalitiesTableSeeder::class, NO DESCOMENTAR
+             MunicipalitySeeder::class,
+           // ObjectSeeder::class,
+            //DisciplinesTableSeeder::class, NO DESCOMENTAR
+            //DisciplinesUsersTableSeeder::class, NO DESCOMENTAR
             DisciplinesSeeder::class,
             DirectionSeeder::class,
-            DirectionSeeder::class,
-            ContractSeeder::class,
-            ClauseSeeder::class,
-            ZoneUserSeeder::class,
-            MunicipalityUserSeeder::class,
-            SpecificcontratoractivitySeeder::class,
+            //ZoneUserTableSeeder::class, NO DESCOMENTAR
+             ZoneUserSeeder::class,
+            // MunicipalityUserSeeder::class, NO DESCOMENTAR
             EthnicitySeeder::class,
-            UserHierarchySeeder::class,
             EventSupportSeederer::class,
             EvaluationSeeder::class,
             MonthsSeeder::class,
             MethodologistVisitPersonalizedSeeder::class,
             CoordinatorVisitSeeder::class,
-            InfoContractorSeeder::class,
             SidewalkSeeder::class,
+            Health_Entities_Seeder::class,
+            RolesActivitiesSeeder::class,
+            RolesObjectsActivitiesSeeder::class
         ]);
     }
 }

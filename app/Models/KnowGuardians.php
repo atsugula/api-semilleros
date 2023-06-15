@@ -8,12 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class KnowGuardians extends Model
 {
     use HasFactory;
-
+    protected $table = "know_guardians";
     protected $fillable = [
         'id_guardian',
         'id_beneficiary',
-        'know_needs',
-        'concept',
+        'relationship',
+        'find_out',
+        'social_media',
     ];
 
     protected $casts = [
@@ -22,7 +23,7 @@ class KnowGuardians extends Model
 
     public function guardian()
     {
-        return $this->belongsTo(Guardian::class, 'id_guardian');
+        return $this->belongsTo(BeneficiaryGuardians::class, 'id_guardian');
     }
 
     public function beneficiary()

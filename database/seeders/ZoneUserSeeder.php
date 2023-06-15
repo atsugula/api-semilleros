@@ -67,7 +67,7 @@ class ZoneUserSeeder extends Seeder
             'zones_id' => 2
         ]);
 
-        ZoneUser::create([
+        /* ZoneUser::create([
             'user_id' => 13,
             'zones_id' => 3
         ]);
@@ -101,9 +101,9 @@ class ZoneUserSeeder extends Seeder
         ZoneUser::create([
             'user_id' => 19,
             'zones_id' =>1
-        ]);
+        ]); */
 
-        ZoneUser::create([
+        /* ZoneUser::create([
             'user_id' => 20,
             'zones_id' =>2
         ]);
@@ -136,6 +136,6 @@ class ZoneUserSeeder extends Seeder
         ZoneUser::create([
             'user_id' => 26,
             'zones_id' =>8
-        ]);
+        ]); */
     }
 }
