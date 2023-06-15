@@ -132,6 +132,11 @@ class ChronogramRepository
             $cronograms->rejection_message = $data['rejection_message'];
         }
 
+        if($rol_id == config('roles.subdirector_tecnico')){
+            $cronograms->status_id = $data['status_id'];
+            $cronograms->rejection_message = $data['rejection_message'];
+        }
+
         $cronograms->save();
 
         // Guardamos en dataModel
