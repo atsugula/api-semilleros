@@ -246,7 +246,7 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
     Route::get('health-entities', [HealthEntitiesController::class, 'index']);
 
     // USUARIOS MONITORES POR MUNICIPIO
-    Route::get('getMonitoringMunicipality/{id}', [MonitorsController::class, 'getMonitoringMunicipality']);
+    Route::get('getMonitoringMunicipality/{id}', [MonitorsController::class, 'getMonitoringMunicipality']); //NOOOO
     Route::get('getdisiplinesMonitoring/{id}', [MonitorsController::class, 'getdisiplinesMonitoring']);
     
 
@@ -265,15 +265,21 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
     // Ruta municipios y region de usuario logueado
     Route::get('User/Municipalities/{id}', [ZoneUserController::class, 'getUserRegionsMunicipalities']);
 
+    // Ruta monitores relacion metodologos
+    Route::get('monitor/methodologist/{id}', [ZoneUserController::class, 'xxxxx']);
+
+
+
     // Ruta municipios usuarios disciplinas
     Route::get('Municipalities/User/Disciplines/{id}', [ZoneUserController::class, 'getMunicipalitiesUserDisciplines']);
 
     Route::get('users/disciplines/regions', [ZoneUserController::class, 'getUserDisciplineRegions']);
 
+    // Ruta monitores relacion metodologos
+    Route::get('monitor/methodologist/{id}', [ZoneUserController::class, 'xxxxx']);
     // Rutas de ZIPS
-    Route::get('metodologo/zips', [ZipController::class, 'metodologoVisitsZips']);
-    Route::get('coordinador/zips', [ZipController::class, 'coordinadorVisitsZips']);
-
+    Route::get('methodologist/zips', [ZipController::class, 'metodologoVisitsZips']);
+    Route::get('cordinator/zips', [ZipController::class, 'coordinadorVisitsZips']);
     Route::get('zips', function () {
     $data = [
         'message' => '¡Hola desde la ruta JSON!',
