@@ -16,6 +16,7 @@ use App\Models\User;
 use App\Models\ZoneUser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 class BeneficiarieRepository
@@ -172,10 +173,7 @@ class BeneficiarieRepository
     {
         $validate = [
             'affiliation_type' => 'bail|required',
-            'document_number' => [
-                'required',
-                Rule::unique(Beneficiary::class),
-            ],
+            'document_number' => $method != 'update' ? ['bail', 'required', 'string', Rule::unique(Asistant::class)] : ['bail', 'required', 'string'],
             /* 'group_id' => 'bail|required',
             'full_name' => 'bail|required',
             'institution_entity_referred' => 'bail|required',
@@ -226,7 +224,7 @@ class BeneficiarieRepository
 
     public function getAllByUserRegion()
     {
-            // codigo por revisar 
+            // codigo por revisar
         $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
 
@@ -260,12 +258,11 @@ class BeneficiarieRepository
             array_push($allMunicipalities, $a['id']);
         }
 
-        if ($rol_id == config('roles.asistente_administrativo')) {
-
+        if ($rol_id == config('roles.asistente_administrativo') || $rol_id == config('roles.subdirector_tecnico')) {
             return new BeneficiaryCollection(
                 $this->model
-                    ->whereIn('municipalities_id', $allMunicipalities)
-                    ->whereIn('status_id', [config('status.APR'), config('status.REC')])
+                    // ->whereIn('municipalities_id', $allMunicipalities)
+                    ->whereIn('status_id', [config('status.ENP')])
                     ->orderBy('id', 'ASC')
                     ->get()
             );
@@ -283,7 +280,7 @@ class BeneficiarieRepository
             return new BeneficiaryCollection(
                 $this->model
                     ->whereIn('municipalities_id', $idMunicipios)
-                    ->whereIn('status_id', [config('status.ENP'), config('status.ENR'), config('status.REC')])
+                    ->whereIn('status_id', [config('status.ENR')])
                     ->orderBy('id', 'ASC')
                     ->get()
             );
@@ -334,6 +331,6 @@ class BeneficiarieRepository
     }
 
     public function allByBeneficiaryRegion($region){
-        
+
     }
 }

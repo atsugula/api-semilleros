@@ -132,6 +132,7 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
     Route::get('GetReportTrasversalActivity/{id}',[ReportVisitsController::class,'exportPsychologisttransversalActivity']);
     Route::get('GetReportSubdirectorCustom/{id}',[ReportVisitsController::class,'exportvisitSubDirector']);
     Route::get('GetVisitRegionalCordinator/{id}',[ReportVisitsController::class,'ExportCoordinadorRegional']);
+    Route::get('getReportBenefisiaries/{id}',[ReportVisitsController::class,'exportMethodologistVisit']);
 
 
     // Descargar archivos de chronogram
@@ -148,7 +149,7 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
     Route::get('get-document', [GeneralController::class, 'getDocument']);
 
     /* BENEFICIARIOS */
-    //Route::apiResource('beneficiaries', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);
+    Route::apiResource('beneficiaries', BeneficiarieController::class)->only(['index', 'store', 'show', 'destroy']);
     Route::put('beneficiaries/{id}', [BeneficiarieController::class, 'update']);
     Route::put('beneficiaries/changeStatus/{id}', [BeneficiarieController::class, 'changeStatus']);
 
@@ -248,7 +249,7 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
     // USUARIOS MONITORES POR MUNICIPIO
     Route::get('getMonitoringMunicipality/{id}', [MonitorsController::class, 'getMonitoringMunicipality']); //NOOOO
     Route::get('getdisiplinesMonitoring/{id}', [MonitorsController::class, 'getdisiplinesMonitoring']);
-    
+    Route::get('getMonitorByAuth', [MonitorsController::class, 'getMonitorByAuth']);
 
     //Muestra los meses restantes del año
     Route::get('months', [MonthsController::class, 'index']);
@@ -295,6 +296,9 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
 
 // Rutas de prueba V2 JOSE
 //zarrok rutas de prueba
+//Route::get('getReportBenefisiaries/{id}',[ReportVisitsController::class,'exportMethodologistVisit']);
+
+
 //Route::get('GetVisitRegionalCordinator/{id}',[ReportVisitsController::class,'ExportCoordinadorRegional']);
 Route::get('GetChronogram/{id}',[ReportVisitsController::class,'ExportChronogram']);
 

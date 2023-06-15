@@ -50,6 +50,7 @@ class BeneficiarieController extends Controller
         // Gate::authorize('haveaccess');
         try {
             $data = $request->all();
+            $data['document_number'] = (string)$request->document_number;
 
             $validator = $this->beneficiarieRepository->getValidate($data, 'update');
             if ($validator->fails()) {
