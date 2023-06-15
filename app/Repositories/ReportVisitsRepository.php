@@ -443,15 +443,24 @@ class ReportVisitsRepository
         'zone' => $ChronogramReport->municipio->zone_id,
         'municipio' => $ChronogramReport->municipio->name
        ];
-
+       $index = 1;
        foreach($ChronogramReport->groups as $group){
-        $datos[] = $group->group_id;}
+        $gruopID = 'idG' . $index;
+        $templateProcessor->setValue($gruopID, $group->group_id);
+        $index++;
+      }
+
+      if($index < 5){
+        for($i = $index; $i <= 5; $i++){
+          $gruopID = 'idG' . $i;
+          $templateProcessor->setValue($gruopID, '');
+        }}
       
        $templateProcessor->setValues($data);
 
        $templateProcessor->saveAs($outputPath);
 
-      return $datos;
+      return $relative_path;
 
     } catch (Exception $e) {
       Log::info($e);
@@ -554,7 +563,7 @@ class ReportVisitsRepository
 
       $templateProcessor->saveAs($outputPath);
 
-      $relative_path = 'Template/Benefisiaries/fichas/Ficha_'.$id.'_beneficiari_'. $bene_name .'.docx';
+      $relative_path = 'Template/Benefisiaries/fichas/Ficha_'.$id.'_beneficiario_'. $bene_name .'.docx';
 
       return  $relative_path;
 
