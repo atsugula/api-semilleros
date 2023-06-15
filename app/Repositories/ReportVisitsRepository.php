@@ -425,12 +425,43 @@ class ReportVisitsRepository
     try {
       $ChronogramReport = $this->Chronogram->findOrFail($id);
 
+      $bene_name = str_replace(' ', '_', $ChronogramReport->creator->lastname);
 
+      $relative_path = 'Template\Chronogram\fichas\chronogram_'.$id.'_por_'. $bene_name .'.docx';
   
-      $templatePath = public_path('Template/Chronogram/Template');
-        
-        
-      return $ChronogramReport;
+      $templatePath = public_path('Template/Chronogram/template/Template.docx');
+      $outputPath = public_path($relative_path);
+      
+       $templateProcessor = new TemplateProcessor($templatePath);
+
+       $data = [
+        'update_date' => $ChronogramReport->updated_at,
+        'status' => $ChronogramReport->statuses->name,
+        'MONTH' => $ChronogramReport->mes->name,
+        'MONITOR_name' => $ChronogramReport->creator->name,
+        'MONITOR_lastname' => $ChronogramReport->creator->lastname,
+        'zone' => $ChronogramReport->municipio->zone_id,
+        'municipio' => $ChronogramReport->municipio->name
+       ];
+       $index = 1;
+       foreach($ChronogramReport->groups as $group){
+        $gruopID = 'idG'.$index;
+        $discipline = 'modDep' . $index;
+        $templateProcessor->setValue($gruopID, $group->group_id);
+        $index++;
+      }
+
+      if($index < 5){
+        for($i = $index; $i <= 5; $i++){
+          $gruopID = 'idG' . $i;
+          $templateProcessor->setValue($gruopID, '');
+        }}
+      
+       $templateProcessor->setValues($data);
+
+       $templateProcessor->saveAs($outputPath);
+
+      return $relative_path;
 
     } catch (Exception $e) {
       Log::info($e);
@@ -524,16 +555,13 @@ class ReportVisitsRepository
         "H-C" => $BeneficiariesReport->affiliation_type == "CON" ? "X" : "",
         "H-N" => $BeneficiariesReport->affiliation_type == "NA" ? "X" : "",
 
-
-
-
       ];
 
       $templateProcessor->setValues($data);
 
       $templateProcessor->saveAs($outputPath);
 
-      $relative_path = 'Template/Benefisiaries/fichas/Ficha_'.$id.'_beneficiari_'. $bene_name .'.docx';
+      $relative_path = 'Template/Benefisiaries/fichas/Ficha_'.$id.'_beneficiario_'. $bene_name .'.docx';
 
       return  $relative_path;
 
