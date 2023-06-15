@@ -279,6 +279,7 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
 //zarrok rutas de prueba
 Route::get('GetChronogram/{id}',[ReportVisitsController::class,'ExportChronogram']);
 Route::get('getReportBenefisiaries/{id}',[ReportVisitsController::class,'exportMethodologistVisit']);
+Route::get('getReportMethodologisticsVisits/{id}',[ReportVisitsController::class,'exportMethodologistVisit']);
 
 
 
