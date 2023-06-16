@@ -9,10 +9,18 @@ use Illuminate\Database\Eloquent\Model;
 class Event_support extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $table = "event_supports";
+    protected $table = "event_support";
 
     protected $fillable = [
-        'name'
+        'date_visit',
+        'hour_visit',
+        'municipalitie_id',
+        'correct',
+        'event',
+        'observation',
+        'file1',
+        'file2',
+        'file3',
     ];
 
     protected $guarded = [
