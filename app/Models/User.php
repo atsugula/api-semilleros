@@ -104,7 +104,7 @@ class User extends Authenticatable
     }
 
     public function zone(){
-        return $this->hasMany(ZoneUser::class, 'user_id')->cascadeDelete();
+        return $this->hasMany(ZoneUser::class, 'user_id');
     }
 
     public function municipalities(){
