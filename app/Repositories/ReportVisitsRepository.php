@@ -442,7 +442,7 @@ class ReportVisitsRepository
         'MONITOR_lastname' => $ChronogramReport->creator->lastname,
         'zone' => $ChronogramReport->municipio->zone_id,
         'municipio' => $ChronogramReport->municipio->name,
-        'observaciones' => $ChronogramReport->note
+        'observaciones' => $ChronogramReport->note,
        ];
        $index = 1;
        foreach($ChronogramReport->groups as $group){
