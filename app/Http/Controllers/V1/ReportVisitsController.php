@@ -37,7 +37,7 @@ class ReportVisitsController extends Controller
     public function exportBeneficiariesMethodologistVisit(Request $request)
     {
         try {
-            $response = $this->reportVisitsRepository->GenerateBenefisiaries($request->id);
+            $response = $this->reportVisitsRepository->generateDoc($request->id);
             if ($response instanceof \Exception) {
                 return $this->createErrorResponse([], 'Algo salio mal ' . $response->getMessage() . ' linea ' . $response->getCode());
             } else {

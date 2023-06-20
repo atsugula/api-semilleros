@@ -441,7 +441,8 @@ class ReportVisitsRepository
         'MONITOR_name' => $ChronogramReport->creator->name,
         'MONITOR_lastname' => $ChronogramReport->creator->lastname,
         'zone' => $ChronogramReport->municipio->zone_id,
-        'municipio' => $ChronogramReport->municipio->name
+        'municipio' => $ChronogramReport->municipio->name,
+        'observaciones' => $ChronogramReport->note,
        ];
        $index = 1;
        foreach($ChronogramReport->groups as $group){
@@ -465,8 +466,19 @@ class ReportVisitsRepository
           $IndexHorario++;
           
           $templateProcessor->setValue($dayScript, $horario->day);
-          $templateProcessor->setValue($hourIScript, $horario->start_hour);
-          $templateProcessor->setValue($hourTScript, $horario->end_hour);
+          $templateProcessor->setValue($hourIScript, $horario->start_time);
+          $templateProcessor->setValue($hourTScript, $horario->end_time);
+        }
+
+        if ($IndexHorario < 6 ){
+          for($i = $IndexHorario; $i <= 6; $i++){
+            $dayScript = 'G'.$index.'D'.$i;
+            $hourIScript = 'G'.$index.'D'.$i.'HI';
+            $hourTScript = 'G'.$index.'D'.$i.'HT';
+            $templateProcessor->setValue($dayScript, '');
+            $templateProcessor->setValue($hourIScript, '');
+            $templateProcessor->setValue($hourTScript, '');
+          }
         }
 
         $index++;
@@ -486,7 +498,20 @@ class ReportVisitsRepository
           $templateProcessor->setValue($direccion_Esc_Principal, '');
           $templateProcessor->setValue($nombre_Esc_Alterno, '');
           $templateProcessor->setValue($direccion_Esc_Alterno, '');
-        }}
+
+          for ($j = 1; $j <= 6; $j++) {
+            $dayScript = 'G' . $i . 'D' . $j;
+            $hourIScript = 'G' . $i . 'D' . $j . 'HI';
+            $hourTScript = 'G' . $i . 'D' . $j . 'HT';
+  
+            $templateProcessor->setValue($dayScript, '');
+            $templateProcessor->setValue($hourIScript, '');
+            $templateProcessor->setValue($hourTScript, '');
+        }
+        }
+      
+        
+      }
       
        $templateProcessor->setValues($data);
 
