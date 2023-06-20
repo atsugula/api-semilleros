@@ -520,7 +520,7 @@ class ReportVisitsRepository
       return $relative_path;
 
     } catch (Exception $e) {
-      Log::info($e);
+      return $e;
     }
         
 
