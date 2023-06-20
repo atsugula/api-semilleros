@@ -50,7 +50,7 @@ class ChronogramsGroups extends Model
     }
 
     public function discipline(){
-        return $this->hasOne(Disciplines::class, 'id', 'disciplines_id');
+        return $this->hasOne(Disciplines::class, 'id', 'sports_modality');
     }
 
     public function schedules(){

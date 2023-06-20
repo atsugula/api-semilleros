@@ -425,12 +425,74 @@ class ReportVisitsRepository
     try {
       $ChronogramReport = $this->Chronogram->findOrFail($id);
 
+      $bene_name = str_replace(' ', '_', $ChronogramReport->creator->lastname);
 
+      $relative_path = 'Template\Chronogram\fichas\chronogram_'.$id.'_por_'. $bene_name .'.docx';
   
-      $templatePath = public_path('Template/Chronogram/Template');
-        
-        
-      return $ChronogramReport;
+      $templatePath = public_path('Template/Chronogram/template/Template.docx');
+      $outputPath = public_path($relative_path);
+      
+       $templateProcessor = new TemplateProcessor($templatePath);
+
+       $data = [
+        'update_date' => $ChronogramReport->updated_at,
+        'status' => $ChronogramReport->statuses->name,
+        'MONTH' => $ChronogramReport->mes->name,
+        'MONITOR_name' => $ChronogramReport->creator->name,
+        'MONITOR_lastname' => $ChronogramReport->creator->lastname,
+        'zone' => $ChronogramReport->municipio->zone_id,
+        'municipio' => $ChronogramReport->municipio->name
+       ];
+       $index = 1;
+       foreach($ChronogramReport->groups as $group){
+        $gruopID = 'idG'.$index;
+        $discipline = 'modDep' . $index;
+        $nombre_Esc_Principal = 'GNEDP' . $index;
+        $direccion_Esc_Principal = 'GDEDP' . $index;
+        $nombre_Esc_Alterno = 'GNEDA' . $index;
+        $direccion_Esc_Alterno = 'GDEDA' . $index;
+        $templateProcessor->setValue($gruopID, $group->group_id);
+        $templateProcessor->setValue($discipline, $group->discipline->name);
+        $templateProcessor->setValue($nombre_Esc_Principal, $group->main_sports_stage_name);
+        $templateProcessor->setValue($direccion_Esc_Principal, $group->main_sports_stage_address);
+        $templateProcessor->setValue($nombre_Esc_Alterno, $group->alt_sports_stage_name);
+        $templateProcessor->setValue($direccion_Esc_Alterno, $group->alt_sports_stage_address);
+        $IndexHorario = 1;
+        foreach($group->schedules as $horario){
+          $dayScript = 'G'.$index.'D'.$IndexHorario;
+          $hourIScript = 'G'.$index.'D'.$IndexHorario.'HI';
+          $hourTScript = 'G'.$index.'D'.$IndexHorario.'HT';
+          $IndexHorario++;
+          
+          $templateProcessor->setValue($dayScript, $horario->day);
+          $templateProcessor->setValue($hourIScript, $horario->start_hour);
+          $templateProcessor->setValue($hourTScript, $horario->end_hour);
+        }
+
+        $index++;
+      }
+      //limpiar informacion 
+      if($index < 5){
+        for($i = $index; $i <= 5; $i++){
+          $gruopID = 'idG' . $i;
+          $discipline = 'modDep' . $i;
+          $nombre_Esc_Principal = 'GNEDP' .$i;
+          $direccion_Esc_Principal = 'GDEDP' .$i;
+          $nombre_Esc_Alterno = 'GNEDA' .$i;
+          $direccion_Esc_Alterno = 'GDEDA' .$i;
+          $templateProcessor->setValue($gruopID, '');
+          $templateProcessor->setValue($discipline, '');
+          $templateProcessor->setValue($nombre_Esc_Principal, '');
+          $templateProcessor->setValue($direccion_Esc_Principal, '');
+          $templateProcessor->setValue($nombre_Esc_Alterno, '');
+          $templateProcessor->setValue($direccion_Esc_Alterno, '');
+        }}
+      
+       $templateProcessor->setValues($data);
+
+       $templateProcessor->saveAs($outputPath);
+
+      return $ChronogramReport->groups[0]->schedules;
 
     } catch (Exception $e) {
       Log::info($e);
@@ -524,16 +586,13 @@ class ReportVisitsRepository
         "H-C" => $BeneficiariesReport->affiliation_type == "CON" ? "X" : "",
         "H-N" => $BeneficiariesReport->affiliation_type == "NA" ? "X" : "",
 
-
-
-
       ];
 
       $templateProcessor->setValues($data);
 
       $templateProcessor->saveAs($outputPath);
 
-      $relative_path = 'Template/Benefisiaries/fichas/Ficha_'.$id.'_beneficiari_'. $bene_name .'.docx';
+      $relative_path = 'Template/Benefisiaries/fichas/Ficha_'.$id.'_beneficiario_'. $bene_name .'.docx';
 
       return  $relative_path;
 
