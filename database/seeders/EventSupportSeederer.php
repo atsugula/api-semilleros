@@ -15,12 +15,12 @@ class EventSupportSeederer extends Seeder
      */
     public function run()
     {
-        Event_support::create([
-            'name' => "Event1"
-        ]);
+        // Event_support::create([
+        //     'name' => "Event1"
+        // ]);
 
-        Event_support::create([
-            'name' => "Event2"
-        ]);
+        // Event_support::create([
+        //     'name' => "Event2"
+        // ]);
     }
 }

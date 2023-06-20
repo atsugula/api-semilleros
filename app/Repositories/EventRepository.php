@@ -21,7 +21,7 @@ class EventRepository
 
     public function getAll()
     {
-        $results = new EventCollection($this->model::orderBy('name', 'ASC')->get());
+        $results = new EventCollection($this->model::orderBy('created_at', 'ASC')->get());
         return $results;
     }
 
