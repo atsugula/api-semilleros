@@ -36,13 +36,32 @@ class BeneficiarieRepository
         $user_id = $this->getIdUserAuth();
         $rol_id = $this->getIdRolUserAuth();
 
-        if($rol_id == config('roles.asistente_administrativo') || config('roles.super-root') || config('roles.director_administrator')){
-            $beneficiaries =  $this->model->query()->orderBy('id', 'DESC')->get();
+        switch ($rol_id){
+            case(config('roles.super-root')):
+            case(config('roles.director_administrator')):
+                $beneficiaries =  $this->model->query()->orderBy('id', 'DESC')->get();
+                break;
+            case(config('roles.asistente_administrativo')):
+                $beneficiaries =  $this->model->query()->where('status_id',  config("status.APR"))->orderBy('id', 'DESC')->get();
+                break;
+            default:
+                return null;
+                break;
         }
-        else{
-            $beneficiaries = new BeneficiaryCollection($this->model->where('created_by', $user_id)->orderBy('id', 'ASC')->get());
-            $beneficiaries =  $this->model->query()->where('created_by', $user_id)->orderBy('id', 'DESC')->get();
-        }
+
+
+        // if($rol_id == config('roles.super-root') || config('roles.director_administrator')){
+        //     //$beneficiaries =  $this->model->query()->orderBy('id', 'DESC')->get();
+        //     return "super";
+            
+        // }elseif($rol_id == config('roles.asistente_administrativo')){
+        //     $beneficiaries =  $this->model->query()->where('status_id',  config("status.APR"))->orderBy('id', 'DESC')->get();
+        // }
+        // else{
+        //     return "otros";
+        //     // $beneficiaries = new BeneficiaryCollection($this->model->where('created_by', $user_id)->orderBy('id', 'ASC')->get());
+        //     // $beneficiaries =  $this->model->query()->where('created_by', $user_id)->orderBy('id', 'DESC')->get();
+        // }
 
         return new BeneficiaryCollection($beneficiaries);
     }
