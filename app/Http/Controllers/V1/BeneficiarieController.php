@@ -37,9 +37,10 @@ class BeneficiarieController extends Controller
         // } catch (\Exception $ex) {
         //     return  $this->createErrorResponse([], 'Algo salio mal al listar los beneficiarios ' . $ex->getMessage() . ' linea ' . $ex->getCode());
         // }
-        $rol_id = $this->getIdRolUserAuth();
 
-        return  $rol_id ;
+        $results = $this->beneficiarieRepository->getAll();
+
+        return $results  ;
     }
 
     /**
