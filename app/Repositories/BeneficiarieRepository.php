@@ -37,11 +37,11 @@ class BeneficiarieRepository
         $rol_id = $this->getIdRolUserAuth();
 
         if($rol_id == config('roles.super-root') || config('roles.director_administrator')){
-            $beneficiaries =  $this->model->query()->orderBy('id', 'DESC')->get();
+            //$beneficiaries =  $this->model->query()->orderBy('id', 'DESC')->get();
+            return "super";
             
         }elseif($rol_id == config('roles.asistente_administrativo')){
-            return "entro";
-            //$beneficiaries =  $this->model->query()->->where('status_id',  config("status.APR"))->orderBy('id', 'DESC')->get();
+            $beneficiaries =  $this->model->query()->where('status_id',  config("status.APR"))->orderBy('id', 'DESC')->get();
         }
         else{
             return "otros";
