@@ -517,10 +517,10 @@ class ReportVisitsRepository
 
        $templateProcessor->saveAs($outputPath);
 
-      return $ChronogramReport->groups[0]->schedules;
+      return $relative_path;
 
     } catch (Exception $e) {
-      Log::info($e);
+      return $e;
     }
         
 

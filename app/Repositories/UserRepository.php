@@ -53,6 +53,9 @@ class UserRepository
         if ($rol_id == config('roles.metodologo')){
             $query = $query->where('methodology_id', Auth::user()->id);
         }
+        if(in_array($rol_id, [config('roles.coordinador_psicosocial'), config('roles.coordinador_regional')])){
+            $query = $query->where('manager_id', Auth::user()->id);
+        }
         $cantRegistros = $query->get()->count();
         return  new UserCollection($query->paginate($cantRegistros));
 
