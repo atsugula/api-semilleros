@@ -41,7 +41,7 @@ class BeneficiarieRepository
             
         }elseif($rol_id == config('roles.asistente_administrativo')){
             return "entro";
-            //$beneficiaries =  $this->model->query()->whereNotIn('status_id', [config('status.APR')])->orderBy('id', 'DESC')->get();
+            //$beneficiaries =  $this->model->query()->->where('status_id',  config("status.APR"))->orderBy('id', 'DESC')->get();
         }
         else{
             return "otros";

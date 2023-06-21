@@ -27,16 +27,18 @@ class BeneficiarieController extends Controller
     public function index(Request $request)
     {
         // Gate::authorize('haveaccess');
-        try {
-            $results = $this->beneficiarieRepository->getAll();
-            if($results != null){
-                return $results->toArray($request);
-            }else{
-                throw new \Exception('No está autorizado.');
-            }
-        } catch (\Exception $ex) {
-            return  $this->createErrorResponse([], 'Algo salio mal al listar los beneficiarios ' . $ex->getMessage() . ' linea ' . $ex->getCode());
-        }
+        // try {
+        //     $results = $this->beneficiarieRepository->getAll();
+        //     if($results != null){
+        //         return $results->toArray($request);
+        //     }else{
+        //         throw new \Exception('No está autorizado.');
+        //     }
+        // } catch (\Exception $ex) {
+        //     return  $this->createErrorResponse([], 'Algo salio mal al listar los beneficiarios ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+        // }
+
+        return "index";
     }
 
     /**
