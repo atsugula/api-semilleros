@@ -272,6 +272,9 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
 
     Route::get('users/disciplines/regions', [ZoneUserController::class, 'getUserDisciplineRegions']);
 
+    // Ruta Todos los usuarios que pertenezcan a la region del usuario logueado
+    Route::get('userlogin/users/regions', [UserController::class, 'getUserLoginUsersRegions']);
+
  });
 
 /* RUTAS DE PRUEBA JORGE */
