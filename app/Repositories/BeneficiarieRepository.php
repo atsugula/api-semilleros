@@ -49,9 +49,7 @@ class BeneficiarieRepository
             // $beneficiaries =  $this->model->query()->where('created_by', $user_id)->orderBy('id', 'DESC')->get();
         }
 
-        //return new BeneficiaryCollection($beneficiaries);
-
-        return "rol: ". $rol_id . "usario". $user_id;
+        return new BeneficiaryCollection($beneficiaries);
     }
 
     public function create($request)
