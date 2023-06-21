@@ -100,7 +100,7 @@ class User extends Authenticatable
     }*/
 
     public function hierarchy(){
-        return $this->hasMany(UserHierarchy::class, 'user_id');
+        return $this->hasMany(UserHierarchy::class, 'user_id')->cascadeDelete();
     }
 
     public function zone(){
@@ -108,11 +108,11 @@ class User extends Authenticatable
     }
 
     public function municipalities(){
-        return $this->hasMany(MunicipalityUser::class, 'user_id');
+        return $this->hasMany(MunicipalityUser::class, 'user_id')->cascadeDelete();
     }
 
     public function disciplines(){
-        return $this->hasMany(DisciplineUser::class, 'user_id');
+        return $this->hasMany(DisciplineUser::class, 'user_id')->cascadeDelete();
     }
 
     public function getActivitylogOptions(): LogOptions
@@ -122,11 +122,11 @@ class User extends Authenticatable
 
     public function navigationHistory()
     {
-        return $this->hasMany(NavigationHistory::class, 'user_id');
+        return $this->hasMany(NavigationHistory::class, 'user_id')->cascadeDelete();
     }
 
     public function metodologo() {
-        return $this->hasMany(Users::class, 'methodology_id', 'id');
+        return $this->hasMany(Users::class, 'methodology_id', 'id')->cascadeDelete();
     }
 
     /**
@@ -149,7 +149,7 @@ class User extends Authenticatable
      */
     public function inscriptions()
     {
-        return $this->hasMany(Inscription::class, 'user_id', 'id');
+        return $this->hasMany(Inscription::class, 'user_id', 'id')->cascadeDelete();
     }
     /**
      * Relationship morp
@@ -169,33 +169,33 @@ class User extends Authenticatable
 
     public function loginaccess()
     {
-        return $this->hasMany(AccessLogin::class, 'user_id', 'id');
+        return $this->hasMany(AccessLogin::class, 'user_id', 'id')->cascadeDelete();
     }
 
     /* RELACIONES CON LAS VISITAS PARA TODOS LOS USUARIOS */
     public function visitSubDirector()
     {
-        return $this->hasMany(VisitSubDirector::class, 'created_by', 'id');
+        return $this->hasMany(VisitSubDirector::class, 'created_by', 'id')->cascadeDelete();
     }
 
     public function visitTransversalActivity()
     {
-        return $this->hasMany(TransversalActivity::class, 'created_by', 'id');
+        return $this->hasMany(TransversalActivity::class, 'created_by', 'id')->cascadeDelete();
     }
 
     public function visitMethodologistVisit()
     {
-        return $this->hasMany(MethodologistVisit::class, 'created_by', 'id');
+        return $this->hasMany(MethodologistVisit::class, 'created_by', 'id')->cascadeDelete();
     }
 
     public function visitCoordinatorVisit()
     {
-        return $this->hasMany(CoordinatorVisit::class, 'created_by', 'id');
+        return $this->hasMany(CoordinatorVisit::class, 'created_by', 'id')->cascadeDelete();
     }
 
     public function visitCustomVisit()
     {
-        return $this->hasMany(CustomVisit::class, 'created_by', 'id');
+        return $this->hasMany(CustomVisit::class, 'created_by', 'id')->cascadeDelete();
     }
 
     /* FILTROS PARA REFRESCAR PAGINA POR URL */

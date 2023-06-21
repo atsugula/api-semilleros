@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Traits\UserDataTrait;
 use Illuminate\Support\Facades\DB;
 use App\Mail\RegisterUserMailable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class UserRepository
@@ -43,6 +44,17 @@ class UserRepository
             $query->whereHas('roles', function ($profile) {
                 $profile->whereNotIn('roles.id', [config('roles.super_root')]);
             });
+        }
+
+        if ($rol_id == config('roles.asistente_administrativo')){
+            $query = $query->where('asistent_id', Auth::user()->id);
+        }
+
+        if ($rol_id == config('roles.metodologo')){
+            $query = $query->where('methodology_id', Auth::user()->id);
+        }
+        if(in_array($rol_id, [config('roles.coordinador_psicosocial'), config('roles.coordinador_regional')])){
+            $query = $query->where('manager_id', Auth::user()->id);
         }
         $cantRegistros = $query->get()->count();
         return  new UserCollection($query->paginate($cantRegistros));

@@ -160,6 +160,11 @@ class GeneralController extends Controller
                             $record = $record->whereIn('zone_id', $zones);
                         }
                     }
+                    if($value == "municipalities" && Auth::user()->roles[0]->id == config("roles.psicologo")){
+                        $user = Auth::user()->id;
+                        $zones = ZoneUser::where('user_id', $user)->pluck('zones_id');
+                        $record = $record->whereIn('zone_id', $zones);
+                    }
                     $record = $record->get();
                 }
             } catch (\Throwable $th) {
