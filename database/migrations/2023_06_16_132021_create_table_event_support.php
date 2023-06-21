@@ -17,14 +17,23 @@ return new class extends Migration
             $table->id();
             $table->date('date_visit');
             $table->time('hour_visit');
-            $table->string('municipalitie_id');
+            $table->unsignedBigInteger('municipalitie_id');
+            $table->foreign('municipalitie_id')
+            ->references('id')
+            ->on('municipalities');
             $table->string('correct');
             $table->string('event');
             $table->string('observation');
             $table->text('file1')->nullable();
             $table->text('file2')->nullable();
             $table->text('file3')->nullable();
+            $table->unsignedBigInteger('created_by')->nullable()->constrained()->onDelete('cascade');
+            $table->foreign('created_by')
+                ->references('id')
+                ->on('users');
+
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
