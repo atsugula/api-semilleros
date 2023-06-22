@@ -51,7 +51,7 @@ class ChronogramRepository
         if($rol_id == config('roles.subdirector_tecnico')){
             $query->whereNotIn('created_by', [1,2])
                 ->with(['mes', 'municipio'])
-                ->where('status_id',  config("status.ENP"));
+                ->where('status_id',  config("status.ENR"));
         }
 
         if($rol_id == config('roles.metodologo')){
