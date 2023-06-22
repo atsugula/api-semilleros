@@ -32,6 +32,16 @@ return new class extends Migration
                 ->references('id')
                 ->on('users');
 
+            $table->unsignedBigInteger('revised_by')->nullable()->constrained();
+            $table->foreign('revised_by')
+                    ->references('id')
+                    ->on('users');
+
+
+            $table->unsignedBigInteger('status_id')->nullable();
+             $table->foreign('status_id')
+                    ->references('id')
+                    ->on('statuses');
             $table->timestamps();
             $table->softDeletes();
         });

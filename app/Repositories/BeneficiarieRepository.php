@@ -39,6 +39,7 @@ class BeneficiarieRepository
         switch ($rol_id){
             case(config('roles.super-root')):
             case(config('roles.director_administrator')):
+            case(config('roles.metodologo')):
                 $beneficiaries =  $this->model->query()->orderBy('id', 'DESC')->get();
                 break;
             case(config('roles.asistente_administrativo')):
