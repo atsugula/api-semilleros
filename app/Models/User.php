@@ -104,15 +104,15 @@ class User extends Authenticatable
     }
 
     public function zone(){
-        return $this->hasMany(ZoneUser::class, 'user_id')->cascadeDelete();
+        return $this->hasMany(ZoneUser::class, 'user_id');
     }
 
     public function municipalities(){
-        return $this->hasMany(MunicipalityUser::class, 'user_id')->cascadeDelete();
+        return $this->hasMany(MunicipalityUser::class, 'user_id');
     }
 
     public function disciplines(){
-        return $this->hasMany(DisciplineUser::class, 'user_id')->cascadeDelete();
+        return $this->hasMany(DisciplineUser::class, 'user_id');
     }
 
     public function getActivitylogOptions(): LogOptions

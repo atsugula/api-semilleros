@@ -92,7 +92,7 @@ class GeneralController extends Controller
         $groups = Group::select('id as value', 'name as label')->orderBy('name', 'ASC')->get();
 
         //EventSupport
-        $eventSuport = Event_support::select('id as value', 'name as label')->orderBy('name', 'ASC')->get();
+        // $eventSuport = Event_support::select('id as value', 'name as label')->orderBy('name', 'ASC')->get();
 
         //Evaluations
         $evaluations = Evaluation::select('id as value', 'name as label')->orderBy('name', 'ASC')->get();
@@ -103,7 +103,7 @@ class GeneralController extends Controller
 
         $data = [
             "evaluations" => $evaluations,
-            "eventSuport" => $eventSuport,
+            // "eventSuport" => $eventSuport,
             "ethniacity" => $ethniacity,
             // "bancks" => $bancks,
             "diciplines" => $diciplines,
