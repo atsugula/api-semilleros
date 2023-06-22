@@ -4,9 +4,12 @@ namespace App\Http\Controllers\V1;
 
 use App\Actions\Fortify\PasswordValidationRules;
 use App\Http\Controllers\Controller;
+use App\Models\RoleUser;
 use App\Models\User;
+use App\Models\ZoneUser;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Gate;
@@ -248,5 +251,27 @@ class UserController extends Controller
             return $this->createResponse([], 'Usuario ha sido '.$cambio.' Correctamente');
         }
 
+    }
+
+    public function getUserLoginUsersRegions()
+    {
+        $user = Auth::user(); // Obtener usuario logueado
+        $userRegions = ZoneUser::select('zones_id')->where('user_id', $user->id)->get(); // Obtener las regiones del usuario logueado
+
+        $usersIds = [];
+
+        foreach ($userRegions as $region) { // Recorrer las regiones del usuario logueado
+            $usersIds[] = ZoneUser::select('user_id')->where('zones_id', $region->zones_id)->get(); // Obtener los IDs de usuarios de esa región
+        }
+
+        $users = [];
+
+        foreach ($usersIds as $ids) { // Recorrer los IDs de los usuarios de esas regiones
+            foreach ($ids as $id) {
+                $users[] = User::find($id->user_id); // Obtener los usuarios correspondientes a esos IDs y agregarlos al arreglo $users
+            }
+        }
+
+        return response()->json($users); // Retornar los usuarios de las regiones que tienen relación con el usuario logueado
     }
 }
