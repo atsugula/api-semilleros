@@ -139,7 +139,7 @@ class GeneralController extends Controller
                 if ($value == 'identification_types') {
                     $record = $identification_types;
                 }elseif('asistentList' == $value){
-                    $record = User::select('name as label', 'id as value')->whereHas('roles', function ($query) {
+                        $record = User::select(DB::raw("CONCAT(name, ' ', lastname) as label"), 'id as value')->whereHas('roles', function ($query) {
                         $query->where('role_id', 8);
                     })->get();
                 }elseif('metodologoList' == $value){
