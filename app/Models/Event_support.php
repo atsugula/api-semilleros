@@ -20,6 +20,8 @@ class Event_support extends Model
         'file1',
         'file2',
         'file3',
+        'revised_by',
+        'status_id',
     ];
 
     protected $guarded = [
