@@ -98,6 +98,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Municipality::class);
     }*/
+    public function zones()
+    {
+        return $this->hasMany(Zone::class);
+    }
 
     public function hierarchy(){
         return $this->hasMany(UserHierarchy::class, 'user_id')->cascadeDelete();
