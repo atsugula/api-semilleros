@@ -23,6 +23,8 @@ class EventResource extends JsonResource
 			'created_at'=>$this->created_at,
 			'municipalitie_id'=>$this->municipalitie_id,
 			'observation'=>$this->observation,
+			'status_id'=>$this->status_id,
+			'created_by'=>$this->created_by,
         ];
     }
 }
