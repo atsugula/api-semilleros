@@ -4,9 +4,11 @@ namespace App\Http\Controllers\V1;
 
 use App\Repositories\ChronogramRepository;
 use App\Http\Controllers\Controller;
+use App\Models\Chronogram;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
 
 class ChronogramController extends Controller {
 
@@ -30,6 +32,17 @@ class ChronogramController extends Controller {
 
     public function store(Request $request)
     {
+        $year = Date::now()->year;
+        $month = $request->month;
+        $chronogramaValidation = Chronogram::where('month', $month)
+            ->whereYear('created_at', $year)
+            ->exists();
+        if ($chronogramaValidation) {
+            return [
+                'status' => 'errorMes',
+                'mensaje' => 'Mes Cronograma Repetido'
+            ];
+        }
         // Gate::authorize('haveaccess');
         try {
             $data = $request->all();
