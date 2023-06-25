@@ -152,7 +152,7 @@ class GeneralController extends Controller
                     })->get();
                 }elseif('monitors' == $value){
                     $record = User::select(DB::raw("CONCAT(name, ' ', lastname) as label"), 'id as value')->whereHas('roles', function ($query) {
-                        $query->whereNotIn('role_id', [12]);
+                        $query->whereIn('role_id', [12]);
                     })->get();
                 }
                 else {
