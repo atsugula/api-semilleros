@@ -36,6 +36,7 @@ class ChronogramController extends Controller {
         $month = $request->month;
         $chronogramaValidation = Chronogram::where('month', $month)
             ->whereYear('created_at', $year)
+            ->whereYear('created_by', Auth::user()->id)
             ->exists();
         if ($chronogramaValidation) {
             return [
