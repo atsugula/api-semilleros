@@ -100,7 +100,7 @@ class UserRepository
 
             if (
                 $user['roles'] == '1' || $user['roles'] == '2' ||
-                $user['roles'] == '4' || $user['roles'] == '8' ||
+                $user['roles'] == '4' ||
                 $user['roles'] == '9' || $user['roles'] == '10' ||
                 $user['roles'] == '11' || $user['roles'] == '12'
                 ) {
