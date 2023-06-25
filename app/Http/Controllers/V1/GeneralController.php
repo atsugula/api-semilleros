@@ -150,6 +150,10 @@ class GeneralController extends Controller
                     $record = User::select(DB::raw("CONCAT(name, ' ', lastname) as label"), 'id as value')->whereHas('roles', function ($query) {
                         $query->whereNotIn('role_id', [12, 11]);
                     })->get();
+                }elseif('monitors' == $value){
+                    $record = User::select(DB::raw("CONCAT(name, ' ', lastname) as label"), 'id as value')->whereHas('roles', function ($query) {
+                        $query->whereNotIn('role_id', [12]);
+                    })->get();
                 }
                 else {
                     $record = DB::table($value)->select('name as label', 'id as value');
