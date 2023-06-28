@@ -43,7 +43,7 @@ class BeneficiarieRepository
                 $beneficiaries =  $this->model->query()->where('status_id',  config("status.ENR"))->orderBy('id', 'DESC')->get();
                 break;
             case(config('roles.monitor')):
-                $beneficiaries =  $this->model->query()->orderBy('id', 'DESC')->get();
+                $beneficiaries =  $this->model->query()->orderBy('id', 'DESC')->whereNotIn('status_id', [config('status.ENR')])->get();
                 break;
             case(config('roles.asistente_administrativo')):
                 $beneficiaries =  $this->model->query()->where('status_id',  config("status.APR"))->orderBy('id', 'DESC')->get();
