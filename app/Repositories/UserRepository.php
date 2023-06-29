@@ -53,8 +53,13 @@ class UserRepository
         if ($rol_id == config('roles.metodologo')){
             $query = $query->where('methodology_id', Auth::user()->id);
         }
-        if(in_array($rol_id, [config('roles.coordinador_psicosocial'), config('roles.coordinador_regional')])){
+        if(in_array($rol_id, [config('roles.coordinador_regional')])){
             $query = $query->where('manager_id', Auth::user()->id);
+        }
+        if(in_array($rol_id, [config('roles.coordinador_psicosocial')])){
+            $query->whereHas('roles', function ($profile) {
+                $profile->whereNot('roles.id', [config('roles.psicologo')]);
+            });
         }
         $cantRegistros = $query->get()->count();
         return  new UserCollection($query->paginate($cantRegistros));
@@ -95,7 +100,7 @@ class UserRepository
 
             if (
                 $user['roles'] == '1' || $user['roles'] == '2' ||
-                $user['roles'] == '4' || $user['roles'] == '8' ||
+                $user['roles'] == '4' ||
                 $user['roles'] == '9' || $user['roles'] == '10' ||
                 $user['roles'] == '11' || $user['roles'] == '12'
                 ) {
@@ -208,7 +213,7 @@ class UserRepository
 
             if(
                 $data['roles'] == '1' || $data['roles'] == '2' ||
-                $data['roles'] == '4' || $data['roles'] == '8' ||
+                $data['roles'] == '4' ||
                 $data['roles'] == '9' || $data['roles'] == '10' ||
                 $data['roles'] == '11' || $data['roles'] == '12'
             ){

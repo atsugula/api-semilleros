@@ -44,6 +44,9 @@ class Chronogram extends Model
     public function creator(){
         return $this->belongsTo(User::class, 'created_by', 'id');
     }
+    public function zones(){
+        return $this->hasMany(ZoneUser::class, 'user_id', 'created_by');
+    }
 
     public function reviewed(){
 		return $this->belongsTo(User::class, 'revised_by', 'id');
