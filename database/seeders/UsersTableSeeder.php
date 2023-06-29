@@ -35,7 +35,7 @@ class UsersTableSeeder extends Seeder
         // Recorrer los datos y crear los usuarios
         // Inicializar el contador
         $counter = 0;
-  
+
         // Recorrer los datos y crear los usuarios
         foreach ($rows as $row) {
             // Saltar la primera fila
@@ -43,7 +43,9 @@ class UsersTableSeeder extends Seeder
                 $counter++;
                 continue;
             }
-
+            if($row['B'] == null){
+                continue;
+            }
             $user = new User();
             $user->id = $row['A'];
             $user->name = $row['B'];
@@ -56,8 +58,35 @@ class UsersTableSeeder extends Seeder
             $user->email = $row['I'];
             $user->password = Hash::make($row['E']);
             $user->save();
+            // Guardar el ID del usuario creado y la cédula en el metodologo
+            $userIdsAndCedulas[] = [
+                'userId' => $user->id,
+                'cedulaMetodologo' => (isset($row['J']) ?$row['J']:null),
+                'cedulaManagment' =>  (isset($row['K']) ?$row['K']:null),
+            ];
 
             $counter++;
+        }
+        // Recorrer el array y asignar el methodology_id
+        foreach ($userIdsAndCedulas as $data) {
+            if($data['cedulaMetodologo'] != null){
+                $user = User::find($data['userId']);
+                // Buscar el usuario con la cédula correspondiente
+                $relatedUser = User::where('document_number', $data['cedulaMetodologo'])->first();
+                if ($relatedUser) {
+                    $user->methodology_id = $relatedUser->id;
+                    $user->save();
+                }
+            }
+
+            if($data['cedulaManagment'] != null){
+                // Buscar el usuario con la cédula correspondiente
+                $relatedUserManagment = User::where('document_number', $data['cedulaManagment'])->first();
+                if ($relatedUserManagment) {
+                    $user->manager_id = $relatedUserManagment->id;
+                    $user->save();
+                }
+            }
         }
     }
 }
