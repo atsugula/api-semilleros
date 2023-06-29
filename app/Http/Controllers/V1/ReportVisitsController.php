@@ -34,7 +34,153 @@ class ReportVisitsController extends Controller
         }
     }
 
+    public function exportBeneficiariesMethodologistVisit(Request $request)
+    {
+        try {
+            $response = $this->reportVisitsRepository->generateDoc($request->id);
+            if ($response instanceof \Exception) {
+                return $this->createErrorResponse([], 'Algo salio mal ' . $response->getMessage() . ' linea ' . $response->getCode());
+            } else {
+                if (!$request->type) {
+                    return $response;
+                }
+                return response()->json(['count' => $response]);
+            }
+        } catch (\Exception $ex) {
+            return $this->createErrorResponse([], 'Algo salio mal ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+        }
+    }
 
+    public function exportPsychologistVisit(Request $request)
+    {
+        try {
+            $response = $this->reportVisitsRepository->GenerateDocReportVisitsRepository($request->id);
+            if ($response instanceof \Exception) {
+                return $this->createErrorResponse([], 'Algo salio mal ' . $response->getMessage() . ' linea ' . $response->getCode());
+            } else {
+                if (!$request->type) {
+                    return $response;
+                }
+                return response()->json(['count' => $response]);
+            }
+        } catch (\Exception $ex) {
+            return $this->createErrorResponse([], 'Algo salio mal ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+        }
+    }
+
+    public function exportPsychologistcustomVisit(Request $request){
+        try {
+            $response = $this->reportVisitsRepository->GenerateDocPsychologistcustomVisit($request->id);
+            if ($response instanceof \Exception) {
+                return $this->createErrorResponse([], 'Algo salio mal ' . $response->getMessage() . ' linea ' . $response->getCode());
+            } else {
+                if (!$request->type) {
+                    return $response;
+                }
+                return response()->json(['count' => $response]);
+            }
+        } catch (\Exception $ex) {
+            return $this->createErrorResponse([], 'Algo salio mal ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+        }
+    }
+
+    public function exportPsychologisttransversalActivity(Request $request){
+        try {
+            $response = $this->reportVisitsRepository->GeneratedocPsychologisttransversalActivity($request->id);
+            if ($response instanceof \Exception) {
+                return $this->createErrorResponse([], 'Algo salio mal ' . $response->getMessage() . ' linea ' . $response->getCode());
+            } else {
+                if (!$request->type) {
+                    return $response;
+                }
+                return response()->json(['count' => $response]);
+            }
+        } catch (\Exception $ex) {
+            return $this->createErrorResponse([], 'Algo salio mal ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+        }
+    }
+
+    Public function exportvisitSubDirector(Request $request){
+        try{
+            $response = $this->reportVisitsRepository->GenerateDocvisitSubDirector($request->id);
+            if ($response instanceof \Exception) {
+                return $this->createErrorResponse([], 'Algo salio mal ' . $response->getMessage() . ' linea ' . $response->getCode());
+            } else {
+                if (!$request->type) {
+                    return $response;
+                }
+                return response()->json(['count' => $response]);
+            }
+        } catch (\Exception $ex) {
+            return $this->createErrorResponse([], 'Algo salio mal ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+        }
 
 }
 
+    public function exportVisitDirector(Request $request){
+        
+    //     try{
+    //         $response = $this->reportVisitsRepository->GenerateDocVisitDirector($request->id);
+    //         if ($response instanceof \Exception) {
+    //             return $this->createErrorResponse([], 'Algo salio mal ' . $response->getMessage() . ' linea ' . $response->getCode());
+    //         } else {
+    //             if (!$request->type) {
+    //                 return $response;
+    //             }
+    //             return response()->json(['count' => $response]);
+    //         }
+    //     } catch (\Exception $ex) {
+    //         return $this->createErrorResponse([], 'Algo salio mal ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+    // }
+
+    }
+
+    public function ExportCoordinadorRegional(Request $request){
+        try{
+            $response = $this->reportVisitsRepository->GenerateDocVisitCoordinador($request->id);
+            if ($response instanceof \Exception) {
+                return $this->createErrorResponse([], 'Algo salio mal ' . $response->getMessage() . ' linea ' . $response->getCode());
+            } else {
+                if (!$request->type) {
+                    return $response;
+                }
+                return response()->json(['count' => $response]);
+            }
+        } catch (\Exception $ex) {
+            return $this->createErrorResponse([], 'Algo salio mal ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+         }
+    }
+
+    public function ExportBenefisiariesReport(Request $request){
+        try{
+            $response = $this->reportVisitsRepository->GenerateDocVisitCoordinador($request->id);
+            if ($response instanceof \Exception) {
+                return $this->createErrorResponse([], 'Algo salio mal ' . $response->getMessage() . ' linea ' . $response->getCode());
+            } else {
+                if (!$request->type) {
+                    return $response;
+                }
+                return response()->json(['count' => $response]);
+            }
+        } catch (\Exception $ex) {
+            return $this->createErrorResponse([], 'Algo salio mal ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+         }
+    }
+
+    public function ExportChronogram(Request $request){
+        try{
+            $response = $this->reportVisitsRepository->GenerateChronogram($request->id);
+            if ($response instanceof \Exception) {
+                return $this->createErrorResponse([], 'Algo salio mal ' . $response->getMessage() . ' linea ' . $response->getCode());
+            } else {
+                if (!$request->type) {
+                    return $response;
+                }
+                return response()->json(['count' => $response]);
+            }
+        } catch (\Exception $ex) {
+            return $this->createErrorResponse([], 'Algo salio mal ' . $ex->getMessage() . ' linea ' . $ex->getCode());
+         }
+    }
+
+}

@@ -25,16 +25,16 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             ZoneSeeder::class,
-            //ZoneTableSeeder::class,  // mio
-            //UsersTableSeeder::class, // mio
+            //ZoneTableSeeder::class, NO DESCOMENTAR
+            //UsersTableSeeder::class, NO DESCOMENTAR
             UserSeeder::class,
             ModuleSeeder::class,
             ModuleItemSeeder::class,
-            //RolesTableSeeder::class, // mio
+            //RolesTableSeeder::class, NO DESCOMENTAR
             RoleSeeder::class,
             PermissionSeeder::class,
-            //RolesUsersTableSeeder::class,// mio
-            RoleUserSeeder::class,
+            //RolesUsersTableSeeder::class, NO DESCOMENTAR
+             RoleUserSeeder::class, 
             GroupSeeder::class,
             PermissionRoleSeeder::class,
             ValidityPeriodsSeeder::class,
@@ -42,18 +42,16 @@ class DatabaseSeeder extends Seeder
             DepartmentsSeeder::class,
             CitySeeder::class,
             StatusSeeder::class,
-            BankSeeder::class,
-            BankAccountTypeSeeder::class,
-            //MunicipalitiesTableSeeder::class, // mio
-            MunicipalitySeeder::class,
-            ObjectSeeder::class,
-            //DisciplinesTableSeeder::class,
-            //DisciplinesUsersTableSeeder::class,
+            //MunicipalitiesTableSeeder::class, NO DESCOMENTAR
+             MunicipalitySeeder::class,
+           // ObjectSeeder::class,
+            //DisciplinesTableSeeder::class, NO DESCOMENTAR
+            //DisciplinesUsersTableSeeder::class, NO DESCOMENTAR
             DisciplinesSeeder::class,
             DirectionSeeder::class,
-            //ZoneUserTableSeeder::class,
-            ZoneUserSeeder::class,
-            MunicipalityUserSeeder::class,
+            //ZoneUserTableSeeder::class, NO DESCOMENTAR
+             ZoneUserSeeder::class,
+            // MunicipalityUserSeeder::class, NO DESCOMENTAR
             EthnicitySeeder::class,
             EventSupportSeederer::class,
             EvaluationSeeder::class,
@@ -62,8 +60,8 @@ class DatabaseSeeder extends Seeder
             CoordinatorVisitSeeder::class,
             SidewalkSeeder::class,
             Health_Entities_Seeder::class,
-            //RolesActivitiesSeeder::class, // mio
-            //RolesObjectsActivitiesSeeder::class // mio
+            RolesActivitiesSeeder::class,
+            RolesObjectsActivitiesSeeder::class
         ]);
     }
 }

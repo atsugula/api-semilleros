@@ -22,7 +22,8 @@ class ChronogramsGroupsResource extends JsonResource
             'main_sports_stage_address' => $this->main_sports_stage_address,
             'alt_sports_stage_name' => $this->alt_sports_stage_name,
             'alt_sports_stage_address' => $this->alt_sports_stage_address,
-            'schedules' => $this->schedules,
+            // 'schedules' => $this->schedules,
+            'schedules' => ScheduleResource::collection($this->whenLoaded('schedules')),
         ];
     }
 }

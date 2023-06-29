@@ -22,6 +22,7 @@ use App\Models\Status;
 use App\Models\User;
 use App\Models\Validity_period;
 use App\Models\Zone;
+use App\Models\ZoneUser;
 use App\Traits\FunctionGeneralTrait;
 use Illuminate\Http\Request;
 use App\Traits\UserDataTrait;
@@ -29,6 +30,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
 
 class GeneralController extends Controller
 {
@@ -81,7 +83,7 @@ class GeneralController extends Controller
         // $diciplines = Disciplines::select('name as label', 'id as value')->orderBy('name', 'ASC')->get();
 
         //Bancks
-        $bancks = Bank::select('name as label', 'id as value')->orderBy('name', 'ASC')->get();
+        // $bancks = Bank::select('name as label', 'id as value')->orderBy('name', 'ASC')->get();
 
         //Ethniea
         $ethniacity = Ethnicity::select('name as label', 'id as value')->orderBy('name', 'ASC')->get();
@@ -90,7 +92,7 @@ class GeneralController extends Controller
         $groups = Group::select('id as value', 'name as label')->orderBy('name', 'ASC')->get();
 
         //EventSupport
-        $eventSuport = Event_support::select('id as value', 'name as label')->orderBy('name', 'ASC')->get();
+        // $eventSuport = Event_support::select('id as value', 'name as label')->orderBy('name', 'ASC')->get();
 
         //Evaluations
         $evaluations = Evaluation::select('id as value', 'name as label')->orderBy('name', 'ASC')->get();
@@ -101,9 +103,9 @@ class GeneralController extends Controller
 
         $data = [
             "evaluations" => $evaluations,
-            "eventSuport" => $eventSuport,
+            // "eventSuport" => $eventSuport,
             "ethniacity" => $ethniacity,
-            "bancks" => $bancks,
+            // "bancks" => $bancks,
             "diciplines" => $diciplines,
             "period" => $period,
             "status" => $status,
@@ -136,9 +138,38 @@ class GeneralController extends Controller
             try {
                 if ($value == 'identification_types') {
                     $record = $identification_types;
+                }elseif('asistentList' == $value){
+                        $record = User::select(DB::raw("CONCAT(name, ' ', lastname) as label"), 'id as value')->whereHas('roles', function ($query) {
+                        $query->whereIn('role_id', [8, 14]);
+                    })->get();
+                }elseif('metodologoList' == $value){
+                    $record = User::select(DB::raw("CONCAT(name, ' ', lastname) as label"), 'id as value')->whereHas('roles', function ($query) {
+                        $query->where('role_id', 10);
+                    })->get();
+                }elseif('managerList' == $value){
+                    $record = User::select(DB::raw("CONCAT(name, ' ', lastname) as label"), 'id as value')->whereHas('roles', function ($query) {
+                        $query->whereNotIn('role_id', [12, 11]);
+                    })->get();
+                }elseif('monitors' == $value){
+                    $record = User::select(DB::raw("CONCAT(name, ' ', lastname) as label"), 'id as value')->whereHas('roles', function ($query) {
+                        $query->whereIn('role_id', [12]);
+                    })->get();
                 }
                 else {
-                    $record = DB::table($value)->select('name as label', 'id as value')->get();
+                    $record = DB::table($value)->select('name as label', 'id as value');
+                    if($request->auth == "true"){
+                        if (Schema::hasColumn($value, 'zone_id')) {
+                            $user = Auth::user()->id;
+                            $zones = ZoneUser::where('user_id', $user)->pluck('zones_id');
+                            $record = $record->whereIn('zone_id', $zones);
+                        }
+                    }
+                    if($value == "municipalities" && Auth::user()->roles[0]->id == config("roles.psicologo")){
+                        $user = Auth::user()->id;
+                        $zones = ZoneUser::where('user_id', $user)->pluck('zones_id');
+                        $record = $record->whereIn('zone_id', $zones);
+                    }
+                    $record = $record->get();
                 }
             } catch (\Throwable $th) {
                 $record = DB::table($value)->select('term as label', 'id as value')->get();

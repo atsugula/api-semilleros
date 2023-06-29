@@ -11,6 +11,8 @@ use App\Traits\UserDataTrait;
 use App\Traits\ImageTrait;
 use App\Models\Chronogram;
 use App\Models\Schedule;
+use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class ChronogramRepository
 {
@@ -31,9 +33,9 @@ class ChronogramRepository
         $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
 
-        $query = $this->model->query()->orderBy('id', 'DESC');
-        
-        if ($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_maritimo') || $rol_id == config('roles.coordinador_enlace')|| $rol_id == config('roles.monitor')) {
+        $query = $this->model->query();
+
+        if ($rol_id == config('roles.coordinador_psicosocial') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.coordinador_maritimo') || $rol_id == config('roles.coordinador_enlace')/*|| $rol_id == config('roles.monitor')*/) {
             $query->whereNotIn('created_by', [1,2])->with(['mes', 'municipio'])
                 ->whereHas('creator.roles', function ($query) {
                     $query->where('roles.slug', 'subdirector_tecnico');
@@ -44,7 +46,24 @@ class ChronogramRepository
         if ($rol_id == config('roles.monitor')){
             $query->whereNotIn('created_by', [1,2])->with(['mes', 'municipio'])
                 ->where('created_by', $user_id)
-                ->whereNotIn('status_id', [config('status.APR')]);
+                ;
+        }
+
+        if($rol_id == config('roles.subdirector_tecnico')){
+            $user = User::findOrFail($user_id);
+            $zoneIds = $user->zone->pluck('zones_id')->toArray();
+            $query->whereNotIn('created_by', [1,2])
+                ->with(['mes', 'municipio', 'zones'])
+                ->where('status_id',  config("status.ENR"))
+                ->whereHas('zones', function ($query) use ($zoneIds) {
+                    $query->whereIn('zones_id', $zoneIds);
+                });
+        }
+
+        if($rol_id == config('roles.metodologo')){
+            $query->whereNotIn('created_by', [1,2])
+                ->with(['mes', 'municipio'])
+                ->where('status_id', config("status.ENR"));
         }
 
         $paginate = config('global.paginate');
@@ -125,6 +144,11 @@ class ChronogramRepository
             $cronograms->rejection_message = $data['rejection_message'];
         }
 
+        if($rol_id == config('roles.subdirector_tecnico')){
+            $cronograms->status_id = $data['status_id'];
+            $cronograms->rejection_message = $data['rejection_message'];
+        }
+
         $cronograms->save();
 
         // Guardamos en dataModel
@@ -178,7 +202,7 @@ class ChronogramRepository
         $validate = [
             'month'                     => 'bail|required',
             'municipality'              => 'bail|required',
-            'note'                      => 'bail|required|string',
+           // 'note'                      => 'bail|required|string',
             'groups'                    => 'bail|required'
         ];
 
@@ -190,7 +214,7 @@ class ChronogramRepository
         $attrs = [
             'month'         => 'Mes',
             'municipality'  => 'Municipio',
-            'note'          => 'Observación',
+           // 'note'          => 'Observación',
             'groups'        => 'Grupos',
         ];
 

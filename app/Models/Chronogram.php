@@ -19,6 +19,7 @@ class Chronogram extends Model
         'month',
         'municipality',
         'note',
+        'note_holiday',
         'revised_by',
         'status_id',
         'updated_at'
@@ -43,6 +44,9 @@ class Chronogram extends Model
     public function creator(){
         return $this->belongsTo(User::class, 'created_by', 'id');
     }
+    public function zones(){
+        return $this->hasMany(ZoneUser::class, 'user_id', 'created_by');
+    }
 
     public function reviewed(){
 		return $this->belongsTo(User::class, 'revised_by', 'id');
@@ -53,7 +57,7 @@ class Chronogram extends Model
     }
 
     public function municipio(){
-        return $this->hasOne(City::class, 'id', 'municipality');
+        return $this->hasOne(Municipality::class, 'id', 'municipality');
     }
 
     public function estado(){

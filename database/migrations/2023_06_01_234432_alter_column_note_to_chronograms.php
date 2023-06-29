@@ -13,11 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('bank_account_types', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->timestamps();
-            $table->softDeletes();
+        Schema::table('chronograms', function (Blueprint $table) {
+            $table->text('note')->nullable()->change();
+            $table->text('note_holiday')->nullable()->after('note');
         });
     }
 
@@ -28,6 +26,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bank_account_types');
+        Schema::table('chronograms', function (Blueprint $table) {
+            $table->text('note')->nullable(false)->change();
+        });
     }
 };

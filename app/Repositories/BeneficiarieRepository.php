@@ -16,6 +16,7 @@ use App\Models\User;
 use App\Models\ZoneUser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 class BeneficiarieRepository
@@ -33,8 +34,26 @@ class BeneficiarieRepository
     public function getAll()
     {
         $user_id = $this->getIdUserAuth();
-        $beneficiaries = new BeneficiaryCollection($this->model->where('created_by', $user_id)->orderBy('id', 'ASC')->get());
-        return $beneficiaries;
+        $rol_id = $this->getIdRolUserAuth();
+
+        switch ($rol_id){
+            case(config('roles.super-root')):
+            case(config('roles.director_administrator')):
+            case(config('roles.metodologo')):
+                $beneficiaries =  $this->model->query()->where('status_id',  config("status.ENR"))->orderBy('id', 'DESC')->get();
+                break;
+            case(config('roles.monitor')):
+                $beneficiaries =  $this->model->query()->orderBy('id', 'DESC')->get();
+                break;
+            case(config('roles.asistente_administrativo')):
+                $beneficiaries =  $this->model->query()->where('status_id',  config("status.APR"))->orderBy('id', 'DESC')->get();
+                break;
+            default:
+                return null;
+                break;
+        }
+
+        return new BeneficiaryCollection($beneficiaries);
     }
 
     public function create($request)
@@ -46,16 +65,16 @@ class BeneficiarieRepository
         $beneficiarie->save();
 
         // Ficha de Tamizaje
-        $fichaTamizaje = new BeneficiaryScreening();
-        $fichaTamizaje->estatura        = $request['estatura'];
-        $fichaTamizaje->envergadura     = $request['envergadura'];
-        $fichaTamizaje->masa            = $request['masa'];
-        $fichaTamizaje->flexibilidad    = $request['flexibilidad'];
-        $fichaTamizaje->velocidad       = $request['velocidad'];
-        $fichaTamizaje->fuerza          = $request['fuerza'];
-        $fichaTamizaje->oculomanual     = $request['oculomanual'];
-        $fichaTamizaje->beneficiary_id  = $beneficiarie->id;
-        $fichaTamizaje->save();
+        // $fichaTamizaje = new BeneficiaryScreening();
+        // $fichaTamizaje->estatura        = $request['estatura'];
+        // $fichaTamizaje->envergadura     = $request['envergadura'];
+        // $fichaTamizaje->masa            = $request['masa'];
+        // $fichaTamizaje->flexibilidad    = $request['flexibilidad'];
+        // $fichaTamizaje->velocidad       = $request['velocidad'];
+        // $fichaTamizaje->fuerza          = $request['fuerza'];
+        // $fichaTamizaje->oculomanual     = $request['oculomanual'];
+        // $fichaTamizaje->beneficiary_id  = $beneficiarie->id;
+        // $fichaTamizaje->save();
 
         // Acudientes
         $acudiente = BeneficiaryGuardians::updateOrCreate(
@@ -107,15 +126,15 @@ class BeneficiarieRepository
         $beneficiarie->update($request);
 
         // Ficha de Tamizaje
-        $fichaTamizaje = BeneficiaryScreening::where('beneficiary_id', $beneficiarie->id)->firstOrFail();
-        $fichaTamizaje->estatura        = $request['estatura'];
-        $fichaTamizaje->envergadura     = $request['envergadura'];
-        $fichaTamizaje->masa            = $request['masa'];
-        $fichaTamizaje->flexibilidad    = $request['flexibilidad'];
-        $fichaTamizaje->velocidad       = $request['velocidad'];
-        $fichaTamizaje->fuerza          = $request['fuerza'];
-        $fichaTamizaje->oculomanual     = $request['oculomanual'];
-        $fichaTamizaje->save();
+        // $fichaTamizaje = BeneficiaryScreening::where('beneficiary_id', $beneficiarie->id)->firstOrFail();
+        // $fichaTamizaje->estatura        = $request['estatura'];
+        // $fichaTamizaje->envergadura     = $request['envergadura'];
+        // $fichaTamizaje->masa            = $request['masa'];
+        // $fichaTamizaje->flexibilidad    = $request['flexibilidad'];
+        // $fichaTamizaje->velocidad       = $request['velocidad'];
+        // $fichaTamizaje->fuerza          = $request['fuerza'];
+        // $fichaTamizaje->oculomanual     = $request['oculomanual'];
+        // $fichaTamizaje->save();
 
         // Acudientes
         $acudiente = BeneficiaryGuardians::updateOrCreate(
@@ -161,13 +180,9 @@ class BeneficiarieRepository
 
     public function getValidate($data, $method)
     {
-
         $validate = [
             'affiliation_type' => 'bail|required',
-            'document_number' => [
-                'required',
-                Rule::unique(Beneficiary::class),
-            ],
+            'document_number' => $method != 'update' ? ['bail', 'required', 'string', Rule::unique(Asistant::class)] : ['bail', 'required', 'string'],
             /* 'group_id' => 'bail|required',
             'full_name' => 'bail|required',
             'institution_entity_referred' => 'bail|required',
@@ -218,10 +233,18 @@ class BeneficiarieRepository
 
     public function getAllByUserRegion()
     {
-
+            // codigo por revisar
         $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
 
+        $rol_id = $this->getIdRolUserAuth();
+        $user_id = $this->getIdUserAuth();
+        $user = User::where('id', $user_id)->with('municipalities')->first();
+        $idMunicipios = [];
+        foreach ($user->municipalities as $item) {
+            $municipalities_id = $item['municipalities_id'];
+            $idMunicipios[] = $municipalities_id;
+        }
         $zoneUsers = new ZoneUser();
         $municipalityUsers = new MunicipalityUser();
 
@@ -244,12 +267,11 @@ class BeneficiarieRepository
             array_push($allMunicipalities, $a['id']);
         }
 
-        if ($rol_id == config('roles.asistente_administrativo')) {
-
+        if ($rol_id == config('roles.asistente_administrativo') || $rol_id == config('roles.subdirector_tecnico')) {
             return new BeneficiaryCollection(
                 $this->model
-                    ->whereIn('municipalities_id', $allMunicipalities)
-                    ->whereIn('status_id', [config('status.APR'), config('status.REC')])
+                    // ->whereIn('municipalities_id', $allMunicipalities)
+                    ->whereIn('status_id', [config('status.ENP')])
                     ->orderBy('id', 'ASC')
                     ->get()
             );
@@ -257,7 +279,7 @@ class BeneficiarieRepository
 
             return new BeneficiaryCollection(
                 $this->model
-                    ->whereIn('municipalities_id', $allMunicipalities)
+                ->whereIn('municipalities_id', $idMunicipios)
                     ->whereIn('status_id', [config('status.ENP'), config('status.APR'), config('status.REC')])
                     ->orderBy('id', 'ASC')
                     ->get()
@@ -266,8 +288,8 @@ class BeneficiarieRepository
 
             return new BeneficiaryCollection(
                 $this->model
-                    ->whereIn('municipalities_id', $allMunicipalities)
-                    ->whereIn('status_id', [config('status.ENP'), config('status.ENR'), config('status.REC')])
+                    ->whereIn('municipalities_id', $idMunicipios)
+                    ->whereIn('status_id', [config('status.ENR')])
                     ->orderBy('id', 'ASC')
                     ->get()
             );
@@ -283,7 +305,7 @@ class BeneficiarieRepository
         $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
 
-        
+
         $beneficiarie = $this->model->findOrFail($id);
 
         if ($rol_id == config('roles.asistente_administrativo') || $rol_id == config('roles.coordinador_regional') || $rol_id == config('roles.metodologo') || $rol_id == config('roles.coordinador_maritimo')) {
@@ -315,5 +337,9 @@ class BeneficiarieRepository
         $result = new BeneficiaryResource($beneficiarie);
 
         return $result;
+    }
+
+    public function allByBeneficiaryRegion($region){
+
     }
 }

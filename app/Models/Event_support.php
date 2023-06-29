@@ -3,16 +3,25 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
 class Event_support extends Model
 {
-    use HasFactory, SoftDeletes;
-    protected $table = "event_supports";
+    use HasFactory;
+    protected $table = "event_support";
 
     protected $fillable = [
-        'name'
+        'date_visit',
+        'hour_visit',
+        'municipalitie_id',
+        'correct',
+        'event',
+        'observation',
+        'file1',
+        'file2',
+        'file3',
+        'revised_by',
+        'status_id',
     ];
 
     protected $guarded = [

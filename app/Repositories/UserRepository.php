@@ -13,6 +13,9 @@ use App\Models\RoleUser;
 use App\Models\User;
 use App\Traits\UserDataTrait;
 use Illuminate\Support\Facades\DB;
+use App\Mail\RegisterUserMailable;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class UserRepository
 {
@@ -40,6 +43,22 @@ class UserRepository
         if ($rol_id == config('roles.super_root')){
             $query->whereHas('roles', function ($profile) {
                 $profile->whereNotIn('roles.id', [config('roles.super_root')]);
+            });
+        }
+
+        if ($rol_id == config('roles.asistente_administrativo')){
+            $query = $query->where('asistent_id', Auth::user()->id);
+        }
+
+        if ($rol_id == config('roles.metodologo')){
+            $query = $query->where('methodology_id', Auth::user()->id);
+        }
+        if(in_array($rol_id, [config('roles.coordinador_regional')])){
+            $query = $query->where('manager_id', Auth::user()->id);
+        }
+        if(in_array($rol_id, [config('roles.coordinador_psicosocial')])){
+            $query->whereHas('roles', function ($profile) {
+                $profile->whereNot('roles.id', [config('roles.psicologo')]);
             });
         }
         $cantRegistros = $query->get()->count();
@@ -81,7 +100,7 @@ class UserRepository
 
             if (
                 $user['roles'] == '1' || $user['roles'] == '2' ||
-                $user['roles'] == '4' || $user['roles'] == '8' ||
+                $user['roles'] == '4' ||
                 $user['roles'] == '9' || $user['roles'] == '10' ||
                 $user['roles'] == '11' || $user['roles'] == '12'
                 ) {
@@ -108,11 +127,13 @@ class UserRepository
                 }
 
                 // Diciplinas - usuarios
-                foreach ($user['disciplines'] as $key => $value) {
-                    DisciplineUser::create([
-                        'user_id' => $new_user->id,
-                        'disciplines_id' => $value,
-                    ]);
+                if($user['roles'] == '12'){
+                    foreach ($user['disciplines'] as $key => $value) {
+                        DisciplineUser::create([
+                            'user_id' => $new_user->id,
+                            'disciplines_id' => $value,
+                        ]);
+                    }
                 }
             }else{
                 // Roles - usuarios
@@ -124,6 +145,11 @@ class UserRepository
         }
         // Guardamos en ModelData
         $this->control_data($new_user, 'store');
+
+
+        $correo = new RegisterUserMailable($new_user);
+
+        Mail::to($new_user['email'])->send($correo);
 
         return $new_user;
     }
@@ -179,7 +205,7 @@ class UserRepository
      */
     function update($data, $id)
     {
-        $data['password'] = Hash::make($data['password']);
+        $data['password'] = Hash::make($data['document_number']);
         $user_up = $this->model->findOrFail($id);
 
         if ($user_up->update($data)) {
@@ -187,7 +213,7 @@ class UserRepository
 
             if(
                 $data['roles'] == '1' || $data['roles'] == '2' ||
-                $data['roles'] == '4' || $data['roles'] == '8' ||
+                $data['roles'] == '4' ||
                 $data['roles'] == '9' || $data['roles'] == '10' ||
                 $data['roles'] == '11' || $data['roles'] == '12'
             ){
@@ -219,7 +245,7 @@ class UserRepository
                 }
 
                 // Diciplinas
-                if($data['disciplines']){
+                if(isset($data['disciplines']) && $data['roles'] == '12'){
                     $discipline = DisciplineUser::where('user_id', $user_up->id)->delete();
                     foreach ($data['disciplines'] as $key => $value) {
                         $discipline = new DisciplineUser();
@@ -236,6 +262,10 @@ class UserRepository
         }
         // Guardamos en ModelData
         $this->control_data($user_up, 'update');
+
+        $correo = new RegisterUserMailable($user_up);
+
+        Mail::to($user_up['email'])->send($correo);
 
         return $user_up;
     }

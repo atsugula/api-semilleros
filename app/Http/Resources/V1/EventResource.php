@@ -16,8 +16,15 @@ class EventResource extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'name'=>$this->name,
-			'created_at'=>$this->created_at
+            'correct'=>$this->correct,
+            'date_visit'=>$this->date_visit,
+            'hour_visit'=>$this->hour_visit,
+            'event'=>$this->event,
+			'created_at'=>$this->created_at,
+			'municipalitie_id'=>$this->municipalitie_id,
+			'observation'=>$this->observation,
+			'status_id'=>$this->status_id,
+			'created_by'=>$this->created_by,
         ];
     }
 }

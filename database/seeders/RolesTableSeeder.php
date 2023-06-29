@@ -30,7 +30,7 @@ class RolesTableSeeder extends Seeder
 
         // Inicializar el contador
         $counter = 0;
-  
+
         // Recorrer los datos y crear los usuarios
         foreach ($rows as $row) {
             // Saltar la primera fila
@@ -40,7 +40,6 @@ class RolesTableSeeder extends Seeder
             }
 
             $roles = new Role();
-            $roles->id = $row['A'];
             $roles->name = $row['B'];
             $roles->slug = $row['C'];
             $roles->description = $row['D'];

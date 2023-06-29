@@ -78,7 +78,7 @@ class UsersTableSeeder extends Seeder
                     $user->save();
                 }
             }
-
+            
             if($data['cedulaManagment'] != null){
                 // Buscar el usuario con la cédula correspondiente
                 $relatedUserManagment = User::where('document_number', $data['cedulaManagment'])->first();

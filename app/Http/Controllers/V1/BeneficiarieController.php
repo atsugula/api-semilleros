@@ -29,7 +29,11 @@ class BeneficiarieController extends Controller
         // Gate::authorize('haveaccess');
         try {
             $results = $this->beneficiarieRepository->getAll();
-            return $results->toArray($request);
+            if($results != null){
+                return $results->toArray($request);
+            }else{
+                throw new \Exception('No está autorizado.');
+            }
         } catch (\Exception $ex) {
             return  $this->createErrorResponse([], 'Algo salio mal al listar los beneficiarios ' . $ex->getMessage() . ' linea ' . $ex->getCode());
         }
@@ -46,6 +50,7 @@ class BeneficiarieController extends Controller
         // Gate::authorize('haveaccess');
         try {
             $data = $request->all();
+            $data['document_number'] = (string)$request->document_number;
 
             $validator = $this->beneficiarieRepository->getValidate($data, 'update');
             if ($validator->fails()) {
@@ -149,7 +154,11 @@ class BeneficiarieController extends Controller
         //Gate::authorize('haveaccess');
          try {
              $results = $this->beneficiarieRepository->getAllByUserRegion();
-             return $results->toArray($request);
+             if($results != null){
+                return $results->toArray($request);
+            }else{
+                throw new \Exception('No está autorizado.');
+            }
          } catch (\Exception $ex) {
              return  $this->createErrorResponse([], 'Algo salio mal al listar los beneficiarios ' . $ex->getMessage() . ' linea ' . $ex->getCode());
          }
@@ -168,5 +177,15 @@ class BeneficiarieController extends Controller
         } catch (\Exception $ex) {
             return  $this->createErrorResponse([], 'Algo salio mal al cambiar el estado de la ficha tecnica ' . $ex->getMessage() . ' linea ' . $ex->getCode());
         }
+    }
+
+    public function getAllByBenefeciaryRegion(Request $request){
+
+        try{
+
+        }catch(\Exception $ex){
+
+        }
+
     }
 }
