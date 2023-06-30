@@ -139,8 +139,8 @@ class GeneralController extends Controller
                 if ($value == 'identification_types') {
                     $record = $identification_types;
                 }elseif('asistentList' == $value){
-                    $record = User::select('name as label', 'id as value')->whereHas('roles', function ($query) {
-                        $query->where('role_id', 8);
+                        $record = User::select(DB::raw("CONCAT(name, ' ', lastname) as label"), 'id as value')->whereHas('roles', function ($query) {
+                        $query->whereIn('role_id', [8, 14]);
                     })->get();
                 }elseif('metodologoList' == $value){
                     $record = User::select(DB::raw("CONCAT(name, ' ', lastname) as label"), 'id as value')->whereHas('roles', function ($query) {
@@ -149,6 +149,10 @@ class GeneralController extends Controller
                 }elseif('managerList' == $value){
                     $record = User::select(DB::raw("CONCAT(name, ' ', lastname) as label"), 'id as value')->whereHas('roles', function ($query) {
                         $query->whereNotIn('role_id', [12, 11]);
+                    })->get();
+                }elseif('monitors' == $value){
+                    $record = User::select(DB::raw("CONCAT(name, ' ', lastname) as label"), 'id as value')->whereHas('roles', function ($query) {
+                        $query->whereIn('role_id', [12]);
                     })->get();
                 }
                 else {

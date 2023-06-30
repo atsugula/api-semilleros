@@ -61,26 +61,31 @@ class UsersTableSeeder extends Seeder
             // Guardar el ID del usuario creado y la cédula en el metodologo
             $userIdsAndCedulas[] = [
                 'userId' => $user->id,
-                'cedulaMetodologo' => $row['J'],
-                'cedulaManagment' => $row['K'],
+                'cedulaMetodologo' => (isset($row['J']) ?$row['J']:null),
+                'cedulaManagment' =>  (isset($row['K']) ?$row['K']:null),
             ];
 
             $counter++;
         }
         // Recorrer el array y asignar el methodology_id
         foreach ($userIdsAndCedulas as $data) {
-            $user = User::find($data['userId']);
-            // Buscar el usuario con la cédula correspondiente
-            $relatedUser = User::where('document_number', $data['cedulaMetodologo'])->first();
-            if ($relatedUser) {
-                $user->methodology_id = $relatedUser->id;
-                $user->save();
+            if($data['cedulaMetodologo'] != null){
+                $user = User::find($data['userId']);
+                // Buscar el usuario con la cédula correspondiente
+                $relatedUser = User::where('document_number', $data['cedulaMetodologo'])->first();
+                if ($relatedUser) {
+                    $user->methodology_id = $relatedUser->id;
+                    $user->save();
+                }
             }
-            // Buscar el usuario con la cédula correspondiente
-            $relatedUserManagment = User::where('document_number', $data['cedulaManagment'])->first();
-            if ($relatedUserManagment) {
-                $user->manager_id = $relatedUserManagment->id;
-                $user->save();
+            
+            if($data['cedulaManagment'] != null){
+                // Buscar el usuario con la cédula correspondiente
+                $relatedUserManagment = User::where('document_number', $data['cedulaManagment'])->first();
+                if ($relatedUserManagment) {
+                    $user->manager_id = $relatedUserManagment->id;
+                    $user->save();
+                }
             }
         }
     }

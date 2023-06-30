@@ -91,10 +91,10 @@ class EventSupportController extends Controller
         // Gate::authorize('haveaccess');
         try {
             $data = $request->all();
-            $validator = $this->listsValidates->validates($data);
-            if ($validator->fails()) {
-                return  $this->createErrorResponse([], $validator->errors()->first(), 422);
-            }
+            // $validator = $this->listsValidates->validates($data);
+            // if ($validator->fails()) {
+            //     return  $this->createErrorResponse([], $validator->errors()->first(), 422);
+            // }
             $results = $this->eventSupportRepository->update($data, $id);
         } catch (\Exception $ex) {
             return  $this->createErrorResponse([], 'Algo salio mal al actualizar la informacion del evento de soporte' . $ex->getMessage() . ' linea ' . $ex->getCode());

@@ -11,6 +11,7 @@ use App\Traits\UserDataTrait;
 use App\Traits\ImageTrait;
 use App\Models\Chronogram;
 use App\Models\Schedule;
+use App\Models\User;
 use Illuminate\Support\Facades\Log;
 
 class ChronogramRepository
@@ -45,13 +46,18 @@ class ChronogramRepository
         if ($rol_id == config('roles.monitor')){
             $query->whereNotIn('created_by', [1,2])->with(['mes', 'municipio'])
                 ->where('created_by', $user_id)
-                ->whereNotIn('status_id', [config('status.APR')]);
+                ;
         }
 
         if($rol_id == config('roles.subdirector_tecnico')){
+            $user = User::findOrFail($user_id);
+            $zoneIds = $user->zone->pluck('zones_id')->toArray();
             $query->whereNotIn('created_by', [1,2])
-                ->with(['mes', 'municipio'])
-                ->where('status_id',  config("status.ENR"));
+                ->with(['mes', 'municipio', 'zones'])
+                ->where('status_id',  config("status.ENR"))
+                ->whereHas('zones', function ($query) use ($zoneIds) {
+                    $query->whereIn('zones_id', $zoneIds);
+                });
         }
 
         if($rol_id == config('roles.metodologo')){
