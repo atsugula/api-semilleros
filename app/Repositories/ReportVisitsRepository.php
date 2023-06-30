@@ -484,7 +484,7 @@ class ReportVisitsRepository
         $index++;
       }
       //limpiar informacion 
-      if($index < 5){
+      if($index < 6){
         for($i = $index; $i <= 5; $i++){
           $gruopID = 'idG' . $i;
           $discipline = 'modDep' . $i;
