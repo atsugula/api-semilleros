@@ -12,7 +12,7 @@ use App\Models\psychologistVisits;
 use App\Models\KnowGuardians;
 use App\Models\BeneficiaryGuardians;
 use App\Models\Beneficiary;
-use App\Models\user;
+use App\Models\User;
 use App\Models\CoordinatorVisit;
 use App\Models\Chronogram;
 use Exception;
@@ -48,7 +48,7 @@ class ReportVisitsRepository
     $this->KnowGuardians = new KnowGuardians();
     $this->BeneficiaryGuardians = new BeneficiaryGuardians();
     $this->Chronogram = new Chronogram();
-    $this->user = new user();
+    $this->user = new User();
     $this->beneficiaries = new Beneficiary();
   }
 
