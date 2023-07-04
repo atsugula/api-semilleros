@@ -44,7 +44,7 @@ class ZoneUserTableSeeder extends Seeder
             $zoneUser->zones_id = $row['C'];
             $zoneUser->save();
 
-            $counter++;
+            $counter++; // comentariod e prueba
         }
     }
 }
