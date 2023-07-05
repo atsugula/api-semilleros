@@ -61,8 +61,8 @@ class UsersTableSeeder extends Seeder
             // Guardar el ID del usuario creado y la cédula en el metodologo
             $userIdsAndCedulas[] = [
                 'userId' => $user->id,
-                'cedulaMetodologo' => (isset($row['J']) ?$row['J']:null),
-                'cedulaManagment' =>  (isset($row['K']) ?$row['K']:null),
+                'cedulaMetodologo' => (isset($row['K']) ?$row['J']:null),
+                'cedulaManagment' =>  (isset($row['J']) ?$row['K']:null),
                 'cedulaSupervisor' =>  (isset($row['L']) ?$row['L']:null),
 
             ];
