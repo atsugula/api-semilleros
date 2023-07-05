@@ -24,7 +24,9 @@ class UserResource extends JsonResource
             'status'=>$this->status,
             'created_at'=> $this->created_at ? $this->getPublishedAtAttribute():null,
             'profile'=>$this->profile,
+            'metodologo'=> $this->metodologo,
             'inactive'=>$this->inactive,
+
         ];
     }
 }
