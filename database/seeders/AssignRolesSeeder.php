@@ -16,19 +16,15 @@ class AssignRolesSeeder extends Seeder
      */
     public function run()
     {
+        // Asignar el rol 'CONTABILIDAD' al usuario con ID 24
+        $user24 = User::findOrFail(24);
+        $roleContabilidad = Role::where('name', 'CONTABILIDAD')->first();
+        $user24->roles()->sync([$roleContabilidad->id]);
 
-            // Buscar usuarios por IDs
-            $users = User::whereIn('id', [24, 22])->get();
-    
-            // Obtener roles por nombres
-            $roles = Role::whereIn('name', ['CONTABILIDAD', 'JURIDICO'])->get();
-    
-            // Asignar roles a los usuarios
-            foreach ($users as $user) {
-                foreach ($roles as $role) {
-                    $user->roles()->attach($role);
-                }
-            }
-        }
+        // Asignar el rol 'JURIDICO' al usuario con ID 22
+        $user22 = User::findOrFail(22);
+        $roleJuridico = Role::where('name', 'JURIDICO')->first();
+        $user22->roles()->sync([$roleJuridico->id]);
+    }
     
 }
