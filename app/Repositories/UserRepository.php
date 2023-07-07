@@ -263,9 +263,9 @@ class UserRepository
         // Guardamos en ModelData
         $this->control_data($user_up, 'update');
 
-        $correo = new RegisterUserMailable($user_up);
+        // $correo = new RegisterUserMailable($user_up);
 
-        Mail::to($user_up['email'])->send($correo);
+        // Mail::to($user_up['email'])->send($correo);
 
         return $user_up;
     }
