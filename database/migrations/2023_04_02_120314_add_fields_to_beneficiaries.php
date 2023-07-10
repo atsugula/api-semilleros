@@ -51,7 +51,7 @@ return new class extends Migration
 
             $table->enum('affiliation_type', ['SUB', 'CON', 'NA'])->after('institution');
 
-            \DB::statement("ALTER TABLE beneficiaries CHANGE type_document type_document ENUM('CC', 'NIT', 'TI', 'PP', 'RC', 'PEP);");
+            \DB::statement("ALTER TABLE beneficiaries CHANGE type_document type_document ENUM('CC', 'NIT', 'TI', 'PP', 'RC', 'PEP');");
         });
     }
 

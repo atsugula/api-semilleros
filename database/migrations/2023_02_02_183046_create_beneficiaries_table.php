@@ -34,7 +34,7 @@ return new class extends Migration
             $table->enum('zone', ['U', 'R']);
             $table->char('stratum', 2);
             $table->string('phone');
-            $table->string('email');
+            $table->string('email')->nullable();
             $table->string('file')->nullable();
             $table->enum('status', ['REC', 'REV', 'ENREV', 'APRO'])->default('ENREV');
             $table->enum('audited', [0,1])->default(0);
