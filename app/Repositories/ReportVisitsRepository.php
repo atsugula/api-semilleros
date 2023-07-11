@@ -19,7 +19,7 @@ use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use PhpOffice\PhpWord\PhpWord;
-
+use PhpParser\Node\Stmt\TryCatch;
 
 class ReportVisitsRepository
 { 
@@ -531,33 +531,41 @@ class ReportVisitsRepository
     try {
 
       $BeneficiariesReport = $this->beneficiaries->findOrFail($id);
-      $healt = $this->HealthEntities->findOrFail($BeneficiariesReport->health_entity_id);
+      
 
       $bene_name = str_replace(' ', '_', $BeneficiariesReport->full_name);
 
-      //ruta de la plantilla
-      $templatePath = public_path('Template/Benefisiaries/Ficha/ficha.docx');
-      $outputPath = public_path('Template/Benefisiaries/fichas/Ficha_'.$id.'_beneficiario_'. $bene_name .'.docx');
+       //ruta de la plantilla
+       $templatePath = public_path('Template/Benefisiaries/Ficha/ficha.docx');
+       $outputPath = public_path('Template/Benefisiaries/fichas/Ficha_'.$id.'_beneficiario_'. $bene_name .'.docx');
 
       //formatear fecha
+      if($BeneficiariesReport->birth_date != null){
       $birth_date_parts = explode('-', $BeneficiariesReport->birth_date);
       $birth_year = $birth_date_parts[0];
       $birth_month = $birth_date_parts[1];
       $birth_day = $birth_date_parts[2];
-
+      }else{
+        $birth_year = '';
+        $birth_month = '';
+        $birth_day = '';
+      }
       $templateProcessor = new TemplateProcessor($templatePath);
 
       $data = [
         "id" => $BeneficiariesReport->id,
         "date" => $BeneficiariesReport->registration_date,
-        "zone" => $BeneficiariesReport->municipality->zone_id,
+        "zone" => $BeneficiariesReport->municipality->zone_id ? : 'no ingresado',
         "municipality" => $BeneficiariesReport->municipality->name,
         "full_name" => $BeneficiariesReport->full_name,
         "BD" => $birth_day,
         "BM" => $birth_month,
         "BY" => $birth_year,
         "city" => $BeneficiariesReport->origin_place,
-        "identiti_type" => $BeneficiariesReport->type_document,
+        "identiti_type" => $BeneficiariesReport->type_document == "TI" ? "Tarjeta de identidad" : 
+        ($BeneficiariesReport->type_document == "CC" ? "Cedula de ciudadania" : 
+        ($BeneficiariesReport->type_document == "NIT" ? "Número de Identificación Tributaria" : 
+        ($BeneficiariesReport->type_document == "PP" ? "Permiso Especial de Permanencia": "NO REGISTRADA"))),
         "number_ident" => $BeneficiariesReport->document_number,
         "addres" => $BeneficiariesReport->home_address,
         "phone" => $BeneficiariesReport->phone,
@@ -565,7 +573,7 @@ class ReportVisitsRepository
         "corregimiento" => $BeneficiariesReport->distric,
         "institucioneducativa" => $BeneficiariesReport->institution,
         "live_with" => $BeneficiariesReport->live_with,
-        "health-entity" => $healt->entity,
+        "health-entity" => $BeneficiariesReport->health_entity->entity,
         "monitor" => $BeneficiariesReport->created_user->name,
         "deporte" => $BeneficiariesReport->created_user->disciplines[0]->disciplines[0]->name,
         //tipos de sange
@@ -611,15 +619,23 @@ class ReportVisitsRepository
         "H-C" => $BeneficiariesReport->affiliation_type == "CON" ? "X" : "",
         "H-N" => $BeneficiariesReport->affiliation_type == "NA" ? "X" : "",
 
+        // acudientes
+        "acudiente" => $BeneficiariesReport->acudientes[0]->guardian->firts_name . ' ' . $BeneficiariesReport->acudientes[0]->guardian->last_name,
+        "parentesco" => $BeneficiariesReport->acudientes[0]->relationship,
+        "num" => $BeneficiariesReport->acudientes[0]->guardian->cedula,
+        "tel" => $BeneficiariesReport->acudientes[0]->guardian->phone_number,
+        "emailG" => $BeneficiariesReport->acudientes[0]->guardian->email,
+
       ];
 
       $templateProcessor->setValues($data);
 
       $templateProcessor->saveAs($outputPath);
 
-      $relative_path = 'Template/Benefisiaries/fichas/Ficha_'.$id.'_beneficiario_'. $bene_name .'.docx';
+      $relative_path = 'Template/Benefisiaries/fichas/Ficha_'.$id.'_beneficiario_'. $bene_name .'.docx'; 
 
       return  $relative_path;
+      //return $BeneficiariesReport->acudientes[0]->guardian->firts_name;
 
     } catch (Exception $e) {
       return $e;
