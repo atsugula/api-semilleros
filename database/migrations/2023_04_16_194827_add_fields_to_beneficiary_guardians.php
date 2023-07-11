@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('beneficiary_guardians', function (Blueprint $table) {
-            $table->string('email')->after('last_name');
+            $table->string('email')->after('last_name')->nullable();
             $table->string('phone_number')->after('email');
         });
     }
