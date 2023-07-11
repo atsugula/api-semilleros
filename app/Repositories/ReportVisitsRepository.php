@@ -531,6 +531,16 @@ class ReportVisitsRepository
     try {
 
       $BeneficiariesReport = $this->beneficiaries->findOrFail($id);
+
+      try {
+        $networks = str_replace(['[', '"', ']'], '', $BeneficiariesReport->acudientes[0]->social_media);
+        $find_out = str_replace(['[', '"', ']'], '', $BeneficiariesReport->acudientes[0]->find_out);
+      } catch (\Throwable $th) {
+        $networks = "";
+        $find_out = "";
+      }
+
+
       
 
       $bene_name = str_replace(' ', '_', $BeneficiariesReport->full_name);
@@ -565,7 +575,7 @@ class ReportVisitsRepository
         "identiti_type" => $BeneficiariesReport->type_document == "TI" ? "Tarjeta de identidad" : 
         ($BeneficiariesReport->type_document == "CC" ? "Cedula de ciudadania" : 
         ($BeneficiariesReport->type_document == "NIT" ? "Número de Identificación Tributaria" : 
-        ($BeneficiariesReport->type_document == "PP" ? "Permiso Especial de Permanencia": "NO REGISTRADA"))),
+        ($BeneficiariesReport->type_document == "PEP" ? "Permiso Especial de Permanencia": "NO REGISTRADA"))),
         "number_ident" => $BeneficiariesReport->document_number,
         "addres" => $BeneficiariesReport->home_address,
         "phone" => $BeneficiariesReport->phone,
@@ -594,11 +604,12 @@ class ReportVisitsRepository
         "FT" => $BeneficiariesReport->gender == 'F' ? "X" : "",
         "MT" => $BeneficiariesReport->gender == 'M' ? "X" : "",
         //etnias
-        "A-T" => $BeneficiariesReport->ethnicities_id == 2 ? "X" : "",
+        "A-T" => $BeneficiariesReport->ethnicities_id == 1 ? "X" : "",
         "M-T" => $BeneficiariesReport->ethnicities_id == 9 ? "X" : "",
         "B-T" => $BeneficiariesReport->ethnicities_id == 11 ? "X" : "",
         "O-T" => $BeneficiariesReport->ethnicities_id == 12 ? "X" : "",
         "I-T" => $BeneficiariesReport->ethnicities_id == 5 ? "X" : "",
+        "OTHER_ET" => $BeneficiariesReport->ethnicities_id == 12 ? $BeneficiariesReport->ethnicities_id->name : "",
         //discapacidad
         "S-T" => $BeneficiariesReport->disability == 1 ? "X" : "",
         "S-F" => $BeneficiariesReport->disability == 0 ? "X" : "",
@@ -625,6 +636,9 @@ class ReportVisitsRepository
         "num" => $BeneficiariesReport->acudientes[0]->guardian->cedula,
         "tel" => $BeneficiariesReport->acudientes[0]->guardian->phone_number,
         "emailG" => $BeneficiariesReport->acudientes[0]->guardian->email,
+        "networks" => $networks ,
+        "find_out" => $find_out ,
+
 
       ];
 
