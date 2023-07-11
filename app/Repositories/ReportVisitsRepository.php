@@ -531,7 +531,7 @@ class ReportVisitsRepository
     try {
 
       $BeneficiariesReport = $this->beneficiaries->findOrFail($id);
-
+    if ($BeneficiariesReport->status_id == 1) {
       try {
         $networks = str_replace(['[', '"', ']'], '', $BeneficiariesReport->acudientes[0]->social_media);
         $find_out = str_replace(['[', '"', ']'], '', $BeneficiariesReport->acudientes[0]->find_out);
@@ -650,6 +650,10 @@ class ReportVisitsRepository
 
       return  $relative_path;
       //return $BeneficiariesReport->acudientes[0]->guardian->firts_name;
+    }else{
+      $e = "El beneficiario no esta aprobado";
+      return $e;
+    }
 
     } catch (Exception $e) {
       return $e;
