@@ -42,7 +42,7 @@ return new class extends Migration
 
             $table->enum('blood_type', [1, 2, 3, 4, 5, 6, 7])->after('what_pathology');
 
-            $table->string('live_with')->after('blood_type');
+            $table->json('live_with')->after('blood_type');
 
 
             $table->enum('scholarship', [0, 1])->after('live_with');
