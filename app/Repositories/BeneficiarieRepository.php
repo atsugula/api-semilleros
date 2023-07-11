@@ -61,6 +61,7 @@ class BeneficiarieRepository
         DB::beginTransaction();
 
         $request['created_by'] = Auth::id();
+        $request['live_with'] = json_encode($request['live_with']);
         $beneficiarie = Beneficiary::create($request);
         $beneficiarie->save();
 
