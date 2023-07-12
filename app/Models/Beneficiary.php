@@ -80,4 +80,8 @@ class Beneficiary extends Model
     public function rejected_user(){
         return $this->belongsTo(User::class, 'rejected_by', 'id');
     }
+
+    public function health_entity(){
+        return $this->belongsTo(HealthEntities::class, 'health_entity_id', 'id');
+    }
 }

@@ -56,6 +56,7 @@ class BeneficiaryResource extends JsonResource
             'scholarship' => $this->scholarship,
             'scholar_level' => $this->scholar_level,
             'health_entity_id' => $this->health_entity_id,
+            'health_entity' => $this->health_entity,
 
             'know_guardian' => isset($this->acudientes) ? $this->acudientes[0] : '',
             'acudiente' => isset($this->acudientes[0]->guardian) ? $this->acudientes[0]->guardian : '',
@@ -65,6 +66,7 @@ class BeneficiaryResource extends JsonResource
             'approved_by' => $this->approved_user,
             'rejected_by' => $this->rejected_user,
             'rejection_message' => $this->rejection_message,
+            
         ];
     }
 }
