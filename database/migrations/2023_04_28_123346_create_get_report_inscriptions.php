@@ -17,7 +17,7 @@ return new class extends Migration
         $views = "
         CREATE OR REPLACE VIEW get_report_inscriptions AS
             SELECT DISTINCT u.name AS monitor_name, u.lastname AS monitor_lastname,
-                u.document_number AS moni_document_number, b.created_at, m.name AS municipalitie,
+                u.document_number AS moni_document_number, b.created_at, b.full_name, m.name AS municipalitie,
                 z.name AS zone, d.name AS discipline, b.birth_date, b.origin_place,
                 YEAR(CURDATE()) - YEAR(b.birth_date) AS edad, b.type_document, b.document_number AS guardian_document_number,
                 b.home_address, b.phone, b.stratum, b.zone AS area, b.conflict_victim, b.gender,

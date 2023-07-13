@@ -20,15 +20,21 @@ return new class extends Migration
                 users.name AS Coordinator,
                 coordinator_visits.date_visit AS Date,
                 coordinator_visits.hour_visit AS Hour,
-                users_monitor.name AS Monitor,
-                disciplines.name AS Discipline,
                 municipalities.name AS Municipality,
+                coordinator_visits.sidewalk AS Sidewalk,
+                monitor.name AS Monitor,
+                disciplines.name AS Discipline,
+                coordinator_visits.sports_scene,
+                coordinator_visits.beneficiary_coverage,
+                coordinator_visits.description,
+                coordinator_visits.observations,
                 statuses.name AS Status,
                 coordinator_visits.updated_at AS Upload_Date
             FROM
                 coordinator_visits
                 LEFT JOIN users ON coordinator_visits.created_by = users.id
                 LEFT JOIN users AS users_monitor ON coordinator_visits.revised_by = users_monitor.id
+                LEFT JOIN users AS monitor ON coordinator_visits.user_id = monitor.id
                 LEFT JOIN disciplines ON coordinator_visits.discipline_id = disciplines.id
                 LEFT JOIN municipalities ON coordinator_visits.municipalitie_id = municipalities.id
                 LEFT JOIN role_user ON users.id = role_user.user_id
