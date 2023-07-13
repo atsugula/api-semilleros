@@ -125,7 +125,7 @@
     </thead>
     <tbody>
         @foreach ($inscriptions as $key => $value)
-            <tr>
+            <tr> // poner EPS
                 <td>{{ $key+1 }}</td>
                 <td>{{ $value->monitor_name . ' ' . $value->monitor_lastname }}</td>
                 <td>{{ $value->moni_document_number }}</td>
@@ -154,8 +154,8 @@
                 <td>{{ $value->scholar_level }}</td>
                 <td>{{ $value->institution }}</td>
                 <td>{{ $value->live_with }}</td>
-                <td>{{ $value->affiliation }}</td>
-                <td>{{ $value->affiliation_type }}</td>
+                <td>{{ $value->affiliation }}</td> // cambiar  Son los mismos
+                <td>{{ $value->affiliation_type }}</td> // cambiar Son los mismos
                 <td>{{ $value->lastname_guardian }}</td>
                 <td>{{ $value->cedula }}</td>
                 <td>{{ $value->relationship }}</td>
