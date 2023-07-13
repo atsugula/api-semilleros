@@ -149,7 +149,11 @@
                 <td>{{ $value->home_address }}</td>
                 <td>{{ $value->phone }}</td>
                 <td>{{ $value->stratum }}</td>
-                <td>{{ $value->name }}</td>
+                @if($value->area=="R")
+                    <td>RURAL</td>
+                @elseif($value->area=="U")
+                    <td>URBANA</td>
+                @endif
 
                 @if($value->conflict_victim==1)
                     <td>SI</td>
@@ -213,7 +217,7 @@
 
                 <td>{{ $value->institution }}</td>
                 <td>{{ $value->live_with }}</td>
-                <td>{{ $value->affiliation }}</td>
+                <td>{{ $value->entity }}</td>
                 @php
                     $insuranceTypes = [
                         "SUB" => "Subsidiado",
