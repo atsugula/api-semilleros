@@ -119,7 +119,7 @@
     </thead>
     <tbody>
         @foreach ($inscriptions as $key => $value)
-            <tr>
+            <tr> // poner EPS
                 <td>{{ $key+1 }}</td>
                 <td>{{ $value->monitor_name . ' ' . $value->monitor_lastname }}</td>
                 <td>{{ $value->moni_document_number }}</td>
