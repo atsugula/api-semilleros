@@ -38,7 +38,7 @@ class MethodologistVisit extends Model
         'user_id',
         'discipline_id',
         'evaluation_id',
-        'event_support_id',
+        'event_support',
         'observations',
         'status_id',
         'file',
