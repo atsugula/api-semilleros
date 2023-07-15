@@ -61,7 +61,7 @@ class VisitSubDirectorRepository
 
         $query = $this->model->query()->orderBy('id', 'DESC');
 
-        if ($rol_id == config('roles.subdirector_tecnico')) {
+        if ($rol_id == config('roles.subdirector_tecnico') || $rol_id == config('roles.director_tecnico')) {
             $query->where('created_by', $user_id);
         }
 
