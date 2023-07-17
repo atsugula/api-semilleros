@@ -58,7 +58,7 @@ class UserRepository
         }
         if(in_array($rol_id, [config('roles.coordinador_psicosocial')])){
             $query->whereHas('roles', function ($profile) {
-                $profile->whereNot('roles.id', [config('roles.psicologo')]);
+                $profile->where('roles.id', [config('roles.psicologo')]);
             });
         }
         $cantRegistros = $query->get()->count();
