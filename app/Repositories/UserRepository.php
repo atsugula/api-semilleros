@@ -53,7 +53,7 @@ class UserRepository
         if ($rol_id == config('roles.metodologo')){
             $query = $query->where('methodology_id', Auth::user()->id);
         }
-        if(in_array($rol_id, [config('roles.coordinador_regional'), config('roles.director_programa'), config('roles.subdirector_tecnico'), config('roles.psicologo')])){
+        if(in_array($rol_id, [config('roles.coordinador_regional'), config('roles.director_programa'), config('roles.subdirector_tecnico'), config('roles.psicologo'), config('roles.coordinador_maritimo')])){
             $query = $query->where('manager_id', Auth::user()->id);
         }
         if(in_array($rol_id, [config('roles.coordinador_psicosocial')])){
