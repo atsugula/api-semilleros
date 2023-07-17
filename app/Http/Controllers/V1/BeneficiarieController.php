@@ -52,7 +52,7 @@ class BeneficiarieController extends Controller
             $data = $request->all();
             $data['document_number'] = (string)$request->document_number;
 
-            $validator = $this->beneficiarieRepository->getValidate($data, 'update');
+            $validator = $this->beneficiarieRepository->getValidate($data, 'create');
             if ($validator->fails()) {
                 return  $this->createErrorResponse([], $validator->errors()->first(), 201);
             }
