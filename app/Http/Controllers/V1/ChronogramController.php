@@ -23,7 +23,8 @@ class ChronogramController extends Controller {
     {
         // Gate::authorize('haveaccess');
         try {
-            $results = $this->chronogramRepository->getAll();
+            $idUser = ($request->id_user) ? $request->id_user : null;
+            $results = $this->chronogramRepository->getAll($idUser);
             return $results->toArray($request);
         } catch (\Exception $ex) {
             return  $this->createErrorResponse([], 'Algo salio mal al listar los cronogramaa' . $ex->getMessage() . ' linea ' . $ex->getCode());
