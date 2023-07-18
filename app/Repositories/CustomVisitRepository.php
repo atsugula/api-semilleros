@@ -11,6 +11,7 @@ use App\Models\Beneficiary;
 use App\Traits\FunctionGeneralTrait;
 use App\Traits\UserDataTrait;
 use App\Models\CustomVisit;
+use App\Models\RoleUser;
 use App\Traits\ImageTrait;
 
 class CustomVisitRepository
@@ -24,10 +25,15 @@ class CustomVisitRepository
         $this->model = new CustomVisit();
     }
 
-    public function getAll()
+    public function getAll($iduser)
     {
-         $rol_id = $this->getIdRolUserAuth();
-         $user_id = $this->getIdUserAuth();
+        if($iduser != null){
+            $user_id = $iduser;
+            $rol_id = RoleUser::where('user_id', $iduser)->first()->role_id;
+        }else{
+            $user_id = $this->getIdUserAuth();
+            $rol_id = $this->getIdRolUserAuth();
+        }
 
         // $user_id = 6;
         // $rol_id = 6;
