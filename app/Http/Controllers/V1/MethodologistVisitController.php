@@ -20,7 +20,8 @@ class MethodologistVisitController extends Controller
     {
         // Gate::authorize('haveaccess');
         try {
-            $results = $this->methodologistVisitRepository->getAll();
+            $idUser = ($request->id_user) ? $request->id_user : null;
+            $results = $this->methodologistVisitRepository->getAll($idUser);
             return $results->toArray($request);
         } catch (\Exception $ex) {
             return  $this->createErrorResponse([], 'Algo salio mal al listar las visitas del Metodologo' . $ex->getMessage() . ' linea ' . $ex->getCode());
