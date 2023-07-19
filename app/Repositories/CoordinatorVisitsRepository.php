@@ -7,10 +7,11 @@ use App\Http\Resources\V1\CoordinatorVisitResource;
 use App\Interfaces\CrudRepositoryInterface;
 use App\Traits\FunctionGeneralTrait;
 use App\Models\CoordinatorVisit;
+use App\Models\RoleUser;
 use App\Traits\ImageTrait;
 use App\Traits\UserDataTrait;
 
-class CoordinatorVisitsRepository implements CrudRepositoryInterface
+class CoordinatorVisitsRepository
 {
 
     use ImageTrait, FunctionGeneralTrait, UserDataTrait;
@@ -24,10 +25,15 @@ class CoordinatorVisitsRepository implements CrudRepositoryInterface
 
     use FunctionGeneralTrait;
 
-    public function getAll()
+    public function getAll($iduser)
     {
-        $rol_id = $this->getIdRolUserAuth();
-        $user_id = $this->getIdUserAuth();
+        if($iduser != null){
+            $user_id = $iduser;
+            $rol_id = RoleUser::where('user_id', $iduser)->first()->role_id;
+        }else{
+            $user_id = $this->getIdUserAuth();
+            $rol_id = $this->getIdRolUserAuth();
+        }
 
         $query = $this->model->query()->orderBy('id', 'DESC');
 
