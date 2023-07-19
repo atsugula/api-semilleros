@@ -29,7 +29,7 @@
                 <b>APOYA EL EVENTO</b>
             </th>
             <th style="width: 30px;text-align:center">
-                <b>EVENTO</b>
+                <b>DESCRIPCIÓN</b>
             </th>
             <th style="width: 30px;text-align:center">
                 <b>COBERTURA DEL BENEFICIARIO</b>
@@ -56,10 +56,22 @@
                 <td>{{ $value->sports_scene }}</td>
                 <td>{{ $value->monitor_name . ' ' . $value->monitor_lastname }}</td>
                 <td>{{ $value->discipline }}</td>
-                <td>{{ $value->event_support }}</td>
+                @if($value->event_support == 1)
+                    <td>SI</td>
+                @elseif($value->event_support == 2 )
+                    <td>NO</td>
+                @else
+                    <td>{{ $value->event_support }}</td>
+                @endif
                 <td>{{ $value->description }}</td>
                 <td>{{ $value->beneficiary_coverage }}</td>
-                <td>{{ $value->technical }}</td>
+                @if($value->technical == 1)
+                    <td>ACEPTADA</td>
+                @elseif($value->technical == 2 )
+                    <td>RECHAZADA</td>
+                @else
+                    <td>{{ $value->technical }}</td>
+                @endif
                 <td>{{ $value->status }}</td>
                 <td>{{ $value->created_at }}</td>
             </tr>
