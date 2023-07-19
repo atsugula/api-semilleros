@@ -39,8 +39,10 @@ class BeneficiarieRepository
         switch ($rol_id){
             case(config('roles.super-root')):
             case(config('roles.director_administrator')):
-            case(config('roles.metodologo')):
                 $beneficiaries =  $this->model->query()->where('status_id',  config("status.ENR"))->orderBy('id', 'DESC')->get();
+                break;
+            case(config('roles.metodologo')):
+                $beneficiaries =  $this->model->query()->where('status_id',  config("status.ENR"))->where('methodology_id', $user_id)->orderBy('id', 'DESC')->get();
                 break;
             case(config('roles.monitor')):
                 $beneficiaries =  $this->model->query()->where('created_by', $user_id)->orderBy('id', 'DESC')->get();
