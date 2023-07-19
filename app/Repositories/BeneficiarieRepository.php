@@ -183,7 +183,7 @@ class BeneficiarieRepository
     {
         $validate = [
             'affiliation_type' => 'bail|required',
-            'document_number' => $method != 'update' ? ['bail', 'required', 'string', Rule::unique(Asistant::class)] : ['bail', 'required', 'string'],
+            'document_number' => $method != 'update' ? ['bail', 'required', 'string', Rule::unique(Beneficiary::class)] : ['bail', 'required', 'string'],
             /* 'group_id' => 'bail|required',
             'full_name' => 'bail|required',
             'institution_entity_referred' => 'bail|required',

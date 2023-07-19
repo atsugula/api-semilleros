@@ -8,9 +8,6 @@
                 <b>NOMBRES</b>
             </th>
             <th style="width: 30px;text-align:center">
-                <b>APELLIDOS</b>
-            </th>
-            <th style="width: 30px;text-align:center">
                 <b>NUMERO DOCUMENTO</b>
             </th>
             <th style="width: 30px;text-align:center">

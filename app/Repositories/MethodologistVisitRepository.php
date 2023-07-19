@@ -91,7 +91,7 @@ class MethodologistVisitRepository
         $methodologist_visit->sidewalk = $request['sidewalk'];
         $methodologist_visit->discipline_id = $request['discipline_id'];
         $methodologist_visit->evaluation_id = $request['evaluation_id'];
-        $methodologist_visit->event_support_id = $request['event_support_id'];
+        $methodologist_visit->event_support = ($request['event_support']) ? $request['event_support'] : null;
         $methodologist_visit->observations = $request['observations'];
         $methodologist_visit->status_id = config('status.ENR');
         $methodologist_visit->created_by = $user_id;
