@@ -30,7 +30,7 @@ return new class extends Migration
             $table->foreign('evaluation_id')->references('id')->on('evaluations')->onDelete('cascade');
 
 
-            // $table->dropForeign(['event_support_id']);
+            $table->dropForeign(['event_support_id']);
             $table->boolean('event_support')->nullable();
         });
     }
