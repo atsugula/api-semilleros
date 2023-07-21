@@ -46,7 +46,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('discipline_id')->constrained()->onDelete('cascade')->nullable();
             $table->foreignId('evaluation_id')->constrained()->onDelete('cascade')->nullable();
-            // $table->boolean('event_support')->nullable();
+            $table->boolean('event_support')->nullable();
 
 
             $table->unsignedBigInteger('created_by')->nullable()->constrained()->onDelete('cascade');

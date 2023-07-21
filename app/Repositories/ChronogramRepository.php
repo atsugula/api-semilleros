@@ -68,6 +68,9 @@ class ChronogramRepository
 
         if($rol_id == config('roles.metodologo')){
             $query->whereNotIn('created_by', [1,2])
+                ->whereHas('creator', function ($query) use ($user_id){
+                    $query->where('users.methodology_id', $user_id);
+                })
                 ->with(['mes', 'municipio'])
                 ->where('status_id', config("status.ENR"));
         }
