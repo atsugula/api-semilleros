@@ -14,6 +14,9 @@
                 <b>FECHA DE CREACIÓN</b>
             </th>
             <th style="width: 30px;text-align:center">
+                <b>NOMBRE DE BENEFICIARIO</b>
+            </th>
+            <th style="width: 30px;text-align:center">
                 <b>MUNICIPIO</b>
             </th>
             <th style="width: 30px;text-align:center">
@@ -124,6 +127,7 @@
                 <td>{{ $value->monitor_name . ' ' . $value->monitor_lastname }}</td>
                 <td>{{ $value->moni_document_number }}</td>
                 <td>{{ $value->created_at }}</td>
+                <td>{{ $value->full_name }}</td>
                 <td>{{ $value->municipalitie }}</td>
                 <td>{{ $value->zone }}</td>
                 <td>{{ $value->discipline }}</td>

@@ -16,12 +16,23 @@ return new class extends Migration
     {
         $views = "
         CREATE OR REPLACE VIEW get_report_transversal_activities AS
-            SELECT DISTINCT u.name, u.lastname, m.name AS municipality, ta.activity_name, ta.date_visit,
-                ta.objective_activity, ta.scene, ta.nro_assistants, s.name AS status, ta.created_at
+             SELECT DISTINCT u.name, u.lastname,
+ 				m.name AS municipality,
+ 				ta.date_visit,
+                ta.nro_assistants,
+ 				ta.activity_name,
+                ta.objective_activity,
+                ta.scene,
+                ta.meeting_planing,
+                ta.team_socialization,
+                ta.development_activity,
+                ta.content_network,
+                s.name AS status,
+                ta.created_at
             FROM transversal_activities ta
                 LEFT JOIN users u ON u.id = ta.created_by
                 LEFT JOIN municipality_users mu ON u.id = mu.user_id
-                LEFT JOIN municipalities m ON m.id = mu.municipalities_id
+                LEFT JOIN municipalities m ON m.id = ta.municipality_id
                 LEFT JOIN statuses s ON s.id = ta.status_id
             WHERE
                 ta.created_by NOT IN (1)
