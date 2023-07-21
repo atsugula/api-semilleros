@@ -39,6 +39,9 @@ class psychologistVisitsRepository
 
         switch ($rol_id) {
             case config('roles.coordinador_psicosocial'):
+                $query =  $query->whereHas('created_by', function ($query) use ($user_id){
+                        $query->where('users.methodology_id', $user_id);
+                    })->orderBy('id', 'DESC')->get();
             case config('roles.super-root'):
             case config('roles.director_administrator'):
                 $query = $query->whereNotIn('created_by', [1,2])->whereHas('createdBy.roles', function ($query) {
