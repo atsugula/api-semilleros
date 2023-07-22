@@ -53,12 +53,18 @@ class UserRepository
         if ($rol_id == config('roles.metodologo')){
             $query = $query->where('methodology_id', Auth::user()->id);
         }
-        if(in_array($rol_id, [config('roles.coordinador_regional'), config('roles.director_programa'), config('roles.subdirector_tecnico'), config('roles.psicologo'), config('roles.coordinador_maritimo')])){
+        if(in_array($rol_id, [config('roles.coordinador_regional'), config('roles.director_programa'), config('roles.subdirector_tecnico'), config('roles.psicologo')])){
             $query = $query->where('manager_id', Auth::user()->id);
         }
         if(in_array($rol_id, [config('roles.coordinador_psicosocial')])){
             $query->whereHas('roles', function ($profile) {
                 $profile->where('roles.id', [config('roles.psicologo')]);
+            });
+        }
+        if ($rol_id == config('roles.coordinador_maritimo')) {
+            $userZones = Auth::user()->zone->pluck('zones_id')->toArray();
+            $query = $query->whereHas('zone', function ($subquery) use ($userZones) {
+                $subquery->whereIn('id', $userZones);
             });
         }
         $cantRegistros = $query->get()->count();
