@@ -44,9 +44,9 @@ return new class extends Migration
             /* RELACIONES */
             $table->foreignId('municipalitie_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('discipline_id')->constrained()->onDelete('cascade');
-            $table->foreignId('evaluation_id')->constrained()->onDelete('cascade');
-            $table->foreignId('event_support_id')->constrained()->onDelete('cascade');
+            $table->foreignId('discipline_id')->constrained()->onDelete('cascade')->nullable();
+            $table->foreignId('evaluation_id')->constrained()->onDelete('cascade')->nullable();
+            // $table->boolean('event_support')->nullable();
 
 
             $table->unsignedBigInteger('created_by')->nullable()->constrained()->onDelete('cascade');

@@ -39,7 +39,13 @@
                 <td>{{ $value->municipality }}</td>
                 <td>{{ $value->month }}</td>
                 <td>{{ $value->theme }}</td>
-                <td>{{ $value->guardian_knows_semilleros }}</td>
+                @if($value->guardian_knows_semilleros=="true"||$value->guardian_knows_semilleros=="TRUE")
+                    <td>SI</td>
+                @elseif($value->guardian_knows_semilleros=="false"||$value->guardian_knows_semilleros=="FALSE")
+                    <td>NO</td>
+                @else
+                    <td>{{$value->guardian_knows_semilleros}}</td>
+                @endif
                 <td>{{ $value->status }}</td>
                 <td>{{ $value->created_at }}</td>
             </tr>

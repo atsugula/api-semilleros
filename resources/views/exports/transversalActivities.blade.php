@@ -11,10 +11,13 @@
                 <b>MUNICIPIO</b>
             </th>
             <th style="width: 30px;text-align:center">
-                <b>ACTIVIDAD</b>
+                <b>FECHA</b>
             </th>
             <th style="width: 30px;text-align:center">
-                <b>FECHA</b>
+                <b>NUMERO DE ASISTENTES</b>
+            </th>
+            <th style="width: 30px;text-align:center">
+                <b>ACTIVIDAD</b>
             </th>
             <th style="width: 30px;text-align:center">
                 <b>OBJETIVO</b>
@@ -23,7 +26,16 @@
                 <b>ESCENARIO</b>
             </th>
             <th style="width: 30px;text-align:center">
-                <b>NUMERO DE ASISTENTES</b>
+                <b>REUNIONES DE PLANEACIÓN</b>
+            </th>
+            <th style="width: 30px;text-align:center">
+                <b>SOCIALIZACIÓN CON EL EQUIPO DE TRABAJO</b>
+            </th>
+            <th style="width: 30px;text-align:center">
+                <b>DESARROLLO DE LA ACTIVIDAD</b>
+            </th>
+            <th style="width: 30px;text-align:center">
+                <b>CONTENIDO DE REDES</b>
             </th>
             <th style="width: 30px;text-align:center">
                 <b>ESTADO</b>
@@ -39,11 +51,15 @@
                 <td>{{ $key+1 }}</td>
                 <td>{{ $value->name . ' ' . $value->lastname }}</td>
                 <td>{{ $value->municipality }}</td>
-                <td>{{ $value->activity_name }}</td>
                 <td>{{ $value->date_visit }}</td>
+                <td>{{ $value->nro_assistants }}</td>
+                <td>{{ $value->activity_name }}</td>
                 <td>{{ $value->objective_activity }}</td>
                 <td>{{ $value->scene }}</td>
-                <td>{{ $value->nro_assistants }}</td>
+                <td>{{ $value->meeting_planing }}</td>
+                <td>{{ $value->team_socialization }}</td>
+                <td>{{ $value->development_activity }}</td>
+                <td>{{ $value->content_network }}</td>
                 <td>{{ $value->status }}</td>
                 <td>{{ $value->created_at }}</td>
             </tr>
