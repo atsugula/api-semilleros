@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Http\Resources\V1\VisitSubDirectorCollection;
 use App\Http\Resources\V1\VisitSubDirectorResource;
+use App\Models\RoleUser;
 use App\Traits\FunctionGeneralTrait;
 use App\Models\VisitSubDirector;
 use App\Traits\ImageTrait;
@@ -54,10 +55,15 @@ class VisitSubDirectorRepository
         return new VisitSubDirectorCollection($query->simplePaginate($paginate));
     }
 
-    public function getAll()
+    public function getAll($iduser)
     {
-        $rol_id = $this->getIdRolUserAuth();
-        $user_id = $this->getIdUserAuth();
+        if($iduser != null){
+            $user_id = $iduser;
+            $rol_id = RoleUser::where('user_id', $iduser)->first()->role_id;
+        }else{
+            $user_id = $this->getIdUserAuth();
+            $rol_id = $this->getIdRolUserAuth();
+        }
 
         $query = $this->model->query()->orderBy('id', 'DESC');
 

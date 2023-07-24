@@ -10,6 +10,7 @@ use App\Models\ChronogramsGroups;
 use App\Traits\UserDataTrait;
 use App\Traits\ImageTrait;
 use App\Models\Chronogram;
+use App\Models\RoleUser;
 use App\Models\Schedule;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
@@ -27,11 +28,16 @@ class ChronogramRepository
 
     use FunctionGeneralTrait;
 
-    public function getAll()
+    public function getAll($iduser)
     {
 
-        $rol_id = $this->getIdRolUserAuth();
-        $user_id = $this->getIdUserAuth();
+        if($iduser != null){
+            $user_id = $iduser;
+            $rol_id = RoleUser::where('user_id', $iduser)->first()->role_id;
+        }else{
+            $user_id = $this->getIdUserAuth();
+            $rol_id = $this->getIdRolUserAuth();
+        }
 
         $query = $this->model->query();
 
@@ -62,6 +68,9 @@ class ChronogramRepository
 
         if($rol_id == config('roles.metodologo')){
             $query->whereNotIn('created_by', [1,2])
+                ->whereHas('creator', function ($query) use ($user_id){
+                    $query->where('users.methodology_id', $user_id);
+                })
                 ->with(['mes', 'municipio'])
                 ->where('status_id', config("status.ENR"));
         }

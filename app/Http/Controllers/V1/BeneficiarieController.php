@@ -28,7 +28,8 @@ class BeneficiarieController extends Controller
     {
         // Gate::authorize('haveaccess');
         try {
-            $results = $this->beneficiarieRepository->getAll();
+            $idUser = ($request->id_user) ? $request->id_user : null;
+            $results = $this->beneficiarieRepository->getAll($idUser);
             if($results != null){
                 return $results->toArray($request);
             }else{

@@ -29,7 +29,8 @@ class EventSupportController extends Controller
     {
         // Gate::authorize('haveaccess');
         try {
-            $results = $this->eventSupportRepository->getAll();
+            $idUser = ($request->id_user) ? $request->id_user : null;
+            $results = $this->eventSupportRepository->getAll($idUser);
             return $results->toArray($request);
         } catch (\Exception $ex) {
             return  $this->createErrorResponse([], 'Algo salio mal al listar los eventos de soporte' . $ex->getMessage() . ' linea ' . $ex->getCode());

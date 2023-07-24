@@ -25,7 +25,8 @@ class VisitPsichologistController extends Controller
     public function index(Request $request)
     {
        try{
-            $results = $this->repository->getAll();        
+        $idUser = ($request->id_user) ? $request->id_user : null;
+            $results = $this->repository->getAll($idUser);
             if($results != null){
                 return $results->toArray($request);
             }else{
@@ -50,7 +51,7 @@ class VisitPsichologistController extends Controller
         } catch (\Exception $ex) {
             return  $this->createErrorResponse([], 'Algo salio mal al guardar la visita  ' . $ex->getMessage() . ' linea ' . $ex->getCode());
         }
-    } 
+    }
 
     public function show($id)
     {

@@ -10,6 +10,7 @@ use App\Traits\FunctionGeneralTrait;
 use App\Models\TransversalActivity;
 use App\Traits\UserDataTrait;
 use App\Models\EvidenceFile;
+use App\Models\RoleUser;
 use Illuminate\Support\Str;
 use App\Traits\ImageTrait;
 use Exception;
@@ -27,10 +28,15 @@ class TransversalActivityRepository
         $this->model = new TransversalActivity();
     }
 
-    public function getAll()
+    public function getAll($iduser)
     {
-        $rol_id = $this->getIdRolUserAuth();
-        $user_id = $this->getIdUserAuth();
+        if($iduser != null){
+            $user_id = $iduser;
+            $rol_id = RoleUser::where('user_id', $iduser)->first()->role_id;
+        }else{
+            $user_id = $this->getIdUserAuth();
+            $rol_id = $this->getIdRolUserAuth();
+        }
 
         $query = $this->model->query();
 

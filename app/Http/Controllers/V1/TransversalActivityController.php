@@ -26,7 +26,8 @@ class TransversalActivityController extends Controller
     {
         // // Gate::authorize('haveaccess');
         try {
-            $results = $this->repository->getAll();
+            $idUser = ($request->id_user) ? $request->id_user : null;
+            $results = $this->repository->getAll($idUser);
             return $results->toArray($request);
         } catch (\Exception $ex) {
             return  $this->createErrorResponse([], 'Algo salio mal al listar las actividades transversales ' . $ex->getMessage() . ' linea ' . $ex->getCode());

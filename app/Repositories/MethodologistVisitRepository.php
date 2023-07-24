@@ -6,6 +6,7 @@ use App\Http\Resources\V1\MethodologistVisitCollection;
 use App\Http\Resources\V1\MethodologistVisitResource;
 use App\Traits\FunctionGeneralTrait;
 use App\Models\MethodologistVisit;
+use App\Models\RoleUser;
 use App\Traits\ImageTrait;
 use App\Traits\UserDataTrait;
 
@@ -20,11 +21,15 @@ class MethodologistVisitRepository
         $this->model = new MethodologistVisit();
     }
 
-    public function getAll()
+    public function getAll($iduser)
     {
-
-        $rol_id = $this->getIdRolUserAuth();
-        $user_id = $this->getIdUserAuth();
+        if($iduser != null){
+            $user_id = $iduser;
+            $rol_id = RoleUser::where('user_id', $iduser)->first()->role_id;
+        }else{
+            $user_id = $this->getIdUserAuth();
+            $rol_id = $this->getIdRolUserAuth();
+        }
 
         //$rol_id = 10;
         //$user_id = 10;
