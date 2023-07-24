@@ -55,7 +55,7 @@
                     ($user->document_type == "NIT" ? "Número de Identificación Tributaria" : 
                     ($user->document_type == "PEP" ? "Permiso Especial de Permanencia": "NO REGISTRADA"))) }}</td>
                     
-                <td> {{ $user->region }}</td>s
+                <td> {{ $user->region }}</td>
                 <td>{{ $user->rol}}</td>
                 <td>{{ $user->discipline }}</td>
                 <td>{{ $user->end_date }}</td>
