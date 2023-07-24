@@ -651,7 +651,7 @@ class ReportVisitsRepository
       return  $relative_path;
       //return $BeneficiariesReport->acudientes[0]->guardian->firts_name;
     }else{
-      Exception  $e = "El beneficiario no esta aprobado";
+      $e = "El beneficiario no esta aprobado";
       return $e;
     }
 
