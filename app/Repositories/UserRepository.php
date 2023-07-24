@@ -64,7 +64,7 @@ class UserRepository
         if ($rol_id == config('roles.coordinador_maritimo')) {
             $userZones = Auth::user()->zone->pluck('zones_id')->toArray();
             $query = $query->whereHas('zone', function ($subquery) use ($userZones) {
-                $subquery->whereIn('id', $userZones);
+                $subquery->whereIn('zones_id', $userZones);
             });
         }
         $cantRegistros = $query->get()->count();
