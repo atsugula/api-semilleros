@@ -38,7 +38,7 @@ class VisitSubDirectorRepository
         if ($rol_id == config('roles.director_administrator')) {
             $query->whereNotIn('created_by', [1,2])
                 ->whereHas('creator.roles', function ($query) {
-                    // $query->where('roles.slug', 'subdirector_tecnico');
+                    $query->where('roles.slug', 'subdirector_tecnico');
                 })
                 ->where('status_id', [config('status.ENR')]);
         }
