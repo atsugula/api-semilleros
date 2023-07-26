@@ -20,10 +20,8 @@ class ZipReportsRepository {
 
     public function ChronogramMetodologozip(){
         //Se busca los chronogramas en base de la id de la persona
-        //$rol_id = $this->getIdRolUserAuth();
-        //$user_id = $this->getIdUserAuth()
-        $user_id = 30;
-        $rol_id = 9;
+        $rol_id = $this->getIdRolUserAuth();
+        $user_id = $this->getIdUserAuth();
         switch ($rol_id){
         case 1:
         case 2:
