@@ -5,22 +5,40 @@ use App\Repositories\ReportVisitsRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use ZipArchive;
+use App\Traits\UserDataTrait;
+use PhpParser\Node\Stmt\Switch_;
 
 class ZipReportsRepository {
 
     private $reportVisitsRepository;
+    use UserDataTrait;
 
     public function __construct(ReportVisitsRepository $reportVisitsRepository)
     {
         $this->reportVisitsRepository = $reportVisitsRepository;
     }
 
-    public function ChronogramMetodologozip($request){
+    public function ChronogramMetodologozip(){
         //Se busca los chronogramas en base de la id de la persona
-        $chronogramIds = DB::table('chronograms')
-                            ->where('status_id', 1)
-                            ->where('created_by', $request->id)
-                            ->pluck('id');
+        //$rol_id = $this->getIdRolUserAuth();
+        //$user_id = $this->getIdUserAuth()
+        $user_id = 30;
+        $rol_id = 9;
+        switch ($rol_id){
+        case 1:
+        case 2:
+        case 3:
+            $chronogramIds = DB::table('chronograms')
+            ->where('status_id', 1)
+            ->pluck('id');
+            break;
+        case 9: 
+            $chronogramIds = DB::table('chronograms')
+            ->where('status_id', 1)
+            ->where('revised_by',$user_id)
+            ->pluck('id');
+            break;        
+        }
         
         $outputUrls = [];
     
@@ -43,7 +61,7 @@ class ZipReportsRepository {
             'url' => $relativeUrl,
         ];
     
-        return $response;
+        return $outputUrls;
     }
 
     function createZipFromUrls(array $fileUrls, $zipFileName)

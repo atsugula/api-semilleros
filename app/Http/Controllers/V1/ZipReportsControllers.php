@@ -18,7 +18,7 @@ class ZipReportsControllers extends Controller
 
     //
     public function GenerateChronogramZip(Request $request){
-        $data = $this->repository->ChronogramMetodologozip($request);
+        $data = $this->repository->ChronogramMetodologozip();
         return response()->json($data);
     }
 
