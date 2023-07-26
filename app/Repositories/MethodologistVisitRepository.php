@@ -156,7 +156,7 @@ class MethodologistVisitRepository
         $methodologist_visit->user_id = $request['user_id'];
         $methodologist_visit->discipline_id = $request['discipline_id'];
         $methodologist_visit->evaluation_id = $request['evaluation_id'];
-        $methodologist_visit->event_support_id = $request['event_support_id'];
+        $methodologist_visit->event_support = ($request['event_support']) ? $request['event_support'] : null;
         $methodologist_visit->observations = $request['observations'];
         /* ACTUALIZAMOS EL ESTADO SOLO EL ROL AUTORIZADO */
         if ($rol_id == config('roles.subdirector_tecnico')) {
