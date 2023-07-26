@@ -19,9 +19,11 @@ class ZipReportsRepository {
     }
 
     public function ChronogramMetodologozip(){
-        //Se busca los chronogramas en base de la id de la persona
+        //se obtiene rol y id de la persona
         $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
+
+        //Se busca los chronogramas en base de la id y rol de la persona
         switch ($rol_id){
         case 1:
         case 2:
@@ -30,7 +32,7 @@ class ZipReportsRepository {
             ->where('status_id', 1)
             ->pluck('id');
             break;
-        case 9: 
+        case 10: 
             $chronogramIds = DB::table('chronograms')
             ->where('status_id', 1)
             ->where('revised_by',$user_id)
@@ -46,7 +48,7 @@ class ZipReportsRepository {
         }
         
         // Generar el archivo ZIP y obtener la URL del archivo generado
-        $zipFileName = 'chronogram_files.zip';
+        $zipFileName = 'chronogram_files_'. $rol_id .'.zip';
         $zipFilePath = storage_path('app/' . $zipFileName);
         $msg = $this->createZipFromUrls($outputUrls, $zipFilePath);
     
