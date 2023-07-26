@@ -19,7 +19,9 @@ return new class extends Migration
             SELECT DISTINCT creator.name AS creator_name, creator.lastname AS creator_lastname,
                 monitor.name AS monitor_name, monitor.lastname AS monitor_lastname,
                 muni.name AS municipality, vs.date_visit, vs.number_beneficiaries,
-                d.name AS dicipline, s.name AS status, vs.created_at
+                d.name AS dicipline, vs.scenery, vs.objetive, vs.beneficiaries_recognize_name,
+                vs.beneficiary_recognize_value, vs.all_ok,vs.description,vs.observations,
+                s.name AS status, vs.created_at
             FROM psychological_visits vs
                 LEFT JOIN users creator ON creator.id = vs.created_by
                 LEFT JOIN users monitor ON monitor.id = vs.monitor_id

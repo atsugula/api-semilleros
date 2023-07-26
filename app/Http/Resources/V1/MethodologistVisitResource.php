@@ -39,7 +39,7 @@ class MethodologistVisitResource extends JsonResource
             'observations' => $this->observations,
             'file' => $this->file,
             'municipalities' => $this->municipalities,
-            'event_supports' => $this->event_supports,
+            'event_support' => $this->event_support,
             'evaluations' => $this->evaluations,
             'disciplines' => $this->disciplines,
             'monitor' => $this->monitor,
