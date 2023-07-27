@@ -61,7 +61,53 @@ class ZipReportsRepository {
             'url' => $relativeUrl,
         ];
     
-        return $outputUrls;
+        return $response;
+    }
+
+    public function BenefisiarieZip(){
+        //se obtiene rol y id de la persona
+        $rol_id = $this->getIdRolUserAuth();
+        $user_id = $this->getIdUserAuth();
+
+        //Se busca los chronogramas en base de la id y rol de la persona
+        switch ($rol_id){
+        case 1:
+        case 2:
+        case 3:
+            $benefesiariesID = DB::table('beneficiaries')
+            ->where('status_id', 1)
+            ->pluck('id');
+            break;
+        case 10: 
+            $benefesiariesID = DB::table('beneficiaries')
+            ->where('status_id', 1)
+            ->where('revised_by',$user_id)
+            ->pluck('id');
+            break;        
+        }
+        
+        $outputUrls = [];
+    
+        //se genera los docs por si no existe alguno o para verificar que todo sea actual
+        foreach ($benefesiariesID as $benefisiarie) {
+            $outputUrls[] = $this->reportVisitsRepository->GenerateBenefisiaries($benefisiarie);
+        }
+        
+        // Generar el archivo ZIP y obtener la URL del archivo generado
+        $zipFileName = 'benefisiarie_files_'. $rol_id .'.zip';
+        $zipFilePath = storage_path('app/' . $zipFileName);
+        $msg = $this->createZipFromUrls($outputUrls, $zipFilePath);
+    
+        // Obtener la URL relativa desde la carpeta /storage
+        $relativeUrl = Storage::url($zipFileName);
+    
+        // Construir el array asociativo con los datos a devolver
+        $response = [
+            'msg' => $msg,
+            'url' => $relativeUrl,
+        ];
+    
+        return $response;
     }
 
     function createZipFromUrls(array $fileUrls, $zipFileName)
