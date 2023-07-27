@@ -138,6 +138,8 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
 
     //Descarga de zips
     Route::get('getZipChronogramaForMetodologo/{id}',[ZipReportsControllers::class,'GenerateChronogramZip']);
+    Route::get('getZipChronogramaForMetodologo/{id}',[ZipReportsControllers::class,'GenerateChronogramZip']);
+    Route::get('getZipBenefisiarie',[ZipReportsControllers::class,'GenerateBenefisiaries']);
 
 
     // Descargar archivos de chronogram
@@ -285,8 +287,8 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
 
 // Rutas de prueba V2 JOSE
 //zarrok rutas de prueba
-Route::get('getZipChronogramaForMetodologo/{id}',[ZipReportsControllers::class,'GenerateChronogramZip']);
-Route::get('getZipBenefisiarie',[ZipReportsControllers::class,'GenerateBenefisiaries']);
+// Route::get('getZipChronogramaForMetodologo/{id}',[ZipReportsControllers::class,'GenerateChronogramZip']);
+// Route::get('getZipBenefisiarie',[ZipReportsControllers::class,'GenerateBenefisiaries']);
 // Route::get('getReportBenefisiaries/{id}',[ReportVisitsController::class,'exportMethodologistVisit']);
 // Route::get('getReportMethodologisticsVisits/{id}',[ReportVisitsController::class,'exportMethodologistVisit']);
  Route::get('getReportBenefisiaries/{id}',[ReportVisitsController::class,'exportBeneficiariesMethodologistVisit']);

@@ -66,11 +66,8 @@ class ZipReportsRepository {
 
     public function BenefisiarieZip(){
         //se obtiene rol y id de la persona
-        // $rol_id = $this->getIdRolUserAuth();
-        // $user_id = $this->getIdUserAuth();
-
-        $rol_id = 3;
-        $user_id = 3;
+        $rol_id = $this->getIdRolUserAuth();
+        $user_id = $this->getIdUserAuth();
 
         //Se busca los chronogramas en base de la id y rol de la persona
         switch ($rol_id){
