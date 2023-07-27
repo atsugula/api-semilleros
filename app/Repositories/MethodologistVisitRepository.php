@@ -9,6 +9,7 @@ use App\Models\MethodologistVisit;
 use App\Models\RoleUser;
 use App\Traits\ImageTrait;
 use App\Traits\UserDataTrait;
+use Illuminate\Support\Facades\Auth;
 
 class MethodologistVisitRepository
 {
@@ -38,6 +39,10 @@ class MethodologistVisitRepository
 
         switch ($rol_id) {
             case config('roles.subdirector_tecnico'):
+                $userZones = Auth::user()->zone->pluck('zones_id')->toArray();
+                $query = $query->whereHas('zone', function ($subquery) use ($userZones) {
+                    $subquery->whereIn('zones_id', $userZones);
+                });
                 $query = $query->whereNotIn('created_by', [1,2])->where('status_id', [config('status.ENR')]);
                 break;
             case config('roles.super-root'):
