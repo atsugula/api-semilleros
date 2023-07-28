@@ -53,7 +53,7 @@ class ZipReportsRepository {
         $msg = $this->createZipFromUrls($outputUrls, $zipFilePath);
     
         // Obtener la URL relativa desde la carpeta /storage
-        $relativeUrl = Storage::url('app/' . $zipFileName);
+        $relativeUrl = 'downloads/' . $zipFileName;
     
         // Construir el array asociativo con los datos a devolver
         $response = [
