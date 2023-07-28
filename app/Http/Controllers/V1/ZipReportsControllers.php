@@ -27,20 +27,20 @@ class ZipReportsControllers extends Controller
         return response()->json($data);
     }
 
-    // public function TrasversalActivity(){
-    //     $data = $this->repository->BenefisiarieZip();
-    //     return response()->json($data);
-    // }
+    public function TrasversalActivity(Request $request){
+        $data = $this->repository->ZipTrasversalAcitvities($request->id);
+        return response()->json($data);
+    }
 
-    // public function CustomVisitPsycologic(){
-    //     $data = $this->repository->BenefisiarieZip();
-    //     return response()->json($data);
-    // }
+    public function CustomVisitPsycologic(Request $request){
+        $data = $this->repository->ZipCustomVisits($request->id);
+        return response()->json($data);
+    }
 
-    // public function VisitPyscologic(){
-    //     $data = $this->repository->BenefisiarieZip();
-    //     return response()->json($data);
-    // }
+    public function VisitPyscologic(Request $request){
+        $data = $this->repository->ZipVisitasPsicologicas($request->id);
+        return response()->json($data);
+    }
 
 
 

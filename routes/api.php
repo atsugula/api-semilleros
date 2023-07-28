@@ -137,8 +137,14 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
     Route::get('GetChronogram/{id}',[ReportVisitsController::class,'ExportChronogram']);
 
     //Descarga de zips
+        //monitorDeportivo
     Route::get('getZipChronogramaForMetodologo/{id}',[ZipReportsControllers::class,'GenerateChronogramZip']);
     Route::get('getZipBenefisiarie/{id}',[ZipReportsControllers::class,'GenerateBenefisiaries']);
+        //psicologo
+    Route::get('GetZipCustomVists/{id}',[ZipReportsControllers::class,'CustomVisitPsycologic']);
+    Route::get('GetZipVisits/{id}',[ZipReportsControllers::class,'VisitPyscologic']);
+    Route::get('GetZipTrasversal/{id}',[ZipReportsControllers::class,'TrasversalActivity']);
+
 
 
     // Descargar archivos de chronogram

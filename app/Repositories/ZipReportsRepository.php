@@ -14,12 +14,12 @@ class ZipReportsRepository {
     private $reportVisitsRepository;
     use UserDataTrait;
 
-    //Monitor deportivo
+    
     public function __construct(ReportVisitsRepository $reportVisitsRepository)
     {
         $this->reportVisitsRepository = $reportVisitsRepository;
     }
-
+    //Monitor deportivo
     public function ChronogramMetodologozip($iduser){
         //se obtiene rol y id de la persona
        
@@ -124,25 +124,28 @@ class ZipReportsRepository {
     }
 
     //Psicologo
-    public function ZipCustomVisits(){
+    public function ZipCustomVisits($iduser){
         //se obtiene rol y id de la persona
-        // $rol_id = $this->getIdRolUserAuth();
-        // $user_id = $this->getIdUserAuth();
 
-        $rol_id = 3;
-        $user_id = 3;
+        if($iduser != null){
+            $user_id = $iduser;
+            $rol_id = RoleUser::where('user_id', $iduser)->first()->role_id;
+        }else{
+            $user_id = $this->getIdUserAuth();
+            $rol_id = $this->getIdRolUserAuth();
+        }
 
         //Se busca los chronogramas en base de la id y rol de la persona
         switch ($rol_id){
         case 1:
         case 2:
         case 3:
-            $customVisitID = DB::table('custom_psychological_visits')
+            $customVisitID = DB::table('custom_visits')
             ->where('status_id', 1)
             ->pluck('id');
             break;
         case 10: 
-            $customVisitID = DB::table('custom_psychological_visits')
+            $customVisitID = DB::table('custom_visits')
             ->where('status_id', 1)
             ->where('revised_by',$user_id)
             ->pluck('id');
@@ -157,7 +160,7 @@ class ZipReportsRepository {
         }
         
         // Generar el archivo ZIP y obtener la URL del archivo generado
-        $zipFileName = 'benefisiarie_files_'. $rol_id .'.zip';
+        $zipFileName = 'CustomVisits_files_'. $rol_id .'.zip';
         $zipFilePath = storage_path('app/' . $zipFileName);
         $msg = $this->createZipFromUrls($outputUrls, $zipFilePath);
     
@@ -172,22 +175,27 @@ class ZipReportsRepository {
     
         return $response;
     }
-    public function visitasPsicologicas(){
-        //se obtiene rol y id de la persona
-        $rol_id = $this->getIdRolUserAuth();
-        $user_id = $this->getIdUserAuth();
+    public function ZipVisitasPsicologicas($iduser){
+
+        if($iduser != null){
+            $user_id = $iduser;
+            $rol_id = RoleUser::where('user_id', $iduser)->first()->role_id;
+        }else{
+            $user_id = $this->getIdUserAuth();
+            $rol_id = $this->getIdRolUserAuth();
+        }
 
         //Se busca los chronogramas en base de la id y rol de la persona
         switch ($rol_id){
         case 1:
         case 2:
         case 3:
-            $benefesiariesID = DB::table('beneficiaries')
+            $visits_ID = DB::table('psychological_visits')
             ->where('status_id', 1)
             ->pluck('id');
             break;
         case 10: 
-            $benefesiariesID = DB::table('beneficiaries')
+            $visits_ID = DB::table('psychological_visits')
             ->where('status_id', 1)
             ->where('revised_by',$user_id)
             ->pluck('id');
@@ -197,12 +205,12 @@ class ZipReportsRepository {
         $outputUrls = [];
     
         //se genera los docs por si no existe alguno o para verificar que todo sea actual
-        foreach ($benefesiariesID as $benefisiarie) {
-            $outputUrls[] = $this->reportVisitsRepository->GenerateBenefisiaries($benefisiarie);
+        foreach ($visits_ID as $visits) {
+            $outputUrls[] = $this->reportVisitsRepository->GenerateDocReportVisitsRepository($visits);
         }
         
         // Generar el archivo ZIP y obtener la URL del archivo generado
-        $zipFileName = 'benefisiarie_files_'. $rol_id .'.zip';
+        $zipFileName = 'visits_files_'. $rol_id .'.zip';
         $zipFilePath = storage_path('app/' . $zipFileName);
         $msg = $this->createZipFromUrls($outputUrls, $zipFilePath);
     
@@ -217,7 +225,7 @@ class ZipReportsRepository {
     
         return $response;
     }
-    public function trasversalAcitvitys(){
+    public function ZipTrasversalAcitvities($iduser){
         //se obtiene rol y id de la persona
         $rol_id = $this->getIdRolUserAuth();
         $user_id = $this->getIdUserAuth();
@@ -227,12 +235,12 @@ class ZipReportsRepository {
         case 1:
         case 2:
         case 3:
-            $benefesiariesID = DB::table('beneficiaries')
+            $Trasversal_A_ID = DB::table('transversal_activities')
             ->where('status_id', 1)
             ->pluck('id');
             break;
         case 10: 
-            $benefesiariesID = DB::table('beneficiaries')
+            $Trasversal_A_ID = DB::table('transversal_activities')
             ->where('status_id', 1)
             ->where('revised_by',$user_id)
             ->pluck('id');
@@ -242,12 +250,12 @@ class ZipReportsRepository {
         $outputUrls = [];
     
         //se genera los docs por si no existe alguno o para verificar que todo sea actual
-        foreach ($benefesiariesID as $benefisiarie) {
-            $outputUrls[] = $this->reportVisitsRepository->GenerateBenefisiaries($benefisiarie);
+        foreach ($Trasversal_A_ID as $Activities) {
+            $outputUrls[] = $this->reportVisitsRepository->GeneratedocPsychologisttransversalActivity($Activities);
         }
         
         // Generar el archivo ZIP y obtener la URL del archivo generado
-        $zipFileName = 'benefisiarie_files_'. $rol_id .'.zip';
+        $zipFileName = 'transversal_activities_files_'. $rol_id .'.zip';
         $zipFilePath = storage_path('app/' . $zipFileName);
         $msg = $this->createZipFromUrls($outputUrls, $zipFilePath);
     
