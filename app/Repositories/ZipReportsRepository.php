@@ -75,13 +75,10 @@ class ZipReportsRepository {
     public function BenefisiarieZip($iduser){
         //se obtiene rol y id de la persona
         
-        if($iduser != null){
-            $user_id = $iduser;
-            $rol_id = RoleUser::where('user_id', $iduser)->first()->role_id;
-        }else{
+            $iduser;
             $user_id = $this->getIdUserAuth();
             $rol_id = $this->getIdRolUserAuth();
-        }
+
 
         Log::info($rol_id );
 
@@ -97,7 +94,7 @@ class ZipReportsRepository {
         case 10: 
             $benefesiariesID = DB::table('beneficiaries')
             ->where('status_id', 1)
-            ->where('revised_by',$user_id)
+            ->where('created_by',$iduser)
             ->pluck('id');
             break;
         default:
