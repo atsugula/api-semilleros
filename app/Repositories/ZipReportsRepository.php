@@ -24,13 +24,11 @@ class ZipReportsRepository {
     public function ChronogramMetodologozip($iduser){
         //se obtiene rol y id de la persona
        
-        if($iduser != null){
-            $user_id = $iduser;
-            $rol_id = RoleUser::where('user_id', $iduser)->first()->role_id;
-        }else{
+        
+            $iduser;
             $user_id = $this->getIdUserAuth();
             $rol_id = $this->getIdRolUserAuth();
-        }
+       
 
         //Se busca los chronogramas en base de la id y rol de la persona
         
