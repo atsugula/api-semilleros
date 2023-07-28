@@ -100,7 +100,7 @@ class ZipReportsRepository {
         // Construir el array asociativo con los datos a devolver
         $response = [
             'msg' => $msg,
-            'url' => $zipFileName,
+            'url' => $zipFilePath,
         ];
     
         return $response;
