@@ -96,7 +96,9 @@ class ZipReportsRepository {
             ->where('status_id', 1)
             ->where('revised_by',$user_id)
             ->pluck('id');
-            break;        
+            break;
+        default:
+            return response()->json(['error' => 'No tiene permisos para realizar esta accion'], 403);
         }
         
         $outputUrls = [];
