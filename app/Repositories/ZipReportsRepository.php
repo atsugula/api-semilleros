@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use ZipArchive;
 use App\Traits\UserDataTrait;
+use Illuminate\Support\Facades\Log;
 use PhpParser\Node\Stmt\Switch_;
 
 class ZipReportsRepository {
@@ -81,6 +82,8 @@ class ZipReportsRepository {
             $user_id = $this->getIdUserAuth();
             $rol_id = $this->getIdRolUserAuth();
         }
+
+        Log::info($rol_id );
 
         //Se busca los chronogramas en base de la id y rol de la persona
         switch ($rol_id){
