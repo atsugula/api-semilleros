@@ -100,7 +100,7 @@ class ZipReportsRepository {
         // Construir el array asociativo con los datos a devolver
         $response = [
             'msg' => $msg,
-            'url' => $relativeUrl,
+            'url' => $zipFileName,
         ];
     
         return $response;
@@ -119,22 +119,12 @@ class ZipReportsRepository {
         }
 
         //Se busca los chronogramas en base de la id y rol de la persona
-        switch ($rol_id){
-        case 1:
-        case 2:
-        case 3:
+       
             $customVisitID = DB::table('custom_visits')
             ->where('status_id', 1)
+            ->where('created_by',$iduser)
             ->pluck('id');
-            break;
-        case 10: 
-            $customVisitID = DB::table('custom_visits')
-            ->where('status_id', 1)
-            ->where('revised_by',$user_id)
-            ->pluck('id');
-            break;        
-        }
-        
+            
         $outputUrls = [];
     
         //se genera los docs por si no existe alguno o para verificar que todo sea actual
@@ -169,21 +159,12 @@ class ZipReportsRepository {
         }
 
         //Se busca los chronogramas en base de la id y rol de la persona
-        switch ($rol_id){
-        case 1:
-        case 2:
-        case 3:
+        
             $visits_ID = DB::table('psychological_visits')
             ->where('status_id', 1)
+            ->where('created_by',$iduser)
             ->pluck('id');
-            break;
-        case 10: 
-            $visits_ID = DB::table('psychological_visits')
-            ->where('status_id', 1)
-            ->where('revised_by',$user_id)
-            ->pluck('id');
-            break;        
-        }
+            
         
         $outputUrls = [];
     
@@ -217,7 +198,7 @@ class ZipReportsRepository {
         
             $Trasversal_A_ID = DB::table('transversal_activities')
             ->where('status_id', 1)
-            ->where('revised_by',$user_id)
+            ->where('created_by',$iduser)
             ->pluck('id');
            
         
