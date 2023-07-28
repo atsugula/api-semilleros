@@ -43,6 +43,7 @@ class TransversalActivityRepository
         if ($rol_id == config('roles.director_programa')) {
             $query->where('status_id', config('status.ENR'))
                 ->whereNotIn('created_by', [1,2]);
+            $query->where('created_by', $user_id)->orderBy('id', 'DESC');
         }
 
         if ($rol_id == config('roles.psicologo')) {
