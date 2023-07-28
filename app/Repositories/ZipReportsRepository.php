@@ -33,21 +33,12 @@ class ZipReportsRepository {
         }
 
         //Se busca los chronogramas en base de la id y rol de la persona
-        switch ($rol_id){
-        case 1:
-        case 2:
-        case 3:
+        
             $chronogramIds = DB::table('chronograms')
             ->where('status_id', 1)
+            ->where('created_by',$iduser)
             ->pluck('id');
-            break;
-        case 10: 
-            $chronogramIds = DB::table('chronograms')
-            ->where('status_id', 1)
-            ->where('revised_by',$user_id)
-            ->pluck('id');
-            break;        
-        }
+            
         
         $outputUrls = [];
     
@@ -58,7 +49,7 @@ class ZipReportsRepository {
         
         // Generar el archivo ZIP y obtener la URL del archivo generado
         $zipFileName = 'chronogram_files_'. $rol_id .'.zip';
-        $zipFilePath = storage_path('app/' . $zipFileName);
+        $zipFilePath = public_path('downloads/' . $zipFileName);
         $msg = $this->createZipFromUrls($outputUrls, $zipFilePath);
     
         // Obtener la URL relativa desde la carpeta /storage
@@ -83,23 +74,13 @@ class ZipReportsRepository {
         Log::info($rol_id );
 
         //Se busca los chronogramas en base de la id y rol de la persona
-        switch ($rol_id){
-        case 1:
-        case 2:
-        case 3:
-            $benefesiariesID = DB::table('beneficiaries')
-            ->where('status_id', 1)
-            ->pluck('id');
-            break;
-        case 10: 
+        
             $benefesiariesID = DB::table('beneficiaries')
             ->where('status_id', 1)
             ->where('created_by',$iduser)
             ->pluck('id');
-            break;
-        default:
-            return response()->json(['error' => 'No tiene permisos para realizar esta accion'], 403);
-        }
+           
+        
         
         $outputUrls = [];
     
@@ -110,7 +91,7 @@ class ZipReportsRepository {
         
         // Generar el archivo ZIP y obtener la URL del archivo generado
         $zipFileName = 'benefisiarie_files_'. $rol_id .'.zip';
-        $zipFilePath = public_path('' . $zipFileName);
+        $zipFilePath = public_path('downloads/' . $zipFileName);
         $msg = $this->createZipFromUrls($outputUrls, $zipFilePath);
     
         // Obtener la URL relativa desde la carpeta /storage
@@ -163,7 +144,7 @@ class ZipReportsRepository {
         
         // Generar el archivo ZIP y obtener la URL del archivo generado
         $zipFileName = 'CustomVisits_files_'. $rol_id .'.zip';
-        $zipFilePath = storage_path('app/' . $zipFileName);
+        $zipFilePath = public_path('downloads/' . $zipFileName);
         $msg = $this->createZipFromUrls($outputUrls, $zipFilePath);
     
         // Obtener la URL relativa desde la carpeta /storage
@@ -213,7 +194,7 @@ class ZipReportsRepository {
         
         // Generar el archivo ZIP y obtener la URL del archivo generado
         $zipFileName = 'visits_files_'. $rol_id .'.zip';
-        $zipFilePath = storage_path('app/' . $zipFileName);
+        $zipFilePath = public_path('downloads/' . $zipFileName);
         $msg = $this->createZipFromUrls($outputUrls, $zipFilePath);
     
         // Obtener la URL relativa desde la carpeta /storage
@@ -233,21 +214,12 @@ class ZipReportsRepository {
         $user_id = $this->getIdUserAuth();
 
         //Se busca los chronogramas en base de la id y rol de la persona
-        switch ($rol_id){
-        case 1:
-        case 2:
-        case 3:
-            $Trasversal_A_ID = DB::table('transversal_activities')
-            ->where('status_id', 1)
-            ->pluck('id');
-            break;
-        case 10: 
+        
             $Trasversal_A_ID = DB::table('transversal_activities')
             ->where('status_id', 1)
             ->where('revised_by',$user_id)
             ->pluck('id');
-            break;        
-        }
+           
         
         $outputUrls = [];
     
@@ -258,7 +230,7 @@ class ZipReportsRepository {
         
         // Generar el archivo ZIP y obtener la URL del archivo generado
         $zipFileName = 'transversal_activities_files_'. $rol_id .'.zip';
-        $zipFilePath = storage_path('app/' . $zipFileName);
+        $zipFilePath = public_path('downloads/' . $zipFileName);
         $msg = $this->createZipFromUrls($outputUrls, $zipFilePath);
     
         // Obtener la URL relativa desde la carpeta /storage
