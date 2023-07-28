@@ -138,8 +138,7 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
 
     //Descarga de zips
     Route::get('getZipChronogramaForMetodologo/{id}',[ZipReportsControllers::class,'GenerateChronogramZip']);
-    Route::get('getZipChronogramaForMetodologo/{id}',[ZipReportsControllers::class,'GenerateChronogramZip']);
-    Route::get('getZipBenefisiarie',[ZipReportsControllers::class,'GenerateBenefisiaries']);
+    Route::get('getZipBenefisiarie/{id}',[ZipReportsControllers::class,'GenerateBenefisiaries']);
 
 
     // Descargar archivos de chronogram
