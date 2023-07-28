@@ -110,11 +110,11 @@ class ZipReportsRepository {
         
         // Generar el archivo ZIP y obtener la URL del archivo generado
         $zipFileName = 'benefisiarie_files_'. $rol_id .'.zip';
-        $zipFilePath = storage_path('app/' . $zipFileName);
+        $zipFilePath = public_path('' . $zipFileName);
         $msg = $this->createZipFromUrls($outputUrls, $zipFilePath);
     
         // Obtener la URL relativa desde la carpeta /storage
-        $relativeUrl = Storage::url('app/' . $zipFileName);
+        $relativeUrl =  $zipFileName;
     
         // Construir el array asociativo con los datos a devolver
         $response = [
