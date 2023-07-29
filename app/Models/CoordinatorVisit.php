@@ -25,7 +25,6 @@ class CoordinatorVisit extends Model
         'discipline_id',
         'file',
         'status_id',
-        'user_id',
     ];
 
     protected $hidden = ['created_at', 'deleted_at', 'updated_at'];
@@ -33,6 +32,10 @@ class CoordinatorVisit extends Model
     public function municipalities()
     {
         return $this->belongsTo(Municipality::class, 'municipalitie_id');
+    }
+
+    public function zone(){
+        return $this->hasMany(ZoneUser::class, 'user_id', 'user_id');
     }
 
     public function disciplines()
