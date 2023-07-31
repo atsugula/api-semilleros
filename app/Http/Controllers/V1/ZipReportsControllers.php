@@ -22,4 +22,9 @@ class ZipReportsControllers extends Controller
         return response()->json($data);
     }
 
+    public function GenerateBenefisiaries(){
+        $data = $this->repository->BenefisiarieZip();
+        return response()->json($data);
+    }
+
 }

@@ -48,7 +48,7 @@ class MethodologistVisitRepository
             case config('roles.super-root'):
             case config('roles.director_administrator'):
                 $query = $query->whereNotIn('created_by', [1,2])
-                ->whereHas('createdBy.roles', function ($query) {
+                ->whereHas('creator.roles', function ($query) {
                     $query->where('roles.slug', 'metodologo');
                 });
                 break;
