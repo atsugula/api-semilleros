@@ -38,6 +38,16 @@ class ZipReportsRepository {
             
         
         $outputUrls = [];
+
+        if (count($chronogramIds) === 0) {
+            $response = [
+                'msg' => "no hay ningun archivo aprobado para exportar",
+                'url' => null,
+            ];
+        
+            return $response;
+        }
+        
     
         //se genera los docs por si no existe alguno o para verificar que todo sea actual
         foreach ($chronogramIds as $chronogramId) {
@@ -67,7 +77,7 @@ class ZipReportsRepository {
             // $rol_id = $this->getIdRolUserAuth();
             $rol_id = 3;
 
-        Log::info($rol_id );
+        
 
         //Se busca los chronogramas en base de la id y rol de la persona
         
@@ -77,8 +87,20 @@ class ZipReportsRepository {
             ->pluck('id');
            
         
-        
+            Log::info($benefesiariesID);
+
+            
         $outputUrls = [];
+
+        if (count($outputUrls) === 0) {
+            $response = [
+                'msg' => "no hay ningun archivo aprobado para exportar",
+                'url' => null,
+            ];
+        
+            return $response;
+        }
+        
     
         //se genera los docs por si no existe alguno o para verificar que todo sea actual
         foreach ($benefesiariesID as $benefisiarie) {
@@ -119,6 +141,16 @@ class ZipReportsRepository {
             
         $outputUrls = [];
         Log::info($customVisitID);
+
+        if (count($customVisitID) === 0) {
+            $response = [
+                'msg' => "no hay ningun archivo aprobado para exportar",
+                'url' => null,
+            ];
+        
+            return $response;
+        }
+        
     
         //se genera los docs por si no existe alguno o para verificar que todo sea actual
         foreach ($customVisitID as $customVisit) {
