@@ -26,8 +26,8 @@ class ZipReportsRepository {
        
         
             $iduser;
-            // $rol_id = $this->getIdRolUserAuth();
-            $rol_id = 3;
+            $rol_id = $this->getIdRolUserAuth();
+            //$rol_id = 3;
 
         //Se busca los chronogramas en base de la id y rol de la persona
         
@@ -74,8 +74,8 @@ class ZipReportsRepository {
         //se obtiene rol y id de la persona
         
             $iduser;
-            // $rol_id = $this->getIdRolUserAuth();
-            $rol_id = 3;
+            $rol_id = $this->getIdRolUserAuth();
+            //$rol_id = 3;
 
         
 
@@ -129,8 +129,8 @@ class ZipReportsRepository {
         //se obtiene rol y id de la persona
 
         $iduser;
-            // $rol_id = $this->getIdRolUserAuth();
-            $rol_id = 3;
+        $rol_id = $this->getIdRolUserAuth();
+        //$rol_id = 3;
 
         //Se busca los chronogramas en base de la id y rol de la persona
        
@@ -185,8 +185,8 @@ class ZipReportsRepository {
     public function ZipVisitasPsicologicas($iduser){
 
         $iduser;
-            // $rol_id = $this->getIdRolUserAuth();
-            $rol_id = 3;
+        $rol_id = $this->getIdRolUserAuth();
+        //$rol_id = 3;
 
         //Se busca los chronogramas en base de la id y rol de la persona
         
@@ -233,8 +233,8 @@ class ZipReportsRepository {
     public function ZipTrasversalAcitvities($iduser){
         //se obtiene rol y id de la persona
         $iduser;
-            // $rol_id = $this->getIdRolUserAuth();
-            $rol_id = 3;
+        $rol_id = $this->getIdRolUserAuth();
+        //$rol_id = 3;
 
         //Se busca los chronogramas en base de la id y rol de la persona
         
