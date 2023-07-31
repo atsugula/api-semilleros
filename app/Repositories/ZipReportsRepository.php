@@ -138,6 +138,15 @@ class ZipReportsRepository {
             ->where('status_id', 1)
             ->where('created_by',$iduser)
             ->pluck('id');
+
+            if (count($customVisitID) === 0) {
+                $response = [
+                    'msg' => "no hay ningun archivo aprobado para exportar",
+                    'url' => null,
+                ];
+            
+                return $response;
+            }
             
         $outputUrls = [];
         Log::info($customVisitID);
@@ -186,6 +195,15 @@ class ZipReportsRepository {
             ->where('created_by',$iduser)
             ->pluck('id');
 
+            if (count($visits_ID) === 0) {
+                $response = [
+                    'msg' => "no hay ningun archivo aprobado para exportar",
+                    'url' => null,
+                ];
+            
+                return $response;
+            }
+
             Log::info($visits_ID);
             
         
@@ -224,6 +242,15 @@ class ZipReportsRepository {
             ->where('status_id', 1)
             ->where('created_by',$iduser)
             ->pluck('id');
+
+            if (count($Trasversal_A_ID) === 0) {
+                $response = [
+                    'msg' => "no hay ningun archivo aprobado para exportar",
+                    'url' => null,
+                ];
+            
+                return $response;
+            }
 
             Log::info($Trasversal_A_ID);
            
