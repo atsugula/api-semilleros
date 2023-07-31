@@ -51,6 +51,13 @@ class MonitorsController extends Controller
         $userZonesAuth = ZoneUser::where('user_id', $authUser->id)->pluck('zones_id');
         // return $userZonesAuth;
 
+        // Validamos una zona especial
+        // Tiene los mismos lugares que la zona tres
+        // Solo se le añadio el municipio de Zarzal
+        if ($userZonesAuth[0] == 9) {
+            $userZonesAuth[0] = 3;
+        }
+
         $usersMonitorAuth = User::select(DB::raw("CONCAT(name, ' ', lastname) as label"), 'id as value')
             ->whereHas('roles', function ($query) {
                 $query->where('role_id', 12);
