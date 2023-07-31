@@ -26,9 +26,8 @@ class ZipReportsRepository {
        
         
             $iduser;
-            $user_id = $this->getIdUserAuth();
-            $rol_id = $this->getIdRolUserAuth();
-       
+            // $rol_id = $this->getIdRolUserAuth();
+            $rol_id = 3;
 
         //Se busca los chronogramas en base de la id y rol de la persona
         
@@ -65,9 +64,8 @@ class ZipReportsRepository {
         //se obtiene rol y id de la persona
         
             $iduser;
-            $user_id = $this->getIdUserAuth();
-            $rol_id = $this->getIdRolUserAuth();
-
+            // $rol_id = $this->getIdRolUserAuth();
+            $rol_id = 3;
 
         Log::info($rol_id );
 
@@ -108,13 +106,9 @@ class ZipReportsRepository {
     public function ZipCustomVisits($iduser){
         //se obtiene rol y id de la persona
 
-        if($iduser != null){
-            $user_id = $iduser;
-            $rol_id = RoleUser::where('user_id', $iduser)->first()->role_id;
-        }else{
-            $user_id = $this->getIdUserAuth();
-            $rol_id = $this->getIdRolUserAuth();
-        }
+        $iduser;
+            // $rol_id = $this->getIdRolUserAuth();
+            $rol_id = 3;
 
         //Se busca los chronogramas en base de la id y rol de la persona
        
@@ -124,6 +118,7 @@ class ZipReportsRepository {
             ->pluck('id');
             
         $outputUrls = [];
+        Log::info($customVisitID);
     
         //se genera los docs por si no existe alguno o para verificar que todo sea actual
         foreach ($customVisitID as $customVisit) {
@@ -148,13 +143,9 @@ class ZipReportsRepository {
     }
     public function ZipVisitasPsicologicas($iduser){
 
-        if($iduser != null){
-            $user_id = $iduser;
-            $rol_id = RoleUser::where('user_id', $iduser)->first()->role_id;
-        }else{
-            $user_id = $this->getIdUserAuth();
-            $rol_id = $this->getIdRolUserAuth();
-        }
+        $iduser;
+            // $rol_id = $this->getIdRolUserAuth();
+            $rol_id = 3;
 
         //Se busca los chronogramas en base de la id y rol de la persona
         
@@ -162,6 +153,8 @@ class ZipReportsRepository {
             ->where('status_id', 1)
             ->where('created_by',$iduser)
             ->pluck('id');
+
+            Log::info($visits_ID);
             
         
         $outputUrls = [];
@@ -189,8 +182,9 @@ class ZipReportsRepository {
     }
     public function ZipTrasversalAcitvities($iduser){
         //se obtiene rol y id de la persona
-        $rol_id = $this->getIdRolUserAuth();
-        $user_id = $this->getIdUserAuth();
+        $iduser;
+            // $rol_id = $this->getIdRolUserAuth();
+            $rol_id = 3;
 
         //Se busca los chronogramas en base de la id y rol de la persona
         
@@ -198,6 +192,8 @@ class ZipReportsRepository {
             ->where('status_id', 1)
             ->where('created_by',$iduser)
             ->pluck('id');
+
+            Log::info($Trasversal_A_ID);
            
         
         $outputUrls = [];
