@@ -13,9 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('beneficiary_guardians', function (Blueprint $table) {
-            $table->string('email')->after('last_name')->nullable();
-            $table->string('phone_number')->after('email');
+        Schema::table('beneficiaries', function (Blueprint $table) {
+            $table->json('live_with')->after('blood_type')->change();
         });
     }
 
@@ -26,8 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('beneficiary_guardians', function (Blueprint $table) {
-            //
+        Schema::table('beneficiaries', function (Blueprint $table) {
+            $table->string('live_with')->after('blood_type')->change();
         });
     }
 };

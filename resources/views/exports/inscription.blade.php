@@ -14,6 +14,9 @@
                 <b>FECHA DE CREACIÓN</b>
             </th>
             <th style="width: 30px;text-align:center">
+                <b>NOMBRE DE BENEFICIARIO</b>
+            </th>
+            <th style="width: 30px;text-align:center">
                 <b>MUNICIPIO</b>
             </th>
             <th style="width: 30px;text-align:center">
@@ -21,9 +24,6 @@
             </th>
             <th style="width: 30px;text-align:center">
                 <b>DISCIPLINAS</b>
-            </th>
-            <th style="width: 30px;text-align:center">
-                <b>NOMBRES Y APELLIDOS</b>
             </th>
             <th style="width: 30px;text-align:center">
                 <b>FECHA DE NACIMIENTO</b>
@@ -54,9 +54,6 @@
             </th>
             <th style="width: 30px;text-align:center">
                 <b>VÍCTIMA DE CONFLICTO</b>
-            </th>
-            <th style="width: 30px;text-align:center">
-                <b>CORREGIMIENTO/BARRIO/VEREDA</b>
             </th>
             <th style="width: 30px;text-align:center">
                 <b>GENERO</b>
@@ -92,7 +89,7 @@
                 <b>VIVE</b>
             </th>
             <th style="width: 30px;text-align:center">
-                <b>EPS</b>
+                <b>EPS Afiliación</b>
             </th>
             <th style="width: 30px;text-align:center">
                 <b>TIPO AFILIACIÓN</b>
@@ -130,33 +127,116 @@
                 <td>{{ $value->monitor_name . ' ' . $value->monitor_lastname }}</td>
                 <td>{{ $value->moni_document_number }}</td>
                 <td>{{ $value->created_at }}</td>
+                <td>{{ $value->full_name }}</td>
                 <td>{{ $value->municipalitie }}</td>
                 <td>{{ $value->zone }}</td>
                 <td>{{ $value->discipline }}</td>
                 <td>{{ $value->birth_date }}</td>
                 <td>{{ $value->origin_place }}</td>
                 <td>{{ $value->edad }}</td>
-                <td>{{ $value->type_document }}</td>
+
+                @php
+                    $documentTypes = [
+                        "RC" => "Registro Civil",
+                        "TI" => "Tarjeta de Identidad",
+                        "PEP" => "Permiso Especial de Permanencia",
+                    ];
+                    $documentType = $value->type_document;
+                @endphp
+                @if(isset($documentTypes[$documentType]))
+                    <td>{{ $documentTypes[$documentType] }}</td>
+                @else
+                    <td>Desconocido</td>
+                @endif
+
                 <td>{{ $value->guardian_document_number }}</td>
                 <td>{{ $value->home_address }}</td>
                 <td>{{ $value->phone }}</td>
                 <td>{{ $value->stratum }}</td>
-                <td>{{ $value->name }}</td>
-                <td>{{ $value->conflict_victim }}</td>
-                <td>{{ $value->gender }}</td>
+                @if($value->area=="R")
+                    <td>RURAL</td>
+                @elseif($value->area=="U")
+                    <td>URBANA</td>
+                @endif
+
+                @if($value->conflict_victim==1)
+                    <td>SI</td>
+                @elseif($value->conflict_victim==0)
+                    <td>NO</td>
+                @endif
+
+                @if($value->gender == "F"||$value->gender == "f")
+                    <td>FEMENINO</td>
+                @elseif($value->gender == "M"|| $value->gender == "m" )
+                    <td>MASCULINO</td>
+                @endif
+
                 <td>{{ $value->etnia }}</td>
-                <td>{{ $value->disability }}</td>
+
+                @if($value->disability == 1)
+                    <td>SI</td>
+                @elseif($value->disability == 0 )
+                    <td>NO</td>
+                @endif
+
                 <td>{{ $value->other_disability }}</td>
-                <td>{{ $value->pathology }}</td>
+
+                @if($value->pathology == 1)
+                    <td>SI</td>
+                @elseif($value->pathology == 0 )
+                    <td>NO</td>
+                @endif
+
                 <td>{{ $value->what_pathology }}</td>
-                <td>{{ $value->blood_type }}</td>
-                <td>{{ $value->scholarship }}</td>
-                <td>{{ $value->scholar_level }}</td>
+
+                @php
+                    $bloodTypes = [1 => "A+",2 => "A-",3 => "B+",4 => "B-",5 => "AB+",6 => "O+",7 => "O-", ];
+                    $pathology =$value->blood_type ;
+                @endphp
+                @if(isset($bloodTypes[$pathology]))
+                    <td>{{ $bloodTypes[$pathology] }}</td>
+                @else
+                    <td>Desconocido</td>
+                @endif
+
+                @if($value->scholarship == 1)
+                    <td>SI</td>
+                @elseif($value->scholarship == 0 )
+                    <td>NO</td>
+                @endif
+
+                @php
+                    $educationLevels = [
+                        1 => "Primaria",
+                        2 => "Secundaria",
+                        3 => "Graduado",
+                    ];
+                    $educationLevel = $value->scholar_level;
+                @endphp
+                @if(isset($educationLevels[$educationLevel]))
+                    <td>{{ $educationLevels[$educationLevel] }}</td>
+                @else
+                    <td>Desconocido</td>
+                @endif
+
                 <td>{{ $value->institution }}</td>
                 <td>{{ $value->live_with }}</td>
-                <td>{{ $value->affiliation }}</td>
-                <td>{{ $value->affiliation_type }}</td>
-                <td>{{ $value->lastname_guardian }}</td>
+                <td>{{ $value->entity }}</td>
+                @php
+                    $insuranceTypes = [
+                        "SUB" => "Subsidiado",
+                        "CON" => "Contributivo",
+                        "NA" => "No tiene",
+                    ];
+                    $insuranceType = $value->affiliation_type;
+                @endphp
+                @if(isset($insuranceTypes[$insuranceType]))
+                    <td>{{ $insuranceTypes[$insuranceType] }}</td>
+                @else
+                    <td>Desconocido</td>
+                @endif
+
+                <td>{{ $value->name_guardian.''.$value->lastname_guardian }}</td>
                 <td>{{ $value->cedula }}</td>
                 <td>{{ $value->relationship }}</td>
                 <td>{{ $value->email }}</td>

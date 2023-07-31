@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             //ZoneTableSeeder::class, NO DESCOMENTAR
             //UsersTableSeeder::class, NO DESCOMENTAR
             UserSeeder::class,
+            UsersTableSeeder::class,
             ModuleSeeder::class,
             ModuleItemSeeder::class,
             //RolesTableSeeder::class, NO DESCOMENTAR

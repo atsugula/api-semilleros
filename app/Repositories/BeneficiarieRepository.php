@@ -12,6 +12,7 @@ use App\Models\BeneficiaryGuardians;
 use App\Models\KnowGuardians;
 use App\Models\Municipality;
 use App\Models\MunicipalityUser;
+use App\Models\RoleUser;
 use App\Models\User;
 use App\Models\ZoneUser;
 use Illuminate\Support\Facades\Auth;
@@ -31,19 +32,29 @@ class BeneficiarieRepository
         $this->model = new Beneficiary();
     }
 
-    public function getAll()
+    public function getAll($iduser)
     {
-        $user_id = $this->getIdUserAuth();
-        $rol_id = $this->getIdRolUserAuth();
+        if($iduser != null){
+            $user_id = $iduser;
+            $rol_id = RoleUser::where('user_id', $iduser)->first()->role_id;
+        }else{
+            $user_id = $this->getIdUserAuth();
+            $rol_id = $this->getIdRolUserAuth();
+        }
 
         switch ($rol_id){
             case(config('roles.super-root')):
             case(config('roles.director_administrator')):
-            case(config('roles.metodologo')):
                 $beneficiaries =  $this->model->query()->where('status_id',  config("status.ENR"))->orderBy('id', 'DESC')->get();
                 break;
+            case(config('roles.metodologo')):
+                $beneficiaries =  $this->model->query()->where('status_id',  config("status.ENR"))
+                    ->whereHas('created_user', function ($query) use ($user_id){
+                        $query->where('users.methodology_id', $user_id);
+                    })->orderBy('id', 'DESC')->get();
+                break;
             case(config('roles.monitor')):
-                $beneficiaries =  $this->model->query()->orderBy('id', 'DESC')->get();
+                $beneficiaries =  $this->model->query()->where('created_by', $user_id)->orderBy('id', 'DESC')->get();
                 break;
             case(config('roles.asistente_administrativo')):
                 $beneficiaries =  $this->model->query()->where('status_id',  config("status.APR"))->orderBy('id', 'DESC')->get();
@@ -61,6 +72,7 @@ class BeneficiarieRepository
         DB::beginTransaction();
 
         $request['created_by'] = Auth::id();
+        $request['live_with'] = json_encode($request['live_with']);
         $beneficiarie = Beneficiary::create($request);
         $beneficiarie->save();
 
@@ -182,7 +194,7 @@ class BeneficiarieRepository
     {
         $validate = [
             'affiliation_type' => 'bail|required',
-            'document_number' => $method != 'update' ? ['bail', 'required', 'string', Rule::unique(Asistant::class)] : ['bail', 'required', 'string'],
+            'document_number' => $method != 'update' ? ['bail', 'required', 'string', Rule::unique(Beneficiary::class)] : ['bail', 'required', 'string'],
             /* 'group_id' => 'bail|required',
             'full_name' => 'bail|required',
             'institution_entity_referred' => 'bail|required',

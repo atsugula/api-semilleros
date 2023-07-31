@@ -6,8 +6,10 @@ use App\Http\Resources\V1\MethodologistVisitCollection;
 use App\Http\Resources\V1\MethodologistVisitResource;
 use App\Traits\FunctionGeneralTrait;
 use App\Models\MethodologistVisit;
+use App\Models\RoleUser;
 use App\Traits\ImageTrait;
 use App\Traits\UserDataTrait;
+use Illuminate\Support\Facades\Auth;
 
 class MethodologistVisitRepository
 {
@@ -20,11 +22,15 @@ class MethodologistVisitRepository
         $this->model = new MethodologistVisit();
     }
 
-    public function getAll()
+    public function getAll($iduser)
     {
-
-        $rol_id = $this->getIdRolUserAuth();
-        $user_id = $this->getIdUserAuth();
+        if($iduser != null){
+            $user_id = $iduser;
+            $rol_id = RoleUser::where('user_id', $iduser)->first()->role_id;
+        }else{
+            $user_id = $this->getIdUserAuth();
+            $rol_id = $this->getIdRolUserAuth();
+        }
 
         //$rol_id = 10;
         //$user_id = 10;
@@ -33,12 +39,16 @@ class MethodologistVisitRepository
 
         switch ($rol_id) {
             case config('roles.subdirector_tecnico'):
+                $userZones = Auth::user()->zone->pluck('zones_id')->toArray();
+                $query = $query->whereHas('zone', function ($subquery) use ($userZones) {
+                    $subquery->whereIn('zones_id', $userZones);
+                });
                 $query = $query->whereNotIn('created_by', [1,2])->where('status_id', [config('status.ENR')]);
                 break;
             case config('roles.super-root'):
             case config('roles.director_administrator'):
                 $query = $query->whereNotIn('created_by', [1,2])
-                ->whereHas('createdBy.roles', function ($query) {
+                ->whereHas('creator.roles', function ($query) {
                     $query->where('roles.slug', 'metodologo');
                 });
                 break;
@@ -91,7 +101,7 @@ class MethodologistVisitRepository
         $methodologist_visit->sidewalk = $request['sidewalk'];
         $methodologist_visit->discipline_id = $request['discipline_id'];
         $methodologist_visit->evaluation_id = $request['evaluation_id'];
-        $methodologist_visit->event_support_id = $request['event_support_id'];
+        $methodologist_visit->event_support = ($request['event_support']) ? $request['event_support'] : null;
         $methodologist_visit->observations = $request['observations'];
         $methodologist_visit->status_id = config('status.ENR');
         $methodologist_visit->created_by = $user_id;
@@ -151,7 +161,7 @@ class MethodologistVisitRepository
         $methodologist_visit->user_id = $request['user_id'];
         $methodologist_visit->discipline_id = $request['discipline_id'];
         $methodologist_visit->evaluation_id = $request['evaluation_id'];
-        $methodologist_visit->event_support_id = $request['event_support_id'];
+        $methodologist_visit->event_support = ($request['event_support']) ? $request['event_support'] : null;
         $methodologist_visit->observations = $request['observations'];
         /* ACTUALIZAMOS EL ESTADO SOLO EL ROL AUTORIZADO */
         if ($rol_id == config('roles.subdirector_tecnico')) {

@@ -38,7 +38,7 @@ class MethodologistVisit extends Model
         'user_id',
         'discipline_id',
         'evaluation_id',
-        'event_support_id',
+        'event_support',
         'observations',
         'status_id',
         'file',
@@ -51,6 +51,10 @@ class MethodologistVisit extends Model
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function zone(){
+        return $this->hasMany(ZoneUser::class, 'user_id', 'user_id');
     }
 
     public function municipalities(){

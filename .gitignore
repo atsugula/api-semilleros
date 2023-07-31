@@ -20,3 +20,4 @@ yarn-error.log
 /config/snappy.php
 public/Template/metodologo/Metodologist_Visit.docx
 
+*.docx

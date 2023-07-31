@@ -133,6 +133,10 @@ class User extends Authenticatable
         return $this->hasMany(Users::class, 'methodology_id', 'id')->cascadeDelete();
     }
 
+    public function metodologoUser() {
+        return $this->hasMany(User::class, 'methodology_id', 'id');
+    }
+
     /**
      * Relationship many to many
      */

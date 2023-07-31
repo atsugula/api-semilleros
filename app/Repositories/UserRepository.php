@@ -53,12 +53,18 @@ class UserRepository
         if ($rol_id == config('roles.metodologo')){
             $query = $query->where('methodology_id', Auth::user()->id);
         }
-        if(in_array($rol_id, [config('roles.coordinador_regional')])){
+        if(in_array($rol_id, [config('roles.coordinador_regional'), config('roles.director_programa'), config('roles.subdirector_tecnico'), config('roles.psicologo')])){
             $query = $query->where('manager_id', Auth::user()->id);
         }
         if(in_array($rol_id, [config('roles.coordinador_psicosocial')])){
             $query->whereHas('roles', function ($profile) {
-                $profile->whereNot('roles.id', [config('roles.psicologo')]);
+                $profile->where('roles.id', [config('roles.psicologo')]);
+            });
+        }
+        if ($rol_id == config('roles.coordinador_maritimo')) {
+            $userZones = Auth::user()->zone->pluck('zones_id')->toArray();
+            $query = $query->whereHas('zone', function ($subquery) use ($userZones) {
+                $subquery->whereIn('zones_id', $userZones);
             });
         }
         $cantRegistros = $query->get()->count();
@@ -263,9 +269,9 @@ class UserRepository
         // Guardamos en ModelData
         $this->control_data($user_up, 'update');
 
-        $correo = new RegisterUserMailable($user_up);
+        // $correo = new RegisterUserMailable($user_up);
 
-        Mail::to($user_up['email'])->send($correo);
+        // Mail::to($user_up['email'])->send($correo);
 
         return $user_up;
     }

@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('beneficiary_guardians', function (Blueprint $table) {
-            $table->string('email')->after('last_name')->nullable();
-            $table->string('phone_number')->after('email');
+        Schema::table('custom_visits', function (Blueprint $table) {
+            $table->text('theme')->change();
+            $table->text('agreements')->change();
         });
     }
 
@@ -26,8 +26,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('beneficiary_guardians', function (Blueprint $table) {
-            //
+        Schema::table('custom_visits', function (Blueprint $table) {
+            $table->string('theme')->nullable(false)->change();
+            $table->string('agreements')->nullable(false)->change();
         });
     }
 };

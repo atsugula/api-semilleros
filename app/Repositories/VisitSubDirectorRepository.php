@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Http\Resources\V1\VisitSubDirectorCollection;
 use App\Http\Resources\V1\VisitSubDirectorResource;
+use App\Models\RoleUser;
 use App\Traits\FunctionGeneralTrait;
 use App\Models\VisitSubDirector;
 use App\Traits\ImageTrait;
@@ -37,7 +38,7 @@ class VisitSubDirectorRepository
         if ($rol_id == config('roles.director_administrator')) {
             $query->whereNotIn('created_by', [1,2])
                 ->whereHas('creator.roles', function ($query) {
-                    // $query->where('roles.slug', 'subdirector_tecnico');
+                    $query->where('roles.slug', 'director_tecnico');
                 })
                 ->where('status_id', [config('status.ENR')]);
         }
@@ -54,14 +55,19 @@ class VisitSubDirectorRepository
         return new VisitSubDirectorCollection($query->simplePaginate($paginate));
     }
 
-    public function getAll()
+    public function getAll($iduser)
     {
-        $rol_id = $this->getIdRolUserAuth();
-        $user_id = $this->getIdUserAuth();
+        if($iduser != null){
+            $user_id = $iduser;
+            $rol_id = RoleUser::where('user_id', $iduser)->first()->role_id;
+        }else{
+            $user_id = $this->getIdUserAuth();
+            $rol_id = $this->getIdRolUserAuth();
+        }
 
         $query = $this->model->query()->orderBy('id', 'DESC');
 
-        if ($rol_id == config('roles.subdirector_tecnico')) {
+        if ($rol_id == config('roles.subdirector_tecnico') || $rol_id == config('roles.director_tecnico')) {
             $query->where('created_by', $user_id);
         }
 

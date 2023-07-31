@@ -61,16 +61,18 @@ class UsersTableSeeder extends Seeder
             // Guardar el ID del usuario creado y la cédula en el metodologo
             $userIdsAndCedulas[] = [
                 'userId' => $user->id,
-                'cedulaMetodologo' => (isset($row['J']) ?$row['J']:null),
-                'cedulaManagment' =>  (isset($row['K']) ?$row['K']:null),
+                'cedulaMetodologo' => (isset($row['K']) ?$row['K']:null),
+                'cedulaManagment' =>  (isset($row['J']) ?$row['J']:null),
+                'cedulaSupervisor' =>  (isset($row['L']) ?$row['L']:null),
+
             ];
 
             $counter++;
         }
         // Recorrer el array y asignar el methodology_id
         foreach ($userIdsAndCedulas as $data) {
+            $user = User::find($data['userId']);
             if($data['cedulaMetodologo'] != null){
-                $user = User::find($data['userId']);
                 // Buscar el usuario con la cédula correspondiente
                 $relatedUser = User::where('document_number', $data['cedulaMetodologo'])->first();
                 if ($relatedUser) {
@@ -78,12 +80,21 @@ class UsersTableSeeder extends Seeder
                     $user->save();
                 }
             }
-            
+
             if($data['cedulaManagment'] != null){
                 // Buscar el usuario con la cédula correspondiente
                 $relatedUserManagment = User::where('document_number', $data['cedulaManagment'])->first();
                 if ($relatedUserManagment) {
                     $user->manager_id = $relatedUserManagment->id;
+                    $user->save();
+                }
+            }
+
+            if($data['cedulaSupervisor'] != null){
+                // Buscar el usuario con la cédula correspondiente
+                $relatedUserSupervisor = User::where('document_number', $data['cedulaSupervisor'])->first();
+                if ($relatedUserSupervisor) {
+                    $user->asistent_id = $relatedUserSupervisor->id;
                     $user->save();
                 }
             }

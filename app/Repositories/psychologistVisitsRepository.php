@@ -7,6 +7,7 @@ use App\Http\Resources\V1\PsychologistVisitsCollection;
 use App\Http\Resources\V1\PsychologistVisitsResource;
 use App\Models\psychologistVisits;
 use App\Models\Beneficiary;
+use App\Models\RoleUser;
 use App\Traits\FunctionGeneralTrait;
 use App\Traits\UserDataTrait;
 use App\Traits\ImageTrait;
@@ -22,11 +23,15 @@ class psychologistVisitsRepository
         $this->model = new psychologistVisits();
     }
 
-    public function getAll()
+    public function getAll($iduser)
     {
-        $rol_id = $this->getIdRolUserAuth();
-        $user_id = $this->getIdUserAuth();
-
+        if($iduser != null){
+            $user_id = $iduser;
+            $rol_id = RoleUser::where('user_id', $iduser)->first()->role_id;
+        }else{
+            $user_id = $this->getIdUserAuth();
+            $rol_id = $this->getIdRolUserAuth();
+        }
         // $rol_id = 6;
         // $user_id = 6;
 
@@ -34,6 +39,9 @@ class psychologistVisitsRepository
 
         switch ($rol_id) {
             case config('roles.coordinador_psicosocial'):
+                $query =  $query->whereHas('createdBY', function ($query) use ($user_id){
+                        $query->where('users.methodology_id', $user_id);
+                    });
             case config('roles.super-root'):
             case config('roles.director_administrator'):
                 $query = $query->whereNotIn('created_by', [1,2])->whereHas('createdBy.roles', function ($query) {
@@ -89,7 +97,7 @@ class psychologistVisitsRepository
            $handle_1 = $this->send_file($request, 'file', 'psychological_visits', $PsychologistVisit->id);
            $PsychologistVisit->update(['file' => $handle_1['response']['payload']]);
            $save &= $handle_1['response']['success'];
-        }        
+        }
 
         $results = new PsychologistVisitsResource($PsychologistVisit);
         return $results;
@@ -128,7 +136,7 @@ class psychologistVisitsRepository
             $PsychologistVisit->diciplines_id = $request['diciplines_id'];
             $PsychologistVisit->date_visit = $request['date_visit'];
         }
-        
+
         if ($rol_id == config('roles.coordinador_psicosocial')) {
             $PsychologistVisit->reviewed_by = $user_id;
             $PsychologistVisit->status_id = $request['status_id'];
@@ -139,7 +147,7 @@ class psychologistVisitsRepository
             $handle_1 = $this->update_file($request, 'file', 'PsychologistVisit', $PsychologistVisit->id, $PsychologistVisit->file);
             $PsychologistVisit->update(['file' => $handle_1['response']['payload']]);
         }
-        
+
         if ($request['status_id'] == config('status.REC') && $user_id == $PsychologistVisit->created_by) {
             $PsychologistVisit->status_id = config('status.ENR');
             $PsychologistVisit->rejection_message = '';
@@ -164,7 +172,7 @@ class psychologistVisitsRepository
     }
 
     public function getValidate($data, $method){
-        
+
         $validate = [
             'scenery' => 'bail|required',
             'objetive' => 'bail|required',
@@ -194,7 +202,7 @@ class psychologistVisitsRepository
             'all_ok' => 'saber si se observa organizacion,disciplina,buen manejo de grupo durante las sesiones de clases del monitor',
             'description' => 'descripción',
             'observations' => 'observaciones',
-            'municipalities_id' => 'municipio', 
+            'municipalities_id' => 'municipio',
             'diciplines_id' => 'disciplina',
             'monitor_id' => 'monitor',
             'file' => 'Archivo',

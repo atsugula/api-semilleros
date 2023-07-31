@@ -23,7 +23,8 @@ class ChronogramController extends Controller {
     {
         // Gate::authorize('haveaccess');
         try {
-            $results = $this->chronogramRepository->getAll();
+            $idUser = ($request->id_user) ? $request->id_user : null;
+            $results = $this->chronogramRepository->getAll($idUser);
             return $results->toArray($request);
         } catch (\Exception $ex) {
             return  $this->createErrorResponse([], 'Algo salio mal al listar los cronogramaa' . $ex->getMessage() . ' linea ' . $ex->getCode());
@@ -36,7 +37,7 @@ class ChronogramController extends Controller {
         $month = $request->month;
         $chronogramaValidation = Chronogram::where('month', $month)
             ->whereYear('created_at', $year)
-            ->whereYear('created_by', Auth::user()->id)
+            ->where('created_by', Auth::user()->id)
             ->exists();
         if ($chronogramaValidation) {
             return [

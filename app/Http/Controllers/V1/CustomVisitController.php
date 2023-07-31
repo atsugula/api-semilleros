@@ -26,7 +26,8 @@ class CustomVisitController extends Controller
     {
         //// Gate::authorize('haveaccess');
         try {
-            $results = $this->repository->getAll();
+            $idUser = ($request->id_user) ? $request->id_user : null;
+            $results = $this->repository->getAll($idUser);
             if ($results != null){
                 return $results->toArray($request);
             } else {

@@ -81,6 +81,10 @@ class devDatabase extends Command
         Artisan::call('db:seed --class=Health_Entities_Seeder');
         Artisan::call('db:seed --class=RolesActivitiesSeeder');
         Artisan::call('db:seed --class=RolesObjectsActivitiesSeeder');
+        Artisan::call('db:seed --class=UpdateRolesSeeder');
+        Artisan::call('db:seed --class=AssignRolesSeeder');
+        Artisan::call('db:seed --class=UpdateMunicipalitiesSeeder');
+
         $this->info('..........................................');
         Artisan::call('optimize');
         $this->info('Comando ejecutado php artisan optimize');
