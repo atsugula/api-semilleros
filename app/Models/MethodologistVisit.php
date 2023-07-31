@@ -53,6 +53,10 @@ class MethodologistVisit extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
+    public function zone(){
+        return $this->hasMany(ZoneUser::class, 'user_id', 'user_id');
+    }
+
     public function municipalities(){
         return $this->belongsTo(Municipality::class, 'municipalitie_id');
     }

@@ -10,6 +10,7 @@ use App\Models\CoordinatorVisit;
 use App\Models\RoleUser;
 use App\Traits\ImageTrait;
 use App\Traits\UserDataTrait;
+use Illuminate\Support\Facades\Auth;
 
 class CoordinatorVisitsRepository
 {
@@ -42,6 +43,10 @@ class CoordinatorVisitsRepository
         }
 
         if ($rol_id == config('roles.subdirector_tecnico')) {
+            $userZones = Auth::user()->zone->pluck('zones_id')->toArray();
+            $query = $query->whereHas('zone', function ($subquery) use ($userZones) {
+                $subquery->whereIn('zones_id', $userZones);
+            });
             $query->whereNotIn('created_by', [1,2])
                 ->where('status_id', [config('status.ENR')]);
         }
