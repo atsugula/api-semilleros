@@ -137,9 +137,14 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
     Route::get('GetChronogram/{id}',[ReportVisitsController::class,'ExportChronogram']);
 
     //Descarga de zips
+        //monitorDeportivo
     Route::get('getZipChronogramaForMetodologo/{id}',[ZipReportsControllers::class,'GenerateChronogramZip']);
-    Route::get('getZipChronogramaForMetodologo/{id}',[ZipReportsControllers::class,'GenerateChronogramZip']);
-    Route::get('getZipBenefisiarie',[ZipReportsControllers::class,'GenerateBenefisiaries']);
+    Route::get('getZipBenefisiarie/{id}',[ZipReportsControllers::class,'GenerateBenefisiaries']);
+        //psicologo
+    Route::get('GetZipCustomVists/{id}',[ZipReportsControllers::class,'CustomVisitPsycologic']);
+    Route::get('GetZipVisits/{id}',[ZipReportsControllers::class,'VisitPyscologic']);
+    Route::get('GetZipTrasversal/{id}',[ZipReportsControllers::class,'TrasversalActivity']);
+
 
 
     // Descargar archivos de chronogram
@@ -287,8 +292,13 @@ Route::middleware(['auth:sanctum', 'verified', 'logNavigationHistory', 'verifyUs
 
 // Rutas de prueba V2 JOSE
 //zarrok rutas de prueba
-// Route::get('getZipChronogramaForMetodologo/{id}',[ZipReportsControllers::class,'GenerateChronogramZip']);
-// Route::get('getZipBenefisiarie',[ZipReportsControllers::class,'GenerateBenefisiaries']);
+ Route::get('getZipChronogramaForMetodologo/{id}',[ZipReportsControllers::class,'GenerateChronogramZip']);
+ Route::get('getZipBenefisiarie/{id}',[ZipReportsControllers::class,'GenerateBenefisiaries']);
+
+Route::get('GetZipCustomVists/{id}',[ZipReportsControllers::class,'CustomVisitPsycologic']);
+Route::get('GetZipVisits/{id}',[ZipReportsControllers::class,'VisitPyscologic']);
+Route::get('GetZipTrasversal/{id}',[ZipReportsControllers::class,'TrasversalActivity']);
+
 // Route::get('getReportBenefisiaries/{id}',[ReportVisitsController::class,'exportMethodologistVisit']);
 // Route::get('getReportMethodologisticsVisits/{id}',[ReportVisitsController::class,'exportMethodologistVisit']);
  Route::get('getReportBenefisiaries/{id}',[ReportVisitsController::class,'exportBeneficiariesMethodologistVisit']);

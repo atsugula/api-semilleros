@@ -39,7 +39,7 @@ class ReportVisitsRepository
   function __construct()
   {
     $this->CoordinatorVisit = new CoordinatorVisit();
-    $this->MethodologistVisit = new MethodologistVisit();
+    $this->MethodologistVisit = new MethodologistVisit(); 
     $this->psychologistVisit = new psychologistVisits();
     $this->visitSubDirector = new VisitSubDirector();
     $this->PsychologisttransversalActivity = new TransversalActivity();

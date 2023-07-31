@@ -62,7 +62,7 @@ class UsersTableSeeder extends Seeder
             $userIdsAndCedulas[] = [
                 'userId' => $user->id,
                 'cedulaMetodologo' => (isset($row['K']) ?$row['K']:null),
-                'cedulaManagment' =>  (isset($row['J']) ?$row['J']:null),
+                'cedulaManagment' =>  (isset($row['J']) ?$row['K']:null),
                 'cedulaSupervisor' =>  (isset($row['L']) ?$row['L']:null),
 
             ];

@@ -18,13 +18,30 @@ class ZipReportsControllers extends Controller
 
     //
     public function GenerateChronogramZip(Request $request){
-        $data = $this->repository->ChronogramMetodologozip();
+        $data = $this->repository->ChronogramMetodologozip($request->id);
         return response()->json($data);
     }
 
-    public function GenerateBenefisiaries(){
-        $data = $this->repository->BenefisiarieZip();
+    public function GenerateBenefisiaries(Request $request){
+        $data = $this->repository->BenefisiarieZip($request->id);
         return response()->json($data);
     }
+
+    public function TrasversalActivity(Request $request){
+        $data = $this->repository->ZipTrasversalAcitvities($request->id);
+        return response()->json($data);
+    }
+
+    public function CustomVisitPsycologic(Request $request){
+        $data = $this->repository->ZipCustomVisits($request->id);
+        return response()->json($data);
+    }
+
+    public function VisitPyscologic(Request $request){
+        $data = $this->repository->ZipVisitasPsicologicas($request->id);
+        return response()->json($data);
+    }
+
+
 
 }
