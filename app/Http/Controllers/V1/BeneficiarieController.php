@@ -135,6 +135,41 @@ class BeneficiarieController extends Controller
     // Trae solo beneficiarios por municipio
     public function getBeneficiariesMunicipality($id)
     {
+
+        // Validamos una zona especial
+        // Tiene los mismos lugares que la zona tres
+        // Solo se le añadio el municipio de Zarzal
+        switch ($id) {
+            case '47':
+                $id = 5;
+                break;
+            case '48':
+                $id = 7;
+                break;
+            case '49':
+                $id = 29;
+                break;
+            case '50':
+                $id = 30;
+                break;
+            case '51':
+                $id = 31;
+                break;
+            case '52':
+                $id = 32;
+                break;
+            case '53':
+                $id = 33;
+                break;
+            case '54':
+                $id = 34;
+            case '55':
+                $id = 6;
+                break;
+            default:
+                break;
+        }
+
         $response = Beneficiary::where('municipalities_id', $id)->get();
         $beneficiaries = [];
         foreach ($response as $bene) {
