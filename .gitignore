@@ -21,3 +21,4 @@ yarn-error.log
 public/Template/metodologo/Metodologist_Visit.docx
 
 *.docx
+*.zip
