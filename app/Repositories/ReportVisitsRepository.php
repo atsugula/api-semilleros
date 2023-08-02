@@ -15,6 +15,7 @@ use App\Models\Beneficiary;
 use App\Models\User;
 use App\Models\CoordinatorVisit;
 use App\Models\Chronogram;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
@@ -22,7 +23,7 @@ use PhpOffice\PhpWord\PhpWord;
 use PhpParser\Node\Stmt\TryCatch;
 
 class ReportVisitsRepository
-{ 
+{
   private $MethodologistVisit;
   private $psychologistVisit;
   private $visitSubDirector;
@@ -39,7 +40,7 @@ class ReportVisitsRepository
   function __construct()
   {
     $this->CoordinatorVisit = new CoordinatorVisit();
-    $this->MethodologistVisit = new MethodologistVisit(); 
+    $this->MethodologistVisit = new MethodologistVisit();
     $this->psychologistVisit = new psychologistVisits();
     $this->visitSubDirector = new VisitSubDirector();
     $this->PsychologisttransversalActivity = new TransversalActivity();
@@ -55,13 +56,13 @@ class ReportVisitsRepository
   public function generateDoc($id){
 
     $MethodologistVisitReport = $this->MethodologistVisit->findOrFail($id);
-    
+
     $templatePath = public_path('Template/metodologo/Metodologist_Visit.docx');
     $outputPath = public_path('Template/metodologo/Metodologist_Visit_'. $id .'.docx');
 
 
     $templateProcessor = new TemplateProcessor($templatePath);
-     
+
     $data = [
       'metodologo' => $MethodologistVisitReport->creator->name,
       'fecha' => $MethodologistVisitReport->date_visit,
@@ -115,7 +116,7 @@ class ReportVisitsRepository
       $templateProcessor->setImageValue('imagen', array('path' => storage_path("app/public/". $MethodologistVisitReport->file), 'width' => 500, 'height' => 500, 'ratio' => false));
     } catch (\Exception $e) {
     }
-    
+
 
     $templateProcessor->saveAs($outputPath);
 
@@ -125,11 +126,11 @@ class ReportVisitsRepository
   }
 
   public function GenerateDocReportVisitsRepository($id){
-      
+
       $psychologistVisitReport = $this->psychologistVisit->findOrFail($id);
 
       $Psycologic_name = str_replace(' ', '_', $psychologistVisitReport->createdBY->name);
-      
+
       $templatePath = public_path('Template/psicosocial/visitas/plantilla.docx');
       $outputPath = public_path('Template/psicosocial/visitas/'.$id.'_Visita_psicologica_'.$Psycologic_name.'.docx');
 
@@ -187,7 +188,7 @@ class ReportVisitsRepository
 
 
     $Psycologic_name = str_replace(' ', '_', $psychologistCustomVisitReport->createdBY->name);
-    
+
     $templatePath = public_path('Template/psicosocial/Psicosocialvisitaspersonalizadas/plantilla.docx');
     $outputPath = public_path('Template/psicosocial/Psicosocialvisitaspersonalizadas/'.$id.'_Visita_personalizada_psicologica_'.$Psycologic_name.'.docx');
 
@@ -220,9 +221,9 @@ class ReportVisitsRepository
       } elseif ($beneficiaryGrade == 3) {
           $data["benefeciarie_grade"] = "Graduado";
       }
-      
 
-      
+
+
     $templateProcessor->setValues($data);
 
     try {
@@ -239,16 +240,16 @@ class ReportVisitsRepository
   }
 
   Public function GeneratedocPsychologisttransversalActivity($id){
-      
+
       $psychologistTransversalActivity = $this->PsychologisttransversalActivity->findOrFail($id);
-  
+
       $Psycologic_name = str_replace(' ', '_', $psychologistTransversalActivity->creator->name);
-      
+
       $templatePath = public_path('Template/psicosocial/actividades-transversales/plantilla.docx');
       $outputPath = public_path('Template/psicosocial/actividades-transversales/'.$id.'_Actividad_transversal_psicologica_'.$Psycologic_name.'.docx');
-  
+
       $templateProcessor = new TemplateProcessor($templatePath);
-  
+
       $data = [
         "region" => $psychologistTransversalActivity->municipalities->zone_id,
         "date_visit" => $psychologistTransversalActivity->date_visit,
@@ -275,24 +276,24 @@ class ReportVisitsRepository
       //      $templateProcessor->setImageValue('imagen' . ($i + 1), array('path' => storage_path("app/public/".$imagePath), 'width' => 400, 'height' => 400, 'ratio' => false));
       //    }catch (\Exception $e) {
       //      return $e;
-      //    } 
+      //    }
       //  }
 
        $files = $psychologistTransversalActivity->files;
        $totalImages = count($files);
        $maxImages = 4; // Número máximo de imágenes
        for ($i = 0; $i < $maxImages; $i++) {
-        
+
          try {
             if($i < $totalImages){
               $imagePath = $files[$i]['path'];
               $templateProcessor->setImageValue('imagen' . ($i + 1), array('path' => storage_path("app/public/".$imagePath), 'width' => 400, 'height' => 400, 'ratio' => false));
             }else{
               $templateProcessor->setValue('imagen' . ($i + 1), ''); // Asignar el valor "" a las variables restantes
-          }           
+          }
           }catch (\Exception $e) {
            return $e;
-         } 
+         }
        }
 
       // $files = $psychologistTransversalActivity->files;
@@ -309,32 +310,32 @@ class ReportVisitsRepository
       //         $templateProcessor->setValue('imagen' . ($i + 1), ''); // Asignar el valor "" a las variables restantes
       //     }
       // }
-      
-  
+
+
       $templateProcessor->setValues($data);
-  
+
       $templateProcessor->saveAs($outputPath);
 
 
-  
+
       $relative_path = 'Template/psicosocial/actividades-transversales/'.$id.'_Actividad_transversal_psicologica_'.$Psycologic_name.'.docx';
-  
+
       return $relative_path ;
       ;
-  
+
   }
 
   Public function GeneratedocvisitSubDirector($id){
-        
+
         $visitSubDirector = $this->visitSubDirector->findOrFail($id);
-    
+
         $sub_director_name = str_replace(' ', '_', $visitSubDirector->creator->name);
-        
+
         $templatePath = public_path('Template/Sub_director/visita/plantilla.docx');
         $outputPath = public_path('Template/Sub_director/visita/'.$id.'_Visita_subdirector_'.$sub_director_name .'.docx');
-    
+
         $templateProcessor = new TemplateProcessor($templatePath);
-    
+
         $data = [
           "region" => $visitSubDirector->municipalities->zone_id,
           "creator_name" => $visitSubDirector->creator->name,
@@ -355,20 +356,20 @@ class ReportVisitsRepository
           "description" => $visitSubDirector->description,
 
         ];
-    
+
         $templateProcessor->setValues($data);
 
         try {
           $templateProcessor->setImageValue('imagen', array('path' => storage_path("app/public/".$visitSubDirector->file), 'width' => 400, 'height' => 400, 'ratio' => false));
         } catch (\Exception $e) {
         }
-    
+
         $templateProcessor->saveAs($outputPath);
-    
+
         $relative_path = 'Template/Sub_director/visita/'.$id.'_Visita_subdirector_'.$sub_director_name .'.docx';
-    
+
         return $relative_path ;
-    
+
   }
 
   public function GenerateDocVisitCoordinador($id){
@@ -428,10 +429,10 @@ class ReportVisitsRepository
       $bene_name = str_replace(' ', '_', $ChronogramReport->creator->lastname);
 
       $relative_path = 'Template\Chronogram\fichas\chronogram_'.$id.'_por_'. $bene_name .'.docx';
-  
+
       $templatePath = public_path('Template/Chronogram/template/Template.docx');
       $outputPath = public_path($relative_path);
-      
+
        $templateProcessor = new TemplateProcessor($templatePath);
 
        $data = [
@@ -464,7 +465,7 @@ class ReportVisitsRepository
           $hourIScript = 'G'.$index.'D'.$IndexHorario.'HI';
           $hourTScript = 'G'.$index.'D'.$IndexHorario.'HT';
           $IndexHorario++;
-          
+
           $templateProcessor->setValue($dayScript, $horario->day);
           $templateProcessor->setValue($hourIScript, $horario->start_time);
           $templateProcessor->setValue($hourTScript, $horario->end_time);
@@ -483,7 +484,7 @@ class ReportVisitsRepository
 
         $index++;
       }
-      //limpiar informacion 
+      //limpiar informacion
       if($index < 6){
         for($i = $index; $i <= 5; $i++){
           $gruopID = 'idG' . $i;
@@ -503,16 +504,16 @@ class ReportVisitsRepository
             $dayScript = 'G' . $i . 'D' . $j;
             $hourIScript = 'G' . $i . 'D' . $j . 'HI';
             $hourTScript = 'G' . $i . 'D' . $j . 'HT';
-  
+
             $templateProcessor->setValue($dayScript, '');
             $templateProcessor->setValue($hourIScript, '');
             $templateProcessor->setValue($hourTScript, '');
         }
         }
-      
-        
+
+
       }
-      
+
        $templateProcessor->setValues($data);
 
        $templateProcessor->saveAs($outputPath);
@@ -522,7 +523,7 @@ class ReportVisitsRepository
     } catch (Exception $e) {
       return $e;
     }
-        
+
 
   }
 
@@ -541,7 +542,7 @@ class ReportVisitsRepository
       }
 
 
-      
+
 
       $bene_name = str_replace(' ', '_', $BeneficiariesReport->full_name);
 
@@ -564,7 +565,7 @@ class ReportVisitsRepository
 
       $data = [
         "id" => $BeneficiariesReport->id,
-        "date" => $BeneficiariesReport->registration_date,
+        "date" => Carbon::createFromFormat('Y-m-d', $BeneficiariesReport->registration_date)->isoFormat('D [de] MMMM [de] YYYY'),
         "zone" => $BeneficiariesReport->municipality->zone_id ? : 'no ingresado',
         "municipality" => $BeneficiariesReport->municipality->name,
         "full_name" => $BeneficiariesReport->full_name,
@@ -572,9 +573,9 @@ class ReportVisitsRepository
         "BM" => $birth_month,
         "BY" => $birth_year,
         "city" => $BeneficiariesReport->origin_place,
-        "identiti_type" => $BeneficiariesReport->type_document == "TI" ? "Tarjeta de identidad" : 
-        ($BeneficiariesReport->type_document == "CC" ? "Cedula de ciudadania" : 
-        ($BeneficiariesReport->type_document == "NIT" ? "Número de Identificación Tributaria" : 
+        "identiti_type" => $BeneficiariesReport->type_document == "TI" ? "Tarjeta de identidad" :
+        ($BeneficiariesReport->type_document == "CC" ? "Cedula de ciudadania" :
+        ($BeneficiariesReport->type_document == "NIT" ? "Número de Identificación Tributaria" :
         ($BeneficiariesReport->type_document == "PEP" ? "Permiso Especial de Permanencia": "NO REGISTRADA"))),
         "number_ident" => $BeneficiariesReport->document_number,
         "addres" => $BeneficiariesReport->home_address,
@@ -582,9 +583,9 @@ class ReportVisitsRepository
         "est" => $BeneficiariesReport->stratum,
         "corregimiento" => $BeneficiariesReport->distric,
         "institucioneducativa" => $BeneficiariesReport->institution,
-        "live_with" => $BeneficiariesReport->live_with,
+        "live_with" => implode(', ', json_decode($BeneficiariesReport->live_with, true)),
         "health-entity" => $BeneficiariesReport->health_entity->entity,
-        "monitor" => $BeneficiariesReport->created_user->name,
+        "monitor" => $BeneficiariesReport->created_user->name . ' ' . $BeneficiariesReport->created_user->lastname,
         "deporte" => $BeneficiariesReport->created_user->disciplines[0]->disciplines[0]->name,
         //tipos de sange
         "TipS" => $BeneficiariesReport->blood_type == 1 ? "O+" :
@@ -619,7 +620,7 @@ class ReportVisitsRepository
         "E-F" => $BeneficiariesReport->pathology == 1 ? "" : "X",
         "patologia" => $BeneficiariesReport->what_pathology == null ? '':$BeneficiariesReport->what_pathology,
         //ecolaridad
-        "ES-T" => $BeneficiariesReport->scholarship == 1 ? "X" : "", 
+        "ES-T" => $BeneficiariesReport->scholarship == 1 ? "X" : "",
         "ES-F" => $BeneficiariesReport->scholarship == 0 ? "X" : "",
         //escolaridad Level
         "EP-T" => $BeneficiariesReport->scholar_level == 1 ? "X" : "",
@@ -646,7 +647,7 @@ class ReportVisitsRepository
 
       $templateProcessor->saveAs($outputPath);
 
-      $relative_path = 'Template/Benefisiaries/fichas/Ficha_'.$id.'_beneficiario_'. $bene_name .'.docx'; 
+      $relative_path = 'Template/Benefisiaries/fichas/Ficha_'.$id.'_beneficiario_'. $bene_name .'.docx';
 
       return  $relative_path;
       //return $BeneficiariesReport->acudientes[0]->guardian->firts_name;
@@ -658,7 +659,7 @@ class ReportVisitsRepository
     } catch (Exception $e) {
       return $e;
     }
-        
+
 
   }
 
