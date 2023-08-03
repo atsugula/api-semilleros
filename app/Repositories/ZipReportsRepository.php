@@ -87,7 +87,7 @@ class ZipReportsRepository {
 
             $outputUrls = [];
 
-            if (count($outputUrls) === 0) {
+            if (count($benefesiariesID) === 0) {
                 $response = [
                     'msg' => "no hay ningun archivo aprobado para exportar",
                     'url' => null,
