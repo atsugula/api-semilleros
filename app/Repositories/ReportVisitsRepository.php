@@ -588,13 +588,13 @@ class ReportVisitsRepository
         "monitor" => $BeneficiariesReport->created_user->name . ' ' . $BeneficiariesReport->created_user->lastname,
         "deporte" => $BeneficiariesReport->created_user->disciplines[0]->disciplines[0]->name,
         //tipos de sange
-        "TipS" => $BeneficiariesReport->blood_type == 1 ? "O+" :
-        ($BeneficiariesReport->blood_type == 2 ? "O-" :
-        ($BeneficiariesReport->blood_type == 3 ? "A+" :
-        ($BeneficiariesReport->blood_type == 4 ? "A-" :
-        ($BeneficiariesReport->blood_type == 5 ? "B+" :
-        ($BeneficiariesReport->blood_type == 6 ? "B-" :
-        ($BeneficiariesReport->blood_type == 7 ? "AB+" : "")))))),
+        "TipS" => $BeneficiariesReport->blood_type == 1 ? "A+" :
+        ($BeneficiariesReport->blood_type == 2 ? "A-" :
+        ($BeneficiariesReport->blood_type == 3 ? "B+" :
+        ($BeneficiariesReport->blood_type == 4 ? "B-" :
+        ($BeneficiariesReport->blood_type == 5 ? "AB+" :
+        ($BeneficiariesReport->blood_type == 6 ? "O+" :
+        ($BeneficiariesReport->blood_type == 7 ? "O-" : "")))))),
         //zona
         "RU" => $BeneficiariesReport->zone == 'U' ? "X" : "",
         "UT" => $BeneficiariesReport->zone == 'R' ? "X" : "",
