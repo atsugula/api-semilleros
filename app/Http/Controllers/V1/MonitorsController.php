@@ -55,16 +55,27 @@ class MonitorsController extends Controller
         // Tiene los mismos lugares que la zona tres
         // Solo se le añadio el municipio de Zarzal
         if ($userZonesAuth[0] == 9) {
-            $userZonesAuth = [1,3];
+            $usersMonitorAuth = User::select(DB::raw("CONCAT(name, ' ', lastname) as label"), 'id as value')
+                ->whereHas('roles', function ($query) {
+                    $query->where('role_id', 12);
+                })
+                ->whereHas('zone', function ($query) use($userZonesAuth){
+                    $query->whereIn('zones_id', [1,3])
+                        ->whereHas('municipalities', function ($query) use($userZonesAuth){
+                            $query->where('municipalities.name', 'ZARZAL');
+                        });
+                })->get();
+        } else {
+            $usersMonitorAuth = User::select(DB::raw("CONCAT(name, ' ', lastname) as label"), 'id as value')
+                ->whereHas('roles', function ($query) {
+                    $query->where('role_id', 12);
+                })
+                ->whereHas('zone', function ($query) use($userZonesAuth){
+                    $query->whereIn('zones_id', $userZonesAuth);
+                })->get();
         }
 
-        $usersMonitorAuth = User::select(DB::raw("CONCAT(name, ' ', lastname) as label"), 'id as value')
-            ->whereHas('roles', function ($query) {
-                $query->where('role_id', 12);
-            })
-            ->whereHas('zone', function ($query) use($userZonesAuth){
-                $query->whereIn('zones_id', $userZonesAuth);
-            })->get();
+
 
         return $usersMonitorAuth;
     }

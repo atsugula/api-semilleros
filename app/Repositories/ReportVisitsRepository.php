@@ -581,7 +581,7 @@ class ReportVisitsRepository
         "addres" => $BeneficiariesReport->home_address,
         "phone" => $BeneficiariesReport->phone,
         "est" => $BeneficiariesReport->stratum,
-        "corregimiento" => $BeneficiariesReport->distric,
+        "corregimiento" => $BeneficiariesReport->distric == "" ? "N/A" : $BeneficiariesReport->distric,
         "institucioneducativa" => $BeneficiariesReport->institution,
         "live_with" => implode(', ', json_decode($BeneficiariesReport->live_with, true)),
         "health-entity" => $BeneficiariesReport->health_entity->entity,
@@ -596,8 +596,8 @@ class ReportVisitsRepository
         ($BeneficiariesReport->blood_type == 6 ? "O+" :
         ($BeneficiariesReport->blood_type == 7 ? "O-" : "")))))),
         //zona
-        "RU" => $BeneficiariesReport->zone == 'U' ? "X" : "",
-        "UT" => $BeneficiariesReport->zone == 'R' ? "X" : "",
+        "RU" => $BeneficiariesReport->zone == 'R' ? "X" : "",
+        "UT" => $BeneficiariesReport->zone == 'U' ? "X" : "",
         //victma de conflicto
         "VT" => $BeneficiariesReport->conflict_victim == 1 ? "X" : "",
         "VF" => $BeneficiariesReport->conflict_victim == 0 ? "X" : "",
