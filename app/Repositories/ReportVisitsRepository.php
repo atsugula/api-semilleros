@@ -576,7 +576,8 @@ class ReportVisitsRepository
         "identiti_type" => $BeneficiariesReport->type_document == "TI" ? "Tarjeta de identidad" :
         ($BeneficiariesReport->type_document == "CC" ? "Cedula de ciudadania" :
         ($BeneficiariesReport->type_document == "NIT" ? "Número de Identificación Tributaria" :
-        ($BeneficiariesReport->type_document == "PEP" ? "Permiso Especial de Permanencia": "NO REGISTRADA"))),
+        ($BeneficiariesReport->type_document == "PEP" ? "Permiso Especial de Permanencia":
+        ($BeneficiariesReport->type_document == "RC" ? "Registro Civil" : "NO REGISTRADA")))),
         "number_ident" => $BeneficiariesReport->document_number,
         "addres" => $BeneficiariesReport->home_address,
         "phone" => $BeneficiariesReport->phone,
