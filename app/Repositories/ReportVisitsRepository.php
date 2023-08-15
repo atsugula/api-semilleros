@@ -576,28 +576,29 @@ class ReportVisitsRepository
         "identiti_type" => $BeneficiariesReport->type_document == "TI" ? "Tarjeta de identidad" :
         ($BeneficiariesReport->type_document == "CC" ? "Cedula de ciudadania" :
         ($BeneficiariesReport->type_document == "NIT" ? "Número de Identificación Tributaria" :
-        ($BeneficiariesReport->type_document == "PEP" ? "Permiso Especial de Permanencia": "NO REGISTRADA"))),
+        ($BeneficiariesReport->type_document == "PEP" ? "Permiso Especial de Permanencia":
+        ($BeneficiariesReport->type_document == "RC" ? "Registro Civil" : "NO REGISTRADA")))),
         "number_ident" => $BeneficiariesReport->document_number,
         "addres" => $BeneficiariesReport->home_address,
         "phone" => $BeneficiariesReport->phone,
         "est" => $BeneficiariesReport->stratum,
-        "corregimiento" => $BeneficiariesReport->distric,
+        "corregimiento" => $BeneficiariesReport->distric == "" ? "N/A" : $BeneficiariesReport->distric,
         "institucioneducativa" => $BeneficiariesReport->institution,
         "live_with" => implode(', ', json_decode($BeneficiariesReport->live_with, true)),
         "health-entity" => $BeneficiariesReport->health_entity->entity,
         "monitor" => $BeneficiariesReport->created_user->name . ' ' . $BeneficiariesReport->created_user->lastname,
         "deporte" => $BeneficiariesReport->created_user->disciplines[0]->disciplines[0]->name,
         //tipos de sange
-        "TipS" => $BeneficiariesReport->blood_type == 1 ? "O+" :
-        ($BeneficiariesReport->blood_type == 2 ? "O-" :
-        ($BeneficiariesReport->blood_type == 3 ? "A+" :
-        ($BeneficiariesReport->blood_type == 4 ? "A-" :
-        ($BeneficiariesReport->blood_type == 5 ? "B+" :
-        ($BeneficiariesReport->blood_type == 6 ? "B-" :
-        ($BeneficiariesReport->blood_type == 7 ? "AB+" : "")))))),
+        "TipS" => $BeneficiariesReport->blood_type == 1 ? "A+" :
+        ($BeneficiariesReport->blood_type == 2 ? "A-" :
+        ($BeneficiariesReport->blood_type == 3 ? "B+" :
+        ($BeneficiariesReport->blood_type == 4 ? "B-" :
+        ($BeneficiariesReport->blood_type == 5 ? "AB+" :
+        ($BeneficiariesReport->blood_type == 6 ? "O+" :
+        ($BeneficiariesReport->blood_type == 7 ? "O-" : "")))))),
         //zona
-        "RU" => $BeneficiariesReport->zone == 'U' ? "X" : "",
-        "UT" => $BeneficiariesReport->zone == 'R' ? "X" : "",
+        "RU" => $BeneficiariesReport->zone == 'R' ? "X" : "",
+        "UT" => $BeneficiariesReport->zone == 'U' ? "X" : "",
         //victma de conflicto
         "VT" => $BeneficiariesReport->conflict_victim == 1 ? "X" : "",
         "VF" => $BeneficiariesReport->conflict_victim == 0 ? "X" : "",

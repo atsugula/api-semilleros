@@ -25,6 +25,9 @@ class ZoneUser extends Model
         return $this->belongsTo(Zone::class, 'zones_id');
     }
 
+    public function municipalities(){
+        return $this->hasMany(Municipality::class, 'zone_id');
+    }
 
     public function control_data()
     {

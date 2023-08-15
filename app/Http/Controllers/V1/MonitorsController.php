@@ -55,7 +55,7 @@ class MonitorsController extends Controller
         // Tiene los mismos lugares que la zona tres
         // Solo se le añadio el municipio de Zarzal
         if ($userZonesAuth[0] == 9) {
-            $userZonesAuth = [1,3];
+            $userZonesAuth[0] = 3;
         }
 
         $usersMonitorAuth = User::select(DB::raw("CONCAT(name, ' ', lastname) as label"), 'id as value')
@@ -64,8 +64,8 @@ class MonitorsController extends Controller
             })
             ->whereHas('zone', function ($query) use($userZonesAuth){
                 $query->whereIn('zones_id', $userZonesAuth);
-            })->get();
-
+            })
+        ->get();
         return $usersMonitorAuth;
     }
 }
