@@ -585,7 +585,7 @@ class ReportVisitsRepository
         "corregimiento" => $BeneficiariesReport->distric == "" ? "N/A" : $BeneficiariesReport->distric,
         "institucioneducativa" => $BeneficiariesReport->institution,
         "live_with" => implode(', ', json_decode($BeneficiariesReport->live_with, true)),
-        "health-entity" => $BeneficiariesReport->health_entity->entity,
+        "health-entity" => $BeneficiariesReport->health_entity?->entity ?? "No tiene",
         "monitor" => $BeneficiariesReport->created_user->name . ' ' . $BeneficiariesReport->created_user->lastname,
         "deporte" => $BeneficiariesReport->created_user->disciplines[0]->disciplines[0]->name,
         //tipos de sange
