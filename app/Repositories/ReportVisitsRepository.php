@@ -567,7 +567,7 @@ class ReportVisitsRepository
         "id" => $BeneficiariesReport->id,
         "date" => Carbon::createFromFormat('Y-m-d', $BeneficiariesReport->registration_date)->isoFormat('D [de] MMMM [de] YYYY'),
         "zone" => $BeneficiariesReport->municipality->zone_id ? : 'no ingresado',
-        "municipality" => $BeneficiariesReport->municipality->name,
+        "municipality" => $BeneficiariesReport->municipality->name ?? "No tiene",
         "full_name" => $BeneficiariesReport->full_name,
         "BD" => $birth_day,
         "BM" => $birth_month,
@@ -595,7 +595,8 @@ class ReportVisitsRepository
         ($BeneficiariesReport->blood_type == 4 ? "B-" :
         ($BeneficiariesReport->blood_type == 5 ? "AB+" :
         ($BeneficiariesReport->blood_type == 6 ? "O+" :
-        ($BeneficiariesReport->blood_type == 7 ? "O-" : "")))))),
+        ($BeneficiariesReport->blood_type == 7 ? "O-" :
+        ($BeneficiariesReport->blood_type == 8 ? "AB-" : ""))))))),
         //zona
         "RU" => $BeneficiariesReport->zone == 'R' ? "X" : "",
         "UT" => $BeneficiariesReport->zone == 'U' ? "X" : "",
