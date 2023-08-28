@@ -39,11 +39,17 @@ class MethodologistVisitRepository
 
         switch ($rol_id) {
             case config('roles.subdirector_tecnico'):
+                // Obtener los IDs de las zonas a las que pertenece el usuario autenticado
                 $userZones = Auth::user()->zone->pluck('zones_id')->toArray();
-                $query = $query->whereHas('zone', function ($subquery) use ($userZones) {
-                    $subquery->whereIn('zones_id', $userZones);
+
+                // Modificar la consulta para filtrar en base a las zonas del creador
+                $query = $query->whereHas('creator', function ($subquery) use ($userZones) {
+                    // Filtrar los creadores que tienen zonas en común con el usuario autenticado
+                    $subquery->whereHas('zone', function ($subbquery) use ($userZones) {
+                        // Utilizar el método whereIn() para filtrar por IDs de zonas
+                        $subbquery->whereIn('zones_id', $userZones);
+                    });
                 });
-                $query = $query->whereNotIn('created_by', [1,2])->where('status_id', [config('status.ENR')]);
                 break;
             case config('roles.super-root'):
             case config('roles.director_administrator'):
