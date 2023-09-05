@@ -40,15 +40,32 @@ class TransversalActivityRepository
 
         $query = $this->model->query();
 
-        if ($rol_id == config('roles.director_programa')) {
-            $query->where('status_id', config('status.ENR'))
-                ->whereHas('creator.roles', function ($query) {
-                    $query->where('roles.slug', 'psicologo');
+        switch ($rol_id) {
+            case config('roles.coordinador_psicosocial'):
+                $query->whereHas('createdBy.roles', function ($profile) {
+                    $profile->where('roles.slug', 'psicologo');
                 });
-        }
+            case config('roles.super-root'):
+            case config('roles.director_administrator'):
+                $query = $query->whereNotIn('created_by', [1,2])->whereHas('createdBy.roles', function ($query) {
+                    $query->where('roles.slug', 'psicologo')->where('status_id', [config('status.ENR')]);
+                });
+                break;
 
-        if ($rol_id == config('roles.psicologo')) {
-            $query->where('created_by', $user_id)->orderBy('id', 'DESC');
+            case config('roles.director_programa'):
+                $query->where('status_id', config('status.ENR'))
+                    ->whereHas('creator.roles', function ($query) {
+                        $query->where('roles.slug', 'psicologo');
+                    });
+                break;
+
+            case config('roles.psicologo'):
+                $query->where('created_by', $user_id)->orderBy('id', 'DESC');
+                break;
+
+            default:
+                return null;
+                break;
         }
 
         $paginate = config('global.paginate');
