@@ -39,10 +39,9 @@ class psychologistVisitsRepository
 
         switch ($rol_id) {
             case config('roles.coordinador_psicosocial'):
-                $query->whereHas('roles', function ($profile) {
-                    $profile->where('roles.id', [config('roles.psicologo')]);
-                })
-                ->whereNotIn([1]);
+                $query->whereHas('createdBy.roles', function ($profile) {
+                    $profile->where('roles.slug', 'psicologo');
+                });
             case config('roles.super-root'):
             case config('roles.director_administrator'):
                 $query = $query->whereNotIn('created_by', [1,2])->whereHas('createdBy.roles', function ($query) {
