@@ -531,7 +531,7 @@ class ReportVisitsRepository
 
     try {
 
-      $BeneficiariesReport = $this->beneficiaries->findOrFail($id);
+    $BeneficiariesReport = $this->beneficiaries->findOrFail($id);
     if ($BeneficiariesReport->status_id == 1) {
       try {
         $networks = str_replace(['[', '"', ']'], '', $BeneficiariesReport->acudientes[0]->social_media);
@@ -563,9 +563,15 @@ class ReportVisitsRepository
       }
       $templateProcessor = new TemplateProcessor($templatePath);
 
+      try {
+        $date_registration = Carbon::createFromFormat('Y-m-d', $BeneficiariesReport->registration_date)->isoFormat('D [de] MMMM [de] YYYY');
+      } catch (\Carbon\Exceptions\InvalidFormatException $th) {
+        $date_registration = '';
+      }
+
       $data = [
         "id" => $BeneficiariesReport->id,
-        "date" => Carbon::createFromFormat('Y-m-d', $BeneficiariesReport->registration_date)->isoFormat('D [de] MMMM [de] YYYY'),
+        "date" => $date_registration,
         "zone" => $BeneficiariesReport->municipality->zone_id ? : 'no ingresado',
         "municipality" => $BeneficiariesReport->municipality->name ?? "No tiene",
         "full_name" => $BeneficiariesReport->full_name,
@@ -586,8 +592,8 @@ class ReportVisitsRepository
         "institucioneducativa" => $BeneficiariesReport->institution,
         "live_with" => implode(', ', json_decode($BeneficiariesReport->live_with, true)),
         "health-entity" => $BeneficiariesReport->health_entity?->entity ?? "No tiene",
-        "monitor" => $BeneficiariesReport->created_user->name . ' ' . $BeneficiariesReport->created_user->lastname,
-        "deporte" => $BeneficiariesReport->created_user->disciplines[0]->disciplines[0]->name,
+        "monitor" => ($BeneficiariesReport->created_user->name ?? '') . ' ' . ($BeneficiariesReport->created_user->lastname ?? ''),
+        "deporte" => $BeneficiariesReport->created_user->disciplines[0]->discipline->name ?? '',
         //tipos de sange
         "TipS" => $BeneficiariesReport->blood_type == 1 ? "A+" :
         ($BeneficiariesReport->blood_type == 2 ? "A-" :
@@ -634,11 +640,11 @@ class ReportVisitsRepository
         "H-N" => $BeneficiariesReport->affiliation_type == "NA" ? "X" : "",
 
         // acudientes
-        "acudiente" => $BeneficiariesReport->acudientes[0]->guardian->firts_name . ' ' . $BeneficiariesReport->acudientes[0]->guardian->last_name,
-        "parentesco" => $BeneficiariesReport->acudientes[0]->relationship,
-        "num" => $BeneficiariesReport->acudientes[0]->guardian->cedula,
-        "tel" => $BeneficiariesReport->acudientes[0]->guardian->phone_number,
-        "emailG" => $BeneficiariesReport->acudientes[0]->guardian->email,
+        "acudiente" => ($BeneficiariesReport->acudientes[0]->guardian->firts_name ?? '') . ' ' . ($BeneficiariesReport->acudientes[0]->guardian->last_name ?? ''),
+        "parentesco" => ($BeneficiariesReport->acudientes[0]->relationship ?? ''),
+        "num" => ($BeneficiariesReport->acudientes[0]->guardian->cedula ?? ''),
+        "tel" => ($BeneficiariesReport->acudientes[0]->guardian->phone_number ?? ''),
+        "emailG" => ($BeneficiariesReport->acudientes[0]->guardian->email ?? ''),
         "networks" => $networks ,
         "find_out" => $find_out ,
 
