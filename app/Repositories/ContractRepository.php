@@ -72,44 +72,29 @@ class ContractRepository
 
     public function management($request)
     {
-        $status = Status::query()->where('id', $request->status)->get()->first();
+        $status = Status::query()->where('id', $request->status)->first();
+        $contract = Contract::query()->where('id', $request->contractor_id)->first();
 
-        /**
-         * Actualizamos el estado y el nro. identificador del contrato
-         */
-        $contract = Contract::query()->where('id', $request->contractor_id)->get()->first();
+        $updateData = ['status' => $status->id];
 
-        if ($status->slug == 'REC') {
-            $contract->update([
-                'status' => $status->id,
-                'rejection_message' => $request->rejection_message,
-            ]);
-            if (isset($request->rejections)) {
-                $contract->update([
-                    'rejections' => $request->rejections,
-                ]);
-            }
+        switch ($status->slug) {
+            case 'REC':
+                $updateData = $this->handleReceivedStatus($request, $updateData);
+                break;
+            case 'APR':
+                $updateData = $this->handleApprovedStatus($request, $updateData);
+                break;
+            case 'ARC':
+                // No additional fields to update for archived status
+                break;
+            default:
+                // Handle unknown status if necessary
+                break;
         }
-        else if ($status->slug == 'APR') {
-            $contract->update([
-                'status' => $status->id,
-                'identifier_number' => $request->identifier_number,
-                'rejection_message' => NULL,
-            ]);
-            if (isset($request->identifier_number)) {
-                $contract->update([
-                    'identifier_number' => $request->identifier_number,
-                ]);
-            }
-        }
-        else if ($status->slug == 'ARC') {
-            $contract->update([
-                'status' => $status->id,
-            ]);
-        }
+
+        $contract->update($updateData);
         $contract->save();
 
-        //~~ SE COLOCA AL CONTRATISTA EN REVISION
         ContractManagement::dispatch($contract);
         return $contract;
     }
@@ -133,5 +118,22 @@ class ContractRepository
         //~~ SE COLOCA AL CONTRATISTA EN REVISION
         ContractCancellation::dispatch($contract);
         return $contract;
+    }
+
+    private function handleReceivedStatus($request, $updateData) {
+        $updateData['rejection_message'] = $request->rejection_message;
+
+        if (isset($request->rejections)) {
+            $updateData['rejections'] = $request->rejections;
+        }
+
+        return $updateData;
+    }
+
+    private function handleApprovedStatus($request, $updateData) {
+        $updateData['identifier_number'] = $request->identifier_number;
+        $updateData['rejection_message'] = NULL;
+
+        return $updateData;
     }
 }
