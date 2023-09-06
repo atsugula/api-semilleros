@@ -84,4 +84,9 @@ class Beneficiary extends Model
     public function health_entity(){
         return $this->belongsTo(HealthEntities::class, 'health_entity_id', 'id');
     }
+
+    public function ethnicitie(){
+        return $this->belongsTo(Ethnicity::class, 'ethnicities_id', 'id');
+    }
+
 }
