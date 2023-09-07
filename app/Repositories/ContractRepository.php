@@ -84,11 +84,7 @@ class ContractRepository
             case 'APR':
                 $updateData = $this->handleApprovedStatus($request, $updateData);
                 break;
-            case 'ARC':
-                // No additional fields to update for archived status
-                break;
             default:
-                // Handle unknown status if necessary
                 break;
         }
 
