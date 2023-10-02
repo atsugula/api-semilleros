@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use App\Models\MunicipalityUser;
 use App\Models\DisciplineUser;
+use App\Models\Municipality;
+use App\Models\RoleUser;
 use App\Models\User;
 use App\Models\ZoneUser;
 use Illuminate\Support\Facades\Auth;
@@ -16,16 +18,17 @@ class MonitorsController extends Controller
 {
     // Trae solo usuarios monitores
     public function getMonitoringMunicipality($id) {
-        $response = MunicipalityUser::where('municipalities_id', $id)->with('users')->get();
+        $municipio = Municipality::find($id);
+        // return $municipio;
+        $response = ZoneUser::where('zones_id', $municipio->zone_id)->with('users')->get();
         $users = [];
         foreach ($response as $muni) {
-            foreach ($muni->users as $user) {
-                if ($user->roles[0]->id == config('roles.monitor')) {
-                    array_push($users, [
-                        'label' => $user->name,
-                        'value' => $user->id
-                    ]);
-                }
+            $roleUser = RoleUser::where('user_id', $muni->users->id)->first();
+            if ($roleUser->role_id == config('roles.monitor')) {
+                array_push($users, [
+                    'label' => $muni->users->name,
+                    'value' => $muni->users->id
+                ]);
             }
         }
         return response()->json($users);
