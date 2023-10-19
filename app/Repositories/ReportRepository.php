@@ -4,7 +4,9 @@ namespace App\Repositories;
 
 use App\Exports\V1\CustomVisitPsicosocialExport;
 use App\Exports\V1\TransversalActivityExport;
+use App\Exports\V1\VisitMethodologistExport;
 use App\Exports\V1\NavigationHistoryExport;
+use App\Exports\V1\VisitPsicosocialExport;
 use App\Exports\V1\VisitSubDirectorExport;
 use App\Exports\V1\CoordinatorVisitExport;
 use App\Exports\V1\CustomVisitExport;
@@ -12,9 +14,7 @@ use App\Exports\V1\InscriptionExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\V1\UsersInfoExport;
 use App\Exports\V1\UsersExport;
-use App\Exports\V1\VisitPsicosocialExport;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 
 class ReportRepository
 {
@@ -51,6 +51,9 @@ class ReportRepository
                 break;
             case 'psychologicalVisits':
                 return $this->psychologicalVisits($request);
+                break;
+            case 'methodologistVisits':
+                return $this->methodologistVisits($request);
                 break;
             default:
                 return 0;
@@ -182,6 +185,19 @@ class ReportRepository
         try {
             if (!$request->data) {
                 return Excel::download(new VisitPsicosocialExport($request), "$request->type_excel.xlsx");
+            }
+            return User::count();
+        } catch (\Exception $ex) {
+            report($ex);
+            return response()->json(['error' => 'Error obteniendo el dato ' . $ex->getMessage() . ', buscar en linea de codigo ' . $ex->getLine(), 'success' => false], 404);
+        }
+    }
+
+    public function methodologistVisits($request)
+    {
+        try {
+            if (!$request->data) {
+                return Excel::download(new VisitMethodologistExport($request), "$request->type_excel.xlsx");
             }
             return User::count();
         } catch (\Exception $ex) {
